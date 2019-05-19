@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>cdfive-log</artifactId>
+        <groupId>com.cdfive</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>cdfive-log-api</artifactId>
+
+    <properties>
+        <cdfive-common.version>0.0.1-SNAPSHOT</cdfive-common.version>
+    </properties>
+
+    <dependencies>
+        <!-- common -->
+        <dependency>
+            <groupId>com.cdfive</groupId>
+            <artifactId>cdfive-common</artifactId>
+            <version>${cdfive-common.version}</version>
+        </dependency>
+
+        <!-- lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+</project>

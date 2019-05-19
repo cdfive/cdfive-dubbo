@@ -1,0 +1,10 @@
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: #fff;
+  background: -webkit-radial-gradient(#fff, #ccc);
+  background: radial-gradient(#fff, #ccc);
+}

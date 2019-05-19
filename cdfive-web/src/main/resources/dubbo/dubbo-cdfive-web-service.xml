@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+	<dubbo:application name="cdfive-mp3-web" />
+
+	<dubbo:registry protocol="zookeeper" address="zookeeper://localhost:2181" />
+
+	<dubbo:protocol name="dubbo" port="20000" dispatcher="all" threadpool="fixed" threads="200" />
+
+	<dubbo:reference id="songService" interface="com.cdfive.mp3.service.SongService" />
+
+	<dubbo:consumer check="false" />
+
+</beans>

@@ -1,0 +1,252 @@
+@charset "UTF-8";
+@font-face {font-family: 'iconfont';
+    src: url('iconfont.eot'); /* IE9*/
+    src: url('iconfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('/static/css/iconfont/iconfont.woff') format('woff'), /* chrome��firefox */
+    url('/static/css/iconfont/iconfont.ttf') format('truetype'), /* chrome��firefox��opera��Safari, Android, iOS 4.2+*/
+    url('/static/css/iconfont/iconfont.svg#iconfont') format('svg'); /* iOS 4.1- */
+}
+.iconfont {
+  font-family:"iconfont" !important;
+  font-size:16px;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: 0.2px;
+  -moz-osx-font-smoothing: grayscale;
+}
+.sidebar-container{
+	position: absolute;
+	width: 518px;
+	right: -200%;
+	top: 0;
+	bottom: 0;
+	background: #fff;
+	border-left: 1px solid #ececec;
+}
+.sidebar-item{
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+}
+
+/*------------------------------------start sidebar-cont----------------------------------------------*/
+.sidebar-tt{
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	height: 44px;
+	line-height: 44px;
+	padding-left: 20px;
+	background: #f8f8f8;
+	border-bottom: 1px solid #ececec;
+}
+.sidebar-main-cont{
+	padding-top: 20px;
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 44px;
+	bottom: 10%;
+	/* overflow-y: scroll;
+    overflow-x: hidden; */
+}
+.btn-bottom-box{
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	padding: 5% 18% 5%;
+	background: #f8f8f8;
+	border-top: 1px solid #ececec;
+}
+.btn-bottom-box a{
+	display: block;
+	padding: 3% 12%;
+	color: #fff;
+}
+.submit-data{
+	background: #1ba0d6;
+}
+.submit-data:hover{
+	background: #1381ad;
+}
+.cancel{
+	background: #ccc;
+}
+.cancel:hover{
+	background: #aeaeae;
+}
+/*------------------------------------end sidebar-cont----------------------------------------------*/
+
+/*侧边栏滚动条*/
+.sidebar{
+/* 	overflow-y:scroll; */
+	overflow-x:hidden;
+}
+/* 页面操作按钮样式重置 */
+.action-btn-box .action-button{
+	display: inline-block;
+	background: #4d77cb;
+	border: 1px solid #294b92;
+	color: #fff;
+    padding: 4px 12px;
+}
+.action-button{
+	display: inline-block;
+	background: #4d77cb;
+	border: 1px solid #294b92;
+	color: #fff;
+    padding: 4px 12px;
+}
+a.action-button:hover{
+	background: #4069bb;
+	color: #fff;
+}
+.action-btn-box a:hover{
+	color: #fff;
+	text-decoration: none;
+}
+.del-button{
+	display: inline-block;
+    border: 1px solid #c00;
+    color: #c00;
+    padding: 4px 12px;
+}
+a.del-button:hover{
+	background: #eee;
+    color: #c00;
+}
+
+/*重置bootstrap里面a的样式*/
+.guidebar a:link{
+	text-decoration:none;
+}
+.guidebar a:hover {
+	text-decoration:none;
+}
+.guidebar a:visited {
+	text-decoration:none;
+}
+.guidebar a:active {
+	text-decoration:none;
+}
+.sub-container .guidebar-cont{
+	border-bottom: 1px solid #b0b4bb;
+}
+/* .btn-primary,.btn-default{
+	padding: 6px 26px;
+} */
+.sub-container .guidebar{
+	position: absolute;
+    top: 0;
+    bottom: 0;
+	background: #fff;
+ 	box-shadow: 4px 0 4px 0 #eee;
+ 	overflow: auto;
+}
+.sub-container .content{
+	height: auto;
+	position: relative;
+	margin-top: 28px;
+	margin-right: 20px;
+}
+.sub-container .content-items{
+	height: auto;
+	border: 1px solid #b0b4bb;
+}
+.sub-container .content-items-tt{
+	font-size: 20px;
+	line-height: 60px;
+	padding-left: 24px;
+	margin: 0;
+	background: #f5f5f5;
+	border-bottom: 1px solid #b0b4bb;
+}
+.sub-container .content-items-cont{
+	height: auto;
+	padding: 0 26px 0 20px;
+}
+
+.sub-container .sidebar{
+	position: absolute;
+	top: 0;
+	bottom:0;
+	right: -100%;
+	background: #fff;
+	box-shadow: -5px 0 5px 0 #eee;
+	margin-left: 30px;
+}
+
+.sub-container .content-items-cont{
+	padding: 30px;
+}
+.sub-container .sidebar .btn-box{
+	position: absolute;
+	bottom: 0;
+	background: #fff;
+}
+.sub-container .sidebar legend{
+    line-height: 60px;
+    padding-left: 30px;
+}
+.sub-container .btn-box{
+	width: 100%;
+	padding: 20px 0 20px 15px;
+}
+/*添加角色/模块*/
+.guidebar .add-btn{
+	font-size: 14px;
+	display: block;
+	width: 216px;
+	height: 32px;
+	border: 1px solid #b0b4bb;
+	line-height: 32px;
+	text-align: center;
+}
+.guidebar .add-btn span{
+	padding-right: 8px;
+}
+.guidebar-tt{
+	text-align: center;
+	line-height: 60px;
+	font-size: 20px;
+	border-bottom: 1px solid #ebebeb;
+	padding: 20px;
+}
+
+/*按钮改造*/
+
+.btn:hover{
+	color: #fff;
+}
+.btn i {
+	margin-right: 6px;
+}
+.btn-default {
+    color: #fff;
+    background-color: #cccccc;
+    border-color: #ccc;
+}
+.btn-default:hover {
+    color: #fff;
+    background-color: #aeaeae;
+    border-color: #aeaeae;
+}
+.btn-primary {
+    color: #fff;
+    background-color: #4d7496;
+    border-bottom:1px solid #355f84;
+}
+.ctn{
+	margin: 0 auto; 
+}
+.swfupload{
+	filter:alpha(opacity=50);  
+    -moz-opacity:0.5;  
+    -khtml-opacity: 0.5;  
+    opacity: 0.5;  
+    }
+

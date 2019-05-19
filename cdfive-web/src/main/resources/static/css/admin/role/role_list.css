@@ -1,0 +1,197 @@
+.content{
+	margin-left: 282px;
+}
+.role-name-detail{
+	display: block;
+	line-height: 46px;
+	border-bottom:1px solid #ebebeb;
+}
+.role-name-jiaose{
+	padding: 0 8px 0 20px;
+	font-size: 18px;
+}
+.edit{
+	font-size: 16px;
+}
+.role-name-detail .delete{
+	font-size: 18px;
+	padding-top: 3px;
+}
+.role-name a:hover{
+	background: #ddd;
+}
+.role-name-right{
+	float: right;
+	margin-right: 10px;
+}
+.role-name-right .edit{
+	padding-right: 10px;
+}
+.content-items-tt{
+	font-size: 22px;
+}
+.content-items .form-control{
+	border-radius: 0;
+}
+.form-group .button{
+	width: 98px;
+	height: 30px;
+	border: 1px solid #e5e5e5;
+	position: relative;
+	overflow: hidden;
+}
+
+.content-items .form-group{
+	margin-bottom: 0;
+}
+.form-group span{
+	color: red;
+}
+
+.form-group .txt-right{
+	text-align: right;
+	margin-right: 16px;
+}
+.form-group .txt-left,.form-group .txt-right{
+	padding-left: 0;
+	padding-right: 0;
+}
+.form-group .txt-left{
+	text-align: right;
+	padding-right: 20px;
+}
+.form-group .no-left-padding{
+	padding-left: 0;
+}
+.on-btn,.off-btn{
+	width: 49px;
+	line-height: 28px;
+	text-align: center;
+	background: #4d7496;
+	color: #fff;
+	
+}
+.on-btn{
+	border-right: 1px solid #e5e5e5;
+	position: absolute;
+	top: 0;
+	left: 0px;
+	
+}
+.off-btn{
+	border-left: 1px solid #e5e5e5;
+	position: absolute;
+	top: 0;
+	right: 0;
+	display: none;
+}
+.operat-btn a{
+	color: #fff;
+}
+.operat-btn a:hover{
+	color: #fff;
+	text-decoration: none;
+}
+.operat-btn{
+	position: absolute;
+	left:26%;
+	bottom: 5%;
+}
+/*
+ * z-tree 閺嶅嘲绱￠柌宥囩枂
+ */
+.content-items-cont .ztree {
+    padding: 0;
+    border: 1px solid #c1c1c1;
+}
+.ztree li a { 
+	height: 40px;
+	line-height: 40px;
+}
+.ztree li span.button.ico_close,
+.ztree li span.button.ico_open,
+.ztree li span.button.ico_docu {
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+.ztree li ul.line {
+    background-position:10px 0;
+}
+.ztree li span.button.center_docu,	
+.ztree li span.button.bottom_docu {
+    background: #fafafa;
+}
+.ztree>li>ul{
+	background-color: #fafafa!important;
+}
+.ztree li ul li{
+	border-left:  1px dashed #ddd;
+}
+.ztree li a:hover {
+    text-decoration: none; 
+}
+.ztree li a.curSelectedNode {
+    background-color: #fff;
+}
+.ztree li span.button.chk {
+    width: 13px;
+    height: 13px;
+    margin: 12px 10px 0 10px;
+    cursor: auto;
+}
+.ztree li span.button.switch{
+	margin-top: 12px;
+}
+.ztree .operate_group{
+	float: right;
+	color: #1d5daa;
+	margin-top: 10px;
+	margin-right: 1%;
+}
+.operate_group .blue{
+	margin-right: 16px;
+}
+.glyphicon {
+    width: 16px;
+    text-align: center;
+    font-size: 14px;
+    }
+
+/*缂佹挻鐎� 閺�褰掞拷锟�*/
+
+.sub-container .content{
+	width: auto;
+	min-width: 760px;
+	margin-left: 285px;
+}
+.sub-container .content-items-cont{
+	padding: 30px;
+}
+.sub-container .sidebar .btn-box{
+	position: absolute;
+	bottom: 0;
+}
+.sub-container .sidebar legend{
+    line-height: 60px;
+    padding-left: 30px;
+}
+.sub-container .btn-box{
+	width: 100%;
+	padding: 20px 0;
+}
+.margin-top-30px{
+	margin-top: 30px;
+}
+.margin-left-30px{
+	margin-left: 30px;	
+}
+.border-top{
+	border-top:1px solid #ebebeb;
+}
+#role_list a:hover{
+	background: #ddd;
+}
+.ztree li a:hover{
+	background: #ddd;
+}

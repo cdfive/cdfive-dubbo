@@ -1,0 +1,58 @@
+@charset "UTF-8";
+/*
+ * z-tree 样式重置
+ */
+.ztree {
+    padding: 0;
+}
+.ztree li a { 
+	height: 32px;
+	line-height: 32px;
+}
+.ztree li span.button.ico_close,
+.ztree li span.button.ico_open,
+.ztree li span.button.ico_docu {
+    vertical-align: middle;
+        margin-top: -3px;
+}
+.ztree li span.button.switch {
+    margin-top: 7px;
+    margin-left: 8px;
+}
+.ztree li ul.line {
+    background-position:10px 0;
+}
+.ztree li span.button.center_docu,	
+.ztree li span.button.bottom_docu {
+    background: #fff;
+}
+.ztree>li>ul{
+	border:1px solid #f9f5ff;
+	border-left-width: 0;
+	border-right-width: 0;
+}
+.ztree li ul li{
+	/* border-left:  1px dashed #ddd; */
+}
+.ztree li a:hover {
+    text-decoration: none; 
+}
+.ztree li a.curSelectedNode {
+    background-color: #ddd;
+}
+.glyphicon {
+    width: 16px;
+    text-align: center;
+    font-size: 14px;
+    }
+    
+.ztree li span.button.chk {
+    margin: 7px 3px 0 0;
+}
+.ztree li ul {
+    margin: 0;
+    padding: 0 0 0 12px;
+}
+.ztree li span.button.ico_open {
+    margin-top: -3px;
+}

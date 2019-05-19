@@ -1,0 +1,7 @@
+server:
+  port: 8080
+
+resources:
+  mp3:
+    pathPatterns: /2017/mp3/**
+    resourcelocations: file:E:/mp3/

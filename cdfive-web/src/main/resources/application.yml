@@ -1,0 +1,12 @@
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/view/
+      suffix: .jsp
+  profiles:
+    active: dev
+
+resources:
+  static:
+    pathPatterns: /static/**
+    resourcelocations: classpath:/static/

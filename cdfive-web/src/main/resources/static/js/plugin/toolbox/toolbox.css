@@ -1,0 +1,41 @@
+@charset "UTF-8";
+
+#toolbox {
+	position: absolute;
+	left: 0px;
+	top: 200px;
+	text-align: center;
+	font-size: 12px;
+}
+
+#toolbox .btn {
+	width: 20px;
+	background-color: #2d6ed8;
+	margin-bottom: 4px;
+	color: #fff;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	cursor: pointer;
+}
+
+#toolbox .btnActive {
+	background-color: #accaea;
+}
+
+#txtNoteInner p {
+	text-align: left;
+	width: 500px;
+}
+
+.hide{
+	display:none;
+}
+
+.five {
+	position: relative;
+	right: 0px;
+	bottom: 0px;
+	float: right;
+	padding-right: 10px;
+	display: block;
+}

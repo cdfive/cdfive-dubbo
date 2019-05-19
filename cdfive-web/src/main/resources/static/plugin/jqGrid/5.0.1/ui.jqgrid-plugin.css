@@ -1,0 +1,92 @@
+@charset "utf-8";
+body {
+	overflow-x: hidden;
+	min-height: 100%;
+	padding-bottom: 0;
+	font-family: 'Open Sans';
+	font-size: 13px;
+	line-height: 1.5;
+	overflow-y: scroll;
+}
+
+div.row {
+	padding: 0;
+	margin: 0;
+}
+/*清除底部分页条上面的两条重复的线*/
+.ui-jqgrid .ui-jqgrid-pager, .ui-jqgrid .ui-jqgrid-toppager {
+	border: none;
+}
+
+.table>caption+thead>tr:first-child>td, .table>caption+thead>tr:first-child>th,
+	.table>colgroup+thead>tr:first-child>td, .table>colgroup+thead>tr:first-child>th,
+	.table>thead:first-child>tr:first-child>td, .table>thead:first-child>tr:first-child>th
+	{
+	border-top: 1px solid #ddd;
+}
+/*清除横向滚动条*/
+.ui-jqgrid .ui-jqgrid-bdiv, .ui-jqgrid .ui-jqgrid-view {
+	overflow-x: hidden;
+	border: none;
+}
+
+.contains {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+
+#pg_jqGrid_toppager.ui-pager-control {
+	background: #f5f5f5;
+}
+
+#add_jqGrid_top.active,
+#edit_jqGrid_top.active, 
+#search_jqGrid_top.active,
+#refresh_jqGrid_top.active,
+#navBtnShowUserAllocation.active,
+#navBtnAdd.active,
+#navBtnEdit.active,
+#navBtnDel.active,
+#dowloadEmployee.active, 
+#del_jqGrid_top.active {
+	background-color: transparent;
+}
+
+#add_jqGrid_top .ui-pg-div, 
+#edit_jqGrid_top .ui-pg-div,
+#search_jqGrid_top .ui-pg-div, 
+#refresh_jqGrid_top .ui-pg-div,
+#navBtnShowUserAllocation .ui-pg-div, 
+#navBtnAdd .ui-pg-div, 
+#navBtnEdit .ui-pg-div, 
+#navBtnDel .ui-pg-div, 
+#dowloadEmployee  .ui-pg-div, 
+#del_jqGrid_top .ui-pg-div {
+	/*height: 32px;*/
+	padding: 5px 20px;
+	background-color: #4d77cc;
+	color: #fff;
+	margin-right: 10px;
+	font-size: 16px;
+	line-height: 1.5 !important;
+}
+
+#add_jqGrid_top .ui-pg-div .glyphicon, 
+#edit_jqGrid_top .ui-pg-div .glyphicon,
+#search_jqGrid_top .ui-pg-div .glyphicon, 
+#refresh_jqGrid_top .ui-pg-div .glyphicon,
+#navBtnShowUserAllocation .ui-pg-div .glyphicon,
+#del_jqGrid_top .ui-pg-div .glyphicon,
+#navBtnAdd  .ui-pg-div .glyphicon,
+#navBtnEdit .ui-pg-div .glyphicon,
+#navBtnDel .ui-pg-div .glyphicon,
+#dowloadEmployee  .ui-pg-div .glyphicon
+{padding-top: 4px;}
+
+.ui-disabled{display:none;}
+
+#searchmodfbox_jqGrid{
+	position:absolute;
+}

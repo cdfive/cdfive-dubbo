@@ -1,0 +1,319 @@
+/*
+ * Styles for TapPlayer V1.0
+ * Color Schema: #3498DB
+ */
+
+html,body{
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  cursor: default;
+}
+ul,li{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+input[type=checkbox]{
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  margin: 17px auto;
+  border: solid 1px #ccc;
+  background-color: #fff;
+  outline: none;
+  transition: .3s;
+}
+input[type=checkbox]:hover{
+  border-color: #3498DB;
+}
+input[type=checkbox]:checked{
+  border-color: #3498DB;
+  background-color: #3498DB;
+}
+body{
+  font-family: 'Microsoft Yahei';
+  color: #666;
+  background-image: url(../backgrounds/default.png);
+  background-position: 50% 50%;
+  background-size: cover;
+}
+.container{
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 800px;
+  height: 480px;
+  margin: auto;
+  background-color: #fff;
+  box-shadow: 0 0 5px rgba(0,0,0,.3);
+}
+.list-box,
+.player-box{
+  position: relative;
+  float: left;
+  width: 400px;
+  height: 480px;
+  overflow: hidden;
+}
+.list-bar{
+  position: relative;
+  z-index: 2;
+  height: 50px;
+  background-color: rgba(255,255,255,.95);
+  border-bottom: solid 1px rgba(0,0,0,0);
+  box-shadow: 0 0 8px rgba(0,0,0,.12);
+}
+.list-bar-title{
+  float: left;
+  height: 50px;
+  margin: 0;
+  padding: 0 0 0 66px;
+  font: normal 14px/50px 'Microsoft Yahei';
+  color: #999;
+  background: url(../images/bars.png) no-repeat 18px 50%, url(../images/line_gray.png) repeat-y 50px 0;
+  background-size: 14px 14px, 1px 5px;
+}
+.list-bar-button{
+  float: right;
+  width: 50px;
+  height: 50px;
+  font-size: 14px;
+  background: transparent;
+  border: none;
+  border-left: solid 1px #f5f5f5;
+  outline: none;
+  transition: .3s;
+}
+.list-bar-button:hover{
+  background-color: rgba(0,0,0,.02);
+}
+.button-add{
+  background: url(../images/plus.png) no-repeat 50% 50%;
+  background-size: 14px 14px;
+}
+.list-scroller{
+  position: relative;
+  height: calc(100% - 50px);
+  background-image: url(../images/dark_wood.png);
+  overflow: hidden;
+}
+.iScrollVerticalScrollbar{
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 5px;
+}
+.iScrollIndicator{
+  background-color: rgba(52,152,219,.2);
+}
+.list{
+  background-color: #fff;
+  background-image: url(../images/line_gray.png), url(../images/line_gray.png);
+  background-repeat: repeat-y;
+  background-position: 50px 0, 350px 0;
+  background-size: 1px 5px;
+  box-shadow: 0 0 5px rgba(0,0,0,.1);
+}
+.item{
+  height: 50px;
+  line-height: 50px;
+}
+.item > *{
+  display: block;
+  float: left;
+  height: 50px;
+}
+.item-index,
+.item-check{
+  width: 50px;
+  font-size: 12px;
+  color: #999;
+  text-align: center;
+}
+.item-title{
+  width: calc(100% - 100px);
+  font-size: 14px;
+  color: #666;
+  line-height: 50px;
+  text-indent: 18px;
+}
+.item:nth-child(even){
+  background-color: rgba(0,0,0,.025);
+}
+
+.album-background{
+  position: absolute;
+  z-index: 0;
+  top: -20px;
+  right: -20px;
+  bottom: -20px;
+  left: -20px;
+  background-position: 50% 50%;
+  -webkit-filter: blur(10px);
+}
+.new-album-background{
+  z-index: 1;
+}
+.default-album-background{
+  z-index: 0;
+}
+.album-background img{
+  position: absolute;
+  display: block;
+  min-width: 100%;
+  min-height: 100%;
+}
+.player-core{
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0,0,0,.45);
+}
+.player-top{
+  height: 40px;
+}
+.player-body{
+  position: relative;
+  z-index: 3;
+  height: 350px;
+  padding-top: 25px;
+}
+.artist-avatar{
+  width: 180px;
+  height: 180px;
+  margin: 0 auto 20px auto;
+  border: solid 6px rgba(0,0,0,.3);
+  border-radius: 50%;
+  background-color: #111;
+  background-clip: padding-box;
+  background-size: cover;
+  background-position: 50% 50%;
+}
+.disc-center{
+  width: 20px;
+  height: 20px;
+  margin: 65px auto;
+  background-color: #111;
+  border: solid 15px #3498DB;
+  border-radius: 50%;
+  box-shadow: inset 0 0 2px rgba(0,0,0,.6),0 0 1px #000;
+}
+.song-info{
+  color: #fff;
+  text-align: center;
+}
+.song-title{
+  height: 20px;
+  margin: 0;
+  padding: 0;
+  font-size: 18px;
+  font-weight: normal;
+  line-height: 20px;
+}
+.song-meta{
+  height: 30px;
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 30px;
+}
+.progress-wrap{
+  height: 25px;
+  margin-top: 63px;
+}
+.time-current,
+.time-total{
+  display: inline-block;
+  height: 20px;
+  font-size: 12px;
+  line-height: 20px;
+  color: #3498DB;
+}
+.time-current{
+  float: left;
+  margin-left: 10px;
+}
+.time-total{
+  float: right;
+  margin-right: 10px;
+}
+.progress-bar{
+  clear: both;
+  height: 5px;
+  overflow: hidden;
+  transition: .3s;
+}
+.progress-bar:hover{
+  background-color: rgba(52,152,219,.12);
+}
+.progress-bar-indicator{
+  width: 44%;
+  height: 5px;
+  background-color: rgba(52,152,219,.2);
+  border-right: solid 1px rgba(52,152,219,.7);
+  transition: .5s;
+}
+.player-controler{
+  height: 65px;
+  background-color: rgba(0,0,0,.25);
+}
+.player-button{
+  display: block;
+  float: left;
+  width: 65px;
+  height: 64px;
+  border: none;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  cursor: default;
+  outline: none;
+  opacity: .7;
+  transition: .3s;
+}
+.player-button:hover{
+  background-color: rgba(0,0,0,.2);
+  cursor: pointer;
+}
+.button-mode{
+  background-size: 18px 18px;
+}
+.mode-shuffle{
+  background-image: url(../images/shuffle.png);
+}
+.button-prev{
+  margin-left: 37.5px;
+  background-image: url(../images/backward.png);
+  background-size: 28px 28px;
+}
+.button-play{
+  background-image: url(../images/play.png);
+  background-size: 36px 36px;
+}
+.button-pause{
+  background-image: url(../images/pause.png);
+  background-size: 36px 36px;
+}
+.button-next{
+  background-image: url(../images/forward.png);
+  background-size: 28px 28px;
+}
+.button-volume{
+  float: right;
+  background-image: url(../images/volume-medium.png);
+  background-size: 18px 18px;
+}
+.button-mute{
+  float: right;
+  background-image: url(../images/volume-mute.png);
+  background-size: 18px 18px;
+}

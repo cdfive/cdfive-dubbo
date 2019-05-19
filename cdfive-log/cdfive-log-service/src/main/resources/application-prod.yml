@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/cdfive2019?autoReconnect=true&failOverReadOnly=false&rewriteBatchedStatements=true
+    username: root
+    password: 123456

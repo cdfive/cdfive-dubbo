@@ -1,0 +1,269 @@
+@charset "utf-8";
+/* CSS Document */
+body{
+margin:20px;
+font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+font-size:12px;
+/* overflow: hidden; */
+}
+#musicList{
+	
+}
+li{
+   
+   /* list-style: url(../images/heart.png) outside circle; */
+   /* list-style: outside circle; */
+   list-style:inside circle;
+   line-height:20px;
+   padding-bottom:3px;
+   vertical-align: middle; 
+}
+
+.float_r{float:right;}
+.float_l{float:left;}
+.playMode{text-align:right;}
+
+.songStyle{
+	width: 298px;
+	margin-bottom:20px;
+	border:1px solid #96C2F1;
+	background-color: #EFF7FF
+}
+.songStyle h3{
+margin: 1px;
+padding: 5px 0px 0px 5px;
+background-color: #B2D3F5;
+height: 24px;
+}
+.playDiv{
+	width: 610px;  
+    margin-bottom:10px;  
+    border:1px solid #92B0DD;  
+    background-color: #FFFFFf  
+}
+.currentMusic{  
+    background-color: #E2EAF8;  
+    height: 24px;  
+	width:100%;
+}
+.currentSpan{
+	padding-left:3px;
+}  
+.lastMusic{
+ background-color: #E2EAF8;  
+ text-align:center;
+}
+.lastMusic img{
+	width:32px;
+	height:32px;
+	cursor:pointer;
+}
+.infoStyle{
+	margin-left:10px;
+	width: 298px;
+	margin-bottom:20px;
+	border:1px solid #96C2F1;
+	background-color: #EFF7FF;
+}
+.infoStyle h3{
+margin: 1px;
+padding: 5px 0px 0px 5px;
+background-color: #B2D3F5;
+height: 24px;
+}
+.infos{
+	width: 100%;
+}
+.info{
+	width:49%;
+	width: 100%; 
+	max-height: 400px;
+}
+.picInfo{
+	width:49%;
+	margin-right:2px;
+	height:100%;
+}
+strong span{
+	margin-left:4px;
+}
+.info div{
+	padding: 10px 0px 10px 10px;
+	font-size:12px;
+}
+.liOn{
+	/* background-color:#E3E197; */
+	background-color:#accaea;
+}
+.Gray
+{
+ filter:alpha(style=0,opacity=30,finishopacity=30);
+}
+
+
+#category{
+	display:table;
+	margin:0 auto;
+	text-align: center;
+}
+
+#category span {
+	display: inline-block;
+	width: 60px;
+	cursor: pointer;
+	color: #000;
+}
+
+#category span:hover{
+	color:#f00;
+}
+#musicList {
+	/* height:500px; */
+	padding-left: 0px;
+	width: 100%;
+	-moz-user-select:none;
+}
+#musicList li {
+	cursor: pointer;
+	padding-left: 20px;
+}
+
+#songs{
+	min-height:400px;
+	max-height: 400px;
+	overflow: auto;
+}
+#lrc{
+	/* height:100%; */
+	overflow: auto;
+	font-size: 12px;
+	line-height: normal;
+	max-height: 320px;
+	font-size: 12px; 
+	line-height: 20px;
+}
+#lrc span.prefix{
+	/* display:none; */
+}
+
+.redLyric {/* font-size:38px; */font-weight:bold;color:red;/* font-family:华文新魏; */}
+ .normalLyric {/* font-size:38px; font-family:华文新魏;*/color:#000;font-weight: normal;}
+
+#nav1 div{cursor: pointer;height: 100%;line-height: 30px;}
+#nav1 div:hover{background-color: #4979aa;}
+
+#navDiv {width: 610px;}
+#navDiv td{font-size:12px;}
+#navDiv .unsel{background-color:#accaea; background-position:top; background-repeat:repeat-x; color:#FFFFFF; font-weight:normal;}
+#navDiv .sel {background-color:#4979aa; color:#FFFFFF; font-weight:bold;}
+#navDiv .content{background-color:#4979aa; height:25px; padding-left:20px; padding-right:20px; color:#ffffff;text-align: center;}
+#navDiv .content a{width:65px;display:inline-block;text-align: center;}
+#navDiv .content a.selected{background-color: #B2D3F5;}
+#navDiv .lineunsel{}
+#navDiv .linesel{background:#4979aa;}
+#navDiv a:link {color:#ffffff;text-decoration:none;}
+#navDiv a:visited {color:#ffffff;text-decoration:none;}
+#navDiv a:active {color:#ffffff;text-decoration:none;}
+#navDiv a:hover {color:#ffffff;text-decoration:underline;background-color: #B2D3F5;}
+
+
+.reasonTr{border:1px solid #96C2F1;border-bottom:none; background-color: #EFF7FF;}
+.reasonDiv{text-align:center;line-height: 16px;padding: 2px 0px 2px 0px;}
+
+.wrap {
+  bottom: 100px;
+  margin-left: -50px;
+  position: absolute;
+  width: 100px;
+  display:none;
+}
+
+.red   { left: 25%; }
+.blue  { left: 50%; }
+.green { left: 75%; }
+
+
+.ball,
+.shadow {
+  border-radius: 100%;
+  left: 0;
+  margin: auto;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.ball {
+  -webkit-animation: ball 300ms cubic-bezier(0.165, 0.840, 0.440, 1.000) infinite alternate;
+  animation: ball 300ms cubic-bezier(0.165, 0.840, 0.440, 1.000) infinite alternate;
+  height: 50px;
+  width: 50px;
+}
+
+.red .ball   { background: -webkit-gradient(linear, left top, left bottom, from(#e55), to(#b00)); background: -webkit-linear-gradient(#e55, #b00); background: linear-gradient(#e55, #b00); }
+.green .ball { background: -webkit-gradient(linear, left top, left bottom, from(#5d5), to(#0a0)); background: -webkit-linear-gradient(#5d5, #0a0); background: linear-gradient(#5d5, #0a0); }
+.blue .ball  { background: -webkit-gradient(linear, left top, left bottom, from(#59e), to(#04b)); background: -webkit-linear-gradient(#59e, #04b); background: linear-gradient(#59e, #04b); }
+
+.shadow {
+  -webkit-animation: shadow 300ms cubic-bezier(0.165, 0.840, 0.440, 1.000) infinite alternate;
+  animation: shadow 300ms cubic-bezier(0.165, 0.840, 0.440, 1.000) infinite alternate;
+  background: #000;
+  bottom: -90px;
+  height: 25px;
+  width: 75px;
+}
+
+.red .ball, 
+.red .shadow   { -webkit-animation-delay: -200ms; animation-delay: -200ms; }
+.green .ball,
+.green .shadow { -webkit-animation-delay: -100ms; animation-delay: -100ms; }
+.blue .ball ,
+.blue .shadow  { -webkit-animation-delay: 0; animation-delay: 0; }
+
+@-webkit-keyframes ball {
+  0% {
+    -webkit-transform: translateY( 0 );
+    transform: translateY( 0 );
+  }
+  100% {
+    -webkit-transform: translateY( -150px );
+    transform: translateY( -150px );
+  }
+}
+
+@keyframes ball {
+  0% {
+    -webkit-transform: translateY( 0 );
+    transform: translateY( 0 );
+  }
+  100% {
+    -webkit-transform: translateY( -150px );
+    transform: translateY( -150px );
+  }
+}
+
+@-webkit-keyframes shadow {
+  0% {
+    opacity: 0.2;
+    -webkit-transform: scale( 0.75 );
+    transform: scale( 0.75 );
+  }
+  100% {
+    opacity: 0.05;
+    -webkit-transform: scale( 1 );
+    transform: scale( 1 );
+  }
+}
+
+@keyframes shadow {
+  0% {
+    opacity: 0.2;
+    -webkit-transform: scale( 0.75 );
+    transform: scale( 0.75 );
+  }
+  100% {
+    opacity: 0.05;
+    -webkit-transform: scale( 1 );
+    transform: scale( 1 );
+  }
+}
