@@ -3,32 +3,25 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>cdfive-log</artifactId>
+        <artifactId>cdfive-dubbo</artifactId>
         <groupId>com.cdfive</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>cdfive-log-service</artifactId>
+    <artifactId>cdfive-api</artifactId>
 
     <properties>
         <cdfive-common.version>0.0.1-SNAPSHOT</cdfive-common.version>
-        <cdfive-log-api.version>0.0.1-SNAPSHOT</cdfive-log-api.version>
+        <cdfive-mp3-api.version>0.0.1-SNAPSHOT</cdfive-mp3-api.version>
     </properties>
 
     <dependencies>
-        <!-- common -->
-        <dependency>
-            <groupId>com.cdfive</groupId>
-            <artifactId>cdfive-common</artifactId>
-            <version>${cdfive-common.version}</version>
-        </dependency>
-
         <!-- api -->
         <dependency>
             <groupId>com.cdfive</groupId>
-            <artifactId>cdfive-log-api</artifactId>
-            <version>${cdfive-log-api.version}</version>
+            <artifactId>cdfive-mp3-api</artifactId>
+            <version>${cdfive-mp3-api.version}</version>
         </dependency>
 
         <!-- springboot -->
@@ -36,27 +29,19 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
+        <!-- jsp support -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-logging</artifactId>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid-spring-boot-starter</artifactId>
-            <version>${druid-spring-boot-starter.version}</version>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
         </dependency>
 
         <!-- dubbo -->
@@ -69,18 +54,6 @@
         <dependency>
             <groupId>com.101tec</groupId>
             <artifactId>zkclient</artifactId>
-        </dependency>
-
-        <!-- mysql -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-        </dependency>
-
-        <!-- fastjson -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
         </dependency>
 
         <!-- lombok -->
@@ -105,16 +78,6 @@
     </dependencies>
 
     <build>
-        <resources>
-            <resource>
-                <directory>${basedir}/src/main/resources</directory>
-                <includes>
-                    <include>**/**</include>
-                </includes>
-                <filtering>false</filtering>
-            </resource>
-        </resources>
-
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -127,20 +90,11 @@
             </plugin>
 
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <configuration>
-                    <useDefaultDelimiters>true</useDefaultDelimiters>
-                    <encoding>UTF-8</encoding>
-                </configuration>
-            </plugin>
-
-            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>1.4.2.RELEASE</version>
                 <configuration>
-                    <mainClass>com.cdfive.log.LogApplication</mainClass>
+                    <mainClass>com.cdfive.api.ApiApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>

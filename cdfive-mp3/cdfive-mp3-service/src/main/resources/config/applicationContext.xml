@@ -11,21 +11,20 @@
 	   http://www.springframework.org/schema/tx
        http://www.springframework.org/schema/tx/spring-tx.xsd
        http://www.springframework.org/schema/aop
-       http://www.springframework.org/schema/aop/spring-aop.xsd
-http://www.springframework.org/schema/tx ">
+       http://www.springframework.org/schema/aop/spring-aop.xsd">
 
 	<!-- dubbo provider -->
-	<import resource="../dubbo/dubbo-cdfive-mp3-service.xml"/>
+	<import resource="../dubbo/dubbo-cdfive-mp3-service.xml" />
 	<!-- dubbo consumer -->
-	<import resource="classpath:/dubbo/dubbo-cdfive-log-api.xml"/>
+	<import resource="classpath:/dubbo/dubbo-cdfive-log-api.xml" />
 
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
-			<tx:method name="*" propagation="REQUIRED"/>
+			<tx:method name="*" propagation="REQUIRED" />
 		</tx:attributes>
 	</tx:advice>
 
 	<aop:config>
-		<aop:advisor advice-ref="txAdvice" pointcut="execution(* com.cdfive.mp3.service..*.*(..))"/>
+		<aop:advisor advice-ref="txAdvice" pointcut="execution(* com.cdfive.mp3.service..*.*(..))" />
 	</aop:config>
 </beans>

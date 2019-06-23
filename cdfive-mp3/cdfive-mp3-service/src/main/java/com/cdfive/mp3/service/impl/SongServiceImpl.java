@@ -70,7 +70,7 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
 
         bizLogService.addBizLog("播放mp3", id, ip);
 
-        SongPo songPo = songRepository.findOne(id);
+        SongPo songPo = songRepository.getOne(id);
         check(songPo != null, "记录不存在");
         check(!songPo.getDeleted(), "记录已删除");
 

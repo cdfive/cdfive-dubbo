@@ -270,7 +270,7 @@
 		currentMusic = musicFiles[index];
 		$.ajax({
 	        type: "post",
-	        url: "/v1/mp3/play",
+	        url: "http://www.cdfive.com:9090/api/v1/mp3/play",
 	        dataType: "json",
 	        data: {id:currentMusic.id},
 	        success: function (data) {
@@ -433,7 +433,7 @@
 		$reasonDiv = $(".reasonDiv");
 		
 		$.ajax({
-	        url : '/v1/mp3/all' +'?r='+Math.random(),
+	        url : 'http://www.cdfive.com:9090/api/v1/mp3/all' +'?r='+Math.random(),
 	        dataType:'json',
 	        type : 'post',
 	        success : function(d) {

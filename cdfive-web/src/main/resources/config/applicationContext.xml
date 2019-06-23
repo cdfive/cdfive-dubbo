@@ -13,6 +13,4 @@
        http://www.springframework.org/schema/aop
        http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-	<!-- dubbo consumer -->
-	<import resource="classpath:/dubbo/dubbo-cdfive-web-service.xml" />
 </beans>
