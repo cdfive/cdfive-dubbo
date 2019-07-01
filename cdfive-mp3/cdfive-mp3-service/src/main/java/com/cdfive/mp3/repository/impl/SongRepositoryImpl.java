@@ -3,6 +3,7 @@ package com.cdfive.mp3.repository.impl;
 import com.cdfive.mp3.repository.SongRepositoryCustom;
 import com.cdfive.mp3.vo.song.SongListVo;
 import org.hibernate.SQLQuery;
+import org.hibernate.query.NativeQuery;
 import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
@@ -33,7 +34,8 @@ public class SongRepositoryImpl implements SongRepositoryCustom {
         Query query = em.createNativeQuery(sql.toString());
         query.setParameter("categoryName", categoryName);
 
-        List<SongListVo> list = query.unwrap(SQLQuery.class).setResultTransformer(Transformers.aliasToBean(SongListVo.class)).list();
+//        List<SongListVo> list = query.unwrap(SQLQuery.class).setResultTransformer(Transformers.aliasToBean(SongListVo.class)).list();
+        List<SongListVo> list = query.unwrap(NativeQuery.class).setResultTransformer(Transformers.aliasToBean(SongListVo.class)).list();
         return list;
     }
 
