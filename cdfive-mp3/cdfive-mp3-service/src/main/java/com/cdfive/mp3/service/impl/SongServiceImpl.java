@@ -9,6 +9,7 @@ import com.cdfive.mp3.vo.song.AddSongReqVo;
 import com.cdfive.mp3.vo.song.FindAllSongRespVo;
 import com.cdfive.mp3.vo.song.SongListVo;
 import com.cdfive.mp3.vo.song.UpdateSongReqVo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import java.util.List;
 /**
  * @author cdfive
  */
+@Slf4j
 @Service("songService")
 public class SongServiceImpl extends AbstractMp3Service implements SongService {
 
@@ -28,6 +30,7 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
 
     @Override
     public FindAllSongRespVo findAllSong() {
+        log.info("songService=>findAllSong");
         FindAllSongRespVo respVo = new FindAllSongRespVo();
 
         respVo.setD2019(songRepository.findSongListByCategoryName("2019"));
@@ -58,6 +61,7 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
 
     @Override
     public List<SongListVo> findRandomSongList(Integer num) {
+        log.info("songService=>findRandomSongList");
         check(num > 0, "数量应大于0");
 
         List<SongListVo> list = songRepository.findRandomSongList(num);
@@ -66,6 +70,7 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
 
     @Override
     public Integer play(Integer id, String ip) {
+        log.info("songService=>play");
         checkNotNull(id, "id不能为空");
 
         bizLogService.addBizLog("播放mp3", id, ip);

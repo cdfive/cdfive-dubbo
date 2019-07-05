@@ -4,6 +4,14 @@
     <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
     <property name="log.context.name" value="cdfive-gateway" />
     <property name="log.pattern" value="[ %-5level] [%date] [%thread] %logger{96} [%line] - %msg%n"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <encoder>
             <pattern>
@@ -24,15 +32,26 @@
         </filter>
         <prudent>true</prudent>
     </appender>
-    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>${log.pattern}</pattern>
-            <charset>UTF-8</charset>
+
+    <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>127.0.0.1:9100</destination>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <fieldNames>
+                <timestamp>@timestamp</timestamp>
+                <version>@version</version>
+                <message>message</message>
+                <logger>logger_name</logger>
+                <thread>thread_name</thread>
+                <level>level</level>
+                <levelValue>[ignore]</levelValue>
+            </fieldNames>
+            <customFields>{"appName":"${log.context.name}"}</customFields>
         </encoder>
     </appender>
 
     <root level="INFO">
-        <appender-ref ref="FILE" />
         <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE" />
+        <appender-ref ref="LOGSTASH" />
     </root>
 </configuration>

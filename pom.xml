@@ -39,6 +39,7 @@
         <fastjson.version>1.2.55</fastjson.version>
         <commons-lang3.version>3.5</commons-lang3.version>
         <jstl.version>1.2</jstl.version>
+        <logstash-logback-encoder.version>6.1</logstash-logback-encoder.version>
         <ahas.version>1.3.6</ahas.version>
         <sentinel.version>1.6.2</sentinel.version>
 
@@ -111,6 +112,13 @@
                 <groupId>javax.servlet</groupId>
                 <artifactId>jstl</artifactId>
                 <version>${jstl.version}</version>
+            </dependency>
+
+            <!-- logstash-logback-encoder -->
+            <dependency>
+                <groupId>net.logstash.logback</groupId>
+                <artifactId>logstash-logback-encoder</artifactId>
+                <version>${logstash-logback-encoder.version}</version>
             </dependency>
 
             <!-- ahas -->
