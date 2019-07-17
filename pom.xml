@@ -61,6 +61,7 @@
         <module>cdfive-web</module>
         <module>cdfive-gateway</module>
         <module>cdfive-api</module>
+        <module>cdfive-storm</module>
     </modules>
 
     <dependencyManagement>
