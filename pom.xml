@@ -33,9 +33,11 @@
         <java.encoding>UTF-8</java.encoding>
 
         <!-- dependency -->
-        <dubbo.version>2.6.0</dubbo.version>
+        <dubbo.version>2.7.3</dubbo.version>
         <druid-spring-boot-starter.version>1.1.17</druid-spring-boot-starter.version>
+        <zookeeper.version>3.4.6</zookeeper.version>
         <zkclient.version>0.10</zkclient.version>
+        <curator-recipes.version>4.2.0</curator-recipes.version>
         <fastjson.version>1.2.55</fastjson.version>
         <commons-lang3.version>3.5</commons-lang3.version>
         <jstl.version>1.2</jstl.version>
@@ -62,34 +64,44 @@
         <module>cdfive-gateway</module>
         <module>cdfive-api</module>
         <module>cdfive-storm</module>
+        <module>cdfive-learn</module>
     </modules>
 
     <dependencyManagement>
         <dependencies>
             <!-- dubbo -->
             <dependency>
-                <groupId>com.alibaba</groupId>
+                <groupId>org.apache.dubbo</groupId>
                 <artifactId>dubbo</artifactId>
                 <version>${dubbo.version}</version>
             </dependency>
 
-            <!-- zkclient -->
+            <!-- zookeeper -->
             <dependency>
-                <groupId>com.101tec</groupId>
-                <artifactId>zkclient</artifactId>
-                <version>${zkclient.version}</version>
+                <groupId>org.apache.zookeeper</groupId>
+                <artifactId>zookeeper</artifactId>
+                <version>${zookeeper.version}</version>
                 <exclusions>
                     <exclusion>
                         <artifactId>slf4j-api</artifactId>
                         <groupId>org.slf4j</groupId>
                     </exclusion>
                     <exclusion>
-                        <artifactId>log4j</artifactId>
-                        <groupId>log4j</groupId>
-                    </exclusion>
-                    <exclusion>
                         <artifactId>slf4j-log4j12</artifactId>
                         <groupId>org.slf4j</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <!-- curator-recipes -->
+            <dependency>
+                <groupId>org.apache.curator</groupId>
+                <artifactId>curator-recipes</artifactId>
+                <version>${curator-recipes.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.zookeeper</groupId>
+                        <artifactId>zookeeper</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -137,7 +149,7 @@
             </dependency>
             <dependency>
                 <groupId>com.alibaba.csp</groupId>
-                <artifactId>sentinel-dubbo-adapter</artifactId>
+                <artifactId>sentinel-apache-dubbo-adapter</artifactId>
                 <version>${sentinel.version}</version>
             </dependency>
             <dependency>

@@ -67,14 +67,20 @@
 
         <!-- dubbo -->
         <dependency>
-            <groupId>com.alibaba</groupId>
+            <groupId>org.apache.dubbo</groupId>
             <artifactId>dubbo</artifactId>
         </dependency>
 
-        <!-- zkclient -->
+        <!-- zookeeper -->
         <dependency>
-            <groupId>com.101tec</groupId>
-            <artifactId>zkclient</artifactId>
+            <groupId>org.apache.zookeeper</groupId>
+            <artifactId>zookeeper</artifactId>
+        </dependency>
+
+        <!-- curator-recipes -->
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-recipes</artifactId>
         </dependency>
 
         <!-- mysql -->
@@ -108,7 +114,7 @@
         </dependency>
         <dependency>
             <groupId>com.alibaba.csp</groupId>
-            <artifactId>sentinel-dubbo-adapter</artifactId>
+            <artifactId>sentinel-apache-dubbo-adapter</artifactId>
         </dependency>
         <dependency>
             <groupId>com.alibaba.csp</groupId>

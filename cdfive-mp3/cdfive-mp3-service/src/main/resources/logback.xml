@@ -33,25 +33,25 @@
         <prudent>true</prudent>
     </appender>
 
-    <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-        <destination>127.0.0.1:9100</destination>
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
-            <fieldNames>
-                <timestamp>@timestamp</timestamp>
-                <version>@version</version>
-                <message>message</message>
-                <logger>logger_name</logger>
-                <thread>thread_name</thread>
-                <level>level</level>
-                <levelValue>[ignore]</levelValue>
-            </fieldNames>
-            <customFields>{"appName":"${log.context.name}"}</customFields>
-        </encoder>
-    </appender>
+<!--    <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">-->
+<!--        <destination>127.0.0.1:9100</destination>-->
+<!--        <encoder class="net.logstash.logback.encoder.LogstashEncoder">-->
+<!--            <fieldNames>-->
+<!--                <timestamp>@timestamp</timestamp>-->
+<!--                <version>@version</version>-->
+<!--                <message>message</message>-->
+<!--                <logger>logger_name</logger>-->
+<!--                <thread>thread_name</thread>-->
+<!--                <level>level</level>-->
+<!--                <levelValue>[ignore]</levelValue>-->
+<!--            </fieldNames>-->
+<!--            <customFields>{"appName":"${log.context.name}"}</customFields>-->
+<!--        </encoder>-->
+<!--    </appender>-->
 
     <root level="INFO">
         <appender-ref ref="CONSOLE" />
         <appender-ref ref="FILE" />
-        <appender-ref ref="LOGSTASH" />
+<!--        <appender-ref ref="LOGSTASH" />-->
     </root>
 </configuration>
