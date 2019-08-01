@@ -39,6 +39,7 @@
         <zkclient.version>0.10</zkclient.version>
         <curator-recipes.version>4.2.0</curator-recipes.version>
         <fastjson.version>1.2.55</fastjson.version>
+        <elastic-job.version>2.1.5</elastic-job.version>
         <commons-lang3.version>3.5</commons-lang3.version>
         <jstl.version>1.2</jstl.version>
         <logstash-logback-encoder.version>6.1</logstash-logback-encoder.version>
@@ -65,6 +66,7 @@
         <module>cdfive-api</module>
         <module>cdfive-storm</module>
         <module>cdfive-learn</module>
+        <module>cdfive-ejob</module>
     </modules>
 
     <dependencyManagement>
@@ -111,6 +113,18 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
+            </dependency>
+
+            <!-- elastic-job -->
+            <dependency>
+                <groupId>com.dangdang</groupId>
+                <artifactId>elastic-job-lite-core</artifactId>
+                <version>${elastic-job.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.dangdang</groupId>
+                <artifactId>elastic-job-lite-spring</artifactId>
+                <version>${elastic-job.version}</version>
             </dependency>
 
             <!-- apache commons-->
