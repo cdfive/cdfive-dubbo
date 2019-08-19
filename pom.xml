@@ -67,6 +67,7 @@
         <module>cdfive-storm</module>
         <module>cdfive-learn</module>
         <module>cdfive-ejob</module>
+        <module>support-jpa</module>
     </modules>
 
     <dependencyManagement>
