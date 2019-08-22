@@ -30,8 +30,13 @@ public class BasePo<T extends Serializable> implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof BasePo)) return false;
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof BasePo)) {
+            return false;
+        }
 
         BasePo that = (BasePo) o;
 
