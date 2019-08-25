@@ -1,26 +1,43 @@
 server:
   port: 10001
 
+#spring:
+#  datasource:
+#    driver-class-name: com.mysql.jdbc.Driver
+#    druid:
+#      max-active: 200
+#      min-idle: 1
+#      initialize: false
+#      max-wait: 30000
+#      test-on-borrow: false
+#      test-on-return: false
+#      test-while-idle: true
+#      validation-query: SELECT 1
+#      time-between-eviction-runs-millis: 30000
+#      min-evictable-idle-time-millis: 300000
+#  jpa:
+#    hibernate:
+#      ddl-auto: none
+#      use-new-id-generator-mappings: false
+#    show-sql: true
+#    format_sql: true
+#    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    druid:
-      max-active: 200
-      min-idle: 1
-      initialize: false
-      max-wait: 30000
-      test-on-borrow: false
-      test-on-return: false
-      test-while-idle: true
-      validation-query: SELECT 1
-      time-between-eviction-runs-millis: 30000
-      min-evictable-idle-time-millis: 300000
+    url: jdbc:mysql://localhost:3306/cdfive2019?createDatabaseIfNotExist=true&useSSL=false&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+    type: com.alibaba.druid.pool.DruidDataSource
   jpa:
-    hibernate:
-      ddl-auto: none
-      use-new-id-generator-mappings: false
-    show-sql: true
-    format_sql: true
+    database: mysql
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: com.cdfive.support.jpa.util.UnderscoreNameCustomizer
   profiles:
     active: dev

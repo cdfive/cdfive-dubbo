@@ -1,6 +1,6 @@
 package com.cdfive.mp3.po;
 
-import com.cdfive.common.base.AbstractPo;
+import com.cdfive.support.jpa.po.BasePo;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "cdfive_song")
-public class SongPo extends AbstractPo<Integer> {
+public class SongPo extends BasePo<Integer> {
 
     @OneToMany(mappedBy = "songPo")
     private List<CategorySongPo> songCategoryPos;

@@ -5,10 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -21,12 +23,15 @@ import java.util.Objects;
 public class BasePo<T extends Serializable> implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private T id;
 
-    private Timestamp createTime;
+    private Date createTime;
 
     @UpdateTimestamp
-    private Timestamp updateTime;
+    private Date updateTime;
+
+    private Boolean deleted;
 
     @Override
     public boolean equals(Object o) {

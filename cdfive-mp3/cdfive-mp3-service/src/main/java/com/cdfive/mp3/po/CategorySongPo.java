@@ -1,6 +1,6 @@
 package com.cdfive.mp3.po;
 
-import com.cdfive.common.base.AbstractPo;
+import com.cdfive.support.jpa.po.BasePo;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @Data
 @Entity
 @Table(name = "cdfive_category_song")
-public class CategorySongPo extends AbstractPo<Integer> {
+public class CategorySongPo extends BasePo<Integer> {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")

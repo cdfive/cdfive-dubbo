@@ -1,12 +1,12 @@
 package com.cdfive.mp3.repository;
 
 import com.cdfive.mp3.po.SongPo;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.cdfive.support.jpa.repository.BaseRepository;
 
 /**
  * @author cdfive
  */
-public interface SongRepository extends JpaRepository<SongPo, Integer>, SongRepositoryCustom {
+public interface SongRepository extends BaseRepository<SongPo, Integer>, SongRepositoryCustom {
 
 
 }

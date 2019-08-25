@@ -1,12 +1,12 @@
 package com.cdfive.mp3.repository;
 
 import com.cdfive.mp3.po.CategoryPo;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.cdfive.support.jpa.repository.BaseRepository;
 
 /**
  * @author cdfive
  */
-public interface CategoryRepository extends JpaRepository<CategoryPo, Integer>, CategoryRepositoryCustom {
+public interface CategoryRepository extends BaseRepository<CategoryPo, Integer>, CategoryRepositoryCustom {
 
 
 }
