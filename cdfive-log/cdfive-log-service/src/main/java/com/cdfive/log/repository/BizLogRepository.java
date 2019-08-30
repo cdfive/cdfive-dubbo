@@ -1,11 +1,11 @@
 package com.cdfive.log.repository;
 
 import com.cdfive.log.po.BizLogPo;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.cdfive.support.jpa.repository.BaseRepository;
 
 /**
  * @author cdfive
 
  */
-public interface BizLogRepository extends JpaRepository<BizLogPo, Integer>, BizLogRepositoryCustom {
+public interface BizLogRepository extends BaseRepository<BizLogPo, Integer>, BizLogRepositoryCustom {
 }

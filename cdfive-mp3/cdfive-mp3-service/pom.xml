@@ -12,9 +12,10 @@
     <artifactId>cdfive-mp3-service</artifactId>
 
     <properties>
-        <cdfive-common.version>0.0.1-SNAPSHOT</cdfive-common.version>
-        <cdfive-mp3-api.version>0.0.1-SNAPSHOT</cdfive-mp3-api.version>
-        <cdfive-log-api.version>0.0.1-SNAPSHOT</cdfive-log-api.version>
+<!--        <cdfive-common.version>0.0.1-SNAPSHOT</cdfive-common.version>-->
+<!--        <cdfive-mp3-api.version>0.0.1-SNAPSHOT</cdfive-mp3-api.version>-->
+<!--        <cdfive-log-api.version>0.0.1-SNAPSHOT</cdfive-log-api.version>-->
+<!--        <support-jpa.version>0.0.1-SNAPSHOT</support-jpa.version>-->
     </properties>
 
     <dependencies>
@@ -23,6 +24,13 @@
             <groupId>com.cdfive</groupId>
             <artifactId>cdfive-common</artifactId>
             <version>${cdfive-common.version}</version>
+        </dependency>
+
+        <!-- support -->
+        <dependency>
+            <groupId>com.cdfive</groupId>
+            <artifactId>support-jpa</artifactId>
+            <version>${support-jpa.version}</version>
         </dependency>
 
         <!-- api -->
@@ -35,13 +43,6 @@
             <groupId>com.cdfive</groupId>
             <artifactId>cdfive-log-api</artifactId>
             <version>${cdfive-log-api.version}</version>
-        </dependency>
-
-        <!-- support -->
-        <dependency>
-            <groupId>com.cdfive</groupId>
-            <artifactId>support-jpa</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <!-- springboot -->

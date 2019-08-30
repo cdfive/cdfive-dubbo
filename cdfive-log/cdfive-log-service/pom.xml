@@ -12,8 +12,6 @@
     <artifactId>cdfive-log-service</artifactId>
 
     <properties>
-        <cdfive-common.version>0.0.1-SNAPSHOT</cdfive-common.version>
-        <cdfive-log-api.version>0.0.1-SNAPSHOT</cdfive-log-api.version>
     </properties>
 
     <dependencies>
@@ -22,6 +20,13 @@
             <groupId>com.cdfive</groupId>
             <artifactId>cdfive-common</artifactId>
             <version>${cdfive-common.version}</version>
+        </dependency>
+
+        <!-- support -->
+        <dependency>
+            <groupId>com.cdfive</groupId>
+            <artifactId>support-jpa</artifactId>
+            <version>${support-jpa.version}</version>
         </dependency>
 
         <!-- api -->
@@ -38,10 +43,6 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-logging</artifactId>
         </dependency>
         <dependency>
@@ -52,11 +53,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid-spring-boot-starter</artifactId>
-            <version>${druid-spring-boot-starter.version}</version>
         </dependency>
 
         <!-- dubbo -->

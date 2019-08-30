@@ -30,18 +30,18 @@
     </dependencies>
 
     <build>
-    <sourceDirectory>src/main/java</sourceDirectory>
-    <plugins>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>${maven.compiler.version}</version>
-            <configuration>
-                <source>${java.source.version}</source>
-                <target>${java.target.version}</target>
-                <encoding>${java.encoding}</encoding>
-            </configuration>
-        </plugin>
+        <sourceDirectory>src/main/java</sourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.version}</version>
+                <configuration>
+                    <source>${java.source.version}</source>
+                    <target>${java.target.version}</target>
+                    <encoding>${java.encoding}</encoding>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>

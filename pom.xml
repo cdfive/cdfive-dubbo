@@ -56,6 +56,12 @@
         <maven.gpg.version>1.6</maven.gpg.version>
         <maven.jacoco.version>0.8.3</maven.jacoco.version>
         <maven.jar.version>3.1.0</maven.jar.version>
+
+        <!-- module version -->
+        <cdfive-common.version>0.0.1-SNAPSHOT</cdfive-common.version>
+        <cdfive-mp3-api.version>0.0.1-SNAPSHOT</cdfive-mp3-api.version>
+        <cdfive-log-api.version>0.0.1-SNAPSHOT</cdfive-log-api.version>
+        <support-jpa.version>0.0.1-SNAPSHOT</support-jpa.version>
     </properties>
 
     <modules>
