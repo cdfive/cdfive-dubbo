@@ -1,5 +1,9 @@
 server:
   port: 80
+  servlet:
+    session:
+      cookie:
+        name: cdfive-web-cookie
 
 resources:
   mp3:
