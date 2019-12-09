@@ -7,6 +7,7 @@ import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.core.io.buffer.NettyDataBufferFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpRequestDecorator;
 import org.springframework.http.server.reactive.ServerHttpResponse;
@@ -31,7 +32,7 @@ public class WebUtil {
     /**
      * 按参数名排序,返回排序后列表
      */
-    public static List<Map.Entry<String, List<String>>> sortParameterName(MultiValueMap<String, String> queryParamMap) {
+    public static List<Map.Entry<String, List<String>>> sortParameterName(MultiValueMap<String, String> queryParamMap){
         List<Map.Entry<String, List<String>>> sortList = new ArrayList<>(queryParamMap.entrySet());
         Collections.sort(sortList, Comparator.comparing(Map.Entry::getKey));
         return sortList;
@@ -40,7 +41,7 @@ public class WebUtil {
     /**
      * 获取参数内容,格式为key=value&...,忽略签名key
      */
-    public static String getParameterContents(List<Map.Entry<String, List<String>>> queryParamList, String skipKey) {
+    public static String getParameterContents(List<Map.Entry<String, List<String>>> queryParamList, String skipKey){
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<String, List<String>> item : queryParamList) {
             String key = item.getKey();
@@ -60,7 +61,7 @@ public class WebUtil {
     public static Mono<Void> writeAuthFailResponse(ServerWebExchange exchange, Integer code, String msg) {
         ServerHttpResponse originalResponse = exchange.getResponse();
         originalResponse.setStatusCode(HttpStatus.UNAUTHORIZED);
-        originalResponse.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
+        originalResponse.getHeaders().setContentType(MediaType.APPLICATION_JSON_UTF8);
         byte[] response = ("{\"code\": " + code + ",\"msg\": \"" + msg + "\"}")
                 .getBytes(StandardCharsets.UTF_8);
         DataBuffer buffer = originalResponse.bufferFactory().wrap(response);
@@ -69,18 +70,8 @@ public class WebUtil {
 
     /**
      * 获取body参数内容
-     */
-    public static String resolveBodyFromRequest(ServerWebExchange exchange) {
-        Object requestBody = exchange.getAttribute("cachedRequestBodyObject");
-        if (requestBody != null && requestBody instanceof String) {
-            return (String) requestBody;
-        }
-
-        return "";
-    }
-
-    /**
-     * 获取body参数内容
+     * 这种方式可能有请求参数body读取不全的问题
+     * 请使用下面的resolveBodyFromRequest(ServerWebExchange)方法获取
      */
     @Deprecated
     public static String resolveBodyFromRequest(ServerHttpRequest serverHttpRequest) {
@@ -98,6 +89,8 @@ public class WebUtil {
 
     /**
      * 获取body参数内容
+     * 这种方式可能有请求参数body读取不全的问题
+     * 请使用下面的resolveBodyFromRequest(ServerWebExchange)方法获取
      */
     @Deprecated
     public static String resolveBodyFromRequest2(ServerHttpRequest serverHttpRequest) {
@@ -112,6 +105,18 @@ public class WebUtil {
             sb.append(bodyString);
         });
         return sb.toString();
+    }
+
+    /**
+     * 获取body参数内容
+     */
+    public static String resolveBodyFromRequest(ServerWebExchange exchange) {
+        Object requestBody = exchange.getAttribute("cachedRequestBodyObject");
+        if (requestBody != null && requestBody instanceof String) {
+            return (String) requestBody;
+        }
+
+        return "";
     }
 
     /**
@@ -132,6 +137,7 @@ public class WebUtil {
 
     /**
      * 包装body请求
+     * 使用resolveBodyFromRequest(ServerWebExchange)方法后不需要调此方法再包装
      */
     @Deprecated
     public static Mono<Void> wrapRequestBody(ServerWebExchange exchange, GatewayFilterChain chain, ServerHttpRequest serverHttpRequest, String bodyStr) {

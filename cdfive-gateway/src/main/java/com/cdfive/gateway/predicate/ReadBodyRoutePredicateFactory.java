@@ -18,7 +18,10 @@ import java.util.function.Predicate;
 import static org.springframework.cloud.gateway.filter.AdaptCachedBodyGlobalFilter.CACHED_REQUEST_BODY_KEY;
 
 /**
+ * 参考Spring Cloud Gateway官方提供的ReadBodyPredicateFactory,解决请求参数body读取不全的问题
  * @see {@link org.springframework.cloud.gateway.handler.predicate.ReadBodyPredicateFactory}
+ *
+ * @author cdfive
  */
 public class ReadBodyRoutePredicateFactory extends AbstractRoutePredicateFactory<ReadBodyRoutePredicateFactory.Config> {
 
