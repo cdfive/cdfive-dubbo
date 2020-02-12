@@ -24,12 +24,12 @@ server:
 #    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
 
 spring:
-  datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/cdfive2019?createDatabaseIfNotExist=true&useSSL=false&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
-    username: root
-    password: 123456
-    type: com.alibaba.druid.pool.DruidDataSource
+#  datasource:
+#    driver-class-name: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/cdfive2020?createDatabaseIfNotExist=true&useSSL=false&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+#    username: root
+#    password: 123456
+#    type: com.alibaba.druid.pool.DruidDataSource
   jpa:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
