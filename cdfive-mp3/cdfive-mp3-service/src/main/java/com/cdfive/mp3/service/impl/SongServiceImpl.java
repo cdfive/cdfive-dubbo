@@ -1,14 +1,15 @@
 package com.cdfive.mp3.service.impl;
 
+import com.cdfive.common.util.PageUtil;
+import com.cdfive.common.vo.page.PageRespVo;
 import com.cdfive.log.service.BizLogService;
 import com.cdfive.mp3.po.SongPo;
 import com.cdfive.mp3.repository.SongRepository;
+import com.cdfive.mp3.repository.specification.QuerySongSpecification;
 import com.cdfive.mp3.service.AbstractMp3Service;
 import com.cdfive.mp3.service.SongService;
-import com.cdfive.mp3.vo.song.AddSongReqVo;
-import com.cdfive.mp3.vo.song.FindAllSongRespVo;
-import com.cdfive.mp3.vo.song.SongListVo;
-import com.cdfive.mp3.vo.song.UpdateSongReqVo;
+import com.cdfive.mp3.transformer.QuerySongListPageTransformer;
+import com.cdfive.mp3.vo.song.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -102,5 +103,10 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
     @Override
     public void deleteSong(List<Integer> ids) {
 
+    }
+
+    @Override
+    public PageRespVo<QuerySongListPageRespVo> querySongListPage(QuerySongListPageReqVo reqVo) {
+        return PageUtil.buildPage(reqVo, songRepository, new QuerySongSpecification(reqVo), QuerySongListPageTransformer.INSTANCE);
     }
 }

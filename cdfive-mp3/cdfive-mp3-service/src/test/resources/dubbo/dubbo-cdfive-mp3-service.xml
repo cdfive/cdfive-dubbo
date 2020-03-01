@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:dubbo="http://dubbo.apache.org/schema/dubbo"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://dubbo.apache.org/schema/dubbo
+        http://dubbo.apache.org/schema/dubbo/dubbo.xsd">
+
+	<dubbo:application name="cdfive-mp3-service" />
+
+	<!--<dubbo:registry protocol="zookeeper" address="zookeeper://localhost:2181" />-->
+	<dubbo:registry address="multicast://224.5.6.7:1234" />
+	<!--<dubbo:registry address="N/A" check="false"/>-->
+
+	<dubbo:protocol name="dubbo" port="20001" dispatcher="all" threadpool="fixed" threads="200" />
+
+	<dubbo:service ref="songService" interface="com.cdfive.mp3.service.SongService" />
+
+	<!--<dubbo:reference id="bizLogService" interface="com.cdfive.log.service.BizLogService" url="dubbo://localhost:20002" check="false"/>-->
+	<!--<dubbo:reference id="bizLogService" interface="com.cdfive.log.service.BizLogService" url="dubbo://localhost:20002" />-->
+
+	<!-- No such any registry to reference com.cdfive.log.service.BizLogService on the consumer 192.168.1.100 use dubbo version 2.7.3, please config <dubbo:registry address="..." /> to your spring config. -->
+	<!--<dubbo:reference id="bizLogService" interface="com.cdfive.log.service.BizLogService" />-->
+
+	<dubbo:provider timeout="5000" retries="0" register="false"/>
+
+	<dubbo:consumer check="false" />
+
+</beans>

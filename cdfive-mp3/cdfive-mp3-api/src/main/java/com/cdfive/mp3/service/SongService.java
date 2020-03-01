@@ -1,9 +1,7 @@
 package com.cdfive.mp3.service;
 
-import com.cdfive.mp3.vo.song.AddSongReqVo;
-import com.cdfive.mp3.vo.song.FindAllSongRespVo;
-import com.cdfive.mp3.vo.song.SongListVo;
-import com.cdfive.mp3.vo.song.UpdateSongReqVo;
+import com.cdfive.common.vo.page.PageRespVo;
+import com.cdfive.mp3.vo.song.*;
 
 import java.util.List;
 
@@ -23,4 +21,6 @@ public interface SongService {
     void updateSong(UpdateSongReqVo reqVo);
 
     void deleteSong(List<Integer> ids);
+
+    PageRespVo<QuerySongListPageRespVo> querySongListPage(QuerySongListPageReqVo reqVo);
 }
