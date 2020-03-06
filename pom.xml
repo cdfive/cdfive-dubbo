@@ -75,6 +75,7 @@
         <module>cdfive-learn</module>
         <module>cdfive-ejob</module>
         <module>support-jpa</module>
+        <module>ctf-redis</module>
     </modules>
 
     <dependencyManagement>
