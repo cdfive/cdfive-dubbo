@@ -4,6 +4,7 @@ import com.cdfive.support.jpa.repository.BaseRepositoryFactoryBean;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
@@ -12,6 +13,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  */
 @Slf4j
 @ImportResource({"classpath:/config/applicationContext.xml"})
+@EnableCaching
 @EnableJpaRepositories(repositoryFactoryBeanClass = BaseRepositoryFactoryBean.class, basePackages = "com.cdfive.mp3")
 @SpringBootApplication(scanBasePackages = {"com.cdfive"})
 public class Mp3Application {

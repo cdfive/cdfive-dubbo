@@ -4,3 +4,11 @@ spring:
     url: jdbc:mysql://localhost:3306/cdfive2020?autoReconnect=true&failOverReadOnly=false&rewriteBatchedStatements=true
     username: root
     password: 12345678
+  redis:
+    host: localhost
+    port: 6379
+
+reids:
+  host: localhost
+  port: 6379
+  timeout-ms: 2000

@@ -12,6 +12,7 @@ import com.cdfive.mp3.transformer.QuerySongListPageTransformer;
 import com.cdfive.mp3.vo.song.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,6 +30,8 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
     @Autowired
     private SongRepository songRepository;
 
+
+    @Cacheable(value = "song", key = "'all'")
     @Override
     public FindAllSongRespVo findAllSong() {
         log.info("songService=>findAllSong");
@@ -60,6 +63,7 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
         return respVo;
     }
 
+    @Cacheable(value = "song", key = "'random'")
     @Override
     public List<SongListVo> findRandomSongList(Integer num) {
         log.info("songService=>findRandomSongList");
@@ -92,6 +96,17 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
 
     @Override
     public Integer addSong(AddSongReqVo reqVo) {
+        checkNotNull(reqVo, "请求参数不能为空");
+
+        String name = reqVo.getName();
+        checkNotEmpty(name, "歌名不能为空");
+
+        String author = reqVo.getAuthor();
+        checkNotEmpty(author, "歌手不能为空");
+
+        SongPo songPo = new SongPo();
+
+
         return null;
     }
 
