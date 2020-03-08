@@ -48,7 +48,7 @@ public interface CommonRedisRepositoryApi<T> {
 
     boolean hmset(String key, Map<String, String> values);
 
-    Map<String, String> hgetall(String key);
+    Map<String, String> hgetAll(String key);
 
     Long hlen(String key);
 

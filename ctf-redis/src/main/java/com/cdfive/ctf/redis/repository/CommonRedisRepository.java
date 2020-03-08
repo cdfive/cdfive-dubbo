@@ -3,6 +3,7 @@ package com.cdfive.ctf.redis.repository;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import redis.clients.jedis.ShardedJedis;
 import redis.clients.jedis.ShardedJedisPool;
 import redis.clients.util.Pool;
@@ -30,6 +31,7 @@ public class CommonRedisRepository implements CommonRedisRepositoryApi<ShardedJe
     protected static final String PX = "PX";
 
     @Setter
+    @Autowired
     protected ShardedJedisPool pool;
 
     @Override
@@ -173,8 +175,10 @@ public class CommonRedisRepository implements CommonRedisRepositoryApi<ShardedJe
     }
 
     @Override
-    public Map<String, String> hgetall(String key) {
-        return null;
+    public Map<String, String> hgetAll(String key) {
+        try (ShardedJedis jedis = pool.getResource()) {
+            return jedis.hgetAll(key);
+        }
     }
 
     @Override
