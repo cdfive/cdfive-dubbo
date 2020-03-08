@@ -63,7 +63,19 @@ public class ApiResponse<T> implements Serializable {
     }
 
     public static <T> ApiResponse<T> succMsg(String msg) {
-        return new ApiResponse<T>(ResponseConstant.SUCC,msg);
+        return new ApiResponse<T>(ResponseConstant.SUCC, msg);
+    }
+
+    public static <T> ApiResponse<T> errBizMsg(String msg) {
+        return new ApiResponse<T>(ResponseConstant.BUSSINESS_ERR, msg);
+    }
+
+    public static <T> ApiResponse<T> errSysMsg() {
+        return new ApiResponse<T>(ResponseConstant.INTERNAL_ERR);
+    }
+
+    public static <T> ApiResponse<T> errSysMsg(String msg) {
+        return new ApiResponse<T>(ResponseConstant.INTERNAL_ERR, msg);
     }
 
     public static class ResponseConstant {
