@@ -3,12 +3,14 @@ package com.cdfive.common.base;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.ObjectUtils;
 
+import java.util.Date;
+
 /**
  * @author cdfive
  */
 public abstract class AbstractService {
 
-    protected void check(boolean condition, String msg) {
+    protected void checkCondition(boolean condition, String msg) {
         if (!condition) {
             fail(msg);
         }
@@ -30,6 +32,18 @@ public abstract class AbstractService {
         if (ObjectUtils.isEmpty(obj)) {
             fail(msg);
         }
+    }
+
+    protected boolean isEmpty(Object obj) {
+        return ObjectUtils.isEmpty(obj);
+    }
+
+    protected boolean isNotEmpty(Object obj) {
+        return !ObjectUtils.isEmpty(obj);
+    }
+
+    protected Date now() {
+        return new Date();
     }
 
     protected abstract void fail(String msg);

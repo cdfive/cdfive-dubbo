@@ -3,7 +3,10 @@ package com.cdfive.mp3.service.impl;
 import com.cdfive.common.util.PageUtil;
 import com.cdfive.common.vo.page.PageRespVo;
 import com.cdfive.log.service.BizLogService;
+import com.cdfive.mp3.po.CategoryPo;
+import com.cdfive.mp3.po.CategorySongPo;
 import com.cdfive.mp3.po.SongPo;
+import com.cdfive.mp3.repository.CategoryRepository;
 import com.cdfive.mp3.repository.SongRepository;
 import com.cdfive.mp3.repository.specification.QuerySongSpecification;
 import com.cdfive.mp3.service.AbstractMp3Service;
@@ -16,6 +19,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author cdfive
@@ -30,6 +35,8 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
     @Autowired
     private SongRepository songRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Cacheable(value = "song", key = "'all'")
     @Override
@@ -67,7 +74,7 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
     @Override
     public List<SongListVo> findRandomSongList(Integer num) {
         log.info("songService=>findRandomSongList");
-        check(num > 0, "数量应大于0");
+        checkCondition(num > 0, "数量应大于0");
 
         List<SongListVo> list = songRepository.findRandomSongList(num);
         return list;
@@ -81,8 +88,8 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
         bizLogService.addBizLog("播放mp3", id, ip);
 
         SongPo songPo = songRepository.getOne(id);
-        check(songPo != null, "记录不存在");
-        check(!songPo.getDeleted(), "记录已删除");
+        checkCondition(songPo != null, "记录不存在");
+        checkCondition(!songPo.getDeleted(), "记录已删除");
 
         Integer playCount = songPo.getPlayCount();
         if (playCount == null) {
@@ -98,26 +105,113 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
     public Integer addSong(AddSongReqVo reqVo) {
         checkNotNull(reqVo, "请求参数不能为空");
 
+        SongPo songPo = new SongPo();
+
         String name = reqVo.getName();
         checkNotEmpty(name, "歌名不能为空");
+        songPo.setSongName(name);
 
         String author = reqVo.getAuthor();
         checkNotEmpty(author, "歌手不能为空");
+        songPo.setAuthor(author);
 
-        SongPo songPo = new SongPo();
+        songPo.setFullName(name + "-" + author);
 
+        String description = reqVo.getDescription();
+        songPo.setDescription(description);
 
-        return null;
+        String path = reqVo.getPath();
+        checkNotEmpty(path, "文件路径不能为空");
+
+        String reason = reqVo.getReason();
+        songPo.setReason(reason);
+
+        Integer sort = reqVo.getSort();
+        songPo.setSort(sort);
+
+        List<Integer> categoryIds = reqVo.getCategoryIds();
+        if (isNotEmpty(categoryIds)) {
+            List<CategoryPo> categoryPos = categoryRepository.findAllById(categoryIds);
+            List<CategorySongPo> categorySongPos = categoryPos.stream().map(o -> {
+                CategorySongPo categorySongPo = new CategorySongPo();
+                categorySongPo.setSongPo(songPo);
+                categorySongPo.setCategoryPo(o);
+                return categorySongPo;
+            }).collect(Collectors.toList());
+            songPo.setSongCategoryPos(categorySongPos);
+        }
+
+        songPo.setCreateTime(now());
+        songPo.setDeleted(false);
+
+        songRepository.save(songPo);
+        return songPo.getId();
     }
 
     @Override
     public void updateSong(UpdateSongReqVo reqVo) {
+        checkNotNull(reqVo, "请求参数不能为空");
 
+        Integer id = reqVo.getId();
+        checkNotNull(id, "记录id不能为空");
+
+        Optional<SongPo> optSongPo = songRepository.findById(id);
+        checkCondition(optSongPo.isPresent(), "记录不存在,id=" + id);
+
+        SongPo songPo = optSongPo.get();
+
+        String name = reqVo.getName();
+        checkNotEmpty(name, "歌名不能为空");
+        songPo.setSongName(name);
+
+        String author = reqVo.getAuthor();
+        checkNotEmpty(author, "歌手不能为空");
+        songPo.setAuthor(author);
+
+        songPo.setFullName(name + "-" + author);
+
+        String description = reqVo.getDescription();
+        songPo.setDescription(description);
+
+        String path = reqVo.getPath();
+        checkNotEmpty(path, "文件路径不能为空");
+
+        String reason = reqVo.getReason();
+        songPo.setReason(reason);
+
+        Integer sort = reqVo.getSort();
+        songPo.setSort(sort);
+
+        List<Integer> categoryIds = reqVo.getCategoryIds();
+        if (isNotEmpty(categoryIds)) {
+            List<CategoryPo> categoryPos = categoryRepository.findAllById(categoryIds);
+            List<CategorySongPo> categorySongPos = categoryPos.stream().map(o -> {
+                CategorySongPo categorySongPo = new CategorySongPo();
+                categorySongPo.setSongPo(songPo);
+                categorySongPo.setCategoryPo(o);
+                return categorySongPo;
+            }).collect(Collectors.toList());
+            songPo.setSongCategoryPos(categorySongPos);
+        }
+
+        songPo.setUpdateTime(now());
+
+        songRepository.save(songPo);
     }
 
     @Override
     public void deleteSong(List<Integer> ids) {
+        checkNotEmpty(ids, "记录id列表不能为空");
 
+        List<SongPo> songPos = songRepository.findAllById(ids);
+        checkNotEmpty(songPos, "记录不存在,ids=" + ids);
+
+        songPos.forEach(o -> {
+            o.setDeleted(true);
+            o.setUpdateTime(now());
+        });
+
+        songRepository.saveAll(songPos);
     }
 
     @Override
