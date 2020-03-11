@@ -1,8 +1,17 @@
 spring:
   datasource:
+    driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/cdfive2019?autoReconnect=true&failOverReadOnly=false&rewriteBatchedStatements=true
     username: root
     password: 123456
+  redis:
+    host: localhost
+    port: 6379
+    activemq:
+      broker-url: tcp://localhost:61616
+      pool:
+        enabled: true
+        max-connections: 20
 
 reids:
   host: localhost
