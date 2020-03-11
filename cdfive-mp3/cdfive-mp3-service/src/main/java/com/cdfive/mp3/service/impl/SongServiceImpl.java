@@ -207,6 +207,9 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
         checkNotEmpty(songPos, "记录不存在,ids=" + ids);
 
         songPos.forEach(o -> {
+            if (o.getDeleted()) {
+                fail("记录已删除,id=" + o.getId());
+            }
             o.setDeleted(true);
             o.setUpdateTime(now());
         });
