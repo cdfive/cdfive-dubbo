@@ -17,19 +17,19 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     @Value("${resources.static.pathPatterns}")
     private String staticPathPatterns;
 
-    @Value("${resources.static.resourcelocations}")
-    private String staticResourcelocations;
+    @Value("${resources.static.resourceLocations}")
+    private String staticResourceLocations;
 
     @Value("${resources.mp3.pathPatterns}")
     private String mp3PathPatterns;
 
-    @Value("${resources.mp3.resourcelocations}")
-    private String mp3Resourcelocations;
+    @Value("${resources.mp3.resourceLocations}")
+    private String resourceLocations;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        addResourceMapping(registry, staticPathPatterns, staticResourcelocations);
-        addResourceMapping(registry, mp3PathPatterns, mp3Resourcelocations);
+        addResourceMapping(registry, staticPathPatterns, staticResourceLocations);
+        addResourceMapping(registry, mp3PathPatterns, resourceLocations);
         super.addResourceHandlers(registry);
     }
 

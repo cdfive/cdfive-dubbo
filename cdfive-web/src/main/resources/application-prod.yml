@@ -8,4 +8,4 @@ server:
 resources:
   mp3:
     pathPatterns: /2017/mp3/**
-    resourcelocations: file:/opt/mp3/
+    resourceLocations: file:/opt/mp3/

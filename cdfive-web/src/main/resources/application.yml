@@ -9,4 +9,4 @@ spring:
 resources:
   static:
     pathPatterns: /static/**
-    resourcelocations: classpath:/static/
+    resourceLocations: classpath:/static/
