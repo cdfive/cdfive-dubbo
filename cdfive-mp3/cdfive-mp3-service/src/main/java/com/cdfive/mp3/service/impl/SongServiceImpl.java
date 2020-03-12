@@ -102,6 +102,11 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
     }
 
     @Override
+    public PageRespVo<QuerySongListPageRespVo> querySongListPage(QuerySongListPageReqVo reqVo) {
+        return PageUtil.buildPage(reqVo, songRepository, new QuerySongSpecification(reqVo), QuerySongListPageTransformer.INSTANCE);
+    }
+
+    @Override
     public Integer addSong(AddSongReqVo reqVo) {
         checkNotNull(reqVo, "请求参数不能为空");
 
@@ -215,10 +220,5 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
         });
 
         songRepository.saveAll(songPos);
-    }
-
-    @Override
-    public PageRespVo<QuerySongListPageRespVo> querySongListPage(QuerySongListPageReqVo reqVo) {
-        return PageUtil.buildPage(reqVo, songRepository, new QuerySongSpecification(reqVo), QuerySongListPageTransformer.INSTANCE);
     }
 }

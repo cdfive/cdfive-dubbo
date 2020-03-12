@@ -16,11 +16,11 @@ public interface SongService {
 
     Integer play(Integer id, String ip);
 
+    PageRespVo<QuerySongListPageRespVo> querySongListPage(QuerySongListPageReqVo reqVo);
+
     Integer addSong(AddSongReqVo reqVo);
 
     void updateSong(UpdateSongReqVo reqVo);
 
     void deleteSong(List<Integer> ids);
-
-    PageRespVo<QuerySongListPageRespVo> querySongListPage(QuerySongListPageReqVo reqVo);
 }
