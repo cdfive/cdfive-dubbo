@@ -55,4 +55,6 @@ public interface CommonRedisRepositoryApi<T> {
     boolean hexists(String key, String field);
 
     Long hincrBy(String key, String field, long value);
+
+    boolean limitRate(String key, int second, int limit);
 }

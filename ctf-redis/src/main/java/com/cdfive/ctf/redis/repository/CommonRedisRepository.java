@@ -4,12 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
-import redis.clients.jedis.ShardedJedis;
-import redis.clients.jedis.ShardedJedisPool;
+import redis.clients.jedis.*;
 import redis.clients.util.Pool;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author cdfive
@@ -199,6 +199,40 @@ public class CommonRedisRepository implements CommonRedisRepositoryApi<ShardedJe
     public Long hincrBy(String key, String field, long value) {
         try (ShardedJedis jedis = pool.getResource()) {
             return jedis.hincrBy(key, field, value);
+        }
+    }
+
+    @Override
+    public boolean limitRate(String key, int second, int limit) {
+        try (ShardedJedis jedis = pool.getResource()) {
+            ShardedJedisPipeline pipeline = jedis.pipelined();
+            long now = System.currentTimeMillis();
+//            pipeline.zadd(key, now, now + "");
+//            String member = UUID.randomUUID().toString();
+//            pipeline.zadd(key, now, member);
+
+//            String member = UUID.randomUUID().toString();
+//            jedis.zadd(key, now, member);
+
+            pipeline.zremrangeByScore(key, 0, now - second * 1000);
+
+            Response<Long> zcardResp = pipeline.zcard(key);
+
+            pipeline.expire(key, second + 1);
+            pipeline.sync();
+
+            Long count = zcardResp.get();
+
+//            return count <= limit;
+//            System.out.println(now + "=== " + zremResp.get() + "," + count);
+            if (count < limit) {
+                String member = UUID.randomUUID().toString();
+                jedis.zadd(key, now, member);
+                return true;
+            }
+//
+////            jedis.zrem(key, member);
+            return false;
         }
     }
 }
