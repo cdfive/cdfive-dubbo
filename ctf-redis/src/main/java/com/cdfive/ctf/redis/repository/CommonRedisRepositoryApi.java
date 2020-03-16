@@ -57,4 +57,6 @@ public interface CommonRedisRepositoryApi<T> {
     Long hincrBy(String key, String field, long value);
 
     boolean limitRate(String key, int second, int limit);
+
+    boolean limitPeriod(String key, int second, int limit);
 }

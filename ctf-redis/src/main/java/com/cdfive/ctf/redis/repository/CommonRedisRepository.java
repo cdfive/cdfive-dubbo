@@ -235,4 +235,17 @@ public class CommonRedisRepository implements CommonRedisRepositoryApi<ShardedJe
             return false;
         }
     }
+
+    @Override
+    public boolean limitPeriod(String key, int second, int limit) {
+        try (ShardedJedis jedis = pool.getResource()) {
+            Long result = jedis.incr(key);
+            if (result == 1) {
+                jedis.expire(key, second);
+            }
+
+//            System.out.println(result);
+            return result <= limit;
+        }
+    }
 }

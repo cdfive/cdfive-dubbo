@@ -37,13 +37,14 @@ public class CommonRedisRepositoryTest {
 
         repository.setPool(shardedJedisPool);
 
-        repository.del("aaa");
+        repository.del("keyExists");
         repository.del("keyLimitRate");
+        repository.del("keyLimitPeriod");
     }
 
     @Test
     public void testExists() {
-        boolean result = repository.exists("aaa");
+        boolean result = repository.exists("keyExists");
         assertFalse(result);
     }
 
@@ -72,6 +73,19 @@ public class CommonRedisRepositoryTest {
 //                int newPassCount = passCount.incrementAndGet();
 //                assertTrue(newPassCount <= 5);
 //            }
+
+            TimeUnit.MILLISECONDS.sleep(Math.round(20));
+        }
+    }
+
+    @Test
+    public void testLimitPeriod() throws Exception {
+        for (int i = 0; i < 1000; i++) {
+//            boolean pass = repository.limitPeriod("keyLimitPeriod", 1, 5);
+            boolean pass = repository.limitPeriod("keyLimitPeriod", 5, 20);
+            if (pass) {
+                System.out.println((i + 1) + "=>" + pass);
+            }
 
             TimeUnit.MILLISECONDS.sleep(Math.round(20));
         }
