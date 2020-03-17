@@ -9,8 +9,8 @@ import java.util.concurrent.TimeUnit;
 public class ProducerConsumerDemo1 {
 
     public static class Warehouse {
-        private int capacity;
 
+        private int capacity;
         private int stock;
 
         public Warehouse(int capacity, int stock) {
@@ -21,12 +21,12 @@ public class ProducerConsumerDemo1 {
         public synchronized void produce(int count) {
             try {
                 if (stock >= capacity) {
-                    System.out.println("produce=>" + count + " waiting");
+                    System.out.println("produce " + count + "=>waiting");
                     wait();
                 } else {
                     int incrStock = stock + count >= capacity ? capacity - stock : count;
                     stock += incrStock;
-                    System.out.println("produce=>" + incrStock + ",remain=" + stock);
+                    System.out.println("produce " + count + "=>" + incrStock + ",remain=" + stock);
                     notifyAll();
                 }
             } catch (InterruptedException e) {
@@ -37,12 +37,12 @@ public class ProducerConsumerDemo1 {
         public synchronized void consume(int count) {
             try {
                 if (stock <= 0) {
-                    System.out.println("consume=>" + count + " waiting");
+                    System.out.println("consume " + count + "=>waiting");
                     wait();
                 } else {
                     int decrStock = stock - count >= 0 ? count : stock;
                     stock -= decrStock;
-                    System.out.println("consume=>" + decrStock + ",remain=" + stock);
+                    System.out.println("consume " + count + "=>" + decrStock + ",remain=" + stock);
                     notifyAll();
                 }
             } catch (InterruptedException e) {
