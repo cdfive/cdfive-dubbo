@@ -9,6 +9,7 @@ import redis.clients.jedis.ShardedJedisPool;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -63,8 +64,8 @@ public class CommonRedisRepositoryTest {
 //        }).start();
 
         for (int i = 0; i < 1000; i++) {
-//            boolean pass = repository.limitRate("keyLimitRate", 5, 10);
-            boolean pass = repository.limitRate("keyLimitRate", 1, 5);
+//            boolean pass = repository.limitRate("keyLimitRate", 1, 5);
+            boolean pass = repository.limitRate("keyLimitRate", 5, 20);
             if (pass) {
                 System.out.println((i+1) + "=>" + pass);
             }
@@ -74,7 +75,7 @@ public class CommonRedisRepositoryTest {
 //                assertTrue(newPassCount <= 5);
 //            }
 
-            TimeUnit.MILLISECONDS.sleep(Math.round(20));
+            TimeUnit.MILLISECONDS.sleep(ThreadLocalRandom.current().nextInt(20));
         }
     }
 
@@ -87,7 +88,7 @@ public class CommonRedisRepositoryTest {
                 System.out.println((i + 1) + "=>" + pass);
             }
 
-            TimeUnit.MILLISECONDS.sleep(Math.round(20));
+            TimeUnit.MILLISECONDS.sleep(ThreadLocalRandom.current().nextInt(20));
         }
     }
 }
