@@ -7,7 +7,7 @@ import com.alibaba.fastjson.JSON;
  */
 public class JsonUtil {
 
-    public static String toJson(Object obj) {
+    public static String objToJson(Object obj) {
         if (obj == null) {
             return null;
         }
@@ -15,7 +15,7 @@ public class JsonUtil {
         return JSON.toJSONString(obj);
     }
 
-    public static <T> Object fromJson(String json, Class<T> clazz) {
+    public static <T> Object jsonToObj(String json, Class<T> clazz) {
         return JSON.parseObject(json, clazz);
     }
 }

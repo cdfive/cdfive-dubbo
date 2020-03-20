@@ -17,7 +17,6 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Method;
 import java.util.Date;
 
 /**
@@ -52,11 +51,11 @@ public class Mp3ServiceMethodAdvice {
             addMethodLogVo.setMethodName(getMethodName(methodSignature));
 
             Object[] args = pjp.getArgs();
-            addMethodLogVo.setRequestJson(JsonUtil.toJson(args));
+            addMethodLogVo.setRequestJson(JsonUtil.objToJson(args));
 
             result = pjp.proceed();
 
-            addMethodLogVo.setResponseJson(JsonUtil.toJson(result));
+            addMethodLogVo.setResponseJson(JsonUtil.objToJson(result));
             addMethodLogVo.setSuccess(true);
             long endTime = System.currentTimeMillis();
             addMethodLogVo.setEndTime(new Date(endTime));
