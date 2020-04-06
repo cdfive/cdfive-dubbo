@@ -31,6 +31,10 @@ public class StringUtil {
         return true;
     }
 
+    public static boolean isNotBlank(final CharSequence cs) {
+        return !isBlank(cs);
+    }
+
     public static String removeSpecialStr(String str) {
         Matcher m = PATTERN_REGEX_SPECIAL_STR.matcher(str);
         return m.replaceAll("").trim();
