@@ -7,7 +7,7 @@ public class ClassForNameTest {
 
     public static void main(String[] args) throws ClassNotFoundException {
 //        Class.forName("com.cdfive.learn.javabasic.StaticClass");
-        Class.forName("com.cdfive.learn.javabasic.StaticClass", false, Thread.currentThread().getContextClassLoader());
+        Class.forName("com.cdfive.learn.javabasic.StaticClassTest", false, Thread.currentThread().getContextClassLoader());
         System.out.println("ClassForNameTest done");
     }
 }
