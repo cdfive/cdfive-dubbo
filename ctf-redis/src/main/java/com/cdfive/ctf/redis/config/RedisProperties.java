@@ -9,7 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 /**
  * @author cdfive
  */
-@ConfigurationProperties(prefix = "reids")
+@ConfigurationProperties(prefix = "redis")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
