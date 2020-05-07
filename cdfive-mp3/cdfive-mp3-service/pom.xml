@@ -144,7 +144,32 @@
             <groupId>com.alibaba.csp</groupId>
             <artifactId>sentinel-transport-simple-http</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.alibaba.csp</groupId>
+            <artifactId>sentinel-parameter-flow-control</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.csp</groupId>
+            <artifactId>sentinel-datasource-redis</artifactId>
+            <version>1.8.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>p1</id>
+            <properties>
+                <dubbo.port>20000</dubbo.port>
+            </properties>
+
+        </profile>
+        <profile>
+            <id>p2</id>
+            <properties>
+                <dubbo.port>20001</dubbo.port>
+            </properties>
+        </profile>
+    </profiles>
 
     <build>
         <resources>

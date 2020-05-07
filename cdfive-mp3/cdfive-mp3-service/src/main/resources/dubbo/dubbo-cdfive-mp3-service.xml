@@ -12,7 +12,7 @@
 
 	<dubbo:registry protocol="zookeeper" address="zookeeper://localhost:2181" />
 
-	<dubbo:protocol name="dubbo" port="20001" dispatcher="all" threadpool="fixed" threads="200" />
+	<dubbo:protocol name="dubbo" port="${dubbo.port}" dispatcher="all" threadpool="fixed" threads="200" />
 
 	<dubbo:service ref="songService" interface="com.cdfive.mp3.service.SongService"/>
 
