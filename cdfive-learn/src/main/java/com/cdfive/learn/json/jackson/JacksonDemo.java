@@ -1,4 +1,4 @@
-package com.cdfive.learn.jackson;
+package com.cdfive.learn.json.jackson;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
