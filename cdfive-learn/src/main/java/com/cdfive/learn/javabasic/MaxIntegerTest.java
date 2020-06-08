@@ -13,6 +13,13 @@ public class MaxIntegerTest {
         System.out.println(Long.MAX_VALUE + 1);// -9223372036854775808
 
         // java.lang.NumberFormatException: For input string: "21474836478"
-        Integer i = Integer.parseInt("21474836478");
+        try {
+            Integer i = Integer.parseInt("21474836478");
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+        Integer pageNum = 2147483647;
+        System.out.println((pageNum - 1) * 10); // -20
     }
 }
