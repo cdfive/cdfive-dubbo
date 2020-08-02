@@ -14,5 +14,6 @@ import org.springframework.context.annotation.ImportResource;
 public class ApiApplication {
     public static void main(String[] args) {
         SpringApplication.run(ApiApplication.class, args);
+        log.info("cdfive-api application started");
     }
 }

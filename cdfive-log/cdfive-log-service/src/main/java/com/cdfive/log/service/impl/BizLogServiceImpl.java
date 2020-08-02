@@ -63,6 +63,7 @@ public class BizLogServiceImpl extends AbstractLogService implements BizLogServi
             List<SaveBizLogReqVo> saveReqVos = songPos.stream().map(o -> {
                 SaveBizLogReqVo saveReqVo = new SaveBizLogReqVo();
                 BeanUtils.copyProperties(o, saveReqVo);
+                saveReqVo.setId(o.getId());
                 return saveReqVo;
             }).collect(Collectors.toList());
             log.info("syncAllToEs save {}", songPos.size());

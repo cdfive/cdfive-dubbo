@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 /**
@@ -12,7 +13,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  */
 @Slf4j
 @Configuration
-public class WebMvcConfig extends WebMvcConfigurerAdapter {
+//public class WebMvcConfig extends WebMvcConfigurerAdapter {
+public class WebMvcConfig implements WebMvcConfigurer {
 
     @Value("${resources.static.pathPatterns}")
     private String staticPathPatterns;
@@ -30,7 +32,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         addResourceMapping(registry, staticPathPatterns, staticResourceLocations);
         addResourceMapping(registry, mp3PathPatterns, resourceLocations);
-        super.addResourceHandlers(registry);
+//        super.addResourceHandlers(registry);
     }
 
     private void addResourceMapping(ResourceHandlerRegistry registry, String pathPatterns, String resourceLocations) {
