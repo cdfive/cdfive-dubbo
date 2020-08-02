@@ -13,8 +13,10 @@
        http://www.springframework.org/schema/aop
        http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-	<!-- dubbo -->
-	<import resource="classpath:dubbo/dubbo-cdfive-log-service.xml" />
+	<!-- dubbo provider -->
+	<import resource="../dubbo/dubbo-cdfive-log-service.xml" />
+	<!-- dubbo consumer -->
+	<import resource="classpath:/dubbo/dubbo-cdfive-search-api.xml" />
 
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>

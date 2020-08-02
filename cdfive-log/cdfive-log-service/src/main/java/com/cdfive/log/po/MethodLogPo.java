@@ -30,6 +30,7 @@ public class MethodLogPo extends BasePo<Integer> {
 
     private String exceptionMessage;
 
+    @Column(columnDefinition = "text")
     private String exceptionStackTrace;
 
     private Date startTime;

@@ -35,6 +35,11 @@
             <artifactId>cdfive-log-api</artifactId>
             <version>${cdfive-log-api.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.cdfive</groupId>
+            <artifactId>cdfive-search-api</artifactId>
+            <version>${cdfive-search-api.version}</version>
+        </dependency>
 
         <!-- springboot -->
         <dependency>
@@ -54,9 +59,20 @@
             <artifactId>spring-boot-starter-activemq</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-pool</artifactId>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+            <version>2.7.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.messaginghub</groupId>
+            <artifactId>pooled-jms</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.apache.activemq</groupId>-->
+            <!--<artifactId>activemq-pool</artifactId>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
