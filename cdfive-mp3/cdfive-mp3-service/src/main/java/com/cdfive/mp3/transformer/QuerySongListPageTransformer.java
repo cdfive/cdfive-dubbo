@@ -1,6 +1,6 @@
 package com.cdfive.mp3.transformer;
 
-import com.cdfive.mp3.po.SongPo;
+import com.cdfive.mp3.entity.po.SongPo;
 import com.cdfive.mp3.vo.song.QuerySongListPageRespVo;
 
 import java.util.function.Function;

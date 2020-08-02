@@ -40,7 +40,7 @@ public class RedisConfig {
     @Bean
     public RedisCacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig();
-        config = config.entryTtl(Duration.ofSeconds(2 * 3600)).computePrefixWith(new CacheKeyPrefix() {
+        config = config.entryTtl(Duration.ofSeconds(30)).computePrefixWith(new CacheKeyPrefix() {
             @Override
             public String compute(String cacheName) {
                 return cacheName + ":";

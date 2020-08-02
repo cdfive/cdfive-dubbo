@@ -1,6 +1,6 @@
-package com.cdfive.mp3.repository.specification;
+package com.cdfive.mp3.repository.db.specification;
 
-import com.cdfive.mp3.po.SongPo;
+import com.cdfive.mp3.entity.po.SongPo;
 import com.cdfive.mp3.vo.song.QuerySongListPageReqVo;
 import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;

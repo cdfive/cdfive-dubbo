@@ -3,16 +3,19 @@ package com.cdfive.mp3.service.impl;
 import com.cdfive.common.util.PageUtil;
 import com.cdfive.common.vo.page.PageRespVo;
 import com.cdfive.log.service.BizLogService;
-import com.cdfive.mp3.po.CategoryPo;
-import com.cdfive.mp3.po.CategorySongPo;
-import com.cdfive.mp3.po.SongPo;
-import com.cdfive.mp3.repository.CategoryRepository;
-import com.cdfive.mp3.repository.SongRepository;
-import com.cdfive.mp3.repository.specification.QuerySongSpecification;
+import com.cdfive.mp3.entity.po.CategoryPo;
+import com.cdfive.mp3.entity.po.CategorySongPo;
+import com.cdfive.mp3.entity.po.SongPo;
+import com.cdfive.mp3.repository.db.CategoryRepository;
+import com.cdfive.mp3.repository.db.SongRepository;
+import com.cdfive.mp3.repository.db.specification.QuerySongSpecification;
 import com.cdfive.mp3.service.AbstractMp3Service;
 import com.cdfive.mp3.service.SongService;
 import com.cdfive.mp3.transformer.QuerySongListPageTransformer;
 import com.cdfive.mp3.vo.song.*;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -20,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -28,6 +32,17 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service("songService")
 public class SongServiceImpl extends AbstractMp3Service implements SongService {
+
+    private LoadingCache<String, List<SongListVo>> songListByCategoryNameCache = CacheBuilder.newBuilder()
+            .refreshAfterWrite(1, TimeUnit.MINUTES)
+            .expireAfterWrite(5, TimeUnit.MINUTES)
+            .maximumSize(10)
+            .build(new CacheLoader<String, List<SongListVo>>() {
+                @Override
+                public List<SongListVo> load(String categoryName) throws Exception {
+                    return songRepository.findSongListByCategoryName(categoryName);
+                }
+            });
 
     @Autowired
     private BizLogService bizLogService;
@@ -44,10 +59,10 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
         log.info("songService=>findAllSong");
         FindAllSongRespVo respVo = new FindAllSongRespVo();
 
-        respVo.setD2019(songRepository.findSongListByCategoryName("2019"));
-        respVo.setD2018(songRepository.findSongListByCategoryName("2018"));
-        respVo.setD2017(songRepository.findSongListByCategoryName("2017"));
-        respVo.setD2016(songRepository.findSongListByCategoryName("2016"));
+        respVo.setD2019(songListByCategoryNameCache.getUnchecked("2019"));
+        respVo.setD2018(songListByCategoryNameCache.getUnchecked("2018"));
+        respVo.setD2017(songListByCategoryNameCache.getUnchecked("2017"));
+        respVo.setD2016(songListByCategoryNameCache.getUnchecked("2016"));
 
         respVo.setD1(songRepository.findSongListByDigit(1));
         respVo.setD2(songRepository.findSongListByDigit(2));

@@ -2,6 +2,7 @@ package com.cdfive.mp3.repository;
 
 import com.alibaba.fastjson.JSON;
 import com.cdfive.mp3.Mp3Application;
+import com.cdfive.mp3.repository.db.SongRepository;
 import com.cdfive.mp3.vo.song.SongListVo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
