@@ -32,12 +32,6 @@ public interface CommonRedisRepositoryApi<T> {
 
     boolean setnx(String key, String value);
 
-    boolean lock(String key, String value, int second);
-
-    boolean lockMs(String key, String value, int milliSecond);
-
-    boolean unlock(String key);
-
     String hget(String key, String field);
 
     boolean hset(String key, String filed, String value);
@@ -55,6 +49,12 @@ public interface CommonRedisRepositoryApi<T> {
     boolean hexists(String key, String field);
 
     Long hincrBy(String key, String field, long value);
+
+    boolean lock(String key, String value, int second);
+
+    boolean lockMs(String key, String value, int milliSecond);
+
+    boolean unlock(String key);
 
     boolean limitRate(String key, int second, int limit);
 

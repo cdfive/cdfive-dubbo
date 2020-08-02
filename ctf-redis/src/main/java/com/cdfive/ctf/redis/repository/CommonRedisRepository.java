@@ -116,27 +116,6 @@ public class CommonRedisRepository implements CommonRedisRepositoryApi<ShardedJe
     }
 
     @Override
-    public boolean lock(String key, String value, int second) {
-        try (ShardedJedis jedis = pool.getResource()) {
-            String result = jedis.set(key, value, NX, EX, second);
-            return RESULT_OK.equals(result);
-        }
-    }
-
-    @Override
-    public boolean lockMs(String key, String value, int milliSecond) {
-        try (ShardedJedis jedis = pool.getResource()) {
-            String result = jedis.set(key, value, NX, PX, milliSecond);
-            return RESULT_OK.equals(result);
-        }
-    }
-
-    @Override
-    public boolean unlock(String key) {
-        return del(key);
-    }
-
-    @Override
     public String hget(String key, String field) {
         try (ShardedJedis jedis = pool.getResource()) {
             return jedis.hget(key, field);
@@ -200,6 +179,27 @@ public class CommonRedisRepository implements CommonRedisRepositoryApi<ShardedJe
         try (ShardedJedis jedis = pool.getResource()) {
             return jedis.hincrBy(key, field, value);
         }
+    }
+
+    @Override
+    public boolean lock(String key, String value, int second) {
+        try (ShardedJedis jedis = pool.getResource()) {
+            String result = jedis.set(key, value, NX, EX, second);
+            return RESULT_OK.equals(result);
+        }
+    }
+
+    @Override
+    public boolean lockMs(String key, String value, int milliSecond) {
+        try (ShardedJedis jedis = pool.getResource()) {
+            String result = jedis.set(key, value, NX, PX, milliSecond);
+            return RESULT_OK.equals(result);
+        }
+    }
+
+    @Override
+    public boolean unlock(String key) {
+        return del(key);
     }
 
     @Override
