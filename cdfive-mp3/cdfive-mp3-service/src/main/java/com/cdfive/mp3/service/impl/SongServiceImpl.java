@@ -1,6 +1,6 @@
 package com.cdfive.mp3.service.impl;
 
-import com.cdfive.common.util.PageUtil;
+import com.cdfive.common.util.JpaPageUtil;
 import com.cdfive.common.vo.page.PageRespVo;
 import com.cdfive.log.service.BizLogService;
 import com.cdfive.mp3.entity.po.CategoryPo;
@@ -118,7 +118,7 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
 
     @Override
     public PageRespVo<QuerySongListPageRespVo> querySongListPage(QuerySongListPageReqVo reqVo) {
-        return PageUtil.buildPage(reqVo, songRepository, new QuerySongSpecification(reqVo), QuerySongListPageTransformer.INSTANCE);
+        return JpaPageUtil.buildPage(reqVo, songRepository, new QuerySongSpecification(reqVo), QuerySongListPageTransformer.INSTANCE);
     }
 
     @Override

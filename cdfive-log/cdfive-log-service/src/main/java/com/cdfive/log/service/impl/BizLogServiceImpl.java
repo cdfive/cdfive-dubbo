@@ -1,12 +1,11 @@
 package com.cdfive.log.service.impl;
 
-import com.cdfive.log.exception.LogServiceException;
 import com.cdfive.log.po.BizLogPo;
 import com.cdfive.log.repository.BizLogRepository;
 import com.cdfive.log.service.BizLogService;
 import com.cdfive.log.service.AbstractLogService;
 import com.cdfive.search.service.BizLogEsService;
-import com.cdfive.search.vo.SaveBizLogReqVo;
+import com.cdfive.search.vo.bizlog.SaveBizLogReqVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

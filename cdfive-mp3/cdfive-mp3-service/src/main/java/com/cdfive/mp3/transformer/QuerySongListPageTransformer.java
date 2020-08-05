@@ -17,20 +17,20 @@ public class QuerySongListPageTransformer implements Function<SongPo, QuerySongL
     }
 
     @Override
-    public QuerySongListPageRespVo apply(SongPo songPo) {
-        if (songPo == null) {
+    public QuerySongListPageRespVo apply(SongPo po) {
+        if (po == null) {
             return null;
         }
 
         QuerySongListPageRespVo vo = new QuerySongListPageRespVo();
-        vo.setId(songPo.getId());
-        vo.setName(songPo.getSongName());
-        vo.setAuthor(songPo.getAuthor());
-        vo.setPath(songPo.getPath());
-        vo.setDigit(songPo.getDigit());
-        vo.setReason(songPo.getReason());
-        vo.setCreateTime(songPo.getCreateTime());
-        vo.setUpdateTime(songPo.getUpdateTime());
+        vo.setId(po.getId());
+        vo.setName(po.getSongName());
+        vo.setAuthor(po.getAuthor());
+        vo.setPath(po.getPath());
+        vo.setDigit(po.getDigit());
+        vo.setReason(po.getReason());
+        vo.setCreateTime(po.getCreateTime());
+        vo.setUpdateTime(po.getUpdateTime());
         return vo;
     }
 }

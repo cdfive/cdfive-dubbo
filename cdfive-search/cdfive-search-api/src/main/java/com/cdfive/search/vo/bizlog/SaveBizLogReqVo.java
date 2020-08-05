@@ -1,4 +1,4 @@
-package com.cdfive.search.vo;
+package com.cdfive.search.vo.bizlog;
 
 import lombok.Data;
 

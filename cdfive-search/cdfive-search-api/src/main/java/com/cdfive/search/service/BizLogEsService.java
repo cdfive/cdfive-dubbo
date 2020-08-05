@@ -1,6 +1,9 @@
 package com.cdfive.search.service;
 
-import com.cdfive.search.vo.SaveBizLogReqVo;
+import com.cdfive.common.vo.page.PageRespVo;
+import com.cdfive.search.vo.bizlog.QueryBizLogPageReqVo;
+import com.cdfive.search.vo.bizlog.QueryBizLogPageRespVo;
+import com.cdfive.search.vo.bizlog.SaveBizLogReqVo;
 
 import java.util.List;
 
@@ -10,4 +13,6 @@ import java.util.List;
 public interface BizLogEsService {
 
     void saveBizLogs(List<SaveBizLogReqVo> reqVos);
+
+    PageRespVo<QueryBizLogPageRespVo> queryBizLogPage(QueryBizLogPageReqVo reqVo);
 }

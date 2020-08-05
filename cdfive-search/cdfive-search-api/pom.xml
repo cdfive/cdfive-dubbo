@@ -12,6 +12,13 @@
     <artifactId>cdfive-search-api</artifactId>
 
     <dependencies>
+        <!-- common -->
+        <dependency>
+            <groupId>com.cdfive</groupId>
+            <artifactId>cdfive-common</artifactId>
+            <version>${cdfive-common.version}</version>
+        </dependency>
+
         <!-- lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
