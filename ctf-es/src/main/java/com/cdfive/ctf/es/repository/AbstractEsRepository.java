@@ -3,6 +3,7 @@ package com.cdfive.ctf.es.repository;
 import com.alibaba.fastjson.JSON;
 import com.cdfive.common.util.GenericClassUtil;
 import com.cdfive.ctf.es.annotation.Document;
+import com.cdfive.ctf.es.config.EsProperties;
 import com.cdfive.ctf.es.query.DeleteQuery;
 import com.cdfive.ctf.es.query.SearchQuery;
 import org.elasticsearch.action.bulk.BulkRequest;
@@ -45,6 +46,8 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
 
     @Autowired
     protected RestHighLevelClient client;
+    @Autowired
+    private EsProperties esProperties;
 
     protected String index;
     protected Class<Entity> entityClass;
@@ -171,7 +174,9 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
         }
 
         if (pageable.isPaged()) {
-            searchSourceBuilder.trackTotalHits(true);
+            if (esProperties.getTrackTotalHits() != null && esProperties.getTrackTotalHits()) {
+                searchSourceBuilder.trackTotalHits(true);
+            }
             searchSourceBuilder.from((int) pageable.getOffset());
             searchSourceBuilder.size(pageable.getPageSize());
         }

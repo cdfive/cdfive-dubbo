@@ -20,6 +20,8 @@ public class EsProperties {
 
     private Integer socketTimeout = 60000;
 
+    private Boolean trackTotalHits = true;
+
     public String getClusterNodes() {
         return clusterNodes;
     }
@@ -66,5 +68,13 @@ public class EsProperties {
 
     public void setSocketTimeout(Integer socketTimeout) {
         this.socketTimeout = socketTimeout;
+    }
+
+    public Boolean getTrackTotalHits() {
+        return trackTotalHits;
+    }
+
+    public void setTrackTotalHits(Boolean trackTotalHits) {
+        this.trackTotalHits = trackTotalHits;
     }
 }
