@@ -79,6 +79,7 @@
         <module>cdfive-ejob</module>
         <module>support-jpa</module>
         <module>ctf-redis</module>
+        <module>ctf-es</module>
         <module>cdfive-search</module>
     </modules>
 
