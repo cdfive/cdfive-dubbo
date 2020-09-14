@@ -21,6 +21,8 @@ public interface EsRepository<Entity, Id> {
 
     void deleteByQuery(DeleteQuery deleteQuery);
 
+    void deleteAll();
+
     Entity findOne(Id id);
 
     Page<Entity> search(SearchQuery searchQuery);

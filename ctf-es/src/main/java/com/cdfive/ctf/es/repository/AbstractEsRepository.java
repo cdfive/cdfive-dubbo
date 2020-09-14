@@ -17,6 +17,7 @@ import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.reindex.DeleteByQueryRequest;
 import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.search.SearchHit;
@@ -130,6 +131,13 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
         } catch (IOException e) {
             throw new RuntimeException("es deleteByQuery error", e);
         }
+    }
+
+    @Override
+    public void deleteAll() {
+        DeleteQuery deleteQuery = new DeleteQuery();
+        deleteQuery.withQuery(QueryBuilders.matchAllQuery());
+        this.deleteByQuery(deleteQuery);
     }
 
     @Override
