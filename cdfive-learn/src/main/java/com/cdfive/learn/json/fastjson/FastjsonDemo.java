@@ -2,6 +2,7 @@ package com.cdfive.learn.json.fastjson;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,6 +30,12 @@ public class FastjsonDemo {
         // ok
         JsonResult<Item> jsonResult2 = JSON.parseObject(json, new TypeReference<JsonResult<Item>>(){}.getType());
         System.out.println(jsonResult2);
+
+        // null value
+        Item item = new Item();
+        item.setId(111L);
+        System.out.println(JSON.toJSONString(item));
+        System.out.println(JSON.toJSONString(item, SerializerFeature.WriteMapNullValue));
     }
 
     @NoArgsConstructor
