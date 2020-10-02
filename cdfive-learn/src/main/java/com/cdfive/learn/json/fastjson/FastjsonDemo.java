@@ -61,6 +61,10 @@ public class FastjsonDemo {
 
         private Long id;
 
+        private Integer a;
+
+        private int b;
+
         private String name;
 
         private Date createTime;
