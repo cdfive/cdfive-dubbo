@@ -6,6 +6,7 @@ import com.cdfive.ctf.es.annotation.Document;
 import com.cdfive.ctf.es.config.EsProperties;
 import com.cdfive.ctf.es.query.DeleteQuery;
 import com.cdfive.ctf.es.query.SearchQuery;
+import com.cdfive.ctf.es.query.UpdateQuery;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.get.GetRequest;
@@ -13,12 +14,14 @@ import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.reindex.DeleteByQueryRequest;
+import org.elasticsearch.index.reindex.UpdateByQueryRequest;
 import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
@@ -35,10 +38,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author cdfive
@@ -80,6 +80,71 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
             client.bulk(bulkRequest, RequestOptions.DEFAULT);
         } catch (IOException e) {
             throw new RuntimeException("es save entities error", e);
+        }
+    }
+
+    @Override
+    public void update(Id id, Map<String, Object> map) {
+        if (id == null) {
+            throw new RuntimeException("es update entity but missing id");
+        }
+
+        if (map == null || map.size() == 0) {
+            throw new RuntimeException("es update but empty params");
+        }
+
+        UpdateRequest updateRequest = new UpdateRequest(index, id.toString());
+        updateRequest.doc(JSON.toJSONString(map), XContentType.JSON);
+        try {
+            client.update(updateRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            throw new RuntimeException("es update error", e);
+        }
+    }
+
+    @Override
+    public void update(Collection<Id> ids, List<Map<String, Object>> maps) {
+        if (CollectionUtils.isEmpty(ids)) {
+            throw new RuntimeException("es update batch but empty ids");
+        }
+
+        if (CollectionUtils.isEmpty(maps)) {
+            throw new RuntimeException("es update batch but empty params");
+        }
+
+        if (ids.size() != maps.size()) {
+            throw new RuntimeException("es update batch but size of ids and params not equal");
+        }
+
+        BulkRequest bulkRequest = new BulkRequest();
+        int size = ids.size();
+        Iterator<Id> idsIterator = ids.iterator();
+        Iterator<Map<String, Object>> mapsIterator = maps.iterator();
+        for (int i = 0; i < size; i++) {
+            bulkRequest.add(new UpdateRequest(index, idsIterator.next().toString()).doc(JSON.toJSONString(mapsIterator.next()), XContentType.JSON));
+        }
+        try {
+            client.bulk(bulkRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            throw new RuntimeException("es update batch error", e);
+        }
+    }
+
+    @Override
+    public void updateByQuery(UpdateQuery updateQuery) {
+        UpdateByQueryRequest updateByQueryRequest = new UpdateByQueryRequest();
+        QueryBuilder query = updateQuery.getQuery();
+        updateByQueryRequest.setQuery(query);
+
+        Integer batchSize = updateQuery.getBatchSize();
+        if (batchSize != null) {
+            updateByQueryRequest.setBatchSize(batchSize);
+        }
+
+        try {
+            client.updateByQuery(updateByQueryRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            throw new RuntimeException("es updateByQuery error", e);
         }
     }
 
