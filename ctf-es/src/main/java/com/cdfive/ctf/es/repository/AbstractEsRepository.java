@@ -23,6 +23,8 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.reindex.DeleteByQueryRequest;
 import org.elasticsearch.index.reindex.UpdateByQueryRequest;
 import org.elasticsearch.rest.RestStatus;
+import org.elasticsearch.script.Script;
+import org.elasticsearch.script.ScriptType;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
@@ -35,6 +37,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -145,6 +148,54 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
             client.updateByQuery(updateByQueryRequest, RequestOptions.DEFAULT);
         } catch (IOException e) {
             throw new RuntimeException("es updateByQuery error", e);
+        }
+    }
+
+    @Override
+    public void updateByScript(Id id, String script, Map<String, Object> params) {
+        if (id == null) {
+            throw new RuntimeException("es updateByScript but missing id");
+        }
+
+        if (StringUtils.isEmpty(script)) {
+            throw new RuntimeException("es updateByScript but empty script");
+        }
+
+        UpdateRequest updateRequest = new UpdateRequest(index, id.toString());
+        Script inline = new Script(ScriptType.INLINE, "painless", script, params);
+        updateRequest.script(inline);
+        try {
+            client.update(updateRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            throw new RuntimeException("es updateByScript error", e);
+        }
+    }
+
+    @Override
+    public void updateByScript(Collection<Id> ids, String script, List<Map<String, Object>> params) {
+        if (CollectionUtils.isEmpty(ids)) {
+            throw new RuntimeException("es updateByScript batch but empty ids");
+        }
+
+        if (CollectionUtils.isEmpty(params)) {
+            throw new RuntimeException("es updateByScript batch but empty params");
+        }
+
+        if (ids.size() != params.size()) {
+            throw new RuntimeException("es updateByScript batch but size of ids and params not equal");
+        }
+
+        BulkRequest bulkRequest = new BulkRequest();
+        int size = ids.size();
+        Iterator<Id> idsIterator = ids.iterator();
+        Iterator<Map<String, Object>> paramsIterator = params.iterator();
+        for (int i = 0; i < size; i++) {
+            bulkRequest.add(new UpdateRequest(index, idsIterator.next().toString()).script(new Script(ScriptType.INLINE, "painless", script, paramsIterator.next())));
+        }
+        try {
+            client.bulk(bulkRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            throw new RuntimeException("es updateByScript batch error", e);
         }
     }
 

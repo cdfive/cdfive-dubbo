@@ -24,6 +24,10 @@ public interface EsRepository<Entity, Id> {
 
     void updateByQuery(UpdateQuery updateQuery);
 
+    void updateByScript(Id id, String script, Map<String, Object> params);
+
+    void updateByScript(Collection<Id> ids, String script, List<Map<String, Object>> params);
+
     void delete(Id id);
 
     void delete(Collection<Id> ids);
