@@ -28,6 +28,10 @@ public interface EsRepository<Entity, Id> {
 
     void updateByScript(Collection<Id> ids, String script, List<Map<String, Object>> params);
 
+    void updateByScriptId(Id id, String scriptId, Map<String, Object> params);
+
+    void updateByScriptId(Collection<Id> ids, String scriptId, List<Map<String, Object>> params);
+
     void saveOrUpdate(Entity entity);
 
     void saveOrUpdate(Collection<Entity> entities);

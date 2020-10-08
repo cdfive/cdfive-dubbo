@@ -200,6 +200,58 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
     }
 
     @Override
+    public void updateByScriptId(Id id, String scriptId, Map<String, Object> params) {
+        if (id == null) {
+            throw new RuntimeException("es updateByScriptId but missing id");
+        }
+
+        if (StringUtils.isEmpty(scriptId)) {
+            throw new RuntimeException("es updateByScriptId but empty scriptId");
+        }
+
+        UpdateRequest updateRequest = new UpdateRequest(index, id.toString());
+        Script inline = new Script(ScriptType.STORED, null, scriptId, params);
+        updateRequest.script(inline);
+        try {
+            client.update(updateRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            throw new RuntimeException("es updateByScriptId error", e);
+        }
+    }
+
+    @Override
+    public void updateByScriptId(Collection<Id> ids, String scriptId, List<Map<String, Object>> params) {
+        if (CollectionUtils.isEmpty(ids)) {
+            throw new RuntimeException("es updateByScriptId batch but empty ids");
+        }
+
+        if (StringUtils.isEmpty(scriptId)) {
+            throw new RuntimeException("es updateByScriptId batch but empty scriptId");
+        }
+
+        if (CollectionUtils.isEmpty(params)) {
+            throw new RuntimeException("es updateByScriptId batch but empty params");
+        }
+
+        if (ids.size() != params.size()) {
+            throw new RuntimeException("es updateByScriptId batch but size of ids and params not equal");
+        }
+
+        BulkRequest bulkRequest = new BulkRequest();
+        int size = ids.size();
+        Iterator<Id> idsIterator = ids.iterator();
+        Iterator<Map<String, Object>> paramsIterator = params.iterator();
+        for (int i = 0; i < size; i++) {
+            bulkRequest.add(new UpdateRequest(index, idsIterator.next().toString()).script(new Script(ScriptType.STORED, null, scriptId, paramsIterator.next())));
+        }
+        try {
+            client.bulk(bulkRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            throw new RuntimeException("es updateByScriptId batch error", e);
+        }
+    }
+
+    @Override
     public void saveOrUpdate(Entity entity) {
         UpdateRequest updateRequest = new UpdateRequest(index, this.getId(entity).toString());
         updateRequest.doc(JSON.toJSONString(entity), XContentType.JSON);
