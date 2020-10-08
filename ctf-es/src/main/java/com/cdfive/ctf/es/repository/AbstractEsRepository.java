@@ -200,6 +200,39 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
     }
 
     @Override
+    public void saveOrUpdate(Entity entity) {
+        UpdateRequest updateRequest = new UpdateRequest(index, this.getId(entity).toString());
+        updateRequest.doc(JSON.toJSONString(entity), XContentType.JSON);
+        IndexRequest indexRequest = new IndexRequest(index);
+        indexRequest.id(this.getId(entity).toString());
+        indexRequest.source(JSON.toJSONString(entity), XContentType.JSON);
+        updateRequest.upsert(indexRequest);
+        try {
+            client.update(updateRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            throw new RuntimeException("es saveOrUpdate entity error", e);
+        }
+    }
+
+    @Override
+    public void saveOrUpdate(Collection<Entity> entities) {
+        if (CollectionUtils.isEmpty(entities)) {
+            throw new RuntimeException("es saveOrUpdate entities but empty entites");
+        }
+
+        BulkRequest bulkRequest = new BulkRequest();
+        for (Entity entity : entities) {
+            bulkRequest.add(new UpdateRequest(index, this.getId(entity).toString()).doc(JSON.toJSONString(entity), XContentType.JSON)
+                    .upsert(new IndexRequest(index).id(this.getId(entity).toString()).source(JSON.toJSONString(entity), XContentType.JSON)));
+        }
+        try {
+            client.bulk(bulkRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            throw new RuntimeException("es saveOrUpdate entities error", e);
+        }
+    }
+
+    @Override
     public void delete(Id id) {
         if (id == null) {
             throw new RuntimeException("es delete entity but missing id");
