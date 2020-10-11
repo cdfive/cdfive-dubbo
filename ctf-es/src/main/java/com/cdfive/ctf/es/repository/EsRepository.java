@@ -18,9 +18,11 @@ public interface EsRepository<Entity, Id> {
 
     void save(Collection<Entity> entities);
 
-    void update(Id id, Map<String, Object> map);
+    void update(Id id, Map<String, Object> params);
 
-    void update(Collection<Id> ids, List<Map<String, Object>> maps);
+    void update(Collection<Id> ids, List<Map<String, Object>> params);
+
+    void update(Collection<Id> ids, Map<String, Object> params);
 
     void updateByQuery(UpdateQuery updateQuery);
 
@@ -28,9 +30,13 @@ public interface EsRepository<Entity, Id> {
 
     void updateByScript(Collection<Id> ids, String script, List<Map<String, Object>> params);
 
+    void updateByScript(Collection<Id> ids, String script, Map<String, Object> params);
+
     void updateByScriptId(Id id, String scriptId, Map<String, Object> params);
 
     void updateByScriptId(Collection<Id> ids, String scriptId, List<Map<String, Object>> params);
+
+    void updateByScriptId(Collection<Id> ids, String scriptId, Map<String, Object> params);
 
     void saveOrUpdate(Entity entity);
 

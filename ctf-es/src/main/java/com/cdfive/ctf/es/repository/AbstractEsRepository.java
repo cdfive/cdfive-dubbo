@@ -87,17 +87,17 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
     }
 
     @Override
-    public void update(Id id, Map<String, Object> map) {
+    public void update(Id id, Map<String, Object> params) {
         if (id == null) {
             throw new RuntimeException("es update entity but missing id");
         }
 
-        if (map == null || map.size() == 0) {
+        if (params == null || params.size() == 0) {
             throw new RuntimeException("es update but empty params");
         }
 
         UpdateRequest updateRequest = new UpdateRequest(index, id.toString());
-        updateRequest.doc(JSON.toJSONString(map), XContentType.JSON);
+        updateRequest.doc(JSON.toJSONString(params), XContentType.JSON);
         try {
             client.update(updateRequest, RequestOptions.DEFAULT);
         } catch (IOException e) {
@@ -106,25 +106,48 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
     }
 
     @Override
-    public void update(Collection<Id> ids, List<Map<String, Object>> maps) {
+    public void update(Collection<Id> ids, List<Map<String, Object>> params) {
         if (CollectionUtils.isEmpty(ids)) {
             throw new RuntimeException("es update batch but empty ids");
         }
 
-        if (CollectionUtils.isEmpty(maps)) {
+        if (CollectionUtils.isEmpty(params)) {
             throw new RuntimeException("es update batch but empty params");
         }
 
-        if (ids.size() != maps.size()) {
+        if (ids.size() != params.size()) {
             throw new RuntimeException("es update batch but size of ids and params not equal");
         }
 
         BulkRequest bulkRequest = new BulkRequest();
         int size = ids.size();
         Iterator<Id> idsIterator = ids.iterator();
-        Iterator<Map<String, Object>> mapsIterator = maps.iterator();
+        Iterator<Map<String, Object>> mapsIterator = params.iterator();
         for (int i = 0; i < size; i++) {
             bulkRequest.add(new UpdateRequest(index, idsIterator.next().toString()).doc(JSON.toJSONString(mapsIterator.next()), XContentType.JSON));
+        }
+        try {
+            client.bulk(bulkRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            throw new RuntimeException("es update batch error", e);
+        }
+    }
+
+    @Override
+    public void update(Collection<Id> ids, Map<String, Object> params) {
+        if (CollectionUtils.isEmpty(ids)) {
+            throw new RuntimeException("es update batch but empty ids");
+        }
+
+        if (CollectionUtils.isEmpty(params)) {
+            throw new RuntimeException("es update batch but empty params");
+        }
+
+        BulkRequest bulkRequest = new BulkRequest();
+        int size = ids.size();
+        Iterator<Id> idsIterator = ids.iterator();
+        for (int i = 0; i < size; i++) {
+            bulkRequest.add(new UpdateRequest(index, idsIterator.next().toString()).doc(JSON.toJSONString(params), XContentType.JSON));
         }
         try {
             client.bulk(bulkRequest, RequestOptions.DEFAULT);
@@ -200,6 +223,29 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
     }
 
     @Override
+    public void updateByScript(Collection<Id> ids, String script, Map<String, Object> params) {
+        if (CollectionUtils.isEmpty(ids)) {
+            throw new RuntimeException("es updateByScript batch but empty ids");
+        }
+
+        if (CollectionUtils.isEmpty(params)) {
+            throw new RuntimeException("es updateByScript batch but empty params");
+        }
+
+        BulkRequest bulkRequest = new BulkRequest();
+        int size = ids.size();
+        Iterator<Id> idsIterator = ids.iterator();
+        for (int i = 0; i < size; i++) {
+            bulkRequest.add(new UpdateRequest(index, idsIterator.next().toString()).script(new Script(ScriptType.INLINE, "painless", script, params)));
+        }
+        try {
+            client.bulk(bulkRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            throw new RuntimeException("es updateByScript batch error", e);
+        }
+    }
+
+    @Override
     public void updateByScriptId(Id id, String scriptId, Map<String, Object> params) {
         if (id == null) {
             throw new RuntimeException("es updateByScriptId but missing id");
@@ -243,6 +289,33 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
         Iterator<Map<String, Object>> paramsIterator = params.iterator();
         for (int i = 0; i < size; i++) {
             bulkRequest.add(new UpdateRequest(index, idsIterator.next().toString()).script(new Script(ScriptType.STORED, null, scriptId, paramsIterator.next())));
+        }
+        try {
+            client.bulk(bulkRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            throw new RuntimeException("es updateByScriptId batch error", e);
+        }
+    }
+
+    @Override
+    public void updateByScriptId(Collection<Id> ids, String scriptId, Map<String, Object> params) {
+        if (CollectionUtils.isEmpty(ids)) {
+            throw new RuntimeException("es updateByScriptId batch but empty ids");
+        }
+
+        if (StringUtils.isEmpty(scriptId)) {
+            throw new RuntimeException("es updateByScriptId batch but empty scriptId");
+        }
+
+        if (CollectionUtils.isEmpty(params)) {
+            throw new RuntimeException("es updateByScriptId batch but empty params");
+        }
+
+        BulkRequest bulkRequest = new BulkRequest();
+        int size = ids.size();
+        Iterator<Id> idsIterator = ids.iterator();
+        for (int i = 0; i < size; i++) {
+            bulkRequest.add(new UpdateRequest(index, idsIterator.next().toString()).script(new Script(ScriptType.STORED, null, scriptId, params)));
         }
         try {
             client.bulk(bulkRequest, RequestOptions.DEFAULT);
