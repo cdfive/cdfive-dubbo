@@ -69,7 +69,10 @@ public class EsAutoConfig {
             CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
             credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(username, password));
             clientBuilder.setHttpClientConfigCallback(httpAsyncClientBuilder ->
-                    httpAsyncClientBuilder.setDefaultCredentialsProvider(credentialsProvider));
+                    httpAsyncClientBuilder
+                            .setDefaultCredentialsProvider(credentialsProvider)
+                            .setMaxConnPerRoute(elasticSearchProperties.getMaxConnPerRoute())
+                            .setMaxConnTotal(elasticSearchProperties.getMaxConnTotal()));
         }
 
         RestHighLevelClient restHighLevelClient = new RestHighLevelClient(clientBuilder);

@@ -20,6 +20,10 @@ public class EsProperties {
 
     private Integer socketTimeout = 60000;
 
+    private Integer maxConnPerRoute = 2;
+
+    private Integer maxConnTotal = 20;
+
     private Boolean trackTotalHits = true;
 
     public String getClusterNodes() {
@@ -68,6 +72,22 @@ public class EsProperties {
 
     public void setSocketTimeout(Integer socketTimeout) {
         this.socketTimeout = socketTimeout;
+    }
+
+    public Integer getMaxConnPerRoute() {
+        return maxConnPerRoute;
+    }
+
+    public void setMaxConnPerRoute(Integer maxConnPerRoute) {
+        this.maxConnPerRoute = maxConnPerRoute;
+    }
+
+    public Integer getMaxConnTotal() {
+        return maxConnTotal;
+    }
+
+    public void setMaxConnTotal(Integer maxConnTotal) {
+        this.maxConnTotal = maxConnTotal;
     }
 
     public Boolean getTrackTotalHits() {
