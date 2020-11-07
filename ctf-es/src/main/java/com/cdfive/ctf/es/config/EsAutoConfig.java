@@ -65,15 +65,20 @@ public class EsAutoConfig {
 
         String username = elasticSearchProperties.getUsername();
         String password = elasticSearchProperties.getPassword();
+        CredentialsProvider credentialsProvider = null;
         if (!StringUtils.isEmpty(username) && !StringUtils.isEmpty(password)) {
-            CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+            credentialsProvider = new BasicCredentialsProvider();
             credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(username, password));
-            clientBuilder.setHttpClientConfigCallback(httpAsyncClientBuilder ->
-                    httpAsyncClientBuilder
-                        .setDefaultCredentialsProvider(credentialsProvider)
-                        .setMaxConnPerRoute(elasticSearchProperties.getMaxConnPerRoute())
-                        .setMaxConnTotal(elasticSearchProperties.getMaxConnTotal()));
         }
+        CredentialsProvider finalCredentialsProvider = credentialsProvider;
+        clientBuilder.setHttpClientConfigCallback(httpAsyncClientBuilder -> {
+            if (finalCredentialsProvider != null) {
+                httpAsyncClientBuilder.setDefaultCredentialsProvider(finalCredentialsProvider);
+            }
+            return httpAsyncClientBuilder
+                    .setMaxConnPerRoute(elasticSearchProperties.getMaxConnPerRoute())
+                    .setMaxConnTotal(elasticSearchProperties.getMaxConnTotal());
+        });
 
         RestHighLevelClient restHighLevelClient = new RestHighLevelClient(clientBuilder);
         return restHighLevelClient;
