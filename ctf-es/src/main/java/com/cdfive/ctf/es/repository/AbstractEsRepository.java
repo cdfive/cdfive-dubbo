@@ -2,6 +2,7 @@ package com.cdfive.ctf.es.repository;
 
 import com.alibaba.fastjson.JSON;
 import com.cdfive.common.util.GenericClassUtil;
+import com.cdfive.common.util.StringUtil;
 import com.cdfive.ctf.es.annotation.Document;
 import com.cdfive.ctf.es.config.EsProperties;
 import com.cdfive.ctf.es.query.DeleteQuery;
@@ -507,6 +508,9 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
             throw new RuntimeException(entityClass.getName() + " must be with annotation:'cn.wine.ms.search.elasticsearch.annotation.Document'");
         }
         index = document.index();
+        if (StringUtil.isBlank(index)) {
+            throw new RuntimeException("index must not be blank,check index property of cn.wine.ms.search.elasticsearch.annotation.Document");
+        }
 
         for (Field field : entityClass.getDeclaredFields()) {
             com.cdfive.ctf.es.annotation.Id id = field.getAnnotation(com.cdfive.ctf.es.annotation.Id.class);
