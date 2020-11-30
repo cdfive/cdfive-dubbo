@@ -16,7 +16,7 @@ public class JsonUtil {
         return JSON.toJSONString(obj);
     }
 
-    public static <T> Object jsonToObj(String json, Class<T> clazz) {
+    public static <T> T jsonToObj(String json, Class<T> clazz) {
         return JSON.parseObject(json, clazz);
     }
 
@@ -24,7 +24,7 @@ public class JsonUtil {
         return JSON.toJSONString(obj, SerializerFeature.WriteMapNullValue);
     }
 
-    public static <T> Object json2Obj(String json, Class<T> clazz) {
+    public static <T> T json2Obj(String json, Class<T> clazz) {
         return JSON.parseObject(json, clazz);
     }
 }
