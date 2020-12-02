@@ -91,4 +91,17 @@ public class CommonRedisRepositoryTest {
             TimeUnit.MILLISECONDS.sleep(ThreadLocalRandom.current().nextInt(20));
         }
     }
+
+    @Test
+    public void testScan() {
+        List<String> keys = repository.scan("a*", 1000, 100);
+        System.out.println(keys);
+        System.out.println("testScanAndDelete done");
+    }
+
+    @Test
+    public void testScanAndDelete() {
+        repository.scanAndDelete("a*", 1000, 100);
+        System.out.println("testScanAndDelete done");
+    }
 }

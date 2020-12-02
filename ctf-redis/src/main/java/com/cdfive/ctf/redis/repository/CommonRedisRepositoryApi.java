@@ -59,4 +59,8 @@ public interface CommonRedisRepositoryApi<T> {
     boolean limitRate(String key, int second, int limit);
 
     boolean limitPeriod(String key, int second, int limit);
+
+    List<String> scan(String keyPattern, int scanSize, int deleteSize);
+
+    int scanAndDelete(String keyPattern, int scanSize, int deleteSize);
 }

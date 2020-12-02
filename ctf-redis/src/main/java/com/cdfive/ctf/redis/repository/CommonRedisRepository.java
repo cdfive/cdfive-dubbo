@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import redis.clients.jedis.*;
 import redis.clients.util.Pool;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -93,7 +94,7 @@ public class CommonRedisRepository implements CommonRedisRepositoryApi<ShardedJe
 
     @Override
     public boolean set(String key, String value) {
-        try(ShardedJedis jedis = pool.getResource()) {
+        try (ShardedJedis jedis = pool.getResource()) {
             String result = jedis.set(key, value);
             return RESULT_OK.equals(result);
         }
@@ -247,5 +248,66 @@ public class CommonRedisRepository implements CommonRedisRepositoryApi<ShardedJe
 //            System.out.println(result);
             return result <= limit;
         }
+    }
+
+    @Override
+    public List<String> scan(String keyPattern, int scanSize, int deleteSize) {
+        List<String> keys = new ArrayList<>();
+        try (ShardedJedis shardedJedis = pool.getResource()) {
+            try (Jedis jedis = shardedJedis.getAllShards().iterator().next()) {
+                ScanParams scanParams = new ScanParams();
+                scanParams.match(keyPattern);
+                scanParams.count(scanSize);
+                String cursor = ScanParams.SCAN_POINTER_START;
+                while (true) {
+                    ScanResult<String> scanResult = jedis.scan(cursor, scanParams);
+                    cursor = scanResult.getStringCursor();
+                    List<String> list = scanResult.getResult();
+                    if (list.size() > 0) {
+                        keys.addAll(list);
+                    }
+
+                    if ("0".equals(cursor)) {
+                        break;
+                    }
+                }
+            }
+        }
+        return keys;
+    }
+
+    @Override
+    public int scanAndDelete(String keyPattern, int scanSize, int deleteSize) {
+        int count = 0;
+        try (ShardedJedis shardedJedis = pool.getResource()) {
+            try (Jedis jedis = shardedJedis.getAllShards().iterator().next()) {
+                ScanParams scanParams = new ScanParams();
+                scanParams.match(keyPattern);
+                scanParams.count(scanSize);
+                String cursor = ScanParams.SCAN_POINTER_START;
+                List<String> deleteKeys = new ArrayList<>(deleteSize);
+                while (true) {
+                    ScanResult<String> scanResult = jedis.scan(cursor, scanParams);
+                    cursor = scanResult.getStringCursor();
+                    List<String> list = scanResult.getResult();
+                    if (list.size() > 0) {
+                        for (int i = 0; i < list.size(); i++) {
+                            count++;
+                            String scanKey = list.get(i);
+                            deleteKeys.add(scanKey);
+                            if (deleteKeys.size() >= deleteSize || i >= list.size() - 1) {
+                                jedis.del(deleteKeys.toArray(new String[0]));
+                                deleteKeys.clear();
+                            }
+                        }
+                    }
+
+                    if ("0".equals(cursor)) {
+                        break;
+                    }
+                }
+            }
+        }
+        return count;
     }
 }
