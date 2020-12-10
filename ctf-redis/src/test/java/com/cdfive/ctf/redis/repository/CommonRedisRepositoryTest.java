@@ -96,7 +96,7 @@ public class CommonRedisRepositoryTest {
     public void testScan() {
         List<String> keys = repository.scan("a*", 1000, 100);
         System.out.println(keys);
-        System.out.println("testScanAndDelete done");
+        System.out.println("testScan done");
     }
 
     @Test
