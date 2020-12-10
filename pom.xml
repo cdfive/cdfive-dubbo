@@ -81,6 +81,7 @@
         <module>ctf-redis</module>
         <module>ctf-es</module>
         <module>cdfive-search</module>
+        <module>cdfive-tool</module>
     </modules>
 
     <dependencyManagement>
