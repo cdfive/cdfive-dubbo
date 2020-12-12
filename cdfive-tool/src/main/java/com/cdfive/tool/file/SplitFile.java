@@ -11,10 +11,10 @@ public class SplitFile {
 
     public static void main(String[] args) throws Exception {
         long startTime = System.currentTimeMillis();
+
         String fileName = args[0];
         Integer splitNum = Integer.parseInt(args[1]);
 
-//        String fileFolderPath = SplitFile.class.getResource("").getPath();
         String fileFolderPath = System.getProperty("user.dir") + File.separator;
         String filePath = fileFolderPath + fileName;
         System.out.println(String.format("filePath=%s,splitNum=%s", filePath, splitNum));
@@ -23,7 +23,6 @@ public class SplitFile {
 
         String line;
         int total = 0;
-//        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)), 5 * 1024 * 1024)) {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(new BufferedInputStream(new FileInputStream(file))))) {
             while ((line = br.readLine()) != null) {
                 total++;
@@ -39,22 +38,22 @@ public class SplitFile {
             String fileNameSuffix = tokens.length > 1 ? tokens[1] : "";
             int index = 0;
             int splitIndex = 0;
-            int fileNum = 1;
+            int splitFileNum = 1;
             long splitStartTime = System.currentTimeMillis();
-            String spitFilePath = fileFolderPath + fileNameReal + "_" + fileNum + "." + fileNameSuffix;
+            String spitFilePath = fileFolderPath + fileNameReal + "_" + splitFileNum + "." + fileNameSuffix;
             BufferedWriter bw = new BufferedWriter(new FileWriter(new File(spitFilePath)));
             while ((line = br.readLine()) != null) {
                 index++;
                 splitIndex++;
                 bw.write(line + System.lineSeparator());
-                if (fileNum < splitNum && splitIndex >= splitSize || index >= total) {
-                    System.out.println(String.format("split file %s done,line=%s,cost=%sms,total cost=%sms", fileNum
+                if (splitFileNum < splitNum && splitIndex >= splitSize || index >= total) {
+                    System.out.println(String.format("split file %s done,line=%s,cost=%sms,total cost=%sms", splitFileNum
                             , splitIndex, System.currentTimeMillis() - splitStartTime, System.currentTimeMillis() - startTime));
                     bw.close();
-                    fileNum++;
-                    splitIndex = 0;
                     if (index < total) {
-                        spitFilePath = fileFolderPath + fileNameReal + "_" + fileNum + "." + fileNameSuffix;
+                        splitIndex = 0;
+                        splitFileNum++;
+                        spitFilePath = fileFolderPath + fileNameReal + "_" + splitFileNum + "." + fileNameSuffix;
                         bw = new BufferedWriter(new FileWriter(new File(spitFilePath)));
                         splitStartTime = System.currentTimeMillis();
                     }
