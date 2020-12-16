@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
+import java.net.UnknownHostException;
 import java.util.Enumeration;
 
 /**
@@ -17,11 +18,13 @@ public final class HostNameUtil {
 
     private static String ip;
     private static String hostName;
+    private static String lastfieldOfHostName;
 
     static {
         try {
             // Init the host information.
             resolveHost();
+            resolveLastfieldOfHostName();
         } catch (Exception e) {
             log.error("Failed to get local host", e);
         }
@@ -47,6 +50,24 @@ public final class HostNameUtil {
         }
     }
 
+    private static void resolveLastfieldOfHostName() {
+        if (lastfieldOfHostName != null) {
+            return;
+        }
+        String substrOfHostName = null;
+        try {
+            String hostName = InetAddress.getLocalHost().getHostName();
+            String[] tokens = hostName.split("\\.");
+            substrOfHostName = tokens[tokens.length - 1];
+
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        lastfieldOfHostName = substrOfHostName == null ? "-1" : substrOfHostName;
+    }
+
     public static String getIp() {
         return ip;
     }
@@ -60,6 +81,10 @@ public final class HostNameUtil {
             + "\t\"machine\": \"" + hostName + "\",\n"
             + "\t\"ip\": \"" + ip + "\"\n"
             + "}";
+    }
+
+    public static String getLastfieldOfHostName() {
+        return lastfieldOfHostName;
     }
 
     private HostNameUtil() {}
