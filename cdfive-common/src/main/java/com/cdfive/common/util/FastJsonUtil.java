@@ -6,7 +6,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 /**
  * @author cdfive
  */
-public class JsonUtil {
+public class FastJsonUtil {
 
     public static String objToJson(Object obj) {
         if (obj == null) {

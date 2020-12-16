@@ -2,7 +2,7 @@ package com.cdfive.mp3.advice;
 
 import com.cdfive.common.exception.ServiceException;
 import com.cdfive.common.util.HostNameUtil;
-import com.cdfive.common.util.JsonUtil;
+import com.cdfive.common.util.FastJsonUtil;
 import com.cdfive.log.vo.AddMethodLogVo;
 import com.cdfive.mp3.exception.Mp3ServiceException;
 import com.cdfive.mp3.message.producer.MethodLogProducer;
@@ -51,11 +51,11 @@ public class Mp3ServiceMethodAdvice {
             addMethodLogVo.setMethodName(getMethodName(methodSignature));
 
             Object[] args = pjp.getArgs();
-            addMethodLogVo.setRequestJson(JsonUtil.objToJson(args));
+            addMethodLogVo.setRequestJson(FastJsonUtil.objToJson(args));
 
             result = pjp.proceed();
 
-            addMethodLogVo.setResponseJson(JsonUtil.objToJson(result));
+            addMethodLogVo.setResponseJson(FastJsonUtil.objToJson(result));
             addMethodLogVo.setSuccess(true);
             long endTime = System.currentTimeMillis();
             addMethodLogVo.setEndTime(new Date(endTime));
