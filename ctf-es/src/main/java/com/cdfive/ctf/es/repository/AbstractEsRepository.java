@@ -5,6 +5,7 @@ import com.cdfive.common.util.GenericClassUtil;
 import com.cdfive.common.util.StringUtil;
 import com.cdfive.ctf.es.annotation.Document;
 import com.cdfive.ctf.es.config.EsProperties;
+import com.cdfive.ctf.es.constant.EsConstant;
 import com.cdfive.ctf.es.query.DeleteQuery;
 import com.cdfive.ctf.es.query.SearchQuery;
 import com.cdfive.ctf.es.query.UpdateQuery;
@@ -460,8 +461,17 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
             if (esProperties.getTrackTotalHits() != null && esProperties.getTrackTotalHits()) {
                 searchSourceBuilder.trackTotalHits(true);
             }
-            searchSourceBuilder.from((int) pageable.getOffset());
-            searchSourceBuilder.size(pageable.getPageSize());
+            if (pageable.getOffset() > EsConstant.MAX_RESULT) {
+                searchSourceBuilder.from(EsConstant.MAX_RESULT.intValue());
+                searchSourceBuilder.size(0);
+            } else {
+                searchSourceBuilder.from((int) pageable.getOffset());
+                if ((int) pageable.getOffset() + pageable.getPageSize() > EsConstant.MAX_RESULT.intValue()) {
+                    searchSourceBuilder.size(EsConstant.MAX_RESULT.intValue() - (int) pageable.getOffset());
+                } else {
+                    searchSourceBuilder.size(pageable.getPageSize());
+                }
+            }
         }
 
         List<String> fields = searchQuery.getFields();
