@@ -457,10 +457,11 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
             }
         }
 
+        if (esProperties.getTrackTotalHits() != null && esProperties.getTrackTotalHits()) {
+            searchSourceBuilder.trackTotalHits(true);
+        }
+
         if (pageable.isPaged()) {
-            if (esProperties.getTrackTotalHits() != null && esProperties.getTrackTotalHits()) {
-                searchSourceBuilder.trackTotalHits(true);
-            }
             if (pageable.getOffset() > EsConstant.MAX_RESULT) {
                 searchSourceBuilder.from(EsConstant.MAX_RESULT.intValue());
                 searchSourceBuilder.size(0);
