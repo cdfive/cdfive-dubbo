@@ -43,6 +43,7 @@
         <jackson.version>2.9.6</jackson.version>
         <elastic-job.version>2.1.5</elastic-job.version>
         <commons-lang3.version>3.5</commons-lang3.version>
+        <commons-codec.version>1.10</commons-codec.version>
         <javax.servlet-api.version>3.0.1</javax.servlet-api.version>
         <jstl.version>1.2</jstl.version>
         <logstash-logback-encoder.version>6.1</logstash-logback-encoder.version>
