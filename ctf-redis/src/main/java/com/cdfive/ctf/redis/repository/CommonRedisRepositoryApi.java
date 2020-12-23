@@ -1,5 +1,6 @@
 package com.cdfive.ctf.redis.repository;
 
+import com.cdfive.ctf.redis.RedisKeyCallback;
 import redis.clients.util.Pool;
 
 import java.util.List;
@@ -60,7 +61,9 @@ public interface CommonRedisRepositoryApi<T> {
 
     boolean limitPeriod(String key, int second, int limit);
 
-    List<String> scan(String keyPattern, int scanSize, int deleteSize);
+    List<String> scan(String keyPattern, int scanSize);
+
+    void scan(String keyPattern, int scanSize, RedisKeyCallback callback);
 
     int scanAndDelete(String keyPattern, int scanSize, int deleteSize);
 }

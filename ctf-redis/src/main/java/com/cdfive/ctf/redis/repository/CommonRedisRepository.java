@@ -1,9 +1,11 @@
 package com.cdfive.ctf.redis.repository;
 
+import com.cdfive.ctf.redis.RedisKeyCallback;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import redis.clients.jedis.*;
 import redis.clients.util.Pool;
 
@@ -251,7 +253,7 @@ public class CommonRedisRepository implements CommonRedisRepositoryApi<ShardedJe
     }
 
     @Override
-    public List<String> scan(String keyPattern, int scanSize, int deleteSize) {
+    public List<String> scan(String keyPattern, int scanSize) {
         List<String> keys = new ArrayList<>();
         try (ShardedJedis shardedJedis = pool.getResource()) {
             try (Jedis jedis = shardedJedis.getAllShards().iterator().next()) {
@@ -274,6 +276,32 @@ public class CommonRedisRepository implements CommonRedisRepositoryApi<ShardedJe
             }
         }
         return keys;
+    }
+
+    @Override
+    public void scan(String keyPattern, int scanSize, RedisKeyCallback callback) {
+        try (ShardedJedis shardedJedis = pool.getResource()) {
+            try (Jedis jedis = shardedJedis.getAllShards().iterator().next()) {
+                ScanParams scanParams = new ScanParams();
+                scanParams.match(keyPattern);
+                scanParams.count(scanSize);
+                String cursor = ScanParams.SCAN_POINTER_START;
+                while (true) {
+                    ScanResult<String> scanResult = jedis.scan(cursor, scanParams);
+                    cursor = scanResult.getStringCursor();
+                    List<String> list = scanResult.getResult();
+                    if (!CollectionUtils.isEmpty(list)) {
+                        for (String key : list) {
+                            callback.doCallback(key);
+                        }
+                    }
+
+                    if ("0".equals(cursor)) {
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     @Override

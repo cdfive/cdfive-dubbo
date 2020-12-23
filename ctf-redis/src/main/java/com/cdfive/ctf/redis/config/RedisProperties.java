@@ -22,4 +22,5 @@ public class RedisProperties {
 
     private Integer timeoutMs;
 
+    private String password;
 }

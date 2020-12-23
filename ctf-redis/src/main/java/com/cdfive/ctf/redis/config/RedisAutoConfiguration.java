@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.StringUtils;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.JedisShardInfo;
 import redis.clients.jedis.ShardedJedisPool;
@@ -30,11 +31,14 @@ public class RedisAutoConfiguration {
 
         String host = redisProperties.getHost();
         Integer port = redisProperties.getPort();
-
         Integer timeoutMs = redisProperties.getTimeoutMs();
 
         List<JedisShardInfo> shards = new ArrayList<>();
         JedisShardInfo shard = new JedisShardInfo(host, port, timeoutMs);
+        String password = redisProperties.getPassword();
+        if (!StringUtils.isEmpty(password)) {
+            shard.setPassword(password);
+        }
         shards.add(shard);
 
         ShardedJedisPool shardedJedisPool = new ShardedJedisPool(poolConfig, shards);

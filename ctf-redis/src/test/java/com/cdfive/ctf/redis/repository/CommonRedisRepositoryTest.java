@@ -1,5 +1,7 @@
 package com.cdfive.ctf.redis.repository;
 
+import com.cdfive.common.tool.Holder;
+import com.cdfive.ctf.redis.RedisKeyCallback;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -94,9 +96,22 @@ public class CommonRedisRepositoryTest {
 
     @Test
     public void testScan() {
-        List<String> keys = repository.scan("a*", 1000, 100);
+        List<String> keys = repository.scan("a*", 1000);
         System.out.println(keys);
         System.out.println("testScan done");
+    }
+
+    @Test
+    public void testScanCallback() {
+        Holder<Integer> holder = new Holder<>(0);
+        repository.scan("a*", 1000, new RedisKeyCallback() {
+            @Override
+            public void doCallback(String key) {
+                holder.setValue(holder.getValue() + 1);
+                System.out.println(String.format("[%d]%s", holder.getValue(), key));
+            }
+        });
+        System.out.println("testScanCallback done");
     }
 
     @Test
