@@ -1,6 +1,5 @@
-package com.cdfive.com.util;
+package com.cdfive.common.util;
 
-import com.cdfive.common.util.StringUtil;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
