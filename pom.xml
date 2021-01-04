@@ -79,8 +79,8 @@
         <module>cdfive-learn</module>
         <module>cdfive-ejob</module>
         <module>support-jpa</module>
-        <module>ctf-redis</module>
-        <module>ctf-es</module>
+        <module>cdfive-redis</module>
+        <module>cdfive-es</module>
         <module>cdfive-search</module>
         <module>cdfive-tool</module>
     </modules>
