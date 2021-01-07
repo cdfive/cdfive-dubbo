@@ -15,7 +15,7 @@
 <!--        <cdfive-common.version>0.0.1-SNAPSHOT</cdfive-common.version>-->
 <!--        <cdfive-mp3-api.version>0.0.1-SNAPSHOT</cdfive-mp3-api.version>-->
 <!--        <cdfive-log-api.version>0.0.1-SNAPSHOT</cdfive-log-api.version>-->
-<!--        <support-jpa.version>0.0.1-SNAPSHOT</support-jpa.version>-->
+<!--        <cdfive-jpa.version>0.0.1-SNAPSHOT</cdfive-jpa.version>-->
     </properties>
 
     <dependencies>
@@ -29,8 +29,8 @@
         <!-- support -->
         <dependency>
             <groupId>com.cdfive</groupId>
-            <artifactId>support-jpa</artifactId>
-            <version>${support-jpa.version}</version>
+            <artifactId>cdfive-jpa</artifactId>
+            <version>${cdfive-jpa.version}</version>
         </dependency>
 
         <!-- api -->

@@ -65,7 +65,7 @@
         <cdfive-mp3-api.version>0.0.1-SNAPSHOT</cdfive-mp3-api.version>
         <cdfive-log-api.version>0.0.1-SNAPSHOT</cdfive-log-api.version>
         <cdfive-search-api.version>0.0.1-SNAPSHOT</cdfive-search-api.version>
-        <support-jpa.version>0.0.1-SNAPSHOT</support-jpa.version>
+        <cdfive-jpa.version>0.0.1-SNAPSHOT</cdfive-jpa.version>
     </properties>
 
     <modules>
@@ -78,7 +78,7 @@
         <module>cdfive-storm</module>
         <module>cdfive-learn</module>
         <module>cdfive-ejob</module>
-        <module>support-jpa</module>
+        <module>cdfive-jpa</module>
         <module>cdfive-redis</module>
         <module>cdfive-es</module>
         <module>cdfive-search</module>
