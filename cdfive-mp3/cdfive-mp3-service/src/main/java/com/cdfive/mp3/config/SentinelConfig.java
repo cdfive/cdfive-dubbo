@@ -3,6 +3,7 @@ package com.cdfive.mp3.config;
 import com.alibaba.csp.sentinel.datasource.ReadableDataSource;
 import com.alibaba.csp.sentinel.datasource.redis.RedisDataSource;
 import com.alibaba.csp.sentinel.datasource.redis.config.RedisConnectionConfig;
+import com.alibaba.csp.sentinel.init.InitExecutor;
 import com.alibaba.csp.sentinel.slots.block.authority.AuthorityRule;
 import com.alibaba.csp.sentinel.slots.block.authority.AuthorityRuleManager;
 import com.alibaba.csp.sentinel.slots.block.degrade.DegradeRule;
@@ -78,5 +79,7 @@ public class SentinelConfig {
         ReadableDataSource<String, List<ParamFlowRule>> paramFlowRuleRedisDataSource = new RedisDataSource<List<ParamFlowRule>>(config,
                 paramFlowRuleKey, paramFlowRuleKey, o -> JSON.parseObject(o, new TypeReference<List<ParamFlowRule>>() {}));
         ParamFlowRuleManager.register2Property(paramFlowRuleRedisDataSource.getProperty());
+
+        InitExecutor.doInit();
     }
 }
