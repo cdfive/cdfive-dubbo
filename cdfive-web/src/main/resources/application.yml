@@ -10,3 +10,15 @@ resources:
   static:
     pathPatterns: /static/**
     resourceLocations: classpath:/static/
+
+sentinel:
+  enable: true
+  app-name: cdfive-web
+  transport-dashboard: localhost:8080
+  transport-port: 8731
+  datasource-type: redis
+
+redis:
+  host: localhost
+  port: 6379
+  timeout-ms: 2000

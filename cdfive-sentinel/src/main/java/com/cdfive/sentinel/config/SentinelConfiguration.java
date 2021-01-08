@@ -68,11 +68,11 @@ public class SentinelConfiguration {
 
     @PostConstruct
     public void init() throws Exception {
-        log.error("{}SentinelConfiguration init", LOG_PRIFEX);
+        log.info("{}SentinelConfiguration init", LOG_PRIFEX);
 
         if (sentinelProperties != null) {
             boolean enable = sentinelProperties.isEnable();
-            log.error("{}SentinelConfiguration set enable={}", LOG_PRIFEX, enable);
+            log.info("{}SentinelConfiguration set enable={}", LOG_PRIFEX, enable);
             if (!enable) {
                 Constants.ON = false;
                 return;
@@ -80,19 +80,19 @@ public class SentinelConfiguration {
 
             String appName = sentinelProperties.getAppName();
             if (StringUtil.isNotBlank(appName)) {
-                log.error("{}SentinelConfiguration set appName={}", LOG_PRIFEX, appName);
+                log.info("{}SentinelConfiguration set appName={}", LOG_PRIFEX, appName);
                 System.setProperty(SentinelConfig.APP_NAME_PROP_KEY, appName);
             }
 
             String dashboard = sentinelProperties.getTransportDashboard();
             if (StringUtil.isNotBlank(dashboard)) {
-                log.error("{}SentinelConfiguration set dashboard={}", LOG_PRIFEX, dashboard);
+                log.info("{}SentinelConfiguration set dashboard={}", LOG_PRIFEX, dashboard);
                 SentinelConfig.setConfig(TransportConfig.CONSOLE_SERVER, dashboard);
             }
 
             Integer transportPort = sentinelProperties.getTransportPort();
             if (transportPort != null) {
-                log.error("{}SentinelConfiguration set port={}", LOG_PRIFEX, transportPort);
+                log.info("{}SentinelConfiguration set port={}", LOG_PRIFEX, transportPort);
                 // Set transport port
                 TransportConfig.setRuntimePort(transportPort);
             }
@@ -102,7 +102,7 @@ public class SentinelConfiguration {
                 String redisHost = sentinelProperties.getRedisHost();
                 String redisPort = sentinelProperties.getRedisPort();
                 String redisPassword = sentinelProperties.getRedisPassword();
-                log.error("{}SentinelConfiguration init redis datasource,host={},port={},password={}", LOG_PRIFEX, redisHost, redisPort, redisPassword);
+                log.info("{}SentinelConfiguration init redis datasource,host={},port={},password={}", LOG_PRIFEX, redisHost, redisPort, redisPassword);
                 if (StringUtil.isNotBlank(redisHost) && StringUtil.isNotBlank(redisPort)) {
                     RedisConnectionConfig.Builder redisConfigBuilder = RedisConnectionConfig.builder();
                     redisConfigBuilder.withHost(redisHost.replace("@", "")).withPort(Integer.parseInt(redisPort.replace("@", "")));
@@ -113,7 +113,7 @@ public class SentinelConfiguration {
 
                     // Get client ip
                     String ip = TransportConfig.getHeartbeatClientIp();
-                    log.error("{}SentinelConfiguration client ip={}", LOG_PRIFEX, ip);
+                    log.info("{}SentinelConfiguration client ip={}", LOG_PRIFEX, ip);
 
                     // Init RedisDataSource for flow rules
                     String flowRuleKey = buildRuleKey(appName, ip, transportPort, "flow");
@@ -174,38 +174,38 @@ public class SentinelConfiguration {
         }
 
         if (dubboProviderFallback != null) {
-            log.error("{}SentinelConfiguration register dubbo provider fallback", LOG_PRIFEX);
+            log.info("{}SentinelConfiguration register dubbo provider fallback", LOG_PRIFEX);
             DubboFallbackRegistry.setProviderFallback(dubboProviderFallback);
         }
 
         if (dubboConsumerFallback != null) {
-            log.error("{}SentinelConfiguration register dubbo consumer fallback", LOG_PRIFEX);
+            log.info("{}SentinelConfiguration register dubbo consumer fallback", LOG_PRIFEX);
             DubboFallbackRegistry.setConsumerFallback(dubboConsumerFallback);
         }
 
         if (urlBlockHandler != null) {
-            log.error("{}SentinelConfiguration register urlBlockHandler", LOG_PRIFEX);
+            log.info("{}SentinelConfiguration register urlBlockHandler", LOG_PRIFEX);
             WebCallbackManager.setUrlBlockHandler(urlBlockHandler);
         }
 
         if (urlCleaner != null) {
-            log.error("{}SentinelConfiguration register urlCleaner", LOG_PRIFEX);
+            log.info("{}SentinelConfiguration register urlCleaner", LOG_PRIFEX);
             WebCallbackManager.setUrlCleaner(urlCleaner);
         } else if (!CollectionUtils.isEmpty(urlParsers)) {
-            log.error("{}SentinelConfiguration register CustormUrlCleaner,urlParsers size={}", LOG_PRIFEX, urlParsers.size());
+            log.info("{}SentinelConfiguration register CustormUrlCleaner,urlParsers size={}", LOG_PRIFEX, urlParsers.size());
             for (UrlParser urlParser : urlParsers) {
-                log.error("{}SentinelConfiguration urlParser={}", LOG_PRIFEX, urlParser.getClass().getSimpleName());
+                log.info("{}SentinelConfiguration urlParser={}", LOG_PRIFEX, urlParser.getClass().getSimpleName());
             }
             CustomUrlCleaner urlCleaner = new CustomUrlCleaner();
             urlCleaner.setUrlParsers(urlParsers);
             WebCallbackManager.setUrlCleaner(urlCleaner);
         } else {
-            log.error("{}SentinelConfiguration use DefaultUrlCleaner", LOG_PRIFEX);
+            log.info("{}SentinelConfiguration use DefaultUrlCleaner", LOG_PRIFEX);
         }
 
-        log.error("{}SentinelConfiguration InitExecutor.doInit() start", LOG_PRIFEX);
+        log.info("{}SentinelConfiguration InitExecutor.doInit() start", LOG_PRIFEX);
         InitExecutor.doInit();
-        log.error("{}SentinelConfiguration InitExecutor.doInit() end", LOG_PRIFEX);
+        log.info("{}SentinelConfiguration InitExecutor.doInit() end", LOG_PRIFEX);
     }
 
     public SentinelProperties getSentinelProperties() {

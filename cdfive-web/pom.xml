@@ -24,6 +24,13 @@
             <version>${cdfive-mp3-api.version}</version>
         </dependency>
 
+        <!-- support -->
+        <dependency>
+            <groupId>com.cdfive</groupId>
+            <artifactId>cdfive-sentinel</artifactId>
+            <version>${cdfive-sentinel.version}</version>
+        </dependency>
+
         <!-- spring-boot -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -72,20 +79,6 @@
         <dependency>
             <groupId>net.logstash.logback</groupId>
             <artifactId>logstash-logback-encoder</artifactId>
-        </dependency>
-
-        <!-- sentinel -->
-        <dependency>
-            <groupId>com.alibaba.csp</groupId>
-            <artifactId>sentinel-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba.csp</groupId>
-            <artifactId>sentinel-apache-dubbo-adapter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba.csp</groupId>
-            <artifactId>sentinel-transport-simple-http</artifactId>
         </dependency>
     </dependencies>
 
