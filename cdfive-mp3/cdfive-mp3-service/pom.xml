@@ -32,6 +32,11 @@
             <artifactId>cdfive-jpa</artifactId>
             <version>${cdfive-jpa.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.cdfive</groupId>
+            <artifactId>cdfive-sentinel</artifactId>
+            <version>${cdfive-sentinel.version}</version>
+        </dependency>
 
         <!-- api -->
         <dependency>
@@ -45,7 +50,7 @@
             <version>${cdfive-log-api.version}</version>
         </dependency>
 
-        <!-- springboot -->
+        <!-- spring-boot -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -141,29 +146,6 @@
             <groupId>net.logstash.logback</groupId>
             <artifactId>logstash-logback-encoder</artifactId>
         </dependency>
-
-        <!-- sentinel -->
-        <dependency>
-            <groupId>com.alibaba.csp</groupId>
-            <artifactId>sentinel-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba.csp</groupId>
-            <artifactId>sentinel-apache-dubbo-adapter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba.csp</groupId>
-            <artifactId>sentinel-transport-simple-http</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba.csp</groupId>
-            <artifactId>sentinel-parameter-flow-control</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba.csp</groupId>
-            <artifactId>sentinel-datasource-redis</artifactId>
-            <version>${sentinel.version}</version>
-        </dependency>
     </dependencies>
 
     <profiles>
@@ -171,6 +153,7 @@
             <id>p1</id>
             <properties>
                 <dubbo.port>20000</dubbo.port>
+                <sentinel.transport.port>8701</sentinel.transport.port>
             </properties>
 
         </profile>
@@ -178,6 +161,7 @@
             <id>p2</id>
             <properties>
                 <dubbo.port>20001</dubbo.port>
+                <sentinel.transport.port>8702</sentinel.transport.port>
             </properties>
         </profile>
     </profiles>

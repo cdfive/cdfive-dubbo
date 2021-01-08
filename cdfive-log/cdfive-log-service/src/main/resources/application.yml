@@ -19,3 +19,15 @@ spring:
         physical-strategy: com.cdfive.support.jpa.util.UnderscoreNameCustomizer
   profiles:
     active: dev
+
+sentinel:
+  enable: true
+  app-name: cdfive-log
+  transport-dashboard: localhost:8080
+  transport-port: 8711
+  datasource-type: redis
+
+redis:
+  host: localhost
+  port: 6379
+  timeout-ms: 2000

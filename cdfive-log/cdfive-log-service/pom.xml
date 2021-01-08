@@ -28,6 +28,11 @@
             <artifactId>cdfive-jpa</artifactId>
             <version>${cdfive-jpa.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.cdfive</groupId>
+            <artifactId>cdfive-sentinel</artifactId>
+            <version>${cdfive-sentinel.version}</version>
+        </dependency>
 
         <!-- api -->
         <dependency>
@@ -41,7 +46,7 @@
             <version>${cdfive-search-api.version}</version>
         </dependency>
 
-        <!-- springboot -->
+        <!-- spring-boot -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -119,20 +124,6 @@
         <dependency>
             <groupId>net.logstash.logback</groupId>
             <artifactId>logstash-logback-encoder</artifactId>
-        </dependency>
-
-        <!-- sentinel -->
-        <dependency>
-            <groupId>com.alibaba.csp</groupId>
-            <artifactId>sentinel-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba.csp</groupId>
-            <artifactId>sentinel-apache-dubbo-adapter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba.csp</groupId>
-            <artifactId>sentinel-transport-simple-http</artifactId>
         </dependency>
     </dependencies>
 

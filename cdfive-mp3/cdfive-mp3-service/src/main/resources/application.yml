@@ -41,3 +41,10 @@ spring:
         physical-strategy: com.cdfive.support.jpa.util.UnderscoreNameCustomizer
   profiles:
     active: dev
+
+sentinel:
+  enable: true
+  app-name: cdfive-mp3
+  transport-dashboard: localhost:8080
+  transport-port: ${sentinel.transport.port}
+  datasource-type: redis

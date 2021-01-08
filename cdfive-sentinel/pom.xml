@@ -35,7 +35,7 @@
         <!-- sentinel -->
         <dependency>
             <groupId>com.alibaba.csp</groupId>
-            <artifactId>sentinel-dubbo-adapter</artifactId>
+            <artifactId>sentinel-apache-dubbo-adapter</artifactId>
             <version>${sentinel.version}</version>
         </dependency>
         <dependency>
