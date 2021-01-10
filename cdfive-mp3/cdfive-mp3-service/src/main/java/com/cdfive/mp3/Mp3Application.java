@@ -14,10 +14,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  */
 @Slf4j
 @ImportResource({"classpath:/config/applicationContext.xml"})
-//@EnableDubboSwagger
 @EnableCaching
 @EnableJpaRepositories(repositoryFactoryBeanClass = BaseRepositoryFactoryBean.class, basePackages = "com.cdfive.mp3")
 @SpringBootApplication(scanBasePackages = {"com.cdfive"})
+@EnableDubboSwagger
 public class Mp3Application {
     public static void main(String[] args) {
         SpringApplication.run(Mp3Application.class, args);
