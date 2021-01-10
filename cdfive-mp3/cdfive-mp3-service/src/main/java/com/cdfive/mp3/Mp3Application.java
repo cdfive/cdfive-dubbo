@@ -1,6 +1,7 @@
 package com.cdfive.mp3;
 
 import com.cdfive.support.jpa.repository.BaseRepositoryFactoryBean;
+import com.deepoove.swagger.dubbo.annotations.EnableDubboSwagger;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,6 +14,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  */
 @Slf4j
 @ImportResource({"classpath:/config/applicationContext.xml"})
+//@EnableDubboSwagger
 @EnableCaching
 @EnableJpaRepositories(repositoryFactoryBeanClass = BaseRepositoryFactoryBean.class, basePackages = "com.cdfive.mp3")
 @SpringBootApplication(scanBasePackages = {"com.cdfive"})

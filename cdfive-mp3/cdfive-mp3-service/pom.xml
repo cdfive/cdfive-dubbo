@@ -146,11 +146,33 @@
             <groupId>net.logstash.logback</groupId>
             <artifactId>logstash-logback-encoder</artifactId>
         </dependency>
+
+        <!-- swagger2 -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${swagger2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${swagger2.version}</version>
+        </dependency>
+
+        <!-- swagger-dubbo -->
+        <dependency>
+            <groupId>com.deepoove</groupId>
+            <artifactId>swagger-dubbo</artifactId>
+            <version>${swagger-dubbo.version}</version>
+        </dependency>
     </dependencies>
 
     <profiles>
         <profile>
             <id>p1</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <properties>
                 <dubbo.port>20000</dubbo.port>
                 <sentinel.transport.port>8701</sentinel.transport.port>
