@@ -9,7 +9,8 @@ import com.cdfive.search.repository.BizLogEsRepository;
 import com.cdfive.search.service.BizLogEsService;
 import com.cdfive.search.vo.bizlog.QueryBizLogPageReqVo;
 import com.cdfive.search.vo.bizlog.QueryBizLogPageRespVo;
-import org.junit.jupiter.api.Test;
+//import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
