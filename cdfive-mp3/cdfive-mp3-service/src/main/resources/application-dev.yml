@@ -22,3 +22,8 @@ redis:
   host: localhost
   port: 6379
   timeout-ms: 2000
+
+swagger:
+  enable: true
+  dubbo:
+    enable: true
