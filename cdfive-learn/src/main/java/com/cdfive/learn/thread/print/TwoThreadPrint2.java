@@ -1,4 +1,4 @@
-package com.cdfive.learn.thread.q1;
+package com.cdfive.learn.thread.print;
 
 /**
  * wait()
