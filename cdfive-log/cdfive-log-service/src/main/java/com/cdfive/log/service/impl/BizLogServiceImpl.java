@@ -58,6 +58,10 @@ public class BizLogServiceImpl extends AbstractLogService implements BizLogServi
              (page = bizLogRepository.findAll(pageable)).hasContent();
              pageable = pageable.next()) {
 
+            if (page.getNumber() == 0) {
+                log.info("syncAllToEs total={},totalPage={}", page.getTotalElements(), page.getTotalPages());
+            }
+
             List<BizLogPo> songPos = page.getContent();
             List<SaveBizLogReqVo> saveReqVos = songPos.stream().map(o -> {
                 SaveBizLogReqVo saveReqVo = new SaveBizLogReqVo();

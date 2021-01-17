@@ -3,6 +3,7 @@ package com.cdfive.search.service.impl;
 import com.cdfive.common.util.PageUtil;
 import com.cdfive.common.util.StringUtil;
 import com.cdfive.common.vo.page.PageRespVo;
+import com.cdfive.es.query.SearchQuery;
 import com.cdfive.search.eo.BizLogEo;
 import com.cdfive.search.repository.BizLogEsRepository;
 import com.cdfive.search.service.BizLogEsService;
@@ -44,7 +45,7 @@ public class BizLogEsServiceImpl implements BizLogEsService {
             BeanUtils.copyProperties(o, eo);
             return eo;
         }).collect(Collectors.toList());
-        bizLogEsRepository.saveAll(eos);
+        bizLogEsRepository.save(eos);
     }
 
     @Override
@@ -56,7 +57,8 @@ public class BizLogEsServiceImpl implements BizLogEsService {
             rootQueryBuilder.filter(QueryBuilders.matchQuery("info", info));
         }
 
-        Page<BizLogEo> page = bizLogEsRepository.search(rootQueryBuilder, PageRequest.of(reqVo.getPageNum() - 1, reqVo.getPageSize()));
+        SearchQuery searchQuery = new SearchQuery(rootQueryBuilder, PageRequest.of(reqVo.getPageNum() - 1, reqVo.getPageSize()));
+        Page<BizLogEo> page = bizLogEsRepository.search(searchQuery);
         return PageUtil.buildPage(page, QueryBizLogPageTransformer.INSTANCE);
     }
 }

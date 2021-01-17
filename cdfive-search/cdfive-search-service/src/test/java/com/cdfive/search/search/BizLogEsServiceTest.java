@@ -32,6 +32,11 @@ public class BizLogEsServiceTest extends BaseTest {
     }
 
     @Test
+    public void testDelete() {
+        bizLogEsRepository.delete(1);
+    }
+
+    @Test
     public void testQueryBizLogPage() {
         QueryBizLogPageReqVo reqVo = new QueryBizLogPageReqVo();
         PageRespVo<QueryBizLogPageRespVo> respVo = bizLogEsService.queryBizLogPage(reqVo);

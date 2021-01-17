@@ -1,8 +1,12 @@
 server:
   port: 10003
 
-#spring:
-#  data:
-#    elasticsearch:
-#      cluster-name: elasticsearch
-#      cluster-nodes: localhost:9300
+spring:
+  data:
+    elasticsearch:
+      clusterName: elasticsearch
+      clusterNodes: localhost:9200
+      username: elastic
+      password: elastic
+      maxConnPerRoute: 2
+      maxConnTotal: 20

@@ -1,16 +1,13 @@
 package com.cdfive.search.eo;
 
+import com.cdfive.es.annotation.Document;
+import com.cdfive.es.annotation.Id;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.DateFormat;
-import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.util.Date;
 
@@ -22,28 +19,23 @@ import java.util.Date;
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(indexName = "bizlogs", shards = 1, replicas = 0)
+@Document(index = "bizlog")
 public class BizLogEo {
 
     @Id
-    @Field(type = FieldType.Integer, store = true)
     private Integer id;
 
     private String info;
 
-    @Field(type = FieldType.Integer)
     private Integer keyId;
 
     private String ip;
 
-    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss")
-    @Field(type = FieldType.Date, format = DateFormat.date_hour_minute_second)
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss.SSS")
     private Date createTime;
 
-    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss")
-    @Field(type = FieldType.Date, format = DateFormat.date_hour_minute_second)
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss.SSS")
     private Date updateTime;
 
-    @Field(type = FieldType.Boolean)
     private Boolean deleted;
 }

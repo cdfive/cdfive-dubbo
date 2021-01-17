@@ -1,12 +1,13 @@
 package com.cdfive.search.repository;
 
+import com.cdfive.es.repository.AbstractEsRepository;
 import com.cdfive.search.eo.BizLogEo;
-import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
+import org.springframework.stereotype.Repository;
 
 /**
  * @author cdfive
  */
-public interface BizLogEsRepository extends ElasticsearchRepository<BizLogEo, Integer> {
-
+@Repository
+public class BizLogEsRepository extends AbstractEsRepository<BizLogEo, Integer> {
 
 }

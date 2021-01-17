@@ -70,6 +70,7 @@
         <cdfive-log-api.version>0.0.1-SNAPSHOT</cdfive-log-api.version>
         <cdfive-search-api.version>0.0.1-SNAPSHOT</cdfive-search-api.version>
         <cdfive-jpa.version>0.0.1-SNAPSHOT</cdfive-jpa.version>
+        <cdfive-es.version>0.0.1-SNAPSHOT</cdfive-es.version>
         <cdfive-sentinel.version>0.0.1-SNAPSHOT</cdfive-sentinel.version>
     </properties>
 

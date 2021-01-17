@@ -1,0 +1,41 @@
+//PUT /bizlog_v1
+{
+  "aliases": {
+    "bizlog": {}
+  },
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 2
+  },
+  "mappings": {
+    "properties": {
+      "id": {
+        "type": "keyword",
+        "store": true
+      },
+      "info": {
+        "type": "text",
+        "store": true
+      },
+      "keyId": {
+        "type": "integer",
+        "store": true
+      },
+      "ip": {
+        "type": "keyword",
+        "store": true
+      },
+      "createTime": {
+        "type": "date",
+        "format": "yyyy-MM-dd HH:mm:ss.SSS||yyyy-MM-dd HH:mm:ss||epoch_millis"
+      },
+      "updateTime": {
+        "type": "date",
+        "format": "yyyy-MM-dd HH:mm:ss.SSS||yyyy-MM-dd HH:mm:ss||epoch_millis"
+      },
+      "deleted": {
+        "type": "boolean"
+      }
+    }
+  }
+}
