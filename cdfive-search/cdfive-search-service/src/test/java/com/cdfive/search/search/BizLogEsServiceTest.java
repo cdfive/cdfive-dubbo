@@ -3,6 +3,8 @@ package com.cdfive.search.search;
 import com.alibaba.fastjson.JSON;
 import com.cdfive.common.util.FastJsonUtil;
 import com.cdfive.common.vo.page.PageRespVo;
+import com.cdfive.es.query.SearchQuery;
+import com.cdfive.es.util.EsUtil;
 import com.cdfive.search.BaseTest;
 import com.cdfive.search.eo.BizLogEo;
 import com.cdfive.search.repository.BizLogEsRepository;
@@ -10,8 +12,15 @@ import com.cdfive.search.service.BizLogEsService;
 import com.cdfive.search.vo.bizlog.QueryBizLogPageReqVo;
 import com.cdfive.search.vo.bizlog.QueryBizLogPageRespVo;
 //import org.junit.jupiter.api.Test;
+import com.sun.media.sound.SoftTuning;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.TermQueryBuilder;
+import org.elasticsearch.index.query.TermsQueryBuilder;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 /**
  * @author cdfive
@@ -42,4 +51,60 @@ public class BizLogEsServiceTest extends BaseTest {
         PageRespVo<QueryBizLogPageRespVo> respVo = bizLogEsService.queryBizLogPage(reqVo);
         System.out.println(JSON.toJSONString(respVo));
     }
+
+    /**Test basic query start*/
+    @Test
+    public void testTerm() {
+        BoolQueryBuilder rootQuery = QueryBuilders.boolQuery();
+        TermQueryBuilder termQuery = QueryBuilders.termQuery("keyId", 6);
+        rootQuery.filter(termQuery);
+        SearchQuery searchQuery = new SearchQuery(rootQuery, PageRequest.of(0, 10));
+        Page<BizLogEo> page = bizLogEsRepository.search(searchQuery);
+        System.out.println(JSON.toJSONString(page));
+        System.out.println(EsUtil.genDsl(searchQuery));
+    }
+
+    @Test
+    public void testTerms() {
+        BoolQueryBuilder rootQuery = QueryBuilders.boolQuery();
+        TermsQueryBuilder termsQuery = QueryBuilders.termsQuery("keyId", new int[]{6, 24});
+        rootQuery.filter(termsQuery);
+        SearchQuery searchQuery = new SearchQuery(rootQuery, PageRequest.of(0, 10));
+        Page<BizLogEo> page = bizLogEsRepository.search(searchQuery);
+        System.out.println(JSON.toJSONString(page));
+        System.out.println(EsUtil.genDsl(searchQuery));
+    }
+
+    @Test
+    public void testMust() {
+        BoolQueryBuilder rootQuery = QueryBuilders.boolQuery();
+        rootQuery.must(QueryBuilders.termQuery("keyId", 6));
+        SearchQuery searchQuery = new SearchQuery(rootQuery, PageRequest.of(0, 10));
+        Page<BizLogEo> page = bizLogEsRepository.search(searchQuery);
+        System.out.println(JSON.toJSONString(page));
+        System.out.println(EsUtil.genDsl(searchQuery));
+    }
+
+    @Test
+    public void testMust2() {
+        BoolQueryBuilder rootQuery = QueryBuilders.boolQuery();
+        BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
+        rootQuery.filter(boolQuery);
+        boolQuery.must(QueryBuilders.termQuery("keyId", 6));
+        SearchQuery searchQuery = new SearchQuery(rootQuery, PageRequest.of(0, 10));
+        Page<BizLogEo> page = bizLogEsRepository.search(searchQuery);
+        System.out.println(JSON.toJSONString(page));
+        System.out.println(EsUtil.genDsl(searchQuery));
+    }
+
+    @Test
+    public void testMustNot() {
+        BoolQueryBuilder rootQuery = QueryBuilders.boolQuery();
+        rootQuery.mustNot(QueryBuilders.termQuery("keyId", 6));
+        SearchQuery searchQuery = new SearchQuery(rootQuery, PageRequest.of(0, 10));
+        Page<BizLogEo> page = bizLogEsRepository.search(searchQuery);
+        System.out.println(JSON.toJSONString(page));
+        System.out.println(EsUtil.genDsl(searchQuery));
+    }
+    /**Test basic query end*/
 }

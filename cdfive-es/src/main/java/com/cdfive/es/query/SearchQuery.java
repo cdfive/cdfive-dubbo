@@ -1,6 +1,9 @@
 package com.cdfive.es.query;
 
+import com.cdfive.es.constant.EsConstant;
 import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.fetch.subphase.FetchSourceContext;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.CollectionUtils;
@@ -21,7 +24,7 @@ public class SearchQuery implements Serializable {
 
     private List<String> fields = new ArrayList<>();
 
-    private Pageable pageable;
+    private Pageable pageable = Pageable.unpaged();
 
     public SearchQuery() {
 
@@ -141,5 +144,40 @@ public class SearchQuery implements Serializable {
     public SearchQuery setPageable(Pageable pageable) {
         this.pageable = pageable;
         return this;
+    }
+
+    public SearchSourceBuilder toSearchSourcebuilder() {
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(this.getQuery());
+
+        List<SortBuilder> sorts = this.getSorts();
+        if (!CollectionUtils.isEmpty(sorts)) {
+            for (SortBuilder sort : sorts) {
+                searchSourceBuilder.sort(sort);
+            }
+        }
+
+        Pageable pageable = this.getPageable();
+        if (pageable.isPaged()) {
+            if (pageable.getOffset() > EsConstant.MAX_RESULT) {
+                searchSourceBuilder.from(EsConstant.MAX_RESULT.intValue());
+                searchSourceBuilder.size(0);
+            } else {
+                searchSourceBuilder.from((int) pageable.getOffset());
+                if ((int) pageable.getOffset() + pageable.getPageSize() > EsConstant.MAX_RESULT.intValue()) {
+                    searchSourceBuilder.size(EsConstant.MAX_RESULT.intValue() - (int) pageable.getOffset());
+                } else {
+                    searchSourceBuilder.size(pageable.getPageSize());
+                }
+            }
+        }
+
+        List<String> fields = this.getFields();
+        if (!CollectionUtils.isEmpty(fields)) {
+            FetchSourceContext sourceContext = new FetchSourceContext(true, fields.toArray(new String[]{}), null);
+            searchSourceBuilder.fetchSource(sourceContext);
+        }
+
+        return searchSourceBuilder;
     }
 }

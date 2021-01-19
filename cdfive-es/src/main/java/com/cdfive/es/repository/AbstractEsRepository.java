@@ -5,7 +5,6 @@ import com.cdfive.common.util.GenericClassUtil;
 import com.cdfive.common.util.StringUtil;
 import com.cdfive.es.annotation.Document;
 import com.cdfive.es.config.EsProperties;
-import com.cdfive.es.constant.EsConstant;
 import com.cdfive.es.query.DeleteQuery;
 import com.cdfive.es.query.SearchQuery;
 import com.cdfive.es.query.UpdateQuery;
@@ -30,14 +29,11 @@ import org.elasticsearch.script.ScriptType;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.elasticsearch.search.fetch.subphase.FetchSourceContext;
-import org.elasticsearch.search.sort.SortBuilder;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -440,49 +436,13 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
 
     @Override
     public Page<Entity> search(SearchQuery searchQuery) {
-        QueryBuilder queryBuilder = searchQuery.getQuery();
-        Pageable pageable = searchQuery.getPageable();
-        if (pageable == null) {
-            pageable = Pageable.unpaged();
-        }
-
-        SearchRequest searchRequest = new SearchRequest(index);
-        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(queryBuilder);
-
-        List<SortBuilder> sorts = searchQuery.getSorts();
-        if (!CollectionUtils.isEmpty(sorts)) {
-            for (SortBuilder sort : sorts) {
-                searchSourceBuilder.sort(sort);
-            }
-        }
-
+        SearchSourceBuilder searchSourceBuilder = searchQuery.toSearchSourcebuilder();
         if (esProperties.getTrackTotalHits() != null && esProperties.getTrackTotalHits()) {
             searchSourceBuilder.trackTotalHits(true);
         }
 
-        if (pageable.isPaged()) {
-            if (pageable.getOffset() > EsConstant.MAX_RESULT) {
-                searchSourceBuilder.from(EsConstant.MAX_RESULT.intValue());
-                searchSourceBuilder.size(0);
-            } else {
-                searchSourceBuilder.from((int) pageable.getOffset());
-                if ((int) pageable.getOffset() + pageable.getPageSize() > EsConstant.MAX_RESULT.intValue()) {
-                    searchSourceBuilder.size(EsConstant.MAX_RESULT.intValue() - (int) pageable.getOffset());
-                } else {
-                    searchSourceBuilder.size(pageable.getPageSize());
-                }
-            }
-        }
-
-        List<String> fields = searchQuery.getFields();
-        if (!CollectionUtils.isEmpty(fields)) {
-            FetchSourceContext sourceContext = new FetchSourceContext(true, fields.toArray(new String[]{}), null);
-            searchSourceBuilder.fetchSource(sourceContext);
-        }
-
+        SearchRequest searchRequest = new SearchRequest(index);
         searchRequest.source(searchSourceBuilder);
-
         SearchResponse searchResponse;
         try {
             searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
@@ -497,7 +457,7 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
         SearchHits hits = searchResponse.getHits();
         long total = hits.getTotalHits().value;
         if (total == 0) {
-            return new PageImpl<>(Collections.emptyList(), pageable, 0);
+            return new PageImpl<>(Collections.emptyList(), searchQuery.getPageable(), 0);
         }
 
         List<Entity> entities = new ArrayList<>();
@@ -507,7 +467,7 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
             entities.add(entity);
         }
 
-        Page page = new PageImpl(entities, pageable, total);
+        Page page = new PageImpl(entities, searchQuery.getPageable(), total);
         return page;
     }
 
