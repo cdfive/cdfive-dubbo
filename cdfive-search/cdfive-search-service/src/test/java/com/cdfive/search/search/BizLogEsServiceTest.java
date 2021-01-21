@@ -3,6 +3,7 @@ package com.cdfive.search.search;
 import com.alibaba.fastjson.JSON;
 import com.cdfive.common.util.FastJsonUtil;
 import com.cdfive.common.vo.page.PageRespVo;
+import com.cdfive.es.constant.EsConstant;
 import com.cdfive.es.query.SearchQuery;
 import com.cdfive.es.util.EsUtil;
 import com.cdfive.search.BaseTest;
@@ -13,10 +14,7 @@ import com.cdfive.search.vo.bizlog.QueryBizLogPageReqVo;
 import com.cdfive.search.vo.bizlog.QueryBizLogPageRespVo;
 //import org.junit.jupiter.api.Test;
 import com.sun.media.sound.SoftTuning;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.TermQueryBuilder;
-import org.elasticsearch.index.query.TermsQueryBuilder;
+import org.elasticsearch.index.query.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -106,5 +104,40 @@ public class BizLogEsServiceTest extends BaseTest {
         System.out.println(JSON.toJSONString(page));
         System.out.println(EsUtil.genDsl(searchQuery));
     }
+
+    @Test
+    public void testShould() {
+        BoolQueryBuilder rootQuery = QueryBuilders.boolQuery();
+        rootQuery.should(QueryBuilders.termQuery("keyId", 6));
+        rootQuery.should(QueryBuilders.termQuery("keyId", 21));
+        SearchQuery searchQuery = new SearchQuery(rootQuery, PageRequest.of(0, 10));
+        Page<BizLogEo> page = bizLogEsRepository.search(searchQuery);
+        System.out.println(JSON.toJSONString(page));
+        System.out.println(EsUtil.genDsl(searchQuery));
+    }
+
+    @Test
+    public void testQueryString() {
+        BoolQueryBuilder rootQuery = QueryBuilders.boolQuery();
+        QueryStringQueryBuilder queryStringQueryBuilder = QueryBuilders.queryStringQuery("播").defaultField("info").analyzer(EsConstant.ANALYZER_IK_SMART).minimumShouldMatch("2<70%").boost(2);
+        rootQuery.filter(queryStringQueryBuilder);
+        SearchQuery searchQuery = new SearchQuery(rootQuery, PageRequest.of(0, 10));
+        Page<BizLogEo> page = bizLogEsRepository.search(searchQuery);
+        System.out.println(JSON.toJSONString(page));
+        System.out.println(EsUtil.genDsl(searchQuery));
+    }
+
+    @Test
+    public void testRange() {
+        BoolQueryBuilder rootQuery = QueryBuilders.boolQuery();
+        RangeQueryBuilder rangeQuery = QueryBuilders.rangeQuery("id").gt(10).lte(25);
+        rootQuery.filter(rangeQuery);
+        SearchQuery searchQuery = new SearchQuery(rootQuery, PageRequest.of(0, 10));
+        Page<BizLogEo> page = bizLogEsRepository.search(searchQuery);
+        System.out.println(JSON.toJSONString(page));
+        System.out.println(EsUtil.genDsl(searchQuery));
+    }
+
+
     /**Test basic query end*/
 }
