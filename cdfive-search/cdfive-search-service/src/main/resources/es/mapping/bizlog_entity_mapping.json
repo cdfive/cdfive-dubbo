@@ -1,4 +1,4 @@
-//PUT /bizlog_v1
+// PUT /bizlog_v1
 {
   "aliases": {
     "bizlog": {}
