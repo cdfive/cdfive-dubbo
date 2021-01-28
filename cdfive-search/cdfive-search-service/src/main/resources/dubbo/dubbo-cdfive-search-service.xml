@@ -14,6 +14,7 @@
 	<dubbo:protocol name="dubbo" port="20003" dispatcher="all" threadpool="fixed" threads="200" />
 
 	<dubbo:service ref="bizLogEsService" interface="com.cdfive.search.service.BizLogEsService" />
+	<dubbo:service ref="methodLogEsService" interface="com.cdfive.search.service.MethodLogEsService" />
 
 	<dubbo:provider timeout="5000" retries="0" />
 

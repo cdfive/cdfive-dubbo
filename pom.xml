@@ -66,6 +66,7 @@
 
         <!-- module version -->
         <cdfive-common.version>0.0.1-SNAPSHOT</cdfive-common.version>
+        <cdfive-user-api.version>0.0.1-SNAPSHOT</cdfive-user-api.version>
         <cdfive-mp3-api.version>0.0.1-SNAPSHOT</cdfive-mp3-api.version>
         <cdfive-log-api.version>0.0.1-SNAPSHOT</cdfive-log-api.version>
         <cdfive-search-api.version>0.0.1-SNAPSHOT</cdfive-search-api.version>
@@ -90,6 +91,9 @@
         <module>cdfive-search</module>
         <module>cdfive-tool</module>
         <module>cdfive-sentinel</module>
+        <module>cdfive-netty</module>
+        <module>cdfive-admin</module>
+        <module>cdfive-user</module>
     </modules>
 
     <dependencyManagement>

@@ -1,0 +1,73 @@
+html,body,div,table,td,button{font-family:'微软雅黑'!important;}
+#topbar .navbar-header #logo span.logo-text{font-family:'微软雅黑';font-weight: 400;}
+#footer{z-index:10;}
+.col-pad{padding:0px!important;}
+.col-mar{margin:0px!important;}
+table.input{width:100%!important;}
+.new-wd{width:100%!important;}
+.new-pad{padding:0px!important;}
+.new-pd-left{padding:0px 0px 0px 10px!important;}
+.new-pd-right{padding:0px 10px 0px 0px!important;}
+.new-flo-right div{float:right;}
+.limitshop .panel-default{border-color:#f7f7f7!important;}
+.new-one-page.panel-default{border-color:#f7f7f7!important;}
+.new-wine-card.panel-default{border-color:#f7f7f7!important;}
+.new-wine-card.panel-default #parameterTable tr{height:47px;}
+.new-wine-card.panel-default #qqparameterTable tr{height:47px;}
+.list-select.new-shop-select {border: 1px solid #e5e5e5;border-radius: 0px;outline: none;height:34px;}
+.new-radius-select .list-select{border: 1px solid #e5e5e5;border-radius: 0px;outline: none;height:34px;}
+.new-radius-select input[type="text"]{margin-top:-4px;}
+.new-radius-select button,.new-radius-select input[type="button"]{margin-top:-3px;}
+.new-detail-pri h3{margin:0px!important;}
+.new-detail-pri .form-group{margin:0px!important;}
+.new-detail-pri .col-md-6{padding: 0px 5px 0px 0px!important;}
+.new-refund-pri h3{margin:0px!important;}
+.new-refund-pri .form-group{margin:0px!important;}
+.new-refund-pri .col-md-6{padding: 0px 5px 0px 0px!important;}
+.new-refund-pri .form-control-static{padding-top:0px!important;}
+.new-detail-pri .form-control-static{padding-top:0px!important;}
+.new-pro-add .pal{padding: 20px 20px 0px 20px!important;}
+.new-pro-add .btn.btn-info.p_image{margin-left: 16px;}
+.new-add-pri .form-bordered .form-group > div { padding: 15px 15px 0px 15px!important;}
+.new-add-pri .form-bordered .form-group{border-bottom: 0px!important;}
+.new-add-brand .form-bordered .form-group{border-bottom: 0px!important;}
+.form-bordered .control-label{padding-top: 22px;}
+.form-bordered .control-label.newCheck{padding-top: 16px!important;}
+.new-list-qu .columns.columns-right.btn-group.pull-right{margin-top:-44px!important;}
+#product_table .btn-primary{width:85px!important;}
+.row.new-table-mg{line-height:51px;margin-bottom:-55px;}
+.list-select {min-width: 85px; width: 16%;height: 35px;padding: 6px 12px;font-size: 14px;line-height: 1.42857143;color: #555;background: #fff none;border: 1px solid #ccc;border-radius: 4px;}
+.fixed-table-loading {padding-top: 6px;}
+.require{vertical-align: -3px!important;}
+#footer{z-index:10;}
+.form-control-static.new-shop-select {border: 1px solid #e5e5e5;border-radius: 0px;outline: none;height:33px;padding: 0px;vertical-align: -2px!important;}
+.limitshop #parameterTable td{padding-top:10px;}
+img {border: none;}
+.gallery { padding: 5px 15px;}
+div.gallery-row:after {clear: both;content: ".";display: block;height: 0;visibility: hidden;}
+div.gallery-item {float: left;width: 33.33333333%;position:relative}
+
+/*image shade*/
+div.gallery-item .shade{position: absolute;background-color: rgba(180,221,234,.0);width: 100%;height: 100%;top:0}
+div.gallery-item .shade:hover{background-color: rgba(180,221,234,.8);color:white;text-shadow: 2px 2px 1px black}
+
+.shade div{height: 100%;float: left;color:rgba(0,0,0,.0);text-align: center;vertical-align: middle}
+.shade div.up{width: 25%;}
+.shade div.opt{width: 50%;}
+.shade div.down{width: 25%;}
+.shade div.up:hover{cursor:n-resize;}
+.shade div.opt:hover{cursor:pointer;}
+.shade div.down:hover{cursor:s-resize;}
+.shade:hover div.opt{border-right: black 1px solid;border-left: black 1px solid;}
+
+.new-pro-add div.gallery-item {float: left;width:15%;}
+div.gallery-item a {display: block;margin: 5px;}
+div.gallery-item img { display: block;width: 100%;height: auto;}
+div.gallery-item img:hover {cursor: pointer;}
+.daterangepicker .ranges .input-mini {width: 82px !important;}
+.btn-primary{border:0px!important;}
+.daterangepicker .ranges{width:175px!important;}
+.panel th{text-align: center;}
+.mg-top{margin-top:10px!important;}
+.mg-left{margin-left:10px!important;}
+.mg-left-0{margin-left:0px!important;}

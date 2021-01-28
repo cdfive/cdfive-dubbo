@@ -1,5 +1,6 @@
 package com.cdfive.common.util;
 
+import com.cdfive.common.vo.page.BootstrapPageRespVo;
 import com.cdfive.common.vo.page.PageReqVo;
 import com.cdfive.common.vo.page.PageRespVo;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,16 @@ public class JpaPageUtil {
 
     public static <Vo, Po> PageRespVo<Vo> buildPage(PageReqVo reqVo, JpaSpecificationExecutor executor
             , Specification<Po> specification, Function<Po, Vo> transformer) {
+        return PageUtil.buildPage(buildPagePo(reqVo, executor, specification), transformer);
+    }
+
+    public static <Vo, Po> BootstrapPageRespVo<Vo> buildBootstrapPage(PageReqVo reqVo, JpaSpecificationExecutor executor
+            , Specification<Po> specification, Function<Po, Vo> transformer) {
+        return PageUtil.buildBootstrapPage(buildPagePo(reqVo, executor, specification), transformer);
+    }
+
+    private static <Vo, Po> Page<Po> buildPagePo(PageReqVo reqVo, JpaSpecificationExecutor executor
+            , Specification<Po> specification) {
         Integer pageNum = reqVo.getPageNum();
         if (pageNum <= 0) {
             throw new IllegalArgumentException("pageNum should greater than 0");
@@ -28,7 +39,7 @@ public class JpaPageUtil {
             throw new IllegalArgumentException("pageSize should greater than 0");
         }
         if (pageSize > MAX_PAGE_SIZE) {
-            throw new IllegalArgumentException("pageSize should less than " + MAX_PAGE_SIZE);
+            throw new IllegalArgumentException("pageSize should less than or equal to " + MAX_PAGE_SIZE);
         }
 
         /**
@@ -37,6 +48,6 @@ public class JpaPageUtil {
          */
         PageRequest pageRequest = PageRequest.of(pageNum - 1, pageSize);
         Page<Po> page = executor.findAll(specification, pageRequest);
-        return PageUtil.buildPage(page, transformer);
+        return page;
     }
 }

@@ -1,0 +1,15 @@
+server:
+  servlet:
+    jsp:
+      init-parameters:
+        development: true
+
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/view/
+      suffix: .jsp
+    static-path-pattern: /static/**
+  profiles:
+    active: dev
+

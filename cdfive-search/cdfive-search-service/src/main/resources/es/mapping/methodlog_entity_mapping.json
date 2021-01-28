@@ -1,0 +1,62 @@
+// PUT /methodlog_v1
+{
+  "aliases": {
+    "methodlog": {}
+  },
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 2
+  },
+  "mappings": {
+    "properties": {
+      "id": {
+        "type": "keyword",
+        "store": true
+      },
+      "ip": {
+        "type": "text"
+      },
+      "methodName": {
+        "type": "keyword",
+        "store": true
+      },
+      "requestJson": {
+        "type": "text"
+      },
+      "responseJson": {
+        "type": "text"
+      },
+      "success": {
+        "type": "boolean"
+      },
+      "exceptionMessage": {
+        "type": "text"
+      },
+      "exceptionStackTrace": {
+        "type": "text"
+      },
+      "startTime": {
+        "type": "date",
+        "format": "yyyy-MM-dd HH:mm:ss.SSS||yyyy-MM-dd HH:mm:ss||epoch_millis"
+      },
+      "endTime": {
+        "type": "date",
+        "format": "yyyy-MM-dd HH:mm:ss.SSS||yyyy-MM-dd HH:mm:ss||epoch_millis"
+      },
+      "timeCostMs": {
+        "type": "long"
+      },
+      "createTime": {
+        "type": "date",
+        "format": "yyyy-MM-dd HH:mm:ss.SSS||yyyy-MM-dd HH:mm:ss||epoch_millis"
+      },
+      "updateTime": {
+        "type": "date",
+        "format": "yyyy-MM-dd HH:mm:ss.SSS||yyyy-MM-dd HH:mm:ss||epoch_millis"
+      },
+      "deleted": {
+        "type": "boolean"
+      }
+    }
+  }
+}

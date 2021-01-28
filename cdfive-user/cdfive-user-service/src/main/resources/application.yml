@@ -1,0 +1,15 @@
+server:
+  port: 10004
+
+spring:
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: com.cdfive.support.jpa.util.UnderscoreNameCustomizer
+  profiles:
+    active: dev

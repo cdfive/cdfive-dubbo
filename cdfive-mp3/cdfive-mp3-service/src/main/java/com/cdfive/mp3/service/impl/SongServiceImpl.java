@@ -1,6 +1,7 @@
 package com.cdfive.mp3.service.impl;
 
 import com.cdfive.common.util.JpaPageUtil;
+import com.cdfive.common.vo.page.BootstrapPageRespVo;
 import com.cdfive.common.vo.page.PageRespVo;
 import com.cdfive.log.service.BizLogService;
 import com.cdfive.mp3.entity.po.CategoryPo;
@@ -122,17 +123,46 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
     }
 
     @Override
+    public BootstrapPageRespVo<QuerySongListPageRespVo> querySongListBootstrapPage(QuerySongListPageReqVo reqVo) {
+        return JpaPageUtil.buildBootstrapPage(reqVo, songRepository, new QuerySongSpecification(reqVo), QuerySongListPageTransformer.INSTANCE);
+    }
+
+    @Override
+    public FindSongDetailVo findSongDetail(Integer id) {
+        checkNotNull(id, "id不能为空");
+
+        Optional<SongPo> optSong = songRepository.findById(id);
+        checkCondition(optSong.isPresent(), "记录不存在,id=" + id);
+
+        SongPo songPo = optSong.get();
+        FindSongDetailVo detailVo = new FindSongDetailVo();
+        detailVo.setId(songPo.getId());
+        detailVo.setName(songPo.getSongName());
+        detailVo.setAuthor(songPo.getAuthor());
+        detailVo.setPath(songPo.getPath());
+        detailVo.setDigit(songPo.getDigit());
+        detailVo.setReason(songPo.getReason());
+        detailVo.setPlayCount(songPo.getPlayCount());
+        detailVo.setCreateTime(songPo.getCreateTime());
+        detailVo.setUpdateTime(songPo.getUpdateTime());
+
+        Integer categoryId = Optional.ofNullable(songPo.getSongCategoryPos()).map(o -> o.size() > 1 ? o.get(0) : null).map(o -> o.getCategoryPo().getId()).orElse(null);
+        detailVo.setCategoryId(categoryId);
+        return detailVo;
+    }
+
+    @Override
     public Integer addSong(AddSongReqVo reqVo) {
         checkNotNull(reqVo, "请求参数不能为空");
 
         SongPo songPo = new SongPo();
 
         String name = reqVo.getName();
-        checkNotEmpty(name, "歌名不能为空");
+        checkNotBlank(name, "歌名不能为空");
         songPo.setSongName(name);
 
         String author = reqVo.getAuthor();
-        checkNotEmpty(author, "歌手不能为空");
+        checkNotBlank(author, "歌手不能为空");
         songPo.setAuthor(author);
 
         songPo.setFullName(name + "-" + author);
@@ -141,7 +171,7 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
         songPo.setDescription(description);
 
         String path = reqVo.getPath();
-        checkNotEmpty(path, "文件路径不能为空");
+        checkNotBlank(path, "文件路径不能为空");
 
         String reason = reqVo.getReason();
         songPo.setReason(reason);
@@ -215,7 +245,6 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
         }
 
         songPo.setUpdateTime(now());
-
         songRepository.save(songPo);
     }
 

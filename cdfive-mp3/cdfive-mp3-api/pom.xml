@@ -11,16 +11,18 @@
 
     <artifactId>cdfive-mp3-api</artifactId>
 
-    <properties>
-        <cdfive-common.version>0.0.1-SNAPSHOT</cdfive-common.version>
-    </properties>
-
     <dependencies>
         <!-- common -->
         <dependency>
             <groupId>com.cdfive</groupId>
             <artifactId>cdfive-common</artifactId>
             <version>${cdfive-common.version}</version>
+        </dependency>
+
+        <!-- jackson -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
         </dependency>
 
         <!-- lombok -->

@@ -1,5 +1,6 @@
 package com.cdfive.mp3.service;
 
+import com.cdfive.common.vo.page.BootstrapPageRespVo;
 import com.cdfive.common.vo.page.PageRespVo;
 import com.cdfive.mp3.vo.song.*;
 
@@ -17,6 +18,10 @@ public interface SongService {
     Integer play(Integer id, String ip);
 
     PageRespVo<QuerySongListPageRespVo> querySongListPage(QuerySongListPageReqVo reqVo);
+
+    BootstrapPageRespVo<QuerySongListPageRespVo> querySongListBootstrapPage(QuerySongListPageReqVo reqVo);
+
+    FindSongDetailVo findSongDetail(Integer id);
 
     Integer addSong(AddSongReqVo reqVo);
 

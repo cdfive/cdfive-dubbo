@@ -7,4 +7,5 @@
         http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
     <dubbo:reference id="bizLogEsService" interface="com.cdfive.search.service.BizLogEsService" />
+    <dubbo:reference id="bizMethodEsService" interface="com.cdfive.search.service.MethodLogEsService" />
 </beans>

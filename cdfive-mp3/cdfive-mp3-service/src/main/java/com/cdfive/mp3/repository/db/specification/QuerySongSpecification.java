@@ -44,7 +44,7 @@ public class QuerySongSpecification implements Specification<SongPo> {
 
         query.where(predicates.toArray(new Predicate[0]));
 
-        query.orderBy(cb.asc(root.get("createTime")));
+        query.orderBy(cb.desc(root.get("updateTime")));
         return query.getRestriction();
     }
 }

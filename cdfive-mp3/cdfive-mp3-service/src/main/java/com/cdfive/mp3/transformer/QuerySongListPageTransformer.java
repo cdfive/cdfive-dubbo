@@ -29,6 +29,7 @@ public class QuerySongListPageTransformer implements Function<SongPo, QuerySongL
         vo.setPath(po.getPath());
         vo.setDigit(po.getDigit());
         vo.setReason(po.getReason());
+        vo.setPlayCount(po.getPlayCount());
         vo.setCreateTime(po.getCreateTime());
         vo.setUpdateTime(po.getUpdateTime());
         return vo;
