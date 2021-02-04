@@ -22,15 +22,17 @@ public class SynchoronizedDemo4 {
 
     static class MySync {
 
-        public synchronized void test() {
-            long start = System.currentTimeMillis();
-            System.out.println(String.format("%s start", Thread.currentThread().getName()));
-            try {
-                TimeUnit.SECONDS.sleep(ThreadLocalRandom.current().nextInt(3));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        public void test() {
+            synchronized (this) {
+                long start = System.currentTimeMillis();
+                System.out.println(String.format("%s start", Thread.currentThread().getName()));
+                try {
+                    TimeUnit.SECONDS.sleep(ThreadLocalRandom.current().nextInt(3));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println(String.format("%s end,cost=%dms", Thread.currentThread().getName(), (System.currentTimeMillis() - start)));
             }
-            System.out.println(String.format("%s end,cost=%dms", Thread.currentThread().getName(), (System.currentTimeMillis() - start)));
         }
     }
 
