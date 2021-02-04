@@ -5,8 +5,9 @@ package com.cdfive.learn.thread.print;
  */
 public class TwoThreadPrint1 {
 
-//    int flag = 0;
-    volatile int flag = 0;
+    private volatile int flag = 0;
+
+    private final int max = 100;
 
     public static void main(String[] args) {
         TwoThreadPrint1 obj = new TwoThreadPrint1();
@@ -21,8 +22,8 @@ public class TwoThreadPrint1 {
     class Thread1 implements Runnable {
         @Override
         public void run() {
-            int i = 0;
-            while (i <= 100) {
+            int i = 1;
+            while (i <= max) {
                 if (flag == 0) {
                     System.out.println(Thread.currentThread().getName() + "=>" + i);
                     i += 2;
@@ -35,8 +36,8 @@ public class TwoThreadPrint1 {
     class Thread2 implements Runnable {
         @Override
         public void run() {
-            int i = 1;
-            while (i <= 99) {
+            int i = 2;
+            while (i <= max) {
                 if (flag == 1) {
                     System.out.println(Thread.currentThread().getName() + "=>" + i);
                     i += 2;

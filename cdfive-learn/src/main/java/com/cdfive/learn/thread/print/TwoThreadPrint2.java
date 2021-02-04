@@ -1,82 +1,62 @@
 package com.cdfive.learn.thread.print;
 
 /**
- * wait()
- * Exception in thread "T-1" java.lang.IllegalMonitorStateException
- * Exception in thread "T-2" java.lang.IllegalMonitorStateException
- *
- * => obj.wait()
- *
  * @author cdfive
  */
 public class TwoThreadPrint2 {
 
-    private static int flag = 0;
+    private static int num = 1;
 
     private static int max = 100;
 
     public static void main(String[] args) {
         Object obj = new Object();
 
-        new Thread(new Runnable() {
-            int num = 0;
+        new Thread(() -> {
+            while (true) {
+                synchronized (obj) {
+                    if (num > max) {
+                        break;
+                    }
 
-            @Override
-            public void run() {
-                boolean finished = false;
-                while (!finished) {
-                    synchronized (obj) {
-                        if (flag != 0) {
-                            try {
-                                obj.wait();
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
+                    System.out.println(Thread.currentThread().getName() + "=>" + (num++));
 
-                        for (int i = 0; i < 5; i++) {
-                            System.out.println(Thread.currentThread().getName() + "=>" + num);
-                            num += 2;
-                            if (num > max) {
-                                finished = true;
-                                break;
-                            }
-                        }
+                    obj.notifyAll();
 
-                        flag = 1;
-                        obj.notifyAll();
+                    // !!! important,otherwise the thread is waiting
+                    if (num >= max) {
+                        break;
+                    }
+
+                    try {
+                        obj.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
                 }
             }
         }, "T-1").start();
 
-        new Thread(new Runnable() {
-            int num = 1;
+        new Thread(() -> {
+            while (true) {
+                synchronized (obj) {
+                    if (num > max) {
+                        break;
+                    }
 
-            @Override
-            public void run() {
-                boolean finished = false;
-                while (!finished) {
-                    synchronized (obj) {
-                        if (flag != 1) {
-                            try {
-                                obj.wait();
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
+                    System.out.println(Thread.currentThread().getName() + "=>" + (num++));
 
-                        for (int i = 0; i < 5; i++) {
-                            System.out.println(Thread.currentThread().getName() + "=>" + num);
-                            num += 2;
-                            if (num > max) {
-                                finished = true;
-                                break;
-                            }
-                        }
+                    obj.notifyAll();
 
-                        flag = 0;
-                        obj.notifyAll();
+                    // !!! important,otherwise the thread is waiting
+                    if (num >= max) {
+                        break;
+                    }
+
+                    try {
+                        obj.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
                 }
             }
