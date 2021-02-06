@@ -17,7 +17,8 @@
 	<dubbo:service ref="songService" interface="com.cdfive.mp3.service.SongService" />
 	<dubbo:service ref="categoryService" interface="com.cdfive.mp3.service.CategoryService" />
 
-	<dubbo:provider timeout="5000" retries="0" filter="-exception"/>
+<!--	<dubbo:provider timeout="5000" retries="0" filter="-exception"/>-->
+	<dubbo:provider timeout="5000" retries="0" />
 
 	<dubbo:consumer check="false" />
 
