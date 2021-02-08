@@ -13,7 +13,7 @@
 
     <properties>
         <!-- dependency -->
-        <sentinel.version>1.8.0</sentinel.version>
+        <sentinel.version>1.8.1</sentinel.version>
 
         <!-- maven -->
         <maven.deploy.skip>false</maven.deploy.skip>
