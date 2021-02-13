@@ -10,3 +10,10 @@ spring:
       password: elastic
       maxConnPerRoute: 2
       maxConnTotal: 20
+
+sentinel:
+  enable: true
+  app-name: cdfive-search
+  transport-dashboard: localhost:8080
+  transport-port: 8751
+  datasource-type: redis

@@ -13,3 +13,9 @@ spring:
   profiles:
     active: dev
 
+sentinel:
+  enable: true
+  app-name: cdfive-admin
+  transport-dashboard: localhost:8080
+  transport-port: 8761
+  datasource-type: redis

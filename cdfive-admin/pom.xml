@@ -27,6 +27,13 @@
             <version>${cdfive-common.version}</version>
         </dependency>
 
+        <!-- support -->
+        <dependency>
+            <groupId>com.cdfive</groupId>
+            <artifactId>cdfive-sentinel</artifactId>
+            <version>${cdfive-sentinel.version}</version>
+        </dependency>
+
         <!-- api -->
         <dependency>
             <groupId>com.cdfive</groupId>
