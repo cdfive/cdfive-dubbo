@@ -1,6 +1,7 @@
 package com.cdfive.mp3.service;
 
 import com.cdfive.common.util.JacksonUtil;
+import com.cdfive.common.vo.IntegerIdNameVo;
 import com.cdfive.common.vo.page.BootstrapPageRespVo;
 import com.cdfive.common.vo.page.PageRespVo;
 import com.cdfive.mp3.BaseTest;
@@ -15,6 +16,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.List;
 
 /**
  * @author cdfive
@@ -67,5 +70,11 @@ public class CategoryServiceTest extends BaseTest {
     public void testDeleteCategory() {
         categoryService.deleteCategory(Lists.newArrayList(15));
         System.out.println("testDeleteCategory done");
+    }
+
+    @Test
+    public void testFindTopCategories() {
+        List<IntegerIdNameVo> result = categoryService.findTopCategories();
+        System.out.println(JacksonUtil.objToJson(result));
     }
 }

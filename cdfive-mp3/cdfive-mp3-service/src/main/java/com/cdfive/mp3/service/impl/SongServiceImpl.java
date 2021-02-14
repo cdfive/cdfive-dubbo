@@ -146,7 +146,7 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
         detailVo.setCreateTime(songPo.getCreateTime());
         detailVo.setUpdateTime(songPo.getUpdateTime());
 
-        Integer categoryId = Optional.ofNullable(songPo.getSongCategoryPos()).map(o -> o.size() > 1 ? o.get(0) : null).map(o -> o.getCategoryPo().getId()).orElse(null);
+        Integer categoryId = Optional.ofNullable(songPo.getSongCategoryPos()).map(o -> o.size() > 0 ? o.get(0) : null).map(o -> o.getCategoryPo().getId()).orElse(null);
         detailVo.setCategoryId(categoryId);
         return detailVo;
     }

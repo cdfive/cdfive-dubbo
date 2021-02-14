@@ -2,7 +2,9 @@ package com.cdfive.admin.controller;
 
 import com.cdfive.common.api.ApiResponse;
 import com.cdfive.common.base.AbstractController;
+import com.cdfive.common.vo.IntegerIdNameVo;
 import com.cdfive.common.vo.page.BootstrapPageRespVo;
+import com.cdfive.mp3.service.CategoryService;
 import com.cdfive.mp3.service.SongService;
 import com.cdfive.mp3.vo.song.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,8 @@ public class Mp3Controller extends AbstractController {
 
     @Autowired
     private SongService songService;
+    @Autowired
+    private CategoryService categoryService;
 
     @GetMapping("/list")
     public ModelAndView list() {
@@ -38,8 +42,13 @@ public class Mp3Controller extends AbstractController {
     @GetMapping("/edit")
     public ModelAndView edit(Integer id) {
         ModelAndView mav = new ModelAndView("mp3/mp3_edit");
+
         FindSongDetailVo detailVo = songService.findSongDetail(id);
         mav.addObject("detailVo", detailVo);
+
+        List<IntegerIdNameVo> categories = categoryService.findTopCategories();
+        mav.addObject("categories", categories);
+
         return mav;
     }
 

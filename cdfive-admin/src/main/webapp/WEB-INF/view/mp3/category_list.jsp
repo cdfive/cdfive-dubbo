@@ -93,34 +93,34 @@
             return "<button type='button' class='btn btn-primary' onclick='edit(\"" + row.id + "\");'>修改</button>&nbsp;"
                  + "<button type='button' class='btn btn-primary' onclick='del(\"" + row.id + "\");'>删除</button>&nbsp;";
         }
-
-        function edit(id) {
-            menuopen("/category/edit?id="+ id);
-        }
-
-        function del(id) {
-            layer.confirm('确定要删除该分类吗?', {
-                btn: ['确定','取消']
-            }, function(index){
-                var url = "${webroot}/category/delete";
-                $.ajax({
-                    type : "POST",
-                    url : url,
-                    data : {'id':id},
-                    error : function(request) {
-                        layer.msg("操作失败！");
-                        layer.close(index);
-                    },
-                    success : function(data) {
-                        if(data.code == 0){
-                            layer.msg(data.msg);
-                            $('table#category_table').bootstrapTable('refresh');
-                        }else{
-                            layer.msg(data.msg);
-                        }
-                    }
-                });
-            });
-        }
     });
+
+    function edit(id) {
+        menuopen("/category/edit?id="+ id);
+    }
+
+    function del(id) {
+        layer.confirm('确定要删除该分类吗?', {
+            btn: ['确定','取消']
+        }, function(index){
+            var url = "${webroot}/category/delete";
+            $.ajax({
+                type : "POST",
+                url : url,
+                data : {'id':id},
+                error : function(request) {
+                    layer.msg("操作失败！");
+                    layer.close(index);
+                },
+                success : function(data) {
+                    if(data.code == 0){
+                        layer.msg(data.msg);
+                        $('table#category_table').bootstrapTable('refresh');
+                    }else{
+                        layer.msg(data.msg);
+                    }
+                }
+            });
+        });
+    }
 </script>

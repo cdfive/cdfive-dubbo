@@ -2,6 +2,12 @@
 <%@ include file="/WEB-INF/view/include/base-param.jsp" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<link type="text/css" rel="stylesheet" href="${webroot}/static/madmin/vendors/select2/select2-madmin.css">
+<link type="text/css" rel="stylesheet"
+      href="${webroot}/static/madmin/vendors/bootstrap-select/bootstrap-select.min.css">
+<link type="text/css" rel="stylesheet"
+      href="${webroot}/static/madmin/vendors/multi-select/css/multi-select-madmin.css">
+
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">修改歌曲</h3>
@@ -11,16 +17,17 @@
         <input name="id" value="${detailVo.id}" type="hidden"/>
         <div class="panel-body">
             <div class="form-group">
-                <label class="col-md-2 control-label">分类 <span class="require">*</span>
-                </label>
-                <div class="col-md-5 col-sm-5 col-xs-5">
-                    <select name="categoryId" id="selectCategoryId" multiple="false"
-                            class="select2-size form-control select2-offscreen" tabindex="-1"
-                            title="" required>
-                        <option value="">未选择</option>
+                <label class="col-md-2 control-label" for="categoryId">分类</label>
+                <div class="col-md-4">
+                    <select class="select2-size form-control select2-offscreen" id="categoryId" name="categoryId">
+                        <option value="">全部${detailVo.categoryId}</option>
                         <c:forEach var="category" items="${categories}">
-                            <option value="${category.id}"
-                                    <c:if test="${category.id == detailVo.categoryId}">selected </c:if>>${category.name}</option>
+                            <c:if test="${detailVo.categoryId eq category.id}">
+                                <option selected="selected" value="${category.id}">${category.name}</option>
+                            </c:if>
+                            <c:if test="${detailVo.categoryId != category.id}">
+                                <option value="${category.id}">${category.name}</option>
+                            </c:if>
                         </c:forEach>
                     </select>
                 </div>
@@ -38,14 +45,6 @@
                 <div class="col-md-5">
                     <div class="input-icon">
                         <input type="text" name="author" class="form-control" value="${detailVo.author}">
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-md-2 control-label">歌曲描述:</label>
-                <div class="col-md-5">
-                    <div class="input-icon">
-                        <textarea type="text" name="description" class="form-control">${detailVo.description}</textarea>
                     </div>
                 </div>
             </div>
@@ -68,6 +67,11 @@
         </div>
     </form>
 </div>
+
+<script src="${webroot}/static/madmin/vendors/select2/select2.min.js"></script>
+<script src="${webroot}/static/madmin/vendors/bootstrap-select/bootstrap-select.min.js"></script>
+<script src="${webroot}/static/madmin/vendors/multi-select/js/jquery.multi-select.js"></script>
+<script src="${webroot}/static/js/ui-dropdown-select.js"></script>
 
 <script type="text/javascript">
     $(function () {

@@ -1,6 +1,7 @@
 package com.cdfive.mp3.service.impl;
 
 import com.cdfive.common.util.JpaPageUtil;
+import com.cdfive.common.vo.IntegerIdNameVo;
 import com.cdfive.common.vo.page.BootstrapPageRespVo;
 import com.cdfive.common.vo.page.PageRespVo;
 import com.cdfive.log.service.BizLogService;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author cdfive
@@ -119,5 +121,11 @@ public class CategoryServiceImpl extends AbstractMp3Service implements CategoryS
         });
 
         categoryRepository.saveAll(categoryPos);
+    }
+
+    @Override
+    public List<IntegerIdNameVo> findTopCategories() {
+        List<CategoryPo> pos = categoryRepository.findListByDeleted(Boolean.FALSE);
+        return pos.stream().map(o -> new IntegerIdNameVo(o.getId(), o.getCategoryName())).collect(Collectors.toList());
     }
 }
