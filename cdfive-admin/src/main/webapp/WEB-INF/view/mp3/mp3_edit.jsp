@@ -49,6 +49,14 @@
                 </div>
             </div>
             <div class="form-group">
+                <label class="col-md-2 control-label" for="author">歌曲描述:</label>
+                <div class="col-md-5">
+                    <div class="input-icon">
+                        <input type="text" name="description" class="form-control" value="${detailVo.description}">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
                 <label class="col-md-2 control-label">喜欢理由:</label>
                 <div class="col-md-5">
                     <div class="input-icon">

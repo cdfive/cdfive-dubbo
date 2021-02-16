@@ -1,4 +1,4 @@
-package com.cdfive.learn.interview;
+package com.cdfive.learn.question;
 
 import java.util.Scanner;
 

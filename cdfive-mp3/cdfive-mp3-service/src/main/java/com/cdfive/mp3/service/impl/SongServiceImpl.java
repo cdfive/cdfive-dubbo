@@ -139,6 +139,7 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
         detailVo.setId(songPo.getId());
         detailVo.setName(songPo.getSongName());
         detailVo.setAuthor(songPo.getAuthor());
+        detailVo.setDescription(songPo.getDescription());
         detailVo.setPath(songPo.getPath());
         detailVo.setDigit(songPo.getDigit());
         detailVo.setReason(songPo.getReason());

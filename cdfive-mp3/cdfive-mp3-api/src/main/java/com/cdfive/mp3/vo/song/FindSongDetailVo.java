@@ -20,6 +20,8 @@ public class FindSongDetailVo implements Serializable {
 
     private String author;
 
+    private String description;
+
     private String path;
 
     private Integer digit;
