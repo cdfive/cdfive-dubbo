@@ -3,6 +3,7 @@ package com.cdfive.es.query;
 import com.cdfive.es.constant.EsConstant;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.collapse.CollapseBuilder;
 import org.elasticsearch.search.fetch.subphase.FetchSourceContext;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +20,8 @@ import java.util.List;
 public class SearchQuery implements Serializable {
 
     private QueryBuilder query;
+
+    private CollapseBuilder collapse;
 
     private List<SortBuilder> sorts = new ArrayList<>();
 
@@ -110,6 +113,11 @@ public class SearchQuery implements Serializable {
         return this;
     }
 
+    public SearchQuery withCollapse(CollapseBuilder collapse) {
+        this.collapse = collapse;
+        return this;
+    }
+
     public QueryBuilder getQuery() {
         return query;
     }
@@ -146,6 +154,14 @@ public class SearchQuery implements Serializable {
         return this;
     }
 
+    public CollapseBuilder getCollapse() {
+        return collapse;
+    }
+
+    public void setCollapse(CollapseBuilder collapse) {
+        this.collapse = collapse;
+    }
+
     public SearchSourceBuilder toSearchSourcebuilder() {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(this.getQuery());
@@ -176,6 +192,10 @@ public class SearchQuery implements Serializable {
         if (!CollectionUtils.isEmpty(fields)) {
             FetchSourceContext sourceContext = new FetchSourceContext(true, fields.toArray(new String[]{}), null);
             searchSourceBuilder.fetchSource(sourceContext);
+        }
+
+        if (this.collapse != null) {
+            searchSourceBuilder.collapse(collapse);
         }
 
         return searchSourceBuilder;
