@@ -13,6 +13,7 @@ public class MatchBrackets {
         testMatch("123", true);
         testMatch("(123", false);
         testMatch("(123)", true);
+        testMatch("(123))", false);
         testMatch("(12)3", true);
         testMatch("(12)[3", false);
         testMatch("(12)[]3", true);
