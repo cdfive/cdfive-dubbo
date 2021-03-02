@@ -87,10 +87,10 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
     @Override
     public void update(Id id, Map<String, Object> params) {
         if (id == null) {
-            throw new RuntimeException("es update entity but missing id");
+            throw new RuntimeException("es update but missing id");
         }
 
-        if (params == null || params.size() == 0) {
+        if (CollectionUtils.isEmpty(params)) {
             throw new RuntimeException("es update but empty params");
         }
 
@@ -198,6 +198,10 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
             throw new RuntimeException("es updateByScript batch but empty ids");
         }
 
+        if (StringUtils.isEmpty(script)) {
+            throw new RuntimeException("es updateByScript batch but empty script");
+        }
+
         if (CollectionUtils.isEmpty(params)) {
             throw new RuntimeException("es updateByScript batch but empty params");
         }
@@ -224,6 +228,10 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
     public void updateByScript(Collection<Id> ids, String script, Map<String, Object> params) {
         if (CollectionUtils.isEmpty(ids)) {
             throw new RuntimeException("es updateByScript batch but empty ids");
+        }
+
+        if (StringUtils.isEmpty(script)) {
+            throw new RuntimeException("es updateByScript batch but empty script");
         }
 
         if (CollectionUtils.isEmpty(params)) {
@@ -467,7 +475,7 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
             entities.add(entity);
         }
 
-        Page page = new PageImpl(entities, searchQuery.getPageable(), total);
+        Page<Entity> page = new PageImpl<>(entities, searchQuery.getPageable(), total);
         return page;
     }
 
@@ -476,25 +484,25 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
         entityClass = GenericClassUtil.getGenericTypeFromSuperClass(this.getClass(), 0);
         Document document = AnnotationUtils.findAnnotation(entityClass, Document.class);
         if (document == null) {
-            throw new RuntimeException(entityClass.getName() + " must be with annotation:'cn.wine.ms.search.elasticsearch.annotation.Document'");
+            throw new RuntimeException(entityClass.getName() + " must be with annotation:'com.cdfive.es.annotation.Document'");
         }
         index = document.index();
         if (StringUtil.isBlank(index)) {
-            throw new RuntimeException("index must not be blank,check index property of cn.wine.ms.search.elasticsearch.annotation.Document");
+            throw new RuntimeException("index must not be blank,check index property of com.cdfive.es.annotation.Document");
         }
 
         for (Field field : entityClass.getDeclaredFields()) {
             com.cdfive.es.annotation.Id id = field.getAnnotation(com.cdfive.es.annotation.Id.class);
             if (id != null) {
                 if (idField != null) {
-                    throw new RuntimeException("Duplicate @cn.wine.ms.search.support.annotation.Id field in " + entityClass.getName());
+                    throw new RuntimeException("Duplicate @com.cdfive.es.annotation.Id field in " + entityClass.getName());
                 }
                 idField = field;
                 idField.setAccessible(true);
             }
         }
         if (idField == null) {
-            throw new RuntimeException("Missing @cn.wine.ms.search.support.annotation.Id field in " + entityClass.getName());
+            throw new RuntimeException("Missing @com.cdfive.es.annotation.Id field in " + entityClass.getName());
         }
     }
 
