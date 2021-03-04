@@ -14,7 +14,9 @@ public class ExpiringMapTest {
     public static void main(String[] args) throws Exception {
 //        demo1();
 
-        demo2();
+//        demo2();
+
+        demo3();
     }
 
     // Exception in thread "main" java.util.NoSuchElementException: a
@@ -40,6 +42,32 @@ public class ExpiringMapTest {
 
         ExpiringMap<String, AtomicInteger> map = ExpiringMap.builder()
                 .maxSize(1)
+                .expiration(1, TimeUnit.SECONDS)
+                .build();
+        map.put(key, new AtomicInteger(0));
+
+        while ((true)) {
+            TimeUnit.MILLISECONDS.sleep(ThreadLocalRandom.current().nextInt(1000));
+            AtomicInteger value = map.get(key);
+
+            // NPE
+            System.out.println("value=" + map.get(key).get() + ",expireMs=" + map.getExpectedExpiration(key) + "ms");
+
+            int visitValue = value.incrementAndGet();
+            if (visitValue >= maxVisitValue) {
+                System.out.println("max visit value reached,visitValue=" + visitValue + ",maxVisitValue=" + maxVisitValue
+                        + ",expireMs=" + map.getExpectedExpiration(key) + "ms");
+                break;
+            }
+        }
+    }
+
+    public static void demo3() throws Exception {
+        String key = "cdfive";
+        int maxVisitValue = 12;
+
+        ExpiringMap<String, AtomicInteger> map = ExpiringMap.builder()
+                .maxSize(1)
                 .expiration(5, TimeUnit.SECONDS)
                 .build();
         map.put(key, new AtomicInteger(0));
@@ -48,12 +76,12 @@ public class ExpiringMapTest {
             TimeUnit.MILLISECONDS.sleep(ThreadLocalRandom.current().nextInt(200));
             AtomicInteger value = map.get(key);
 
-            System.out.println(String.format("value=%s,expireMs=%s", map.get(key).get(), map.getExpectedExpiration(key)));
+            System.out.println("value=" + map.get(key).get() + ",expireMs=" + map.getExpectedExpiration(key) + "ms");
 
             int visitValue = value.incrementAndGet();
-            if (visitValue > maxVisitValue) {
+            if (visitValue >= maxVisitValue) {
                 System.out.println("max visit value reached,visitValue=" + visitValue + ",maxVisitValue=" + maxVisitValue
-                        + ",expireMs=%s" + map.getExpectedExpiration(key));
+                        + ",expireMs=" + map.getExpectedExpiration(key) + "ms");
                 break;
             }
         }
