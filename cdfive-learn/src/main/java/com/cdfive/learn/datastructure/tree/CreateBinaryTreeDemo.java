@@ -1,4 +1,4 @@
-package com.cdfive.learn.datastructure.tree.binarytree;
+package com.cdfive.learn.datastructure.tree;
 
 import java.util.Arrays;
 import java.util.LinkedList;
