@@ -94,6 +94,7 @@
         <module>cdfive-netty</module>
         <module>cdfive-admin</module>
         <module>cdfive-user</module>
+        <module>cdfive-demo</module>
     </modules>
 
     <dependencyManagement>
