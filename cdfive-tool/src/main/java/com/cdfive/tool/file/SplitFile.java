@@ -40,8 +40,8 @@ public class SplitFile {
             int splitIndex = 0;
             int splitFileNum = 1;
             long splitStartTime = System.currentTimeMillis();
-            String spitFilePath = fileFolderPath + fileNameReal + "_" + splitFileNum + "." + fileNameSuffix;
-            BufferedWriter bw = new BufferedWriter(new FileWriter(new File(spitFilePath)));
+            String splitFilePath = fileFolderPath + fileNameReal + "_" + splitFileNum + "." + fileNameSuffix;
+            BufferedWriter bw = new BufferedWriter(new FileWriter(new File(splitFilePath)));
             while ((line = br.readLine()) != null) {
                 index++;
                 splitIndex++;
@@ -50,11 +50,12 @@ public class SplitFile {
                     System.out.println(String.format("split file %s done,line=%s,cost=%sms,total cost=%sms", splitFileNum
                             , splitIndex, System.currentTimeMillis() - splitStartTime, System.currentTimeMillis() - startTime));
                     bw.close();
+
                     if (index < total) {
                         splitIndex = 0;
                         splitFileNum++;
-                        spitFilePath = fileFolderPath + fileNameReal + "_" + splitFileNum + "." + fileNameSuffix;
-                        bw = new BufferedWriter(new FileWriter(new File(spitFilePath)));
+                        splitFilePath = fileFolderPath + fileNameReal + "_" + splitFileNum + "." + fileNameSuffix;
+                        bw = new BufferedWriter(new FileWriter(new File(splitFilePath)));
                         splitStartTime = System.currentTimeMillis();
                     }
                 }
