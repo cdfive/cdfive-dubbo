@@ -475,8 +475,7 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
             entities.add(entity);
         }
 
-        Page<Entity> page = new PageImpl<>(entities, searchQuery.getPageable(), total);
-        return page;
+        return new PageImpl<>(entities, searchQuery.getPageable(), total);
     }
 
     @Override
