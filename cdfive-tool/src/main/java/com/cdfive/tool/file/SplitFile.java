@@ -20,7 +20,6 @@ public class SplitFile {
         System.out.println(String.format("filePath=%s,splitNum=%s", filePath, splitNum));
 
         File file = new File(filePath);
-
         String line;
         int total = 0;
         try (BufferedReader br = new BufferedReader(new InputStreamReader(new BufferedInputStream(new FileInputStream(file))))) {
@@ -28,11 +27,10 @@ public class SplitFile {
                 total++;
             }
         }
+        int splitSize = total / splitNum;
+        System.out.println(String.format("total line=%s,splitSize=%s,cost=%sms", total, splitSize, System.currentTimeMillis() - startTime));
 
         try (BufferedReader br = new BufferedReader(new InputStreamReader(new BufferedInputStream(new FileInputStream(file))))) {
-            int splitSize = total / splitNum;
-            System.out.println(String.format("total line=%s,splitSize=%s", total, splitSize));
-
             String[] tokens = fileName.split("\\.");
             String fileNameReal = tokens[0];
             String fileNameSuffix = tokens.length > 1 ? tokens[1] : "";
