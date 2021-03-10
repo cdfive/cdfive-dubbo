@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "menu")
-public class MenuPo {
+public class MenuEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,9 +23,9 @@ public class MenuPo {
     // default fetch type is FetchType.EAGER
     @ManyToOne
     @JsonIgnore
-    private MenuPo parent;
+    private MenuEntity parent;
 
     // default fetch type is FetchType.LAZY
     @OneToMany(mappedBy = "parent")
-    private List<MenuPo> children;
+    private List<MenuEntity> children;
 }

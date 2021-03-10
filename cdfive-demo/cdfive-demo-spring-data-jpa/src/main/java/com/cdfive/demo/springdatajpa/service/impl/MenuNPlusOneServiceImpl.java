@@ -1,6 +1,6 @@
 package com.cdfive.demo.springdatajpa.service.impl;
 
-import com.cdfive.demo.springdatajpa.entity.MenuPo;
+import com.cdfive.demo.springdatajpa.entity.MenuEntity;
 import com.cdfive.demo.springdatajpa.repository.MenuRepository;
 import com.cdfive.demo.springdatajpa.service.MenuNPlusOneService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -41,9 +41,9 @@ public class MenuNPlusOneServiceImpl implements MenuNPlusOneService {
      */
     @Override
     public void case1() {
-        List<MenuPo> menuPos = menuRepository.findAll();
-        for (MenuPo menuPo : menuPos) {
-            System.out.println(menuPo.getId() + "=>name=" + menuPo.getName());
+        List<MenuEntity> menuEntities = menuRepository.findAll();
+        for (MenuEntity menuEntity : menuEntities) {
+            System.out.println(menuEntity.getId() + "=>name=" + menuEntity.getName());
         }
         System.out.println("case2 done!");
     }
@@ -60,10 +60,10 @@ public class MenuNPlusOneServiceImpl implements MenuNPlusOneService {
      */
     @Override
     public void case2() {
-        List<MenuPo> menuPos = menuRepository.findAll();
-        for (MenuPo menuPo : menuPos) {
-            System.out.println(menuPo.getId() + "=>name=" + menuPo.getName()
-                + ",parent=" + Optional.ofNullable(menuPo.getParent()).map(o -> o.getName()).orElse(null));
+        List<MenuEntity> menuEntities = menuRepository.findAll();
+        for (MenuEntity menuEntity : menuEntities) {
+            System.out.println(menuEntity.getId() + "=>name=" + menuEntity.getName()
+                + ",parent=" + Optional.ofNullable(menuEntity.getParent()).map(o -> o.getName()).orElse(null));
         }
         System.out.println("case3 done!");
     }
@@ -99,8 +99,8 @@ public class MenuNPlusOneServiceImpl implements MenuNPlusOneService {
      */
     @Override
     public void case3() {
-        MenuPo menuPo = menuRepository.findById(1).get();
-        System.out.println(menuPo.getId() + "=>name=" + menuPo.getName() + ",children size=" + menuPo.getChildren().size());
+        MenuEntity menuEntity = menuRepository.findById(1).get();
+        System.out.println(menuEntity.getId() + "=>name=" + menuEntity.getName() + ",children size=" + menuEntity.getChildren().size());
         System.out.println("case4 done!");
     }
 
@@ -158,10 +158,10 @@ public class MenuNPlusOneServiceImpl implements MenuNPlusOneService {
     @Override
     public void case4() {
         ObjectMapper mapper = new ObjectMapper();
-        MenuPo menuPo = menuRepository.findById(1).get();
+        MenuEntity menuEntity = menuRepository.findById(1).get();
         try {
             // {"id":1,"name":"商品管理","children":[{"id":2,"name":"商品列表","children":[]},{"id":3,"name":"分类列表","children":[]}]}
-            System.out.println(mapper.writeValueAsString(menuPo));
+            System.out.println(mapper.writeValueAsString(menuEntity));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
