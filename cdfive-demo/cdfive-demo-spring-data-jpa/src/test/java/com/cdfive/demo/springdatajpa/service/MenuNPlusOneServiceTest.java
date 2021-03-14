@@ -23,8 +23,23 @@ public class MenuNPlusOneServiceTest {
     }
 
     @Test
-    public void testCase2() {
-        menuNPlusOneService.case2();
+    public void testCase1_1() {
+        menuNPlusOneService.test1_1();
+    }
+
+    @Test
+    public void testCase1_2() {
+        menuNPlusOneService.case1_2();
+    }
+
+    @Test
+    public void testCase1_3() {
+        menuNPlusOneService.case1_3();
+    }
+
+    @Test
+    public void testCase1_4() {
+        menuNPlusOneService.case1_4();
     }
 
     @Test
