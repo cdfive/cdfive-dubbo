@@ -71,7 +71,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>1.4.2.RELEASE</version>
                 <configuration>
-                    <mainClass>com.cdfive.demo.springdatajpa.DemoApplication</mainClass>
+                    <mainClass>com.cdfive.demo.springdatajpa.SpringDataJPADemoApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>

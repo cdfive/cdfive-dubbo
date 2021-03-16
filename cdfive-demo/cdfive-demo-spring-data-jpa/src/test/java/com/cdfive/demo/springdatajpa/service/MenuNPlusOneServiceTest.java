@@ -1,6 +1,6 @@
 package com.cdfive.demo.springdatajpa.service;
 
-import com.cdfive.demo.springdatajpa.DemoApplication;
+import com.cdfive.demo.springdatajpa.SpringDataJPADemoApplication;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author cdfive
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = DemoApplication.class)
+@SpringBootTest(classes = SpringDataJPADemoApplication.class)
 public class MenuNPlusOneServiceTest {
 
     @Autowired
