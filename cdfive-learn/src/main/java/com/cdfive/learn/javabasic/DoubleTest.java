@@ -19,5 +19,11 @@ public class DoubleTest {
         System.out.println((int) (d * 11));// 1
         System.out.println((int) (d * 0.5));// 0
         System.out.println((int) d * 0.5);// 0.0
+
+        System.out.println(0.1 * 3 == 0.3); // false
+        System.out.println(0.1F * 3 == 0.3); // false
+        System.out.println(0.1F * 3 == 0.3F); // true
+        System.out.println(0.1D * 3 == 0.3D); // false
+        System.out.println(0.1 * 3 == 0.3D); // false
     }
 }
