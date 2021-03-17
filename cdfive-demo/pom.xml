@@ -17,5 +17,6 @@
 
     <modules>
         <module>cdfive-demo-spring-data-jpa</module>
+        <module>cdfive-demo-rabbitmq</module>
     </modules>
 </project>
