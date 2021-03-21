@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Data
 public abstract class AbstractIdNameVo<T extends Serializable> implements Serializable {
 
-    private Integer id;
+    private T id;
 
     private String name;
 }
