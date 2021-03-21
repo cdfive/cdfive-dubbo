@@ -103,8 +103,7 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
 
         bizLogService.addBizLog("播放mp3", id, ip);
 
-        SongPo songPo = songRepository.getOne(id);
-        checkCondition(songPo != null, "记录不存在");
+        SongPo songPo = songRepository.findById(id).orElseThrow(() -> exception("记录不存在,id=" + id));
         checkCondition(!songPo.getDeleted(), "记录已删除");
 
         Integer playCount = songPo.getPlayCount();
@@ -131,10 +130,8 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
     public FindSongDetailVo findSongDetail(Integer id) {
         checkNotNull(id, "id不能为空");
 
-        Optional<SongPo> optSong = songRepository.findById(id);
-        checkCondition(optSong.isPresent(), "记录不存在,id=" + id);
+        SongPo songPo = songRepository.findById(id).orElseThrow(() -> exception("记录不存在,id=" + id));
 
-        SongPo songPo = optSong.get();
         FindSongDetailVo detailVo = new FindSongDetailVo();
         detailVo.setId(songPo.getId());
         detailVo.setName(songPo.getSongName());
@@ -206,10 +203,7 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
         Integer id = reqVo.getId();
         checkNotNull(id, "记录id不能为空");
 
-        Optional<SongPo> optSongPo = songRepository.findById(id);
-        checkCondition(optSongPo.isPresent(), "记录不存在,id=" + id);
-
-        SongPo songPo = optSongPo.get();
+        SongPo songPo = songRepository.findById(id).orElseThrow(() -> exception("记录不存在,id=" + id));
 
         String name = reqVo.getName();
         checkNotEmpty(name, "歌名不能为空");

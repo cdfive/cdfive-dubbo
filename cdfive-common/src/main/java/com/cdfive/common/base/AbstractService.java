@@ -1,5 +1,6 @@
 package com.cdfive.common.base;
 
+import com.cdfive.common.exception.ServiceException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.ObjectUtils;
 
@@ -46,5 +47,9 @@ public abstract class AbstractService {
         return new Date();
     }
 
-    protected abstract void fail(String msg);
+    protected void fail(String msg) {
+        throw exception(msg);
+    }
+
+    protected abstract ServiceException exception(String msg);
 }

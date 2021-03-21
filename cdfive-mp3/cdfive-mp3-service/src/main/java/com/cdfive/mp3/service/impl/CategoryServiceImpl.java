@@ -6,7 +6,6 @@ import com.cdfive.common.vo.page.BootstrapPageRespVo;
 import com.cdfive.common.vo.page.PageRespVo;
 import com.cdfive.log.service.BizLogService;
 import com.cdfive.mp3.entity.po.CategoryPo;
-import com.cdfive.mp3.entity.po.SongPo;
 import com.cdfive.mp3.repository.db.CategoryRepository;
 import com.cdfive.mp3.repository.db.specification.QueryCategorySpecification;
 import com.cdfive.mp3.service.AbstractMp3Service;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -47,10 +45,8 @@ public class CategoryServiceImpl extends AbstractMp3Service implements CategoryS
     public FindCategoryDetailVo findCategoryDetail(Integer id) {
         checkNotNull(id, "id不能为空");
 
-        Optional<CategoryPo> optCategory = categoryRepository.findById(id);
-        checkCondition(optCategory.isPresent(), "记录不存在,id=" + id);
+        CategoryPo categoryPo = categoryRepository.findById(id).orElseThrow(() -> exception("记录不存在,id=" + id));
 
-        CategoryPo categoryPo = optCategory.get();
         FindCategoryDetailVo detailVo = new FindCategoryDetailVo();
         detailVo.setId(categoryPo.getId());
         detailVo.setName(categoryPo.getCategoryName());
@@ -86,10 +82,7 @@ public class CategoryServiceImpl extends AbstractMp3Service implements CategoryS
         Integer id = reqVo.getId();
         checkNotNull(id, "记录id不能为空");
 
-        Optional<CategoryPo> optCategoryPo = categoryRepository.findById(id);
-        checkCondition(optCategoryPo.isPresent(), "记录不存在,id=" + id);
-
-        CategoryPo categoryPo = optCategoryPo.get();
+        CategoryPo categoryPo = categoryRepository.findById(id).orElseThrow(() -> exception("记录不存在,id=" + id));
 
         String name = reqVo.getName();
         checkNotNull(name, "分类名称不能为空");

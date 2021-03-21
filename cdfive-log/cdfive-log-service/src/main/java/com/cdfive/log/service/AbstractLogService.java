@@ -8,9 +8,9 @@ import com.cdfive.log.exception.LogServiceException;
  * @author cdfive
  */
 public class AbstractLogService extends AbstractService {
+    
     @Override
-    protected void fail(String msg) {
-        throw new LogServiceException(msg);
-//        throw new ServiceException(msg);
+    protected ServiceException exception(String msg) {
+        return new LogServiceException(msg);
     }
 }
