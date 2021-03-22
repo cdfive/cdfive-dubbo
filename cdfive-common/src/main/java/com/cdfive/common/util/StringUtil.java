@@ -8,6 +8,8 @@ import java.util.regex.Pattern;
  */
 public class StringUtil {
 
+    private static final String UTF8_BOM = "\uFEFF";
+
     private static final String REGEX_SPECIAL_STR = "[`~!@#$%^&*()+=|{}':;',//[//].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
 
     private static Pattern PATTERN_REGEX_SPECIAL_STR = Pattern.compile(REGEX_SPECIAL_STR);
