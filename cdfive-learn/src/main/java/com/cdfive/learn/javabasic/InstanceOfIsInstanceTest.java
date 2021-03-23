@@ -15,6 +15,10 @@ public class InstanceOfIsInstanceTest {
         System.out.println("test".getClass().isInstance(Object.class));
         // false
         System.out.println("test".getClass().isInstance(String.class));
+        // true
+        System.out.println("test".getClass().isInstance("test"));
+        // true
+        System.out.println(String.class.isInstance("test"));
 
         // true
         System.out.println("test".getClass().equals(String.class));
