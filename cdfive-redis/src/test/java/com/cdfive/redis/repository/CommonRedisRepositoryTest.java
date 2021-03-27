@@ -5,6 +5,7 @@ import com.cdfive.redis.RedisKeyCallback;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.JedisShardInfo;
 import redis.clients.jedis.ShardedJedisPool;
@@ -105,7 +106,7 @@ public class CommonRedisRepositoryTest {
         Holder<Integer> holder = new Holder<>(0);
         repository.scan("a*", 1000, new RedisKeyCallback() {
             @Override
-            public void doCallback(String key) {
+            public void doCallback(Jedis jedis, String key) {
                 holder.setValue(holder.getValue() + 1);
                 System.out.println(String.format("[%d]%s", holder.getValue(), key));
             }

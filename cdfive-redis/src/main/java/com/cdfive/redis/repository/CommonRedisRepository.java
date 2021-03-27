@@ -292,7 +292,7 @@ public class CommonRedisRepository implements CommonRedisRepositoryApi<ShardedJe
                     List<String> list = scanResult.getResult();
                     if (!CollectionUtils.isEmpty(list)) {
                         for (String key : list) {
-                            callback.doCallback(key);
+                            callback.doCallback(jedis, key);
                         }
                     }
 
