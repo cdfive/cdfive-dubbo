@@ -5,9 +5,11 @@ import com.cdfive.common.util.GenericClassUtil;
 import com.cdfive.common.util.StringUtil;
 import com.cdfive.es.annotation.Document;
 import com.cdfive.es.config.EsProperties;
+import com.cdfive.es.query.AggregateQuery;
 import com.cdfive.es.query.DeleteQuery;
 import com.cdfive.es.query.SearchQuery;
 import com.cdfive.es.query.UpdateQuery;
+import com.cdfive.es.vo.ValueCountVo;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.get.GetRequest;
@@ -28,6 +30,13 @@ import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptType;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.aggregations.Aggregation;
+import org.elasticsearch.search.aggregations.AggregationBuilder;
+import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.bucket.filter.ParsedFilter;
+import org.elasticsearch.search.aggregations.bucket.terms.ParsedLongTerms;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.bucket.terms.UnmappedTerms;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +49,7 @@ import org.springframework.util.StringUtils;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author cdfive
@@ -479,6 +489,41 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
     }
 
     @Override
+    public Map<String, List<ValueCountVo>> aggregate(AggregateQuery aggregateQuery) {
+        QueryBuilder queryBuilder = aggregateQuery.getQuery();
+
+        SearchRequest searchRequest = new SearchRequest(index);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(queryBuilder);
+
+        List<AggregationBuilder> aggregations = aggregateQuery.getAggregations();
+        if (!CollectionUtils.isEmpty(aggregations)) {
+            for (AggregationBuilder aggregation : aggregations) {
+                searchSourceBuilder.aggregation(aggregation);
+            }
+        }
+
+        searchSourceBuilder.size(0);
+
+        searchRequest.source(searchSourceBuilder);
+
+        SearchResponse searchResponse;
+        try {
+            searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            throw new RuntimeException("es aggregate error", e);
+        }
+
+        if (!RestStatus.OK.equals(searchResponse.status())) {
+            throw new RuntimeException("es aggregate fail,status=" + searchResponse.status());
+        }
+
+        Map<String, List<ValueCountVo>> resultMap = new HashMap<>();
+        this.buildMapFromAggregations(searchResponse.getAggregations(), resultMap);
+        return resultMap;
+    }
+
+    @Override
     public void afterPropertiesSet() throws Exception {
         entityClass = GenericClassUtil.getGenericTypeFromSuperClass(this.getClass(), 0);
         Document document = AnnotationUtils.findAnnotation(entityClass, Document.class);
@@ -510,6 +555,42 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
             return (Id) idField.get(entity);
         } catch (Exception e) {
             throw new RuntimeException("getId error in " + entityClass.getName(), e);
+        }
+    }
+
+    private void buildMapFromAggregations(Aggregations aggregations, Map<String, List<ValueCountVo>> resultMap) {
+        if (aggregations == null) {
+            return;
+        }
+
+        Map<String, Aggregation> aggregationMap = aggregations.asMap();
+        if (CollectionUtils.isEmpty(aggregationMap)) {
+            return;
+        }
+
+        for (String key : aggregationMap.keySet()) {
+            Aggregation aggregation = aggregationMap.get(key);
+            if (aggregation == null) {
+                continue;
+            }
+            if (aggregation instanceof UnmappedTerms) {
+                continue;
+            }
+
+            if (aggregation instanceof ParsedFilter) {
+                ParsedFilter parsedFilter = (ParsedFilter) aggregation;
+                Aggregations subAggregations = parsedFilter.getAggregations();
+                this.buildMapFromAggregations(subAggregations, resultMap);
+            } else if (aggregation instanceof ParsedLongTerms) {
+                List<? extends Terms.Bucket> buckets = ((ParsedLongTerms) aggregation).getBuckets();
+                if (CollectionUtils.isEmpty(buckets)) {
+                    continue;
+                }
+
+                resultMap.put(key, buckets.stream()
+                        .map(o -> new ValueCountVo(o.getKeyAsString(), o.getDocCount()))
+                        .collect(Collectors.toList()));
+            }
         }
     }
 }

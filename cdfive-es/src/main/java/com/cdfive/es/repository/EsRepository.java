@@ -1,8 +1,10 @@
 package com.cdfive.es.repository;
 
+import com.cdfive.es.query.AggregateQuery;
 import com.cdfive.es.query.DeleteQuery;
 import com.cdfive.es.query.SearchQuery;
 import com.cdfive.es.query.UpdateQuery;
+import com.cdfive.es.vo.ValueCountVo;
 import org.springframework.data.domain.Page;
 
 import java.util.Collection;
@@ -53,4 +55,6 @@ public interface EsRepository<Entity, Id> {
     Entity findOne(Id id);
 
     Page<Entity> search(SearchQuery searchQuery);
+
+    Map<String, List<ValueCountVo>> aggregate(AggregateQuery aggregateQuery);
 }
