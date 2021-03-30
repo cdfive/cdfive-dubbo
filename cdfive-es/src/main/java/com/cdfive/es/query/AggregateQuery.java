@@ -1,7 +1,10 @@
 package com.cdfive.es.query;
 
+import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -27,6 +30,23 @@ public class AggregateQuery implements Serializable {
     public AggregateQuery(QueryBuilder query, List<AggregationBuilder> aggregations) {
         this.query = query;
         this.aggregations = aggregations;
+    }
+
+    public SearchSourceBuilder toSearchSourcebuilder() {
+        QueryBuilder queryBuilder = this.getQuery();
+
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(queryBuilder);
+
+        List<AggregationBuilder> aggregations = this.getAggregations();
+        if (!CollectionUtils.isEmpty(aggregations)) {
+            for (AggregationBuilder aggregation : aggregations) {
+                searchSourceBuilder.aggregation(aggregation);
+            }
+        }
+
+        searchSourceBuilder.size(0);
+        return searchSourceBuilder;
     }
 
     public AggregateQuery withQuery(QueryBuilder query) {

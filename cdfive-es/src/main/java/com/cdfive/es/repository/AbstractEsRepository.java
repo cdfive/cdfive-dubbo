@@ -490,23 +490,10 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
 
     @Override
     public Map<String, List<ValueCountVo>> aggregate(AggregateQuery aggregateQuery) {
-        QueryBuilder queryBuilder = aggregateQuery.getQuery();
+        SearchSourceBuilder searchSourceBuilder = aggregateQuery.toSearchSourcebuilder();
 
         SearchRequest searchRequest = new SearchRequest(index);
-        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(queryBuilder);
-
-        List<AggregationBuilder> aggregations = aggregateQuery.getAggregations();
-        if (!CollectionUtils.isEmpty(aggregations)) {
-            for (AggregationBuilder aggregation : aggregations) {
-                searchSourceBuilder.aggregation(aggregation);
-            }
-        }
-
-        searchSourceBuilder.size(0);
-
         searchRequest.source(searchSourceBuilder);
-
         SearchResponse searchResponse;
         try {
             searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);

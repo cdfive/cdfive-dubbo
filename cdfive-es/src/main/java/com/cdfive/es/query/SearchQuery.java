@@ -55,6 +55,45 @@ public class SearchQuery implements Serializable {
         this.pageable = pageable;
     }
 
+    public SearchSourceBuilder toSearchSourcebuilder() {
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(this.getQuery());
+
+        List<SortBuilder> sorts = this.getSorts();
+        if (!CollectionUtils.isEmpty(sorts)) {
+            for (SortBuilder sort : sorts) {
+                searchSourceBuilder.sort(sort);
+            }
+        }
+
+        Pageable pageable = this.getPageable();
+        if (pageable.isPaged()) {
+            if (pageable.getOffset() > EsConstant.MAX_RESULT) {
+                searchSourceBuilder.from(EsConstant.MAX_RESULT.intValue());
+                searchSourceBuilder.size(0);
+            } else {
+                searchSourceBuilder.from((int) pageable.getOffset());
+                if ((int) pageable.getOffset() + pageable.getPageSize() > EsConstant.MAX_RESULT.intValue()) {
+                    searchSourceBuilder.size(EsConstant.MAX_RESULT.intValue() - (int) pageable.getOffset());
+                } else {
+                    searchSourceBuilder.size(pageable.getPageSize());
+                }
+            }
+        }
+
+        List<String> fields = this.getFields();
+        if (!CollectionUtils.isEmpty(fields)) {
+            FetchSourceContext sourceContext = new FetchSourceContext(true, fields.toArray(new String[]{}), null);
+            searchSourceBuilder.fetchSource(sourceContext);
+        }
+
+        if (this.collapse != null) {
+            searchSourceBuilder.collapse(collapse);
+        }
+
+        return searchSourceBuilder;
+    }
+
     public SearchQuery withQuery(QueryBuilder query) {
         this.query = query;
         return this;
@@ -160,44 +199,5 @@ public class SearchQuery implements Serializable {
 
     public void setCollapse(CollapseBuilder collapse) {
         this.collapse = collapse;
-    }
-
-    public SearchSourceBuilder toSearchSourcebuilder() {
-        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(this.getQuery());
-
-        List<SortBuilder> sorts = this.getSorts();
-        if (!CollectionUtils.isEmpty(sorts)) {
-            for (SortBuilder sort : sorts) {
-                searchSourceBuilder.sort(sort);
-            }
-        }
-
-        Pageable pageable = this.getPageable();
-        if (pageable.isPaged()) {
-            if (pageable.getOffset() > EsConstant.MAX_RESULT) {
-                searchSourceBuilder.from(EsConstant.MAX_RESULT.intValue());
-                searchSourceBuilder.size(0);
-            } else {
-                searchSourceBuilder.from((int) pageable.getOffset());
-                if ((int) pageable.getOffset() + pageable.getPageSize() > EsConstant.MAX_RESULT.intValue()) {
-                    searchSourceBuilder.size(EsConstant.MAX_RESULT.intValue() - (int) pageable.getOffset());
-                } else {
-                    searchSourceBuilder.size(pageable.getPageSize());
-                }
-            }
-        }
-
-        List<String> fields = this.getFields();
-        if (!CollectionUtils.isEmpty(fields)) {
-            FetchSourceContext sourceContext = new FetchSourceContext(true, fields.toArray(new String[]{}), null);
-            searchSourceBuilder.fetchSource(sourceContext);
-        }
-
-        if (this.collapse != null) {
-            searchSourceBuilder.collapse(collapse);
-        }
-
-        return searchSourceBuilder;
     }
 }
