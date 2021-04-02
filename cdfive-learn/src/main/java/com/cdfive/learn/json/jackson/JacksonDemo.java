@@ -22,6 +22,7 @@ public class JacksonDemo {
     public static void main(String[] args) throws Exception {
         demo1();
         demo2();
+        demoEmptyBean();
     }
 
     public static void demo1() throws JsonProcessingException {
@@ -61,6 +62,19 @@ public class JacksonDemo {
         System.out.println(list3.get(0) instanceof Person);
     }
 
+    public static void demoEmptyBean() {
+        ObjectMapper mapper = new ObjectMapper();
+        Empty empty = new Empty();
+        try {
+            mapper.writeValueAsString(empty);
+        } catch (JsonProcessingException e) {
+            // No serializer found for class com.cdfive.learn.json.jackson.JacksonDemo$Empty
+            // and no properties discovered to create BeanSerializer (to avoid exception,
+            // disable SerializationFeature.FAIL_ON_EMPTY_BEANS)
+            e.printStackTrace();
+        }
+    }
+
     @Data
     private static class Person {
         private String name;
@@ -68,5 +82,10 @@ public class JacksonDemo {
         private Integer age;
 
         private String phone;
+    }
+
+    @Data
+    private static class Empty {
+
     }
 }
