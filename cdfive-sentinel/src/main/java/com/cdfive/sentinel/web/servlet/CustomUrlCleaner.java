@@ -3,7 +3,6 @@ package com.cdfive.sentinel.web.servlet;
 import com.alibaba.csp.sentinel.adapter.servlet.callback.UrlCleaner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +18,7 @@ public class CustomUrlCleaner implements UrlCleaner {
 
     @Override
     public String clean(String originUrl) {
-        if (CollectionUtils.isEmpty(urlParsers)) {
+        if (urlParsers.isEmpty()) {
             return originUrl;
         }
 
