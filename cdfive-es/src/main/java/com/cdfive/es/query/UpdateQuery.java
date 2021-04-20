@@ -3,6 +3,8 @@ package com.cdfive.es.query;
 import org.elasticsearch.index.query.QueryBuilder;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author cdfive
@@ -12,6 +14,10 @@ public class UpdateQuery implements Serializable {
     private QueryBuilder query;
 
     private Integer batchSize;
+
+    private String script;
+
+    private Map<String, Object> params;
 
     public UpdateQuery() {
 
@@ -36,6 +42,20 @@ public class UpdateQuery implements Serializable {
         return this;
     }
 
+    public UpdateQuery withScript(String script) {
+        this.script = script;
+        return this;
+    }
+
+    private UpdateQuery withParam(String paramName, Object paramValue) {
+        if (this.params == null) {
+            this.params = new HashMap<>();
+        }
+
+        this.params.put(paramName, paramValue);
+        return this;
+    }
+
     public QueryBuilder getQuery() {
         return query;
     }
@@ -50,5 +70,21 @@ public class UpdateQuery implements Serializable {
 
     public void setBatchSize(Integer batchSize) {
         this.batchSize = batchSize;
+    }
+
+    public String getScript() {
+        return script;
+    }
+
+    public void setScript(String script) {
+        this.script = script;
+    }
+
+    public Map<String, Object> getParams() {
+        return params;
+    }
+
+    public void setParams(Map<String, Object> params) {
+        this.params = params;
     }
 }

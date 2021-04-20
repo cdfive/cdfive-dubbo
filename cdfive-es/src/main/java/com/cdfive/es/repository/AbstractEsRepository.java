@@ -166,13 +166,18 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
 
     @Override
     public void updateByQuery(UpdateQuery updateQuery) {
-        UpdateByQueryRequest updateByQueryRequest = new UpdateByQueryRequest();
+        UpdateByQueryRequest updateByQueryRequest = new UpdateByQueryRequest(index);
         QueryBuilder query = updateQuery.getQuery();
         updateByQueryRequest.setQuery(query);
 
         Integer batchSize = updateQuery.getBatchSize();
         if (batchSize != null) {
             updateByQueryRequest.setBatchSize(batchSize);
+        }
+
+        if (!StringUtils.isEmpty(updateQuery.getScript())) {
+            Script inline = new Script(ScriptType.INLINE, "painless", updateQuery.getScript(), updateQuery.getParams());
+            updateByQueryRequest.setScript(inline);
         }
 
         try {
