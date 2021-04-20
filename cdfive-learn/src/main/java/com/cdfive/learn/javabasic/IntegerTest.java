@@ -22,5 +22,10 @@ public class IntegerTest {
         //	at java.lang.NumberFormatException.forInputString(NumberFormatException.java:65)
 //        Integer ii = Integer.parseInt(String.valueOf("11456725200"));
 //        System.out.println(ii);
+
+//        Exception in thread "main" java.lang.NumberFormatException: null
+//        at java.lang.Integer.parseInt(Integer.java:542)
+//        at java.lang.Integer.valueOf(Integer.java:766)
+//        System.out.println(Integer.valueOf(null));
     }
 }
