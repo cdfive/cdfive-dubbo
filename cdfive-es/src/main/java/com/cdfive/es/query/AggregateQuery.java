@@ -17,7 +17,7 @@ public class AggregateQuery implements Serializable {
 
     private QueryBuilder query;
 
-    private List<AggregationBuilder> aggregations = new ArrayList<>();
+    private List<AggregationBuilder> aggregations;
 
     public AggregateQuery() {
 
@@ -55,6 +55,10 @@ public class AggregateQuery implements Serializable {
     }
 
     public AggregateQuery withAggregation(AggregationBuilder aggregation) {
+        if (this.aggregations == null) {
+            this.aggregations = new ArrayList<>();
+        }
+
         this.aggregations.add(aggregation);
         return this;
     }

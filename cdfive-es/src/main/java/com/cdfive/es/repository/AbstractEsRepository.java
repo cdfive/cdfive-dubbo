@@ -1,6 +1,7 @@
 package com.cdfive.es.repository;
 
 import com.alibaba.fastjson.JSON;
+import com.cdfive.common.util.CollectionUtil;
 import com.cdfive.common.util.GenericClassUtil;
 import com.cdfive.common.util.StringUtil;
 import com.cdfive.es.annotation.Document;
@@ -37,7 +38,10 @@ import org.elasticsearch.search.aggregations.bucket.filter.ParsedFilter;
 import org.elasticsearch.search.aggregations.bucket.terms.ParsedLongTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.UnmappedTerms;
+import org.elasticsearch.search.aggregations.metrics.ParsedCardinality;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -50,11 +54,14 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author cdfive
  */
 public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<Entity, Id>, InitializingBean {
+
+    protected Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
     protected RestHighLevelClient client;
@@ -479,6 +486,13 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
 
         SearchHits hits = searchResponse.getHits();
         long total = hits.getTotalHits().value;
+        if (!CollectionUtil.isEmpty(searchQuery.getAggregations())) {
+            try {
+                total = ((ParsedCardinality) searchResponse.getAggregations().asList().get(0)).getValue();
+            } catch (Exception e) {
+                log.error("parse total from aggregations error", e);
+            }
+        }
         if (total == 0) {
             return new PageImpl<>(Collections.emptyList(), searchQuery.getPageable(), 0);
         }
@@ -582,6 +596,12 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
                 resultMap.put(key, buckets.stream()
                         .map(o -> new ValueCountVo(o.getKeyAsString(), o.getDocCount()))
                         .collect(Collectors.toList()));
+            } else if (aggregation instanceof ParsedCardinality) {
+                ParsedCardinality parsedCardinality = (ParsedCardinality) aggregation;
+                resultMap.put(key, Stream.of(new ValueCountVo(parsedCardinality.getName(), parsedCardinality.getValue())).collect(Collectors.toList()));
+            } else {
+                log.error("unsupport aggregation type,type={}", aggregation.getClass().getName());
+                throw new RuntimeException("buildMapFromAggregations error");
             }
         }
     }

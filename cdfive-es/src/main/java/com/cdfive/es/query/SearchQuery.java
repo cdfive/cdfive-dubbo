@@ -2,6 +2,7 @@ package com.cdfive.es.query;
 
 import com.cdfive.es.constant.EsConstant;
 import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.collapse.CollapseBuilder;
 import org.elasticsearch.search.fetch.subphase.FetchSourceContext;
@@ -23,9 +24,11 @@ public class SearchQuery implements Serializable {
 
     private CollapseBuilder collapse;
 
-    private List<SortBuilder> sorts = new ArrayList<>();
+    private List<AggregationBuilder> aggregations;
 
-    private List<String> fields = new ArrayList<>();
+    private List<SortBuilder> sorts;
+
+    private List<String> fields;
 
     private Pageable pageable = Pageable.unpaged();
 
@@ -100,6 +103,10 @@ public class SearchQuery implements Serializable {
     }
 
     public SearchQuery withSort(SortBuilder sort) {
+        if (this.sorts == null) {
+            this.sorts = new ArrayList<>();
+        }
+
         this.sorts.add(sort);
         return this;
     }
@@ -125,6 +132,10 @@ public class SearchQuery implements Serializable {
     }
 
     public SearchQuery addField(String field) {
+        if (this.fields == null) {
+            this.fields = new ArrayList<>();
+        }
+
         this.fields.add(field);
         return this;
     }
@@ -132,6 +143,10 @@ public class SearchQuery implements Serializable {
     public SearchQuery addFields(String... addFields) {
         if (addFields == null || addFields.length == 0) {
             return this;
+        }
+
+        if (this.fields == null) {
+            this.fields = new ArrayList<>();
         }
 
         this.fields.addAll(Arrays.asList(addFields));
@@ -143,17 +158,34 @@ public class SearchQuery implements Serializable {
             return this;
         }
 
+        if (this.fields == null) {
+            this.fields = new ArrayList<>();
+        }
+
         this.fields.addAll(fields);
         return this;
     }
 
     public SearchQuery addSort(SortBuilder sort) {
+        if (this.sorts == null) {
+            this.sorts.add(sort);
+        }
+
         this.sorts.add(sort);
         return this;
     }
 
     public SearchQuery withCollapse(CollapseBuilder collapse) {
         this.collapse = collapse;
+        return this;
+    }
+
+    public SearchQuery withAggregations(AggregationBuilder aggregation) {
+        if (this.aggregations == null) {
+            this.aggregations = new ArrayList<>();
+        }
+
+        this.aggregations.add(aggregation);
         return this;
     }
 
@@ -199,5 +231,13 @@ public class SearchQuery implements Serializable {
 
     public void setCollapse(CollapseBuilder collapse) {
         this.collapse = collapse;
+    }
+
+    public List<AggregationBuilder> getAggregations() {
+        return aggregations;
+    }
+
+    public void setAggregations(List<AggregationBuilder> aggregations) {
+        this.aggregations = aggregations;
     }
 }
