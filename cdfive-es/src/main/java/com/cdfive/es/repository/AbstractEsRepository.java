@@ -473,6 +473,11 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
 
         SearchRequest searchRequest = new SearchRequest(index);
         searchRequest.source(searchSourceBuilder);
+
+        if (log.isDebugEnabled()) {
+            log.debug("searchDsl=>" + searchSourceBuilder.toString());
+        }
+
         SearchResponse searchResponse;
         try {
             searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
