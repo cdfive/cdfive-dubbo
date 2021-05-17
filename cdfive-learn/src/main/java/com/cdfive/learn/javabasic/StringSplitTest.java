@@ -37,5 +37,12 @@ public class StringSplitTest {
         System.out.println(Arrays.asList("1-2-".split("-", 3)));
         // [1, 2, ]
         System.out.println(Arrays.asList("1-2-".split("-", -1)));
+
+        // [1, , 1]
+        System.out.println(Arrays.asList("1--1".split("-")));
+        // [1, -1]
+        System.out.println(Arrays.asList("1--1".split("-", 2)));
+        // 1
+        System.out.println(Arrays.asList("1".split("-", 2).length));
     }
 }
