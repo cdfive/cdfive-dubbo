@@ -1,4 +1,4 @@
-package com.cdfive.learn.expiringmap;
+package com.cdfive.learn.datastructure.map;
 
 import net.jodah.expiringmap.ExpiringMap;
 
@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * @author cdfive
  */
-public class ExpiringMapTest {
+public class ExpiringMapDemo {
 
     public static void main(String[] args) throws Exception {
 //        demo1();
