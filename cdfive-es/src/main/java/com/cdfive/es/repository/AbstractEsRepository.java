@@ -6,6 +6,7 @@ import com.cdfive.common.util.GenericClassUtil;
 import com.cdfive.common.util.StringUtil;
 import com.cdfive.es.annotation.Document;
 import com.cdfive.es.config.EsProperties;
+import com.cdfive.es.constant.EsConstant;
 import com.cdfive.es.query.AggregateQuery;
 import com.cdfive.es.query.DeleteQuery;
 import com.cdfive.es.query.SearchQuery;
@@ -183,7 +184,7 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
         }
 
         if (!StringUtils.isEmpty(updateQuery.getScript())) {
-            Script inline = new Script(ScriptType.INLINE, "painless", updateQuery.getScript(), updateQuery.getParams());
+            Script inline = new Script(ScriptType.INLINE, EsConstant.LANG_PAINLESS, updateQuery.getScript(), updateQuery.getParams());
             updateByQueryRequest.setScript(inline);
         }
 
@@ -205,7 +206,7 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
         }
 
         UpdateRequest updateRequest = new UpdateRequest(index, id.toString());
-        Script inline = new Script(ScriptType.INLINE, "painless", script, params);
+        Script inline = new Script(ScriptType.INLINE, EsConstant.LANG_PAINLESS, script, params);
         updateRequest.script(inline);
         try {
             client.update(updateRequest, RequestOptions.DEFAULT);
@@ -237,7 +238,7 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
         Iterator<Id> idsIterator = ids.iterator();
         Iterator<Map<String, Object>> paramsIterator = params.iterator();
         for (int i = 0; i < size; i++) {
-            bulkRequest.add(new UpdateRequest(index, idsIterator.next().toString()).script(new Script(ScriptType.INLINE, "painless", script, paramsIterator.next())));
+            bulkRequest.add(new UpdateRequest(index, idsIterator.next().toString()).script(new Script(ScriptType.INLINE, EsConstant.LANG_PAINLESS, script, paramsIterator.next())));
         }
         try {
             client.bulk(bulkRequest, RequestOptions.DEFAULT);
@@ -264,7 +265,7 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
         int size = ids.size();
         Iterator<Id> idsIterator = ids.iterator();
         for (int i = 0; i < size; i++) {
-            bulkRequest.add(new UpdateRequest(index, idsIterator.next().toString()).script(new Script(ScriptType.INLINE, "painless", script, params)));
+            bulkRequest.add(new UpdateRequest(index, idsIterator.next().toString()).script(new Script(ScriptType.INLINE, EsConstant.LANG_PAINLESS, script, params)));
         }
         try {
             client.bulk(bulkRequest, RequestOptions.DEFAULT);

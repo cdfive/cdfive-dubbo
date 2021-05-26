@@ -9,4 +9,6 @@ public class EsConstant {
 
     public static final String ANALYZER_IK_SMART = "ik_smart";
     public static final String ANALYZER_IK_MAX_WORD = "ik_max_word";
+
+    public static final String LANG_PAINLESS = "painless";
 }
