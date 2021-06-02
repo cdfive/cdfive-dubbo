@@ -1,4 +1,4 @@
-package com.cdfive.learn.http;
+package com.cdfive.learn.spring;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * @author cdfive
  */
-public class RestTemplateTest {
+public class RestTemplateTest1 {
 
     private static String dashboardUrl = "http://sentinel.cdfive.com";
 
