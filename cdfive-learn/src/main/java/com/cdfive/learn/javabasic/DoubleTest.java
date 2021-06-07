@@ -32,6 +32,8 @@ public class DoubleTest {
         System.out.println(19.9); // 19.9
         System.out.println(19.9D); // 19.9
         System.out.println(19.9 * 100); // 1989.9999999999998
+        System.out.println(20.9 * 100); // 2090.0
+        System.out.println(9.9 * 100); // 999.0
         System.out.println(new BigDecimal("19.9").multiply(new BigDecimal("100"))); // 1990.0
         System.out.println(new BigDecimal("19.9").multiply(new BigDecimal("100")).setScale(0)); // 1990
         System.out.println(new BigDecimal("19.9").multiply(new BigDecimal("100")).stripTrailingZeros()); // 1.99E+3
