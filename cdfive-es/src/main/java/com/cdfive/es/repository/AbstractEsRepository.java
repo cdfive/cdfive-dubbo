@@ -7,6 +7,7 @@ import com.cdfive.common.util.StringUtil;
 import com.cdfive.es.annotation.Document;
 import com.cdfive.es.config.EsProperties;
 import com.cdfive.es.constant.EsConstant;
+import com.cdfive.es.entity.Scoreable;
 import com.cdfive.es.query.AggregateQuery;
 import com.cdfive.es.query.DeleteQuery;
 import com.cdfive.es.query.SearchQuery;
@@ -507,6 +508,12 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
         for (SearchHit hit : hits) {
             String source = hit.getSourceAsString();
             Entity entity = JSON.parseObject(source, entityClass);
+
+            if (searchQuery.isScore()) {
+                if (entity instanceof Scoreable) {
+                    ((Scoreable) entity).setScore(hit.getScore());
+                }
+            }
             entities.add(entity);
         }
 

@@ -32,6 +32,8 @@ public class SearchQuery implements Serializable {
 
     private Pageable pageable = Pageable.unpaged();
 
+    private boolean score = false;
+
     public SearchQuery() {
 
     }
@@ -189,6 +191,11 @@ public class SearchQuery implements Serializable {
         return this;
     }
 
+    public SearchQuery score(boolean score) {
+        this.score = score;
+        return this;
+    }
+
     public QueryBuilder getQuery() {
         return query;
     }
@@ -239,5 +246,13 @@ public class SearchQuery implements Serializable {
 
     public void setAggregations(List<AggregationBuilder> aggregations) {
         this.aggregations = aggregations;
+    }
+
+    public boolean isScore() {
+        return score;
+    }
+
+    public void setScore(boolean score) {
+        this.score = score;
     }
 }
