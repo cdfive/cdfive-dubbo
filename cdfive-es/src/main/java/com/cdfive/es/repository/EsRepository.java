@@ -54,6 +54,8 @@ public interface EsRepository<Entity, Id> {
 
     Entity findOne(Id id);
 
+    List<Entity> findAll(Collection<Id> ids);
+
     Page<Entity> search(SearchQuery searchQuery);
 
     Map<String, List<ValueCountVo>> aggregate(AggregateQuery aggregateQuery);

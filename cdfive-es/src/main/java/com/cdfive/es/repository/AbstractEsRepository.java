@@ -15,8 +15,7 @@ import com.cdfive.es.query.UpdateQuery;
 import com.cdfive.es.vo.ValueCountVo;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.delete.DeleteRequest;
-import org.elasticsearch.action.get.GetRequest;
-import org.elasticsearch.action.get.GetResponse;
+import org.elasticsearch.action.get.*;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
@@ -464,6 +463,40 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
 
         String source = getResponse.getSourceAsString();
         return JSON.parseObject(source, entityClass);
+    }
+
+    @Override
+    public List<Entity> findAll(Collection<Id> ids) {
+        if (CollectionUtils.isEmpty(ids)) {
+            throw new RuntimeException("es findAll entities but empty ids");
+        }
+
+        MultiGetRequest multiGetRequest = new MultiGetRequest();
+
+        for (Id id : ids) {
+            multiGetRequest.add(new MultiGetRequest.Item(index, id.toString()));
+        }
+
+        MultiGetResponse multiGetResponse;
+        try {
+            multiGetResponse = client.mget(multiGetRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            throw new RuntimeException("es findAll entities error", e);
+        }
+
+        List<Entity> entities = new ArrayList<>();
+        MultiGetItemResponse[] responses = multiGetResponse.getResponses();
+        for (MultiGetItemResponse response : responses) {
+            if (!response.getResponse().isExists()) {
+                continue;
+            }
+
+            String source = response.getResponse().getSourceAsString();
+            Entity entity = JSON.parseObject(source, entityClass);
+            entities.add(entity);
+        }
+
+        return entities;
     }
 
     @Override
