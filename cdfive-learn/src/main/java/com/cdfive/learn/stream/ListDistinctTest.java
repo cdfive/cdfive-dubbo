@@ -25,18 +25,22 @@ public class ListDistinctTest {
         // 原始数据打印
         System.out.println(books);
 
-        // 虽然去重了,但是顺序变了
-        List<Book> distinctNameBooks1 = books.stream().collect(Collectors.collectingAndThen(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(o -> o.getName()))), ArrayList::new));
+        // Book类重写了equals和hashCode方法,使用stream的distinct方法去重
+        List<Book> distinctNameBooks1 = books.stream().distinct().collect(Collectors.toList());
         System.out.println(distinctNameBooks1);
 
-        // 去重且保持顺序,但是内部创建了HashMap,多了一些内存占用
-        List<Book> distinctNameBooks2 = books.stream().filter(distinctByKey(o -> o.getName())).collect(Collectors.toList());
+        // 虽然去重了,但是顺序变了
+        List<Book> distinctNameBooks2 = books.stream().collect(Collectors.collectingAndThen(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(o -> o.getName()))), ArrayList::new));
         System.out.println(distinctNameBooks2);
 
-        // 去重且保持顺序,创建了HashMap,多了一些内存占用
-        Map<Object, Boolean> map = new HashMap<>();
-        List<Book> distinctNameBooks3 = books.stream().filter(i -> map.putIfAbsent(i.getName(), Boolean.TRUE) == null).collect(Collectors.toList());
+        // 去重且保持顺序,但是内部创建了HashMap,多了一些内存占用
+        List<Book> distinctNameBooks3 = books.stream().filter(distinctByKey(o -> o.getName())).collect(Collectors.toList());
         System.out.println(distinctNameBooks3);
+
+        // 去重且保持顺序,外面创建了HashMap,多了一些内存占用
+        Map<Object, Boolean> map = new HashMap<>();
+        List<Book> distinctNameBooks4 = books.stream().filter(i -> map.putIfAbsent(i.getName(), Boolean.TRUE) == null).collect(Collectors.toList());
+        System.out.println(distinctNameBooks4);
     }
 
     // 封装去重方法
@@ -59,5 +63,23 @@ public class ListDistinctTest {
         private String name;
 
         private Date createTime;
+
+        @Override
+        public String toString() {
+            return String.format("(%s,%s,%s)", id, name, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(createTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()));
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Book book = (Book) o;
+            return Objects.equals(name, book.name);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(name);
+        }
     }
 }
