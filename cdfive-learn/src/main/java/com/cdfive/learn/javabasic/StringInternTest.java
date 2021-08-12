@@ -3,7 +3,7 @@ package com.cdfive.learn.javabasic;
 /**
  * @author cdfive
  */
-public class StringIntern {
+public class StringInternTest {
 
     public static void main(String[] args) {
         test_intern_1();
