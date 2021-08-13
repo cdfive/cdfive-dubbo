@@ -24,7 +24,7 @@ public class DaemonThreadDemo {
                 }
             }, "t" + (i + 1));
 
-            // Since sub threads is daemon thread, they exit as main thread exit
+            // Since sub threads is daemon thread, they exit when main thread exit
             t.setDaemon(true);
             t.start();
         }
