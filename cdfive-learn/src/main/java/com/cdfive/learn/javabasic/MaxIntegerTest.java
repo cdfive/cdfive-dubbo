@@ -19,6 +19,13 @@ public class MaxIntegerTest {
             e.printStackTrace();
         }
 
+        // java.lang.NumberFormatException: For input string: "3000000000"
+        try {
+            Integer.valueOf("3000000000");
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
         Integer pageNum = 2147483647;
         System.out.println((pageNum - 1) * 10); // -20
     }
