@@ -33,13 +33,13 @@ import org.elasticsearch.script.ScriptType;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.Aggregation;
-import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.filter.ParsedFilter;
-import org.elasticsearch.search.aggregations.bucket.terms.ParsedLongTerms;
+import org.elasticsearch.search.aggregations.bucket.terms.ParsedTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.UnmappedTerms;
 import org.elasticsearch.search.aggregations.metrics.ParsedCardinality;
+import org.elasticsearch.search.aggregations.metrics.TopHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +55,6 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author cdfive
@@ -570,7 +569,7 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
             throw new RuntimeException("es aggregate fail,status=" + searchResponse.status());
         }
 
-        Map<String, List<ValueCountVo>> resultMap = new HashMap<>();
+        Map<String, List<ValueCountVo>> resultMap = new LinkedHashMap<>();
         this.buildMapFromAggregations(searchResponse.getAggregations(), resultMap);
         return resultMap;
     }
@@ -633,18 +632,39 @@ public abstract class AbstractEsRepository<Entity, Id> implements EsRepository<E
                 ParsedFilter parsedFilter = (ParsedFilter) aggregation;
                 Aggregations subAggregations = parsedFilter.getAggregations();
                 this.buildMapFromAggregations(subAggregations, resultMap);
-            } else if (aggregation instanceof ParsedLongTerms) {
-                List<? extends Terms.Bucket> buckets = ((ParsedLongTerms) aggregation).getBuckets();
+            } else if (aggregation instanceof ParsedTerms) {
+                List<? extends Terms.Bucket> buckets = ((ParsedTerms) aggregation).getBuckets();
                 if (CollectionUtils.isEmpty(buckets)) {
                     continue;
                 }
 
                 resultMap.put(key, buckets.stream()
-                        .map(o -> new ValueCountVo(o.getKeyAsString(), o.getDocCount()))
+                        .map(o -> {
+                            Aggregations subAgg = o.getAggregations();
+                            List<Aggregation> subAggList = subAgg.asList();
+                            if (CollectionUtils.isEmpty(subAggList)) {
+                                return new ValueCountVo(o.getKeyAsString(), o.getDocCount());
+                            } else {
+                                List<String> subValues = new ArrayList<>();
+                                Aggregation firstAgg = subAggList.get(0);
+                                if (firstAgg instanceof TopHits) {
+                                    TopHits parsedTopHits = (TopHits) firstAgg;
+                                    for (SearchHit hit : parsedTopHits.getHits()) {
+                                        subValues.add(hit.getSourceAsString());
+                                    }
+                                    return new ValueCountVo(o.getKeyAsString(), o.getDocCount(), subValues);
+                                } else {
+                                    log.error("unsupport sub aggregation type,type={}", firstAgg.getClass().getName());
+                                    throw new RuntimeException("buildMapFromAggregations error");
+                                }
+                            }
+                        })
                         .collect(Collectors.toList()));
             } else if (aggregation instanceof ParsedCardinality) {
                 ParsedCardinality parsedCardinality = (ParsedCardinality) aggregation;
-                resultMap.put(key, Stream.of(new ValueCountVo(parsedCardinality.getName(), parsedCardinality.getValue())).collect(Collectors.toList()));
+                resultMap.put(key, new ArrayList<ValueCountVo>() {{
+                    add(new ValueCountVo(parsedCardinality.getName(), parsedCardinality.getValue()));
+                }});
             } else {
                 log.error("unsupport aggregation type,type={}", aggregation.getClass().getName());
                 throw new RuntimeException("buildMapFromAggregations error");

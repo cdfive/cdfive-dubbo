@@ -1,6 +1,7 @@
 package com.cdfive.es.vo;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author cdfive
@@ -11,6 +12,8 @@ public class ValueCountVo implements Serializable {
 
     private Long count;
 
+    private List<String> subValues;
+
     public ValueCountVo() {
 
     }
@@ -18,6 +21,12 @@ public class ValueCountVo implements Serializable {
     public ValueCountVo(String value, Long count) {
         this.value = value;
         this.count = count;
+    }
+
+    public ValueCountVo(String value, Long count, List<String> subValues) {
+        this.value = value;
+        this.count = count;
+        this.subValues = subValues;
     }
 
     public String getValue() {
