@@ -10,9 +10,11 @@ public class LocalDateTimeTest2 {
     public static void main(String[] args) {
         LocalDateTime now = LocalDateTime.now();
         System.out.println(now);
-        LocalDateTime morning = LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), 23, 59, 59);
-        System.out.println(morning);
-        LocalDateTime historyDay = morning.minusDays(90);
+
+        LocalDateTime beforeDawn = LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), 23, 59, 59);
+        System.out.println(beforeDawn);
+
+        LocalDateTime historyDay = beforeDawn.minusDays(90);
         System.out.println(historyDay);
     }
 }
