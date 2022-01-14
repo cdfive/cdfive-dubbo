@@ -1,10 +1,14 @@
 package com.cdfive.es.repository;
 
 import com.cdfive.es.query.AggregateQuery;
-import com.cdfive.es.query.DeleteQuery;
+import com.cdfive.es.query.DeleteByQuery;
 import com.cdfive.es.query.SearchQuery;
-import com.cdfive.es.query.UpdateQuery;
-import com.cdfive.es.vo.ValueCountVo;
+import com.cdfive.es.query.UpdateByQuery;
+import com.cdfive.es.vo.EsEntityVo;
+import com.cdfive.es.vo.EsValueCountVo;
+import com.cdfive.es.vo.EsWriteOptionVo;
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
 import org.springframework.data.domain.Page;
 
 import java.util.Collection;
@@ -14,49 +18,85 @@ import java.util.Map;
 /**
  * @author cdfive
  */
-public interface EsRepository<Entity, Id> {
+public interface EsRepository<ENTITY, ID> {
 
-    void save(Entity entity);
+    void save(ENTITY entity);
 
-    void save(Collection<Entity> entities);
+    void save(ENTITY entity, EsWriteOptionVo esWriteOptionVo);
 
-    void update(Id id, Map<String, Object> params);
+    void save(Collection<ENTITY> entities);
 
-    void update(Collection<Id> ids, List<Map<String, Object>> params);
+    void save(Collection<ENTITY> entities, EsWriteOptionVo esWriteOptionVo);
 
-    void update(Collection<Id> ids, Map<String, Object> params);
+    void update(ID id, Map<String, Object> params);
 
-    void updateByQuery(UpdateQuery updateQuery);
+    void update(ID id, Map<String, Object> params, EsWriteOptionVo esWriteOptionVo);
 
-    void updateByScript(Id id, String script, Map<String, Object> params);
+    void update(Collection<ID> ids, List<Map<String, Object>> params);
 
-    void updateByScript(Collection<Id> ids, String script, List<Map<String, Object>> params);
+    void update(Collection<ID> ids, List<Map<String, Object>> params, EsWriteOptionVo esWriteOptionVo);
 
-    void updateByScript(Collection<Id> ids, String script, Map<String, Object> params);
+    void update(Collection<ID> ids, Map<String, Object> params);
 
-    void updateByScriptId(Id id, String scriptId, Map<String, Object> params);
+    void update(Collection<ID> ids, Map<String, Object> params, EsWriteOptionVo esWriteOptionVo);
 
-    void updateByScriptId(Collection<Id> ids, String scriptId, List<Map<String, Object>> params);
+    void updateByQuery(UpdateByQuery updateQuery);
 
-    void updateByScriptId(Collection<Id> ids, String scriptId, Map<String, Object> params);
+    void updateByScript(ID id, String scriptCode, Map<String, Object> params);
 
-    void saveOrUpdate(Entity entity);
+    void updateByScript(ID id, String scriptCode, Map<String, Object> params, EsWriteOptionVo esWriteOptionVo);
 
-    void saveOrUpdate(Collection<Entity> entities);
+    void updateByScript(Collection<ID> ids, String scriptCode, List<Map<String, Object>> params);
 
-    void delete(Id id);
+    void updateByScript(Collection<ID> ids, String scriptCode, List<Map<String, Object>> params, EsWriteOptionVo esWriteOptionVo);
 
-    void delete(Collection<Id> ids);
+    void updateByScript(Collection<ID> ids, String scriptCode, Map<String, Object> params);
 
-    void deleteByQuery(DeleteQuery deleteQuery);
+    void updateByScript(Collection<ID> ids, String scriptCode, Map<String, Object> params, EsWriteOptionVo esWriteOptionVo);
+
+    void updateByScriptId(ID id, String scriptId, Map<String, Object> params);
+
+    void updateByScriptId(ID id, String scriptId, Map<String, Object> params, EsWriteOptionVo esWriteOptionVo);
+
+    void updateByScriptId(Collection<ID> ids, String scriptId, List<Map<String, Object>> params);
+
+    void updateByScriptId(Collection<ID> ids, String scriptId, List<Map<String, Object>> params, EsWriteOptionVo esWriteOptionVo);
+
+    void updateByScriptId(Collection<ID> ids, String scriptId, Map<String, Object> params);
+
+    void updateByScriptId(Collection<ID> ids, String scriptId, Map<String, Object> params, EsWriteOptionVo esWriteOptionVo);
+
+    void saveOrUpdate(ENTITY entity);
+
+    void saveOrUpdate(ENTITY entity, EsWriteOptionVo esWriteOptionVo);
+
+    void saveOrUpdate(Collection<ENTITY> entities);
+
+    void saveOrUpdate(Collection<ENTITY> entities, EsWriteOptionVo esWriteOptionVo);
+
+    void delete(ID id);
+
+    void delete(ID id, EsWriteOptionVo esWriteOptionVo);
+
+    void delete(Collection<ID> ids);
+
+    void delete(Collection<ID> ids, EsWriteOptionVo esWriteOptionVo);
+
+    void deleteByQuery(DeleteByQuery deleteByQuery);
+
+    void deleteByQuerySync(DeleteByQuery deleteByQuery);
 
     void deleteAll();
 
-    Entity findOne(Id id);
+    void refresh();
 
-    List<Entity> findAll(Collection<Id> ids);
+    EsEntityVo<ENTITY> findOne(ID id);
 
-    Page<Entity> search(SearchQuery searchQuery);
+    List<EsEntityVo<ENTITY>> findAll(Collection<ID> ids);
 
-    Map<String, List<ValueCountVo>> aggregate(AggregateQuery aggregateQuery);
+    Page<EsEntityVo<ENTITY>> search(SearchQuery searchQuery);
+
+    SearchResponse search(SearchRequest searchRequest);
+
+    Map<String, List<EsValueCountVo>> aggregate(AggregateQuery aggregateQuery);
 }

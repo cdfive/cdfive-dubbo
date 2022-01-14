@@ -1,23 +1,33 @@
 package com.cdfive.es.query;
 
-import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
-import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author cdfive
+ * @author xiejihan
+ * @date 2022-01-05
  */
 public class AggregateQuery implements Serializable {
 
     private QueryBuilder query;
 
     private List<AggregationBuilder> aggregations;
+
+    public static AggregateQuery of() {
+        return new AggregateQuery();
+    }
+
+    public static AggregateQuery of(QueryBuilder query) {
+        return new AggregateQuery(query);
+    }
+
+    public static AggregateQuery of(QueryBuilder query, List<AggregationBuilder> aggregations) {
+        return new AggregateQuery(query, aggregations);
+    }
 
     public AggregateQuery() {
 
@@ -32,33 +42,15 @@ public class AggregateQuery implements Serializable {
         this.aggregations = aggregations;
     }
 
-    public SearchSourceBuilder toSearchSourcebuilder() {
-        QueryBuilder queryBuilder = this.getQuery();
-
-        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(queryBuilder);
-
-        List<AggregationBuilder> aggregations = this.getAggregations();
-        if (!CollectionUtils.isEmpty(aggregations)) {
-            for (AggregationBuilder aggregation : aggregations) {
-                searchSourceBuilder.aggregation(aggregation);
-            }
-        }
-
-        searchSourceBuilder.size(0);
-        return searchSourceBuilder;
-    }
-
     public AggregateQuery withQuery(QueryBuilder query) {
         this.query = query;
         return this;
     }
 
     public AggregateQuery withAggregation(AggregationBuilder aggregation) {
-        if (this.aggregations == null) {
-            this.aggregations = new ArrayList<>();
+        if (aggregations == null) {
+            aggregations = new ArrayList<>();
         }
-
         this.aggregations.add(aggregation);
         return this;
     }

@@ -1,11 +1,8 @@
 package com.cdfive.es.query;
 
-import com.cdfive.es.constant.EsConstant;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
-import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.collapse.CollapseBuilder;
-import org.elasticsearch.search.fetch.subphase.FetchSourceContext;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.CollectionUtils;
@@ -16,23 +13,58 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * @author cdfive
+ * @author xiejihan
+ * @date 2022-01-05
  */
+@SuppressWarnings("rawtypes")
 public class SearchQuery implements Serializable {
 
+    // 查询
     private QueryBuilder query;
 
+    // 折叠
     private CollapseBuilder collapse;
 
+    // 聚合列表
     private List<AggregationBuilder> aggregations;
 
+    // 排序
     private List<SortBuilder> sorts;
 
+    // 返回字段列表
     private List<String> fields;
 
-    private Pageable pageable = Pageable.unpaged();
+    // 分页
+    private Pageable pageable;
 
+    // 是否获取总数
+    private boolean trackTotalHits = false;
+
+    // 是否查询版本号
+    private boolean version = false;
+
+    // 是否返回打分
     private boolean score = false;
+
+    public static SearchQuery of() {
+        return new SearchQuery();
+    }
+
+    public static SearchQuery of(QueryBuilder query) {
+        return new SearchQuery(query);
+    }
+
+    public static SearchQuery of(QueryBuilder query, Pageable pageable) {
+        return new SearchQuery(query, pageable);
+    }
+
+    public static SearchQuery of(QueryBuilder query, List<SortBuilder> sorts, Pageable pageable) {
+        return new SearchQuery(query, sorts, pageable);
+    }
+
+    public static SearchQuery of(QueryBuilder query, List<SortBuilder> sorts, List<String> fields, Pageable pageable) {
+        return new SearchQuery(query, sorts, fields, pageable);
+    }
 
     public SearchQuery() {
 
@@ -58,45 +90,6 @@ public class SearchQuery implements Serializable {
         this.sorts = sorts;
         this.fields = fields;
         this.pageable = pageable;
-    }
-
-    public SearchSourceBuilder toSearchSourcebuilder() {
-        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(this.getQuery());
-
-        List<SortBuilder> sorts = this.getSorts();
-        if (!CollectionUtils.isEmpty(sorts)) {
-            for (SortBuilder sort : sorts) {
-                searchSourceBuilder.sort(sort);
-            }
-        }
-
-        Pageable pageable = this.getPageable();
-        if (pageable.isPaged()) {
-            if (pageable.getOffset() > EsConstant.MAX_RESULT) {
-                searchSourceBuilder.from(EsConstant.MAX_RESULT.intValue());
-                searchSourceBuilder.size(0);
-            } else {
-                searchSourceBuilder.from((int) pageable.getOffset());
-                if ((int) pageable.getOffset() + pageable.getPageSize() > EsConstant.MAX_RESULT.intValue()) {
-                    searchSourceBuilder.size(EsConstant.MAX_RESULT.intValue() - (int) pageable.getOffset());
-                } else {
-                    searchSourceBuilder.size(pageable.getPageSize());
-                }
-            }
-        }
-
-        List<String> fields = this.getFields();
-        if (!CollectionUtils.isEmpty(fields)) {
-            FetchSourceContext sourceContext = new FetchSourceContext(true, fields.toArray(new String[]{}), null);
-            searchSourceBuilder.fetchSource(sourceContext);
-        }
-
-        if (this.collapse != null) {
-            searchSourceBuilder.collapse(collapse);
-        }
-
-        return searchSourceBuilder;
     }
 
     public SearchQuery withQuery(QueryBuilder query) {
@@ -156,7 +149,7 @@ public class SearchQuery implements Serializable {
     }
 
     public SearchQuery addFields(List<String> fields) {
-        if(CollectionUtils.isEmpty(fields)) {
+        if (CollectionUtils.isEmpty(fields)) {
             return this;
         }
 
@@ -170,7 +163,7 @@ public class SearchQuery implements Serializable {
 
     public SearchQuery addSort(SortBuilder sort) {
         if (this.sorts == null) {
-            this.sorts.add(sort);
+            this.sorts = new ArrayList<>();
         }
 
         this.sorts.add(sort);
@@ -182,12 +175,22 @@ public class SearchQuery implements Serializable {
         return this;
     }
 
-    public SearchQuery withAggregations(AggregationBuilder aggregation) {
+    public SearchQuery withAggregation(AggregationBuilder aggregation) {
         if (this.aggregations == null) {
             this.aggregations = new ArrayList<>();
         }
 
         this.aggregations.add(aggregation);
+        return this;
+    }
+
+    public SearchQuery trackTotalHits(boolean trackTotalHits) {
+        this.trackTotalHits = trackTotalHits;
+        return this;
+    }
+
+    public SearchQuery version(boolean version) {
+        this.version = version;
         return this;
     }
 
@@ -200,36 +203,8 @@ public class SearchQuery implements Serializable {
         return query;
     }
 
-    public SearchQuery setQuery(QueryBuilder query) {
+    public void setQuery(QueryBuilder query) {
         this.query = query;
-        return this;
-    }
-
-    public List<SortBuilder> getSorts() {
-        return sorts;
-    }
-
-    public SearchQuery setSorts(List<SortBuilder> sorts) {
-        this.sorts = sorts;
-        return this;
-    }
-
-    public List<String> getFields() {
-        return fields;
-    }
-
-    public SearchQuery setFields(List<String> fields) {
-        this.fields = fields;
-        return this;
-    }
-
-    public Pageable getPageable() {
-        return pageable;
-    }
-
-    public SearchQuery setPageable(Pageable pageable) {
-        this.pageable = pageable;
-        return this;
     }
 
     public CollapseBuilder getCollapse() {
@@ -246,6 +221,46 @@ public class SearchQuery implements Serializable {
 
     public void setAggregations(List<AggregationBuilder> aggregations) {
         this.aggregations = aggregations;
+    }
+
+    public List<SortBuilder> getSorts() {
+        return sorts;
+    }
+
+    public void setSorts(List<SortBuilder> sorts) {
+        this.sorts = sorts;
+    }
+
+    public List<String> getFields() {
+        return fields;
+    }
+
+    public void setFields(List<String> fields) {
+        this.fields = fields;
+    }
+
+    public Pageable getPageable() {
+        return pageable;
+    }
+
+    public void setPageable(Pageable pageable) {
+        this.pageable = pageable;
+    }
+
+    public boolean isTrackTotalHits() {
+        return trackTotalHits;
+    }
+
+    public void setTrackTotalHits(boolean trackTotalHits) {
+        this.trackTotalHits = trackTotalHits;
+    }
+
+    public boolean isVersion() {
+        return version;
+    }
+
+    public void setVersion(boolean version) {
+        this.version = version;
     }
 
     public boolean isScore() {

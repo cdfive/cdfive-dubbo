@@ -20,9 +20,9 @@ public class EsProperties {
 
     private Integer socketTimeout = 60000;
 
-    private Integer maxConnPerRoute = 2;
+    private Integer maxConnPerRoute = 300;
 
-    private Integer maxConnTotal = 20;
+    private Integer maxConnTotal = 900;
 
     private Boolean trackTotalHits = true;
 

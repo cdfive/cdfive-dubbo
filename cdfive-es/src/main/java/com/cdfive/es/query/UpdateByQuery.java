@@ -7,9 +7,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author cdfive
+ * @author xiejihan
+ * @date 2022-01-05
  */
-public class UpdateQuery implements Serializable {
+public class UpdateByQuery implements Serializable {
 
     private QueryBuilder query;
 
@@ -19,35 +20,47 @@ public class UpdateQuery implements Serializable {
 
     private Map<String, Object> params;
 
-    public UpdateQuery() {
+    public static UpdateByQuery of() {
+        return new UpdateByQuery();
+    }
+
+    public static UpdateByQuery of(QueryBuilder query) {
+        return new UpdateByQuery(query);
+    }
+
+    public static UpdateByQuery of(QueryBuilder query, Integer batchSize) {
+        return new UpdateByQuery(query, batchSize);
+    }
+
+    public UpdateByQuery() {
 
     }
 
-    public UpdateQuery(QueryBuilder query) {
+    public UpdateByQuery(QueryBuilder query) {
         this.query = query;
     }
 
-    public UpdateQuery(QueryBuilder query, Integer batchSize) {
+    public UpdateByQuery(QueryBuilder query, Integer batchSize) {
         this.query = query;
         this.batchSize = batchSize;
     }
 
-    public UpdateQuery withQuery(QueryBuilder query) {
+    public UpdateByQuery withQuery(QueryBuilder query) {
         this.query = query;
         return this;
     }
 
-    public UpdateQuery withBatchSize(Integer batchSize) {
+    public UpdateByQuery withBatchSize(Integer batchSize) {
         this.batchSize = batchSize;
         return this;
     }
 
-    public UpdateQuery withScript(String script) {
+    public UpdateByQuery withScript(String script) {
         this.script = script;
         return this;
     }
 
-    private UpdateQuery withParam(String paramName, Object paramValue) {
+    private UpdateByQuery withParam(String paramName, Object paramValue) {
         if (this.params == null) {
             this.params = new HashMap<>();
         }

@@ -14,6 +14,7 @@ import org.springframework.util.Assert;
 public class EsUtil {
 
     public static String genDsl(SearchQuery searchQuery) {
-        return searchQuery.toSearchSourcebuilder().toString();
+//        return searchQuery.toSearchSourcebuilder().toString();
+        return null;
     }
 }

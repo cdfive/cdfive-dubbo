@@ -13,17 +13,17 @@ import java.util.stream.Collectors;
  */
 public class PageUtil {
 
-    public static <Vo, Po> PageRespVo<Vo> buildPage(Page<Po> page, Function<Po, Vo> transformer) {
-        List<Po> list = page.getContent();
-        List<Vo> data = list.stream().map(o -> transformer.apply(o)).collect(Collectors.toList());
+    public static <VO, PO> PageRespVo<VO> buildPage(Page<PO> page, Function<PO, VO> transformer) {
+        List<PO> list = page.getContent();
+        List<VO> data = list.stream().map(o -> transformer.apply(o)).collect(Collectors.toList());
         PageRespVo respVo = new PageRespVo(page.getNumber() + 1, page.getSize(), (int) page.getTotalElements(), data);
         return respVo;
     }
 
-    public static <Vo, Po> BootstrapPageRespVo<Vo> buildBootstrapPage(Page<Po> page, Function<Po, Vo> transformer) {
-        List<Po> list = page.getContent();
-        List<Vo> data = list.stream().map(o -> transformer.apply(o)).collect(Collectors.toList());
-        BootstrapPageRespVo respVo = new BootstrapPageRespVo((int) page.getTotalElements(), data);
+    public static <VO, PO> BootstrapPageRespVo<VO> buildBootstrapPage(Page<PO> page, Function<PO, VO> transformer) {
+        List<PO> list = page.getContent();
+        List<VO> data = list.stream().map(o -> transformer.apply(o)).collect(Collectors.toList());
+        BootstrapPageRespVo<VO> respVo = new BootstrapPageRespVo<VO>((int) page.getTotalElements(), data);
         return respVo;
     }
 }
