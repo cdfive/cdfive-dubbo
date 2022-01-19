@@ -269,10 +269,39 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         }
 
         try {
-            client.updateByQuery(updateByQueryRequest, RequestOptions.DEFAULT);
+            this.client.updateByQuery(updateByQueryRequest, RequestOptions.DEFAULT);
         } catch (Exception e) {
             throw new RuntimeException("es updateByQuery error", e);
         }
+    }
+
+    @Override
+    public void updateByQueryAsync(UpdateByQuery updateByQuery) {
+        UpdateByQueryRequest updateByQueryRequest = new UpdateByQueryRequest(this.index);
+        QueryBuilder query = updateByQuery.getQuery();
+        updateByQueryRequest.setQuery(query);
+
+        Integer batchSize = updateByQuery.getBatchSize();
+        if (batchSize != null) {
+            updateByQueryRequest.setBatchSize(batchSize);
+        }
+
+        if (!StringUtils.isEmpty(updateByQuery.getScript())) {
+            Script inline = new Script(ScriptType.INLINE, EsConstant.LANG_PAINLESS, updateByQuery.getScript(), updateByQuery.getParams());
+            updateByQueryRequest.setScript(inline);
+        }
+
+        this.client.updateByQueryAsync(updateByQueryRequest, RequestOptions.DEFAULT, new ActionListener<BulkByScrollResponse>() {
+            @Override
+            public void onResponse(BulkByScrollResponse bulkByScrollResponse) {
+
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                log.error("updateByQueryAsync error", e);
+            }
+        });
     }
 
     @Override
@@ -484,7 +513,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
     }
 
     @Override
-    public void deleteByQuerySync(DeleteByQuery deleteByQuery) {
+    public void deleteByQueryAsync(DeleteByQuery deleteByQuery) {
         DeleteByQueryRequest deleteByQueryRequest = new DeleteByQueryRequest(this.index);
         QueryBuilder query = deleteByQuery.getQuery();
         deleteByQueryRequest.setQuery(query);
@@ -506,7 +535,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
 
             @Override
             public void onFailure(Exception e) {
-                log.error("deleteByQuerySync error", e);
+                log.error("deleteByQueryAsync error", e);
             }
         });
     }
@@ -759,7 +788,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         }
 
         try {
-            client.update(updateRequest, RequestOptions.DEFAULT);
+            this.client.update(updateRequest, RequestOptions.DEFAULT);
         } catch (Exception e) {
             throw new RuntimeException("es updateByScript error", e);
         }
@@ -802,7 +831,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             }
         }
         try {
-            client.bulk(bulkRequest, RequestOptions.DEFAULT);
+            this.client.bulk(bulkRequest, RequestOptions.DEFAULT);
         } catch (Exception e) {
             throw new RuntimeException("es updateByScript batch error", e);
         }
@@ -840,7 +869,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             }
         }
         try {
-            client.bulk(bulkRequest, RequestOptions.DEFAULT);
+            this.client.bulk(bulkRequest, RequestOptions.DEFAULT);
         } catch (Exception e) {
             throw new RuntimeException("es updateByScript batch error", e);
         }

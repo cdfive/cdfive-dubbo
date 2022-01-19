@@ -40,7 +40,9 @@ public interface EsRepository<ENTITY, ID> {
 
     void update(Collection<ID> ids, Map<String, Object> params, EsWriteOptionVo esWriteOptionVo);
 
-    void updateByQuery(UpdateByQuery updateQuery);
+    void updateByQuery(UpdateByQuery updateByQuery);
+
+    void updateByQueryAsync(UpdateByQuery updateByQuery);
 
     void updateByScript(ID id, String scriptCode, Map<String, Object> params);
 
@@ -84,7 +86,7 @@ public interface EsRepository<ENTITY, ID> {
 
     void deleteByQuery(DeleteByQuery deleteByQuery);
 
-    void deleteByQuerySync(DeleteByQuery deleteByQuery);
+    void deleteByQueryAsync(DeleteByQuery deleteByQuery);
 
     void deleteAll();
 
