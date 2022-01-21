@@ -264,7 +264,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         }
 
         if (!StringUtils.isEmpty(updateByQuery.getScript())) {
-            Script inline = new Script(ScriptType.INLINE, EsConstant.LANG_PAINLESS, updateByQuery.getScript(), updateByQuery.getParams());
+            Script inline = new Script(ScriptType.INLINE, Script.DEFAULT_SCRIPT_LANG, updateByQuery.getScript(), updateByQuery.getParams());
             updateByQueryRequest.setScript(inline);
         }
 
@@ -287,7 +287,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         }
 
         if (!StringUtils.isEmpty(updateByQuery.getScript())) {
-            Script inline = new Script(ScriptType.INLINE, EsConstant.LANG_PAINLESS, updateByQuery.getScript(), updateByQuery.getParams());
+            Script inline = new Script(ScriptType.INLINE, Script.DEFAULT_SCRIPT_LANG, updateByQuery.getScript(), updateByQuery.getParams());
             updateByQueryRequest.setScript(inline);
         }
 
@@ -777,7 +777,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         }
 
         UpdateRequest updateRequest = new UpdateRequest(this.index, id.toString());
-        Script script = new Script(scriptType, EsConstant.LANG_PAINLESS, scriptIdOrCode, params);
+        Script script = new Script(scriptType, Script.DEFAULT_SCRIPT_LANG, scriptIdOrCode, params);
         updateRequest.script(script);
 
         if (esWriteOptionVo != null) {
@@ -821,9 +821,9 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         Iterator<Map<String, Object>> paramsIterator = params.iterator();
         for (int i = 0; i < size; i++) {
             if (esWriteOptionVo == null) {
-                bulkRequest.add(new UpdateRequest(this.index, idsIterator.next().toString()).script(new Script(scriptType, EsConstant.LANG_PAINLESS, scriptIdOrCode, paramsIterator.next())));
+                bulkRequest.add(new UpdateRequest(this.index, idsIterator.next().toString()).script(new Script(scriptType, Script.DEFAULT_SCRIPT_LANG, scriptIdOrCode, paramsIterator.next())));
             } else {
-                bulkRequest.add(new UpdateRequest(this.index, idsIterator.next().toString()).script(new Script(scriptType, EsConstant.LANG_PAINLESS, scriptIdOrCode, paramsIterator.next()))
+                bulkRequest.add(new UpdateRequest(this.index, idsIterator.next().toString()).script(new Script(scriptType, Script.DEFAULT_SCRIPT_LANG, scriptIdOrCode, paramsIterator.next()))
                         .setRefreshPolicy(esWriteOptionVo.getRefreshPolicy())
                         .routing(esWriteOptionVo.getRouting())
                         .version(esWriteOptionVo.getVersion())
@@ -859,9 +859,9 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         Iterator<ID> idsIterator = ids.iterator();
         for (int i = 0; i < size; i++) {
             if (esWriteOptionVo == null) {
-                bulkRequest.add(new UpdateRequest(this.index, idsIterator.next().toString()).script(new Script(scriptType, EsConstant.LANG_PAINLESS, scriptIdOrCode, params)));
+                bulkRequest.add(new UpdateRequest(this.index, idsIterator.next().toString()).script(new Script(scriptType, Script.DEFAULT_SCRIPT_LANG, scriptIdOrCode, params)));
             } else {
-                bulkRequest.add(new UpdateRequest(this.index, idsIterator.next().toString()).script(new Script(scriptType, EsConstant.LANG_PAINLESS, scriptIdOrCode, params))
+                bulkRequest.add(new UpdateRequest(this.index, idsIterator.next().toString()).script(new Script(scriptType, Script.DEFAULT_SCRIPT_LANG, scriptIdOrCode, params))
                         .setRefreshPolicy(esWriteOptionVo.getRefreshPolicy())
                         .routing(esWriteOptionVo.getRouting())
                         .version(esWriteOptionVo.getVersion())

@@ -14,9 +14,6 @@ public class EsConstant {
     // should查询默认配置
     public static final String MINIMUM_SHOULD_MATCH_DEFAULT = "2<70%";
 
-    // 脚本类型相关
-    public static String LANG_PAINLESS = "painless";
-
     // 冲突处理相关
     public static final String CONFLICTS_PROCEED = "proceed";
     public static final String CONFLICTS_ABORT = "abort";

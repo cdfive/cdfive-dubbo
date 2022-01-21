@@ -22,12 +22,6 @@ public class SearchQuery implements Serializable {
     // 查询
     private QueryBuilder query;
 
-    // 折叠
-    private CollapseBuilder collapse;
-
-    // 聚合列表
-    private List<AggregationBuilder> aggregations;
-
     // 排序
     private List<SortBuilder> sorts;
 
@@ -36,6 +30,12 @@ public class SearchQuery implements Serializable {
 
     // 分页
     private Pageable pageable;
+
+    // 折叠
+    private CollapseBuilder collapse;
+
+    // 聚合列表
+    private List<AggregationBuilder> aggregations;
 
     // 是否获取总数
     private boolean trackTotalHits = false;
@@ -207,22 +207,6 @@ public class SearchQuery implements Serializable {
         this.query = query;
     }
 
-    public CollapseBuilder getCollapse() {
-        return collapse;
-    }
-
-    public void setCollapse(CollapseBuilder collapse) {
-        this.collapse = collapse;
-    }
-
-    public List<AggregationBuilder> getAggregations() {
-        return aggregations;
-    }
-
-    public void setAggregations(List<AggregationBuilder> aggregations) {
-        this.aggregations = aggregations;
-    }
-
     public List<SortBuilder> getSorts() {
         return sorts;
     }
@@ -245,6 +229,22 @@ public class SearchQuery implements Serializable {
 
     public void setPageable(Pageable pageable) {
         this.pageable = pageable;
+    }
+
+    public CollapseBuilder getCollapse() {
+        return collapse;
+    }
+
+    public void setCollapse(CollapseBuilder collapse) {
+        this.collapse = collapse;
+    }
+
+    public List<AggregationBuilder> getAggregations() {
+        return aggregations;
+    }
+
+    public void setAggregations(List<AggregationBuilder> aggregations) {
+        this.aggregations = aggregations;
     }
 
     public boolean isTrackTotalHits() {
