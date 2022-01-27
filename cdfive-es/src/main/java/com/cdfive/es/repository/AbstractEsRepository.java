@@ -254,6 +254,10 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
 
     @Override
     public void updateByQuery(UpdateByQuery updateByQuery) {
+        if (StringUtils.isEmpty(updateByQuery.getScript()) && StringUtils.isEmpty(updateByQuery.getScriptId())) {
+            return;
+        }
+
         UpdateByQueryRequest updateByQueryRequest = new UpdateByQueryRequest(this.index);
         QueryBuilder query = updateByQuery.getQuery();
         updateByQueryRequest.setQuery(query);
@@ -266,6 +270,9 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         if (!StringUtils.isEmpty(updateByQuery.getScript())) {
             Script inline = new Script(ScriptType.INLINE, Script.DEFAULT_SCRIPT_LANG, updateByQuery.getScript(), updateByQuery.getParams());
             updateByQueryRequest.setScript(inline);
+        } else if (!StringUtils.isEmpty(updateByQuery.getScriptId())) {
+            Script scriptStored = new Script(ScriptType.STORED, null, updateByQuery.getScriptId(), updateByQuery.getParams());
+            updateByQueryRequest.setScript(scriptStored);
         }
 
         try {
@@ -277,6 +284,10 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
 
     @Override
     public void updateByQueryAsync(UpdateByQuery updateByQuery) {
+        if (StringUtils.isEmpty(updateByQuery.getScript()) && StringUtils.isEmpty(updateByQuery.getScriptId())) {
+            return;
+        }
+
         UpdateByQueryRequest updateByQueryRequest = new UpdateByQueryRequest(this.index);
         QueryBuilder query = updateByQuery.getQuery();
         updateByQueryRequest.setQuery(query);
@@ -289,6 +300,9 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         if (!StringUtils.isEmpty(updateByQuery.getScript())) {
             Script inline = new Script(ScriptType.INLINE, Script.DEFAULT_SCRIPT_LANG, updateByQuery.getScript(), updateByQuery.getParams());
             updateByQueryRequest.setScript(inline);
+        } else if (!StringUtils.isEmpty(updateByQuery.getScriptId())) {
+            Script scriptStored = new Script(ScriptType.STORED, null, updateByQuery.getScriptId(), updateByQuery.getParams());
+            updateByQueryRequest.setScript(scriptStored);
         }
 
         this.client.updateByQueryAsync(updateByQueryRequest, RequestOptions.DEFAULT, new ActionListener<BulkByScrollResponse>() {
@@ -777,7 +791,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         }
 
         UpdateRequest updateRequest = new UpdateRequest(this.index, id.toString());
-        Script script = new Script(scriptType, Script.DEFAULT_SCRIPT_LANG, scriptIdOrCode, params);
+        Script script = new Script(scriptType, ScriptType.INLINE.equals(scriptType) ? Script.DEFAULT_SCRIPT_LANG : null, scriptIdOrCode, params);
         updateRequest.script(script);
 
         if (esWriteOptionVo != null) {

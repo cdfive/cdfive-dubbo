@@ -18,6 +18,8 @@ public class UpdateByQuery implements Serializable {
 
     private String script;
 
+    private String scriptId;
+
     private Map<String, Object> params;
 
     public static UpdateByQuery of() {
@@ -60,6 +62,11 @@ public class UpdateByQuery implements Serializable {
         return this;
     }
 
+    public UpdateByQuery withScriptId(String scriptId) {
+        this.scriptId = scriptId;
+        return this;
+    }
+
     private UpdateByQuery withParam(String paramName, Object paramValue) {
         if (this.params == null) {
             this.params = new HashMap<>();
@@ -91,6 +98,14 @@ public class UpdateByQuery implements Serializable {
 
     public void setScript(String script) {
         this.script = script;
+    }
+
+    public String getScriptId() {
+        return scriptId;
+    }
+
+    public void setScriptId(String scriptId) {
+        this.scriptId = scriptId;
     }
 
     public Map<String, Object> getParams() {
