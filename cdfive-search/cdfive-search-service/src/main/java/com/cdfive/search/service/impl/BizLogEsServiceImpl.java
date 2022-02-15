@@ -4,6 +4,7 @@ import com.cdfive.common.util.PageUtil;
 import com.cdfive.common.util.StringUtil;
 import com.cdfive.common.vo.page.PageRespVo;
 import com.cdfive.es.query.SearchQuery;
+import com.cdfive.es.vo.EsEntityVo;
 import com.cdfive.search.eo.BizLogEo;
 import com.cdfive.search.repository.BizLogEsRepository;
 import com.cdfive.search.service.BizLogEsService;
@@ -58,7 +59,7 @@ public class BizLogEsServiceImpl implements BizLogEsService {
         }
 
         SearchQuery searchQuery = new SearchQuery(rootQueryBuilder, PageRequest.of(reqVo.getPageNum() - 1, reqVo.getPageSize()));
-        Page<BizLogEo> page = bizLogEsRepository.search(searchQuery);
+        Page<EsEntityVo<BizLogEo>> page = bizLogEsRepository.search(searchQuery);
         return PageUtil.buildPage(page, QueryBizLogPageTransformer.INSTANCE);
     }
 }
