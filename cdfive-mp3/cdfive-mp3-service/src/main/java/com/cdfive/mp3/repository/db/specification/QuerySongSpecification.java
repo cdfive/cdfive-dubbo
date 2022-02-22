@@ -27,7 +27,7 @@ public class QuerySongSpecification implements Specification<SongPo> {
 
         String name = reqVo.getName();
         if (StringUtils.isNotBlank(name)) {
-            predicates.add(cb.like(root.get("name").as(String.class), "%" + name + "%"));
+            predicates.add(cb.like(root.get("songName").as(String.class), "%" + name + "%"));
         }
 
         String author = reqVo.getAuthor();
