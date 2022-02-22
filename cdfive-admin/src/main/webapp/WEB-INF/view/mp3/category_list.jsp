@@ -45,7 +45,7 @@
         }
 
         $('table#category_table').bootstrapTable({
-            method: "post",
+            method: "POST",
             toolbar: "#toolbar",
             striped: true,
             cache: false,
@@ -53,7 +53,7 @@
             sortable: false,
             sortOrder: "asc",
             pageNumber: PAGENUMBER,
-            url: "${webroot}/category/listData",
+            url: "${webroot}/category/list",
             // dataField: "result",
             pageSize: PAGESIZE,
             pageList: [5, 10, 20, 50],

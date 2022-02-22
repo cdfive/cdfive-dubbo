@@ -8,12 +8,10 @@ import com.cdfive.mp3.vo.category.AddCategoryReqVo;
 import com.cdfive.mp3.vo.category.FindCategoryDetailVo;
 import com.cdfive.mp3.vo.category.QueryCategoryListPageReqVo;
 import com.cdfive.mp3.vo.category.UpdateCategoryReqVo;
-import com.cdfive.mp3.vo.song.FindSongDetailVo;
-import com.cdfive.mp3.vo.song.QuerySongListPageReqVo;
-import com.cdfive.mp3.vo.song.QuerySongListPageRespVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -36,7 +34,7 @@ public class CategoryController extends AbstractController {
     }
 
     @ResponseBody
-    @RequestMapping("/listData")
+    @PostMapping("/list")
     public BootstrapPageRespVo<?> listData(QueryCategoryListPageReqVo reqVo) {
         return categoryService.queryCategoryListBootstrapPage(reqVo);
     }
@@ -50,21 +48,21 @@ public class CategoryController extends AbstractController {
     }
 
     @ResponseBody
-    @RequestMapping("/add")
+    @PostMapping("/add")
     public ApiResponse<?> add(AddCategoryReqVo reqVo) {
         categoryService.addCategory(reqVo);
         return succ();
     }
 
     @ResponseBody
-    @RequestMapping("/update")
+    @PostMapping("/update")
     public ApiResponse<?> update(UpdateCategoryReqVo reqVo) {
         categoryService.updateCategory(reqVo);
         return succ();
     }
 
     @ResponseBody
-    @RequestMapping("/delete")
+    @PostMapping("/delete")
     public ApiResponse<?> delete(List<Integer> ids) {
         categoryService.deleteCategory(ids);
         return succ();

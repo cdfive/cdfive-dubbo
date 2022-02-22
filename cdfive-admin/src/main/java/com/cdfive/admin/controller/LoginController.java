@@ -34,7 +34,7 @@ public class LoginController {
     @ResponseBody
     @RequestMapping("/welcome")
     public String welcome() {
-        return "welcome 2021";
+        return "welcome 2022";
     }
 
     @ResponseBody

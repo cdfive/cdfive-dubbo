@@ -10,6 +10,7 @@ import com.cdfive.mp3.vo.song.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -34,7 +35,7 @@ public class Mp3Controller extends AbstractController {
     }
 
     @ResponseBody
-    @RequestMapping("/listData")
+    @PostMapping("/list")
     public BootstrapPageRespVo<QuerySongListPageRespVo> listData(QuerySongListPageReqVo reqVo) {
         return songService.querySongListBootstrapPage(reqVo);
     }
@@ -53,21 +54,21 @@ public class Mp3Controller extends AbstractController {
     }
 
     @ResponseBody
-    @RequestMapping("/add")
+    @PostMapping("/add")
     public ApiResponse<?> add(AddSongReqVo reqVo) {
         songService.addSong(reqVo);
         return succ();
     }
 
     @ResponseBody
-    @RequestMapping("/update")
+    @PostMapping("/update")
     public ApiResponse<?> add(UpdateSongReqVo reqVo) {
         songService.updateSong(reqVo);
         return succ();
     }
 
     @ResponseBody
-    @RequestMapping("/delete")
+    @PostMapping("/delete")
     public ApiResponse<?> delete(List<Integer> ids) {
         songService.deleteSong(ids);
         return succ();

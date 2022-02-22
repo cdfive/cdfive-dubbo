@@ -16,6 +16,7 @@
                                         <input id="name" type="text" class="form-control" style=" margin-top: -4px;">
                                         <label for="author">歌手：</label>
                                         <input id="author" type="text" class="form-control" style=" margin-top: -4px;">
+                                        <button class="btn btn-primary" id="btnSearch">搜索</button>
                                     </div>
                                 </div>
                             </div>
@@ -47,7 +48,7 @@
         }
 
         $('table#mp3_table').bootstrapTable({
-            method: "post",
+            method: "POST",
             toolbar: "#toolbar",
             striped: true,
             cache: false,
@@ -55,7 +56,7 @@
             sortable: false,
             sortOrder: "asc",
             pageNumber: PAGENUMBER,
-            url: "${webroot}/mp3/listData",
+            url: "${webroot}/mp3/list",
             // dataField: "result",
             pageSize: PAGESIZE,
             pageList: [5, 10, 20, 50],
@@ -78,6 +79,8 @@
                 title: "播放次数", field: "playCount", sortable: true, align: "center", valign: "middle"
             }, {
                 title: "创建时间", field: "createTime", sortable: true, align: "center", valign: "middle"
+            }, {
+                title: "修改时间", field: "updateTime", sortable: true, align: "center", valign: "middle"
             },  {
                 title: "操作", formatter: operateFormatter, align: "center", valign: "middle"
             }],
@@ -100,6 +103,10 @@
             return "<button type='button' class='btn btn-primary' onclick='edit(\"" + row.id + "\");'>修改</button>&nbsp;"
                  + "<button type='button' class='btn btn-primary' onclick='del(\"" + row.id + "\");'>删除</button>&nbsp;";
         }
+
+        $("#btnSearch").click(function() {
+            $('table#mp3_table').bootstrapTable('refreshOptions', {pageNum: 1});
+        })
     });
 
     function edit(id) {
