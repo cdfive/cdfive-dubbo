@@ -3,19 +3,15 @@ package com.cdfive.search.transformer;
 import com.cdfive.es.vo.EsEntityVo;
 import com.cdfive.search.eo.BizLogEo;
 import com.cdfive.search.vo.bizlog.QueryBizLogPageRespVo;
+import org.springframework.stereotype.Component;
 
 import java.util.function.Function;
 
 /**
  * @author cdfive
  */
+@Component
 public class QueryBizLogPageTransformer implements Function<EsEntityVo<BizLogEo>, QueryBizLogPageRespVo> {
-
-    public static QueryBizLogPageTransformer INSTANCE = new QueryBizLogPageTransformer();
-
-    private QueryBizLogPageTransformer() {
-
-    }
 
     @Override
     public QueryBizLogPageRespVo apply(EsEntityVo<BizLogEo> vo) {

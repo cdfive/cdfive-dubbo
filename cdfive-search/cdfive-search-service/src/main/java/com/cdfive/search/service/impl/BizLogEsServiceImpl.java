@@ -35,6 +35,9 @@ public class BizLogEsServiceImpl implements BizLogEsService {
     @Autowired
     private BizLogEsRepository bizLogEsRepository;
 
+    @Autowired
+    private QueryBizLogPageTransformer queryBizLogPageTransformer;
+
     @Override
     public void saveBizLogs(List<SaveBizLogReqVo> reqVos) {
         if (ObjectUtils.isEmpty(reqVos)) {
@@ -60,6 +63,6 @@ public class BizLogEsServiceImpl implements BizLogEsService {
 
         SearchQuery searchQuery = new SearchQuery(rootQueryBuilder, PageRequest.of(reqVo.getPageNum() - 1, reqVo.getPageSize()));
         Page<EsEntityVo<BizLogEo>> page = bizLogEsRepository.search(searchQuery);
-        return PageUtil.buildPage(page, QueryBizLogPageTransformer.INSTANCE);
+        return PageUtil.buildPage(page, queryBizLogPageTransformer);
     }
 }
