@@ -90,7 +90,7 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
     @Override
     public List<SongListVo> findRandomSongList(Integer num) {
         log.info("songService=>findRandomSongList");
-        checkCondition(num > 0, "数量应大于0");
+        checkCondition(num != null && num > 0, "数量应大于0");
 
         List<SongListVo> list = songRepository.findRandomSongList(num);
         return list;
