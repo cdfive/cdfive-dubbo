@@ -30,6 +30,12 @@ public class TimestampTest {
         String dateStr = DateFormatUtils.format(date, "yyyy-MM-dd HH:mm:ss.SSS");
         System.out.println(dateStr); // 2020-10-17 17:57:21.073
         System.out.println(date.getTime()); // 1602928641073
+        System.out.println("------------------------");
+
+        // pay attention to this
+        // 1970-01-01 08:00:00.0
+        Timestamp timestamp0 = new Timestamp(0);
+        System.out.println(timestamp0);
     }
 
     private static void sleepAndPrintTime() throws Exception {
