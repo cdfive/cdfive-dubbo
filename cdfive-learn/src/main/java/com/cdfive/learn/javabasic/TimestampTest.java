@@ -1,8 +1,11 @@
 package com.cdfive.learn.javabasic;
 
+import com.alibaba.fastjson.JSONObject;
+import lombok.Data;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.concurrent.ThreadLocalRandom;
@@ -33,13 +36,26 @@ public class TimestampTest {
         System.out.println("------------------------");
 
         // pay attention to this
-        // 1970-01-01 08:00:00.0
         Timestamp timestamp0 = new Timestamp(0);
+        // 1970-01-01 08:00:00.0
         System.out.println(timestamp0);
+        // test json convert using fastjson
+        String json = "{\"updateTime\":0}";
+        Item item = JSONObject.parseObject(json, Item.class);
+        // {"updateTime":0}
+        System.out.println(JSONObject.toJSONString(item));
+        // 1970-01-01 08:00:00.0
+        System.out.println(item.updateTime);
     }
 
     private static void sleepAndPrintTime() throws Exception {
         TimeUnit.MILLISECONDS.sleep(ThreadLocalRandom.current().nextInt(10));
         System.out.println(new Timestamp(System.currentTimeMillis()));
+    }
+
+    @Data
+    private static class Item implements Serializable {
+
+        private Timestamp updateTime;
     }
 }
