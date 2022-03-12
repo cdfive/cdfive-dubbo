@@ -9,7 +9,7 @@ import java.util.concurrent.*;
  */
 public class ThreadUtil {
 
-    public static ExecutorService newFixedBlockingThreadPool(int nThreads) {
+    public static ThreadPoolExecutor newFixedBlockingThreadPool(int nThreads) {
         return new ThreadPoolExecutor(nThreads, nThreads, 0, TimeUnit.SECONDS, new SynchronousQueue<Runnable>(), new RejectedExecutionHandler() {
             @Override
             public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
@@ -22,7 +22,7 @@ public class ThreadUtil {
         });
     }
 
-    public static ExecutorService newFixedBlockingThreadPool(int nThreads, ThreadFactory threadFactory) {
+    public static ThreadPoolExecutor newFixedBlockingThreadPool(int nThreads, ThreadFactory threadFactory) {
         return new ThreadPoolExecutor(nThreads, nThreads, 0, TimeUnit.SECONDS, new SynchronousQueue<Runnable>(), threadFactory, new RejectedExecutionHandler() {
             @Override
             public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
@@ -35,7 +35,7 @@ public class ThreadUtil {
         });
     }
 
-    public static ExecutorService newFixedBlockingThreadPool(int nThreads, String threadNamePrefix) {
+    public static ThreadPoolExecutor newFixedBlockingThreadPool(int nThreads, String threadNamePrefix) {
         return newFixedBlockingThreadPool(nThreads, new CustomizableThreadFactory(threadNamePrefix));
     }
 }
