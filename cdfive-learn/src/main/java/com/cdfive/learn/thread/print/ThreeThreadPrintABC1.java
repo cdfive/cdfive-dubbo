@@ -1,5 +1,7 @@
 package com.cdfive.learn.thread.print;
 
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -36,6 +38,14 @@ public class ThreeThreadPrintABC1 {
                 lock.lock();
                 try {
                     System.out.println(Thread.currentThread().getName() + "=>" + key);
+
+                    // Since thread run too fast, here we need to sleep a small while when using fair ReentrantLock
+                    // Otherwise, A->B->C may not been printed sequentially
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(ThreadLocalRandom.current().nextInt(10));
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 } finally {
                     lock.unlock();
                 }
