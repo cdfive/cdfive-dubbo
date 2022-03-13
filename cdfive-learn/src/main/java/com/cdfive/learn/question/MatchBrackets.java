@@ -9,6 +9,7 @@ import java.util.Stack;
  */
 public class MatchBrackets {
 
+
     public static void main(String[] args) {
         testMatch("123", true);
         testMatch("(123", false);
@@ -30,7 +31,7 @@ public class MatchBrackets {
     }};
 
     public static boolean match(String str) {
-        if (str == null) {
+        if (str == null || str.length() == 0) {
             return true;
         }
 
