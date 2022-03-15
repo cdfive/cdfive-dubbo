@@ -14,6 +14,6 @@ import org.springframework.context.annotation.ImportResource;
 public class WebApplication {
     public static void main(String[] args) {
         SpringApplication.run(WebApplication.class, args);
-        log.info("cdfive-web application started");
+        log.info("cdfive-web application started!");
     }
 }

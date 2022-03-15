@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
 public class GatewayApplication {
     public static void main(String[] args) {
         SpringApplication.run(GatewayApplication.class, args);
-        log.info("cdfive-gateway application started");
+        log.info("cdfive-gateway application started!");
     }
 
     @Bean

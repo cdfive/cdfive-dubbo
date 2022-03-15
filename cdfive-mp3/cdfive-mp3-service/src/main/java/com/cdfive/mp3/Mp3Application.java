@@ -19,6 +19,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 public class Mp3Application {
     public static void main(String[] args) {
         SpringApplication.run(Mp3Application.class, args);
-        log.info("cdfive-mp3 application started");
+        log.info("cdfive-mp3 application started!");
     }
 }

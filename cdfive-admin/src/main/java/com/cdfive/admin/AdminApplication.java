@@ -14,6 +14,6 @@ import org.springframework.context.annotation.ImportResource;
 public class AdminApplication {
     public static void main(String[] args) {
         SpringApplication.run(AdminApplication.class, args);
-        log.info("cdfive-admin application started");
+        log.info("cdfive-admin application started!");
     }
 }

@@ -17,6 +17,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 public class LogApplication {
     public static void main(String[] args) {
         SpringApplication.run(LogApplication.class, args);
-        log.info("cdfive-log application started");
+        log.info("cdfive-log application started!");
     }
 }

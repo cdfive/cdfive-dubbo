@@ -15,6 +15,6 @@ public class SearchApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(SearchApplication.class, args);
-        log.info("cdfive-search application started");
+        log.info("cdfive-search application started!");
     }
 }

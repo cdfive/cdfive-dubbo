@@ -17,6 +17,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 public class UserApplication {
     public static void main(String[] args) {
         SpringApplication.run(UserApplication.class, args);
-        log.info("cdfive-user application started");
+        log.info("cdfive-user application started!");
     }
 }
