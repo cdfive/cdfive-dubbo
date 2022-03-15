@@ -9,11 +9,12 @@ public class StringReplaceTest {
         String name = "123.ab.c";
         String result;
 
+        // !!!Pay attention to that it replaces all
         result = name.replace(".","。");
         // 123。ab。c
         System.out.println(result);
 
-        // !!!Pay attention to the first argument, it's a regex expression.
+        // !!!Pay attention to the first argument, it's a regex expression
         result = name.replaceAll(".","。");
         // 。。。。。。。。
         System.out.println(result);
