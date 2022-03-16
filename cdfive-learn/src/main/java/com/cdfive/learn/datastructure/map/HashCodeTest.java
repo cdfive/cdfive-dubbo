@@ -7,6 +7,9 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class HashCodeTest {
 
+    /**
+     * @see HASH_INCREMENT in {@link java.lang.ThreadLocal}
+     */
     private static final int HASH_INCREMENT = 0x61c88647;
 
     public static void main(String[] args) {

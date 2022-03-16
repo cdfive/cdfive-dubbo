@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author xiejihan
+ * @author cdfive
  * @date 2022-01-05
  */
 public class UpdateByQuery implements Serializable {

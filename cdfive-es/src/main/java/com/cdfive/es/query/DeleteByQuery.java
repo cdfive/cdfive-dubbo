@@ -5,7 +5,7 @@ import org.elasticsearch.index.query.QueryBuilder;
 import java.io.Serializable;
 
 /**
- * @author xiejihan
+ * @author cdfive
  * @date 2022-01-05
  */
 public class DeleteByQuery implements Serializable {

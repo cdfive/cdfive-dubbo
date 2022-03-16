@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author xiejihan
+ * @author cdfive
  * @date 2022-01-05
  */
 public class AggregateQuery implements Serializable {
