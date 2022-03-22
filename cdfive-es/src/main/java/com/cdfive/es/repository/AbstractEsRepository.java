@@ -23,6 +23,8 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.client.indices.AnalyzeRequest;
+import org.elasticsearch.client.indices.AnalyzeResponse;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -750,6 +752,36 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
 
 
         return this.buildAggregateResult(searchResponse);
+    }
+
+    @Override
+    public List<String> analyze(String analyzer, String... text) {
+        AnalyzeRequest analyzeRequest = AnalyzeRequest.withIndexAnalyzer(this.index, analyzer, text);
+        try {
+            AnalyzeResponse analyzeResponse = this.client.indices().analyze(analyzeRequest, RequestOptions.DEFAULT);
+            if (CollectionUtils.isEmpty(analyzeResponse.getTokens())) {
+                return Collections.emptyList();
+            }
+
+            return analyzeResponse.getTokens().stream().map(o -> o.getTerm()).collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new RuntimeException("es analyze error", e);
+        }
+    }
+
+    @Override
+    public List<String> analyzeWithField(String field, String... text) {
+        AnalyzeRequest analyzeRequest = AnalyzeRequest.withField(this.index, field, text);
+        try {
+            AnalyzeResponse analyzeResponse = this.client.indices().analyze(analyzeRequest, RequestOptions.DEFAULT);
+            if (CollectionUtils.isEmpty(analyzeResponse.getTokens())) {
+                return Collections.emptyList();
+            }
+
+            return analyzeResponse.getTokens().stream().map(o -> o.getTerm()).collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new RuntimeException("es analyzeWithField error", e);
+        }
     }
 
     @Override

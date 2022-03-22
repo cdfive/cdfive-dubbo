@@ -90,8 +90,6 @@ public interface EsRepository<ENTITY, ID> {
 
     void deleteAll();
 
-    void refresh();
-
     EsEntityVo<ENTITY> findOne(ID id);
 
     List<EsEntityVo<ENTITY>> findAll(Collection<ID> ids);
@@ -101,4 +99,10 @@ public interface EsRepository<ENTITY, ID> {
     SearchResponse search(SearchRequest searchRequest);
 
     Map<String, List<EsValueCountVo>> aggregate(AggregateQuery aggregateQuery);
+
+    void refresh();
+
+    List<String> analyze(String analyzer, String... text);
+
+    List<String> analyzeWithField(String field, String... text);
 }
