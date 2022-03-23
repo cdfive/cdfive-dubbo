@@ -22,6 +22,8 @@ public class UpdateByQuery implements Serializable {
 
     private Map<String, Object> params;
 
+    private Boolean refresh;
+
     public static UpdateByQuery of() {
         return new UpdateByQuery();
     }
@@ -67,12 +69,17 @@ public class UpdateByQuery implements Serializable {
         return this;
     }
 
-    private UpdateByQuery withParam(String paramName, Object paramValue) {
+    public UpdateByQuery withParam(String paramName, Object paramValue) {
         if (this.params == null) {
             this.params = new HashMap<>();
         }
 
         this.params.put(paramName, paramValue);
+        return this;
+    }
+
+    public UpdateByQuery withRefresh(Boolean refresh) {
+        this.refresh = refresh;
         return this;
     }
 
@@ -114,5 +121,13 @@ public class UpdateByQuery implements Serializable {
 
     public void setParams(Map<String, Object> params) {
         this.params = params;
+    }
+
+    public Boolean getRefresh() {
+        return refresh;
+    }
+
+    public void setRefresh(Boolean refresh) {
+        this.refresh = refresh;
     }
 }

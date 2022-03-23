@@ -277,6 +277,10 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             updateByQueryRequest.setScript(scriptStored);
         }
 
+        if (updateByQuery.getRefresh() != null) {
+            updateByQueryRequest.setRefresh(updateByQuery.getRefresh());
+        }
+
         try {
             this.client.updateByQuery(updateByQueryRequest, RequestOptions.DEFAULT);
         } catch (Exception e) {
@@ -305,6 +309,10 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         } else if (!StringUtils.isEmpty(updateByQuery.getScriptId())) {
             Script scriptStored = new Script(ScriptType.STORED, null, updateByQuery.getScriptId(), updateByQuery.getParams());
             updateByQueryRequest.setScript(scriptStored);
+        }
+
+        if (updateByQuery.getRefresh() != null) {
+            updateByQueryRequest.setRefresh(updateByQuery.getRefresh());
         }
 
         this.client.updateByQueryAsync(updateByQueryRequest, RequestOptions.DEFAULT, new ActionListener<BulkByScrollResponse>() {
@@ -517,10 +525,14 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             deleteByQueryRequest.setBatchSize(batchSize);
         }
 
-
         if (deleteByQuery.getConflictAbort() != null) {
             deleteByQueryRequest.setConflicts(deleteByQuery.getConflictAbort() ? EsConstant.CONFLICTS_ABORT : EsConstant.CONFLICTS_PROCEED);
         }
+
+        if (deleteByQuery.getRefresh() != null) {
+            deleteByQueryRequest.setRefresh(deleteByQuery.getRefresh());
+        }
+
         try {
             this.client.deleteByQuery(deleteByQueryRequest, RequestOptions.DEFAULT);
         } catch (Exception e) {
@@ -541,6 +553,10 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
 
         if (deleteByQuery.getConflictAbort() != null) {
             deleteByQueryRequest.setConflicts(deleteByQuery.getConflictAbort() ? EsConstant.CONFLICTS_ABORT : EsConstant.CONFLICTS_PROCEED);
+        }
+
+        if (deleteByQuery.getRefresh() != null) {
+            deleteByQueryRequest.setRefresh(deleteByQuery.getRefresh());
         }
 
         this.client.deleteByQueryAsync(deleteByQueryRequest, RequestOptions.DEFAULT, new ActionListener<BulkByScrollResponse>() {

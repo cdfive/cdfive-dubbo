@@ -16,6 +16,8 @@ public class DeleteByQuery implements Serializable {
 
     private Boolean conflictAbort;
 
+    private Boolean refresh;
+
     public static DeleteByQuery of() {
         return new DeleteByQuery();
     }
@@ -56,6 +58,11 @@ public class DeleteByQuery implements Serializable {
         return this;
     }
 
+    public DeleteByQuery withRefresh(Boolean refresh) {
+        this.refresh = refresh;
+        return this;
+    }
+
     public QueryBuilder getQuery() {
         return query;
     }
@@ -78,5 +85,13 @@ public class DeleteByQuery implements Serializable {
 
     public void setConflictAbort(Boolean conflictAbort) {
         this.conflictAbort = conflictAbort;
+    }
+
+    public Boolean getRefresh() {
+        return refresh;
+    }
+
+    public void setRefresh(Boolean refresh) {
+        this.refresh = refresh;
     }
 }
