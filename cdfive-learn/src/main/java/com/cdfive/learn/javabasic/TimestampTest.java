@@ -46,6 +46,12 @@ public class TimestampTest {
         System.out.println(JSONObject.toJSONString(item));
         // 1970-01-01 08:00:00.0
         System.out.println(item.updateTime);
+
+        System.out.println("------------------------");
+        // 1647927852718 (2022-03-22)
+        System.out.println(System.currentTimeMillis());
+        // 13
+        System.out.println(String.valueOf(System.currentTimeMillis()).length());
     }
 
     private static void sleepAndPrintTime() throws Exception {
