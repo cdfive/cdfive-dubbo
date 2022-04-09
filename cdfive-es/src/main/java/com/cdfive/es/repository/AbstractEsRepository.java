@@ -883,9 +883,9 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         Iterator<Map<String, Object>> paramsIterator = params.iterator();
         for (int i = 0; i < size; i++) {
             if (esWriteOptionVo == null) {
-                bulkRequest.add(new UpdateRequest(this.index, idsIterator.next().toString()).script(new Script(scriptType, Script.DEFAULT_SCRIPT_LANG, scriptIdOrCode, paramsIterator.next())));
+                bulkRequest.add(new UpdateRequest(this.index, idsIterator.next().toString()).script(new Script(scriptType, ScriptType.INLINE.equals(scriptType) ? Script.DEFAULT_SCRIPT_LANG : null, scriptIdOrCode, paramsIterator.next())));
             } else {
-                bulkRequest.add(new UpdateRequest(this.index, idsIterator.next().toString()).script(new Script(scriptType, Script.DEFAULT_SCRIPT_LANG, scriptIdOrCode, paramsIterator.next()))
+                bulkRequest.add(new UpdateRequest(this.index, idsIterator.next().toString()).script(new Script(scriptType, ScriptType.INLINE.equals(scriptType) ? Script.DEFAULT_SCRIPT_LANG : null, scriptIdOrCode, paramsIterator.next()))
                         .setRefreshPolicy(esWriteOptionVo.getRefreshPolicy())
                         .routing(esWriteOptionVo.getRouting())
                         .version(esWriteOptionVo.getVersion())
@@ -921,9 +921,9 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         Iterator<ID> idsIterator = ids.iterator();
         for (int i = 0; i < size; i++) {
             if (esWriteOptionVo == null) {
-                bulkRequest.add(new UpdateRequest(this.index, idsIterator.next().toString()).script(new Script(scriptType, Script.DEFAULT_SCRIPT_LANG, scriptIdOrCode, params)));
+                bulkRequest.add(new UpdateRequest(this.index, idsIterator.next().toString()).script(new Script(scriptType, ScriptType.INLINE.equals(scriptType) ? Script.DEFAULT_SCRIPT_LANG : null, scriptIdOrCode, params)));
             } else {
-                bulkRequest.add(new UpdateRequest(this.index, idsIterator.next().toString()).script(new Script(scriptType, Script.DEFAULT_SCRIPT_LANG, scriptIdOrCode, params))
+                bulkRequest.add(new UpdateRequest(this.index, idsIterator.next().toString()).script(new Script(scriptType, ScriptType.INLINE.equals(scriptType) ? Script.DEFAULT_SCRIPT_LANG : null, scriptIdOrCode, params))
                         .setRefreshPolicy(esWriteOptionVo.getRefreshPolicy())
                         .routing(esWriteOptionVo.getRouting())
                         .version(esWriteOptionVo.getVersion())
