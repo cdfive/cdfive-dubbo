@@ -31,13 +31,22 @@ public class RedisAutoConfiguration {
 
         String host = redisProperties.getHost();
         Integer port = redisProperties.getPort();
+        Integer database = redisProperties.getDatabase();
         Integer timeoutMs = redisProperties.getTimeoutMs();
 
         List<JedisShardInfo> shards = new ArrayList<>();
-        JedisShardInfo shard = new JedisShardInfo(host, port, timeoutMs);
-        String password = redisProperties.getPassword();
-        if (!StringUtils.isEmpty(password)) {
-            shard.setPassword(password);
+        JedisShardInfo shard;
+        if (database == null) {
+            shard = new JedisShardInfo(host, port, timeoutMs);
+            String password = redisProperties.getPassword();
+            if (!StringUtils.isEmpty(password)) {
+                shard.setPassword(password);
+            }
+        } else {
+            String password = redisProperties.getPassword();
+            password = !StringUtils.isEmpty(password) ? (":" + password + "@") : "";
+            String redisUri = "redis://" + password + host + ":" + port + "/" + database;
+            shard = new JedisShardInfo(redisUri);
         }
         shards.add(shard);
 

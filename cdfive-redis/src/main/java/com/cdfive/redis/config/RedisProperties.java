@@ -20,6 +20,8 @@ public class RedisProperties {
 
     private Integer port;
 
+    private Integer database;
+
     private Integer timeoutMs;
 
     private String password;
