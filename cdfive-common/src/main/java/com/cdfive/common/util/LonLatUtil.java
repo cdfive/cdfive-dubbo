@@ -1,5 +1,7 @@
 package com.cdfive.common.util;
 
+import com.cdfive.common.vo.GeoPointVo;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.awt.geom.Point2D;
@@ -9,6 +11,7 @@ import java.util.*;
 /**
  * @author cdfive
  */
+@Slf4j
 public class LonLatUtil {
 
     // 经度最小值
@@ -36,7 +39,8 @@ public class LonLatUtil {
     private static double GEOSTATIONARY_ALT = 35786.0; // km
 
     /**
-     *  验证经纬度合法
+     * 验证经纬度合法
+     *
      * @param lon 经度
      * @param lat 纬度
      * @return 是否合法
@@ -56,6 +60,7 @@ public class LonLatUtil {
 
     /**
      * 字符串值转换为BigDecimal类型
+     *
      * @param value String类型的经度或纬度值
      * @return 解析后BigDecimal类型的值
      */
@@ -65,6 +70,36 @@ public class LonLatUtil {
         }
 
         return new BigDecimal(value.trim());
+    }
+
+    /**
+     * 经纬度转换,火星坐标系转百度坐标系
+     */
+    public static GeoPointVo marsToBaiduCoordinate(GeoPointVo geoPointVo) {
+        if (geoPointVo == null) {
+            return null;
+        }
+
+        if (geoPointVo.getLon() == null || geoPointVo.getLat() == null) {
+            return geoPointVo;
+        }
+
+        try {
+            double lon = geoPointVo.getLon().doubleValue();
+            double lat = geoPointVo.getLat().doubleValue();
+            double x_pi = 3.14159265358979324 * 3000.0 / 180.0;
+            double x = lon;
+            double y = lat;
+            double z = Math.sqrt(x * x + y * y) + 0.00002 * Math.sin(y * x_pi);
+            double theta = Math.atan2(y, x) + 0.000003 * Math.cos(x * x_pi);
+            double lonBaidu = z * Math.cos(theta) + 0.0065;
+            double latBaidu = z * Math.sin(theta) + 0.006;
+            return new GeoPointVo(new BigDecimal(String.valueOf(lonBaidu)).setScale(LON_LAT_SCALE, BigDecimal.ROUND_HALF_UP)
+                    , new BigDecimal(String.valueOf(latBaidu)).setScale(LON_LAT_SCALE, BigDecimal.ROUND_HALF_UP));
+        } catch (Exception e) {
+            log.error("marsToBaiduCoordinate error,lon={},lat={}", geoPointVo.getLon(), geoPointVo.getLat(), e);
+            return geoPointVo;
+        }
     }
 
     /**
