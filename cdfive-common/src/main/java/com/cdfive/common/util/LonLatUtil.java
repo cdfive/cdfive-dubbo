@@ -1,12 +1,26 @@
 package com.cdfive.common.util;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.awt.geom.Point2D;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
  * @author cdfive
  */
 public class LonLatUtil {
+
+    // 经度最小值
+    private static final BigDecimal LON_MIN = new BigDecimal("-180");
+    // 经度最大值
+    private static final BigDecimal LON_MAX = new BigDecimal("180");
+    // 纬度最小值
+    private static final BigDecimal LAT_MIN = new BigDecimal("-90");
+    // 纬度最大值
+    private static final BigDecimal LAT_MAX = new BigDecimal("90");
+    // 经纬度小数点后保留6位数
+    private static final int LON_LAT_SCALE = 6;
 
     private static double PI = Math.PI;
     private static double TWOPI = Math.PI * 2;
@@ -20,6 +34,38 @@ public class LonLatUtil {
     private static double EPS = 0.000000000005;
     private static double KM2MI = 0.621371;
     private static double GEOSTATIONARY_ALT = 35786.0; // km
+
+    /**
+     *  验证经纬度合法
+     * @param lon 经度
+     * @param lat 纬度
+     * @return 是否合法
+     */
+    public static boolean validateLonLat(BigDecimal lon, BigDecimal lat) {
+        if (lon == null || lat == null) {
+            return false;
+        }
+
+        if (lon.compareTo(LON_MIN) < 0 || lon.compareTo(LON_MAX) > 0
+                || lat.compareTo(LAT_MIN) < 0 || lat.compareTo(LAT_MAX) > 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * 字符串值转换为BigDecimal类型
+     * @param value String类型的经度或纬度值
+     * @return 解析后BigDecimal类型的值
+     */
+    public static BigDecimal parseLonLat(String value) {
+        if (StringUtils.isBlank(value)) {
+            return null;
+        }
+
+        return new BigDecimal(value.trim());
+    }
 
     /**
      * 计算2个经纬度坐标的距离
