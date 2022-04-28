@@ -58,7 +58,7 @@ public class EsAutoConfig {
 
         clientBuilder.setRequestConfigCallback(requestConfigBuilder -> {
             requestConfigBuilder.setConnectionRequestTimeout(elasticSearchProperties.getConnectionRequestTimout());
-            requestConfigBuilder.setConnectTimeout(elasticSearchProperties.getConnetionTimeout());
+            requestConfigBuilder.setConnectTimeout(elasticSearchProperties.getConnectTimeout());
             requestConfigBuilder.setSocketTimeout(elasticSearchProperties.getSocketTimeout());
             return requestConfigBuilder;
         });

@@ -16,15 +16,13 @@ public class EsProperties {
 
     private Integer connectionRequestTimout = 1000;
 
-    private Integer connetionTimeout = 5000;
+    private Integer connectTimeout = 5000;
 
     private Integer socketTimeout = 60000;
 
-    private Integer maxConnPerRoute = 300;
+    private Integer maxConnPerRoute = 500;
 
-    private Integer maxConnTotal = 900;
-
-    private Boolean trackTotalHits = true;
+    private Integer maxConnTotal = 1500;
 
     public String getClusterNodes() {
         return clusterNodes;
@@ -58,12 +56,12 @@ public class EsProperties {
         this.connectionRequestTimout = connectionRequestTimout;
     }
 
-    public Integer getConnetionTimeout() {
-        return connetionTimeout;
+    public Integer getConnectTimeout() {
+        return connectTimeout;
     }
 
-    public void setConnetionTimeout(Integer connetionTimeout) {
-        this.connetionTimeout = connetionTimeout;
+    public void setConnectTimeout(Integer connectTimeout) {
+        this.connectTimeout = connectTimeout;
     }
 
     public Integer getSocketTimeout() {
@@ -88,13 +86,5 @@ public class EsProperties {
 
     public void setMaxConnTotal(Integer maxConnTotal) {
         this.maxConnTotal = maxConnTotal;
-    }
-
-    public Boolean getTrackTotalHits() {
-        return trackTotalHits;
-    }
-
-    public void setTrackTotalHits(Boolean trackTotalHits) {
-        this.trackTotalHits = trackTotalHits;
     }
 }
