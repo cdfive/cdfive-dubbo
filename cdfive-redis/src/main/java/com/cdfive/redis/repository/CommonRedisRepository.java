@@ -338,4 +338,15 @@ public class CommonRedisRepository implements CommonRedisRepositoryApi<ShardedJe
         }
         return count;
     }
+
+    @Override
+    public void pipeDelete(List<String> keys) {
+        try (ShardedJedis jedis = pool.getResource()) {
+            ShardedJedisPipeline pipeline = jedis.pipelined();
+            for (String key : keys) {
+                pipeline.del(key);
+            }
+            pipeline.syncAndReturnAll();
+        }
+    }
 }

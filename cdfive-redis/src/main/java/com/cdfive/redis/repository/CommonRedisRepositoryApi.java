@@ -66,4 +66,6 @@ public interface CommonRedisRepositoryApi<T> {
     void scan(String keyPattern, int scanSize, RedisKeyCallback callback);
 
     int scanAndDelete(String keyPattern, int scanSize, int deleteSize);
+
+    void pipeDelete(List<String> keys);
 }
