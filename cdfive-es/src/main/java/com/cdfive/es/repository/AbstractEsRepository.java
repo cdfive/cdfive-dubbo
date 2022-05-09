@@ -856,7 +856,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         }
     }
 
-    public void updateByScript(Collection<ID> ids, ScriptType scriptType, String scriptIdOrCode, List<Map<String, Object>> params, EsWriteOptionVo esWriteOptionVo) {
+    protected void updateByScript(Collection<ID> ids, ScriptType scriptType, String scriptIdOrCode, List<Map<String, Object>> params, EsWriteOptionVo esWriteOptionVo) {
         if (CollectionUtils.isEmpty(ids)) {
             throw new RuntimeException("es updateByScript batch but ids is empty");
         }
@@ -899,7 +899,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         }
     }
 
-    public void updateByScript(Collection<ID> ids, ScriptType scriptType, String scriptIdOrCode, Map<String, Object> params, EsWriteOptionVo esWriteOptionVo) {
+    protected void updateByScript(Collection<ID> ids, ScriptType scriptType, String scriptIdOrCode, Map<String, Object> params, EsWriteOptionVo esWriteOptionVo) {
         if (CollectionUtils.isEmpty(ids)) {
             throw new RuntimeException("es updateByScript batch but ids is empty");
         }
