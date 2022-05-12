@@ -281,51 +281,29 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             updateByQueryRequest.setRefresh(updateByQuery.getRefresh());
         }
 
-        try {
-            this.client.updateByQuery(updateByQueryRequest, RequestOptions.DEFAULT);
-        } catch (Exception e) {
-            throw new RuntimeException("es updateByQuery error", e);
-        }
-    }
+        Boolean async = updateByQuery.getAsync();
+        if (async != null && async) {
+            this.client.updateByQueryAsync(updateByQueryRequest, RequestOptions.DEFAULT, new ActionListener<BulkByScrollResponse>() {
+                @Override
+                public void onResponse(BulkByScrollResponse bulkByScrollResponse) {
+                    Runnable callback = updateByQuery.getCallback();
+                    if (callback != null) {
+                        callback.run();
+                    }
+                }
 
-    @Override
-    public void updateByQueryAsync(UpdateByQuery updateByQuery) {
-        if (StringUtils.isEmpty(updateByQuery.getScript()) && StringUtils.isEmpty(updateByQuery.getScriptId())) {
-            return;
-        }
-
-        UpdateByQueryRequest updateByQueryRequest = new UpdateByQueryRequest(this.index);
-        QueryBuilder query = updateByQuery.getQuery();
-        updateByQueryRequest.setQuery(query);
-
-        Integer batchSize = updateByQuery.getBatchSize();
-        if (batchSize != null) {
-            updateByQueryRequest.setBatchSize(batchSize);
-        }
-
-        if (!StringUtils.isEmpty(updateByQuery.getScript())) {
-            Script inline = new Script(ScriptType.INLINE, Script.DEFAULT_SCRIPT_LANG, updateByQuery.getScript(), updateByQuery.getParams());
-            updateByQueryRequest.setScript(inline);
-        } else if (!StringUtils.isEmpty(updateByQuery.getScriptId())) {
-            Script scriptStored = new Script(ScriptType.STORED, null, updateByQuery.getScriptId(), updateByQuery.getParams());
-            updateByQueryRequest.setScript(scriptStored);
-        }
-
-        if (updateByQuery.getRefresh() != null) {
-            updateByQueryRequest.setRefresh(updateByQuery.getRefresh());
-        }
-
-        this.client.updateByQueryAsync(updateByQueryRequest, RequestOptions.DEFAULT, new ActionListener<BulkByScrollResponse>() {
-            @Override
-            public void onResponse(BulkByScrollResponse bulkByScrollResponse) {
-
+                @Override
+                public void onFailure(Exception e) {
+                    log.error("es updateByQueryAsync error", e);
+                }
+            });
+        } else {
+            try {
+                this.client.updateByQuery(updateByQueryRequest, RequestOptions.DEFAULT);
+            } catch (Exception e) {
+                throw new RuntimeException("es updateByQuery error", e);
             }
-
-            @Override
-            public void onFailure(Exception e) {
-                log.error("updateByQueryAsync error", e);
-            }
-        });
+        }
     }
 
     @Override
@@ -533,43 +511,30 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             deleteByQueryRequest.setRefresh(deleteByQuery.getRefresh());
         }
 
-        try {
-            this.client.deleteByQuery(deleteByQueryRequest, RequestOptions.DEFAULT);
-        } catch (Exception e) {
-            throw new RuntimeException("es deleteByQuery error", e);
-        }
-    }
 
-    @Override
-    public void deleteByQueryAsync(DeleteByQuery deleteByQuery) {
-        DeleteByQueryRequest deleteByQueryRequest = new DeleteByQueryRequest(this.index);
-        QueryBuilder query = deleteByQuery.getQuery();
-        deleteByQueryRequest.setQuery(query);
+        Boolean async = deleteByQuery.getAsync();
+        if (async != null && async) {
+            this.client.deleteByQueryAsync(deleteByQueryRequest, RequestOptions.DEFAULT, new ActionListener<BulkByScrollResponse>() {
+                @Override
+                public void onResponse(BulkByScrollResponse bulkByScrollResponse) {
+                    Runnable callback = deleteByQuery.getCallback();
+                    if (callback != null) {
+                        callback.run();
+                    }
+                }
 
-        Integer batchSize = deleteByQuery.getBatchSize();
-        if (batchSize != null && batchSize > 0) {
-            deleteByQueryRequest.setBatchSize(batchSize);
-        }
-
-        if (deleteByQuery.getConflictAbort() != null) {
-            deleteByQueryRequest.setConflicts(deleteByQuery.getConflictAbort() ? EsConstant.CONFLICTS_ABORT : EsConstant.CONFLICTS_PROCEED);
-        }
-
-        if (deleteByQuery.getRefresh() != null) {
-            deleteByQueryRequest.setRefresh(deleteByQuery.getRefresh());
-        }
-
-        this.client.deleteByQueryAsync(deleteByQueryRequest, RequestOptions.DEFAULT, new ActionListener<BulkByScrollResponse>() {
-            @Override
-            public void onResponse(BulkByScrollResponse bulkByScrollResponse) {
-
+                @Override
+                public void onFailure(Exception e) {
+                    log.error("es deleteByQueryAsync error", e);
+                }
+            });
+        } else {
+            try {
+                this.client.deleteByQuery(deleteByQueryRequest, RequestOptions.DEFAULT);
+            } catch (Exception e) {
+                throw new RuntimeException("es deleteByQuery error", e);
             }
-
-            @Override
-            public void onFailure(Exception e) {
-                log.error("deleteByQueryAsync error", e);
-            }
-        });
+        }
     }
 
     @Override

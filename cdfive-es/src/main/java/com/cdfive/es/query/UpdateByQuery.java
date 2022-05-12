@@ -24,6 +24,10 @@ public class UpdateByQuery implements Serializable {
 
     private Boolean refresh;
 
+    private Boolean async;
+
+    private Runnable callback;
+
     public static UpdateByQuery of() {
         return new UpdateByQuery();
     }
@@ -83,6 +87,16 @@ public class UpdateByQuery implements Serializable {
         return this;
     }
 
+    public UpdateByQuery withAsync(Boolean async) {
+        this.async = async;
+        return this;
+    }
+
+    public UpdateByQuery withCallback(Runnable callback) {
+        this.callback = callback;
+        return this;
+    }
+
     public QueryBuilder getQuery() {
         return query;
     }
@@ -129,5 +143,21 @@ public class UpdateByQuery implements Serializable {
 
     public void setRefresh(Boolean refresh) {
         this.refresh = refresh;
+    }
+
+    public Boolean getAsync() {
+        return async;
+    }
+
+    public void setAsync(Boolean async) {
+        this.async = async;
+    }
+
+    public Runnable getCallback() {
+        return callback;
+    }
+
+    public void setCallback(Runnable callback) {
+        this.callback = callback;
     }
 }
