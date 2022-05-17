@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * @author cdfive
@@ -43,6 +44,15 @@ public class CacheTest2 {
         list1 = cache.get("all");
         System.out.println(list1);
         list1 = Lists.newArrayList(1);
+        System.out.println(list1);
+        list2 = cache.get("all");
+        System.out.println(list2);
+
+        // test case3
+        System.out.println(StringUtils.center("case3", 50, "-"));
+        list1 = cache.get("all");
+        System.out.println(list1);
+        list1 = list1.stream().filter(o -> !o.equals(1)).collect(Collectors.toList());
         System.out.println(list1);
         list2 = cache.get("all");
         System.out.println(list2);
