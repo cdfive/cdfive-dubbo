@@ -164,9 +164,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
 
         if (esWriteOptionVo != null) {
             updateRequest.setRefreshPolicy(esWriteOptionVo.getRefreshPolicy())
-                    .routing(esWriteOptionVo.getRouting())
-                    .version(esWriteOptionVo.getVersion())
-                    .versionType(esWriteOptionVo.getVersionType());
+                    .routing(esWriteOptionVo.getRouting());
         }
 
         try {
@@ -205,9 +203,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             } else {
                 bulkRequest.add(new UpdateRequest(this.index, idsIterator.next().toString()).doc(JSON.toJSONString(paramsIterator.next()), XContentType.JSON)
                         .setRefreshPolicy(esWriteOptionVo.getRefreshPolicy())
-                        .routing(esWriteOptionVo.getRouting())
-                        .version(esWriteOptionVo.getVersion())
-                        .versionType(esWriteOptionVo.getVersionType()));
+                        .routing(esWriteOptionVo.getRouting()));
 
             }
         }
@@ -242,9 +238,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             } else {
                 bulkRequest.add(new UpdateRequest(this.index, idsIterator.next().toString()).doc(JSON.toJSONString(params), XContentType.JSON)
                         .setRefreshPolicy(esWriteOptionVo.getRefreshPolicy())
-                        .routing(esWriteOptionVo.getRouting())
-                        .version(esWriteOptionVo.getVersion())
-                        .versionType(esWriteOptionVo.getVersionType()));
+                        .routing(esWriteOptionVo.getRouting()));
             }
         }
         try {
@@ -391,9 +385,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
 
         if (esWriteOptionVo != null) {
             updateRequest.setRefreshPolicy(esWriteOptionVo.getRefreshPolicy())
-                    .routing(esWriteOptionVo.getRouting())
-                    .version(esWriteOptionVo.getVersion())
-                    .versionType(esWriteOptionVo.getVersionType());
+                    .routing(esWriteOptionVo.getRouting());
         }
 
         try {
@@ -421,11 +413,10 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
                         .upsert(new IndexRequest(this.index).id(this.getId(entity).toString()).source(JSON.toJSONString(entity), XContentType.JSON)));
             } else {
                 bulkRequest.add(new UpdateRequest(this.index, this.getId(entity).toString()).doc(JSON.toJSONString(entity), XContentType.JSON)
-                        .upsert(new IndexRequest(this.index).id(this.getId(entity).toString()).source(JSON.toJSONString(entity), XContentType.JSON))
+                        .upsert(new IndexRequest(this.index).id(this.getId(entity).toString()).source(JSON.toJSONString(entity), XContentType.JSON).version(esWriteOptionVo.getVersion()).versionType(esWriteOptionVo.getVersionType()))
                         .setRefreshPolicy(esWriteOptionVo.getRefreshPolicy())
                         .routing(esWriteOptionVo.getRouting())
-                        .version(esWriteOptionVo.getVersion())
-                        .versionType(esWriteOptionVo.getVersionType()));
+                );
             }
         }
         try {
