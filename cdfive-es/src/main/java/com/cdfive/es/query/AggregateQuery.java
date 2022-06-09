@@ -2,6 +2,7 @@ package com.cdfive.es.query;
 
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
+import org.elasticsearch.search.sort.SortBuilder;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -11,9 +12,12 @@ import java.util.List;
  * @author cdfive
  * @date 2022-01-05
  */
+@SuppressWarnings("rawtypes")
 public class AggregateQuery implements Serializable {
 
     private QueryBuilder query;
+
+    private List<SortBuilder> sorts;
 
     private List<AggregationBuilder> aggregations;
 
@@ -42,8 +46,23 @@ public class AggregateQuery implements Serializable {
         this.aggregations = aggregations;
     }
 
+    public AggregateQuery(QueryBuilder query, List<SortBuilder> sorts, List<AggregationBuilder> aggregations) {
+        this.query = query;
+        this.sorts = sorts;
+        this.aggregations = aggregations;
+    }
+
     public AggregateQuery withQuery(QueryBuilder query) {
         this.query = query;
+        return this;
+    }
+
+    public AggregateQuery withSort(SortBuilder sort) {
+        if (sorts == null) {
+            sorts = new ArrayList<>();
+        }
+
+        this.sorts.add(sort);
         return this;
     }
 
@@ -61,6 +80,14 @@ public class AggregateQuery implements Serializable {
 
     public void setQuery(QueryBuilder query) {
         this.query = query;
+    }
+
+    public List<SortBuilder> getSorts() {
+        return sorts;
+    }
+
+    public void setSorts(List<SortBuilder> sorts) {
+        this.sorts = sorts;
     }
 
     public List<AggregationBuilder> getAggregations() {

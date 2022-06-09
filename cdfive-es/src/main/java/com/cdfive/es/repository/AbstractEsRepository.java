@@ -696,6 +696,13 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(queryBuilder);
 
+        List<SortBuilder> sorts = aggregateQuery.getSorts();
+        if (!CollectionUtils.isEmpty(sorts)) {
+            for (SortBuilder sort : sorts) {
+                searchSourceBuilder.sort(sort);
+            }
+        }
+
         List<AggregationBuilder> aggregations = aggregateQuery.getAggregations();
         if (!CollectionUtils.isEmpty(aggregations)) {
             for (AggregationBuilder aggregation : aggregations) {
