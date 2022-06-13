@@ -37,7 +37,6 @@ import org.elasticsearch.script.ScriptType;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.Aggregation;
-import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.filter.ParsedFilter;
 import org.elasticsearch.search.aggregations.bucket.terms.ParsedTerms;
@@ -46,8 +45,6 @@ import org.elasticsearch.search.aggregations.bucket.terms.UnmappedTerms;
 import org.elasticsearch.search.aggregations.metrics.ParsedCardinality;
 import org.elasticsearch.search.aggregations.metrics.TopHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.elasticsearch.search.fetch.subphase.FetchSourceContext;
-import org.elasticsearch.search.sort.SortBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -55,7 +52,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
@@ -611,59 +607,12 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
 
     @Override
     public Page<EsEntityVo<ENTITY>> search(SearchQuery searchQuery) {
-        QueryBuilder queryBuilder = searchQuery.getQuery();
-        Pageable pageable = searchQuery.getPageable();
-        if (pageable == null) {
-            pageable = Pageable.unpaged();
-            searchQuery.setPageable(pageable);
-        }
-
         SearchRequest searchRequest = new SearchRequest(this.index);
-        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(queryBuilder);
-
-        List<SortBuilder> sorts = searchQuery.getSorts();
-        if (!CollectionUtils.isEmpty(sorts)) {
-            for (SortBuilder sort : sorts) {
-                searchSourceBuilder.sort(sort);
-            }
-        }
-
-        if (pageable.isPaged()) {
-            searchSourceBuilder.from((int) pageable.getOffset());
-            searchSourceBuilder.size(pageable.getPageSize());
-        }
-
-        if (searchQuery.isTrackTotalHits()) {
-            searchSourceBuilder.trackTotalHits(true);
-        }
-
-        if (searchQuery.isVersion()) {
-            searchSourceBuilder.version(true);
-        }
-
-        List<String> fields = searchQuery.getFields();
-        if (!CollectionUtils.isEmpty(fields)) {
-            FetchSourceContext sourceContext = new FetchSourceContext(true, fields.toArray(new String[]{}), null);
-            searchSourceBuilder.fetchSource(sourceContext);
-        }
-
-        if (searchQuery.getCollapse() != null) {
-            searchSourceBuilder.collapse(searchQuery.getCollapse());
-        }
-
-        if (!CollectionUtils.isEmpty(searchQuery.getAggregations())) {
-            List<AggregationBuilder> aggregations = searchQuery.getAggregations();
-            for (AggregationBuilder aggregation : aggregations) {
-                searchSourceBuilder.aggregation(aggregation);
-            }
-        }
-
-        searchRequest.source(searchSourceBuilder);
-
+        SearchSourceBuilder searchSourceBuilder = searchQuery.toSearchSourceBuilder();
         if (log.isDebugEnabled()) {
             log.debug("searchDsl=>{}", searchSourceBuilder.toString());
         }
+        searchRequest.source(searchSourceBuilder);
 
         SearchResponse searchResponse;
         try {
@@ -690,33 +639,12 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
 
     @Override
     public Map<String, List<EsValueCountVo>> aggregate(AggregateQuery aggregateQuery) {
-        QueryBuilder queryBuilder = aggregateQuery.getQuery();
-
         SearchRequest searchRequest = new SearchRequest(this.index);
-        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(queryBuilder);
-
-        List<SortBuilder> sorts = aggregateQuery.getSorts();
-        if (!CollectionUtils.isEmpty(sorts)) {
-            for (SortBuilder sort : sorts) {
-                searchSourceBuilder.sort(sort);
-            }
-        }
-
-        List<AggregationBuilder> aggregations = aggregateQuery.getAggregations();
-        if (!CollectionUtils.isEmpty(aggregations)) {
-            for (AggregationBuilder aggregation : aggregations) {
-                searchSourceBuilder.aggregation(aggregation);
-            }
-        }
-
-        searchSourceBuilder.size(0);
-
-        searchRequest.source(searchSourceBuilder);
-
+        SearchSourceBuilder searchSourceBuilder = aggregateQuery.toSearchSourceBuilder();
         if (log.isDebugEnabled()) {
             log.debug("searchDsl=>{}", searchSourceBuilder.toString());
         }
+        searchRequest.source(searchSourceBuilder);
 
         SearchResponse searchResponse;
         try {

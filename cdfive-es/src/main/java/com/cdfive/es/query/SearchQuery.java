@@ -2,7 +2,9 @@ package com.cdfive.es.query;
 
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.collapse.CollapseBuilder;
+import org.elasticsearch.search.fetch.subphase.FetchSourceContext;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.CollectionUtils;
@@ -90,6 +92,57 @@ public class SearchQuery implements Serializable {
         this.sorts = sorts;
         this.fields = fields;
         this.pageable = pageable;
+    }
+
+    public SearchSourceBuilder toSearchSourceBuilder() {
+        QueryBuilder queryBuilder = this.getQuery();
+        Pageable pageable = this.getPageable();
+        if (pageable == null) {
+            pageable = Pageable.unpaged();
+            this.setPageable(pageable);
+        }
+
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(queryBuilder);
+
+        List<SortBuilder> sorts = this.getSorts();
+        if (!CollectionUtils.isEmpty(sorts)) {
+            for (SortBuilder sort : sorts) {
+                searchSourceBuilder.sort(sort);
+            }
+        }
+
+        if (pageable.isPaged()) {
+            searchSourceBuilder.from((int) pageable.getOffset());
+            searchSourceBuilder.size(pageable.getPageSize());
+        }
+
+        if (this.isTrackTotalHits()) {
+            searchSourceBuilder.trackTotalHits(true);
+        }
+
+        if (this.isVersion()) {
+            searchSourceBuilder.version(true);
+        }
+
+        List<String> fields = this.getFields();
+        if (!CollectionUtils.isEmpty(fields)) {
+            FetchSourceContext sourceContext = new FetchSourceContext(true, fields.toArray(new String[]{}), null);
+            searchSourceBuilder.fetchSource(sourceContext);
+        }
+
+        if (this.getCollapse() != null) {
+            searchSourceBuilder.collapse(this.getCollapse());
+        }
+
+        if (!CollectionUtils.isEmpty(this.getAggregations())) {
+            List<AggregationBuilder> aggregations = this.getAggregations();
+            for (AggregationBuilder aggregation : aggregations) {
+                searchSourceBuilder.aggregation(aggregation);
+            }
+        }
+
+        return searchSourceBuilder;
     }
 
     public SearchQuery withQuery(QueryBuilder query) {
