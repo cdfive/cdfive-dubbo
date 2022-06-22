@@ -254,11 +254,6 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         QueryBuilder query = updateByQuery.getQuery();
         updateByQueryRequest.setQuery(query);
 
-        Integer batchSize = updateByQuery.getBatchSize();
-        if (batchSize != null) {
-            updateByQueryRequest.setBatchSize(batchSize);
-        }
-
         if (!StringUtils.isEmpty(updateByQuery.getScript())) {
             Script inline = new Script(ScriptType.INLINE, Script.DEFAULT_SCRIPT_LANG, updateByQuery.getScript(), updateByQuery.getParams());
             updateByQueryRequest.setScript(inline);
@@ -267,8 +262,19 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             updateByQueryRequest.setScript(scriptStored);
         }
 
-        if (updateByQuery.getRefresh() != null) {
-            updateByQueryRequest.setRefresh(updateByQuery.getRefresh());
+        Integer batchSize = updateByQuery.getBatchSize();
+        if (batchSize != null) {
+            updateByQueryRequest.setBatchSize(batchSize);
+        }
+
+        Boolean conflictAbort = updateByQuery.getConflictAbort();
+        if (conflictAbort != null) {
+            updateByQueryRequest.setConflicts(conflictAbort ? EsConstant.CONFLICTS_ABORT : EsConstant.CONFLICTS_PROCEED);
+        }
+
+        Boolean refresh = updateByQuery.getRefresh();
+        if (refresh != null) {
+            updateByQueryRequest.setRefresh(refresh);
         }
 
         Boolean async = updateByQuery.getAsync();
@@ -490,14 +496,15 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             deleteByQueryRequest.setBatchSize(batchSize);
         }
 
-        if (deleteByQuery.getConflictAbort() != null) {
-            deleteByQueryRequest.setConflicts(deleteByQuery.getConflictAbort() ? EsConstant.CONFLICTS_ABORT : EsConstant.CONFLICTS_PROCEED);
+        Boolean conflictAbort = deleteByQuery.getConflictAbort();
+        if (conflictAbort != null) {
+            deleteByQueryRequest.setConflicts(conflictAbort ? EsConstant.CONFLICTS_ABORT : EsConstant.CONFLICTS_PROCEED);
         }
 
-        if (deleteByQuery.getRefresh() != null) {
-            deleteByQueryRequest.setRefresh(deleteByQuery.getRefresh());
+        Boolean refresh = deleteByQuery.getRefresh();
+        if (refresh != null) {
+            deleteByQueryRequest.setRefresh(refresh);
         }
-
 
         Boolean async = deleteByQuery.getAsync();
         if (async != null && async) {

@@ -14,13 +14,15 @@ public class UpdateByQuery implements Serializable {
 
     private QueryBuilder query;
 
-    private Integer batchSize;
-
     private String script;
 
     private String scriptId;
 
     private Map<String, Object> params;
+
+    private Integer batchSize;
+
+    private Boolean conflictAbort;
 
     private Boolean refresh;
 
@@ -60,6 +62,11 @@ public class UpdateByQuery implements Serializable {
 
     public UpdateByQuery withBatchSize(Integer batchSize) {
         this.batchSize = batchSize;
+        return this;
+    }
+
+    public UpdateByQuery withConflictAbort(Boolean conflictAbort) {
+        this.conflictAbort = conflictAbort;
         return this;
     }
 
@@ -111,6 +118,14 @@ public class UpdateByQuery implements Serializable {
 
     public void setBatchSize(Integer batchSize) {
         this.batchSize = batchSize;
+    }
+
+    public Boolean getConflictAbort() {
+        return conflictAbort;
+    }
+
+    public void setConflictAbort(Boolean conflictAbort) {
+        this.conflictAbort = conflictAbort;
     }
 
     public String getScript() {
