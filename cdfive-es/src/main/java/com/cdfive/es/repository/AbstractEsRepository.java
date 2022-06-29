@@ -45,6 +45,7 @@ import org.elasticsearch.search.aggregations.bucket.terms.UnmappedTerms;
 import org.elasticsearch.search.aggregations.metrics.ParsedCardinality;
 import org.elasticsearch.search.aggregations.metrics.TopHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.fetch.subphase.FetchSourceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -573,6 +574,23 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         EsEntityVo esEntityVo = new EsEntityVo(entity);
         esEntityVo.setVersion(getResponse.getVersion());
         return esEntityVo;
+    }
+
+    @Override
+    public boolean exists(ID id) {
+        if (id == null) {
+            throw new RuntimeException("es exists query but id is null");
+        }
+
+        GetRequest getRequest = new GetRequest(this.index, id.toString());
+        getRequest.fetchSourceContext(new FetchSourceContext(false));
+        getRequest.storedFields("_none_");
+
+        try {
+            return this.client.exists(getRequest, RequestOptions.DEFAULT);
+        } catch (Exception e) {
+            throw new RuntimeException("es exists query error", e);
+        }
     }
 
     @Override

@@ -88,6 +88,8 @@ public interface EsRepository<ENTITY, ID> {
 
     EsEntityVo<ENTITY> findOne(ID id);
 
+    boolean exists(ID id);
+
     List<EsEntityVo<ENTITY>> findAll(Collection<ID> ids);
 
     Page<EsEntityVo<ENTITY>> search(SearchQuery searchQuery);
