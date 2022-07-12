@@ -17,8 +17,7 @@ import java.util.concurrent.CountDownLatch;
  * 1. 任务本身需是异步执行的
  * 2. 此执行器控制异步执行并发数, 避免大量并发导致不可控
  *
- * @author xiejihan
- * @date 2022-05-18
+ * @author cdfive
  */
 @Slf4j
 public class LimitedAsyncTaskExecutor {
@@ -135,6 +134,14 @@ public class LimitedAsyncTaskExecutor {
 
         // 批量总数
         private int batchTotal;
+    }
+
+    @Override
+    public String toString() {
+        return "LimitedAsyncTaskExecutor{" +
+                "concurrency=" + concurrency +
+                ", traceId='" + traceId + '\'' +
+                '}';
     }
 }
 
