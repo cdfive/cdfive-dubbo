@@ -5,10 +5,7 @@ import com.cdfive.common.util.GenericClassUtil;
 import com.cdfive.es.annotation.Document;
 import com.cdfive.es.annotation.Id;
 import com.cdfive.es.constant.EsConstant;
-import com.cdfive.es.query.AggregateQuery;
-import com.cdfive.es.query.DeleteByQuery;
-import com.cdfive.es.query.SearchQuery;
-import com.cdfive.es.query.UpdateByQuery;
+import com.cdfive.es.query.*;
 import com.cdfive.es.vo.EsEntityVo;
 import com.cdfive.es.vo.EsValueCountVo;
 import com.cdfive.es.vo.EsWriteOptionVo;
@@ -23,6 +20,8 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.client.core.CountRequest;
+import org.elasticsearch.client.core.CountResponse;
 import org.elasticsearch.client.indices.AnalyzeRequest;
 import org.elasticsearch.client.indices.AnalyzeResponse;
 import org.elasticsearch.common.xcontent.XContentType;
@@ -590,6 +589,23 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             return this.client.exists(getRequest, RequestOptions.DEFAULT);
         } catch (Exception e) {
             throw new RuntimeException("es exists query error", e);
+        }
+    }
+
+    @Override
+    public long count(CountQuery countQuery) {
+        QueryBuilder queryBuilder = countQuery.getQuery();
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(queryBuilder);
+
+        CountRequest countRequest = new CountRequest(this.index);
+        countRequest.source(searchSourceBuilder);
+
+        try {
+            CountResponse countResponse = this.client.count(countRequest, RequestOptions.DEFAULT);
+            return countResponse.getCount();
+        } catch (Exception e) {
+            throw new RuntimeException("es count query error", e);
         }
     }
 

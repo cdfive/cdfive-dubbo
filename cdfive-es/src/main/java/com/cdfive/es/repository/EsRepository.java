@@ -1,9 +1,6 @@
 package com.cdfive.es.repository;
 
-import com.cdfive.es.query.AggregateQuery;
-import com.cdfive.es.query.DeleteByQuery;
-import com.cdfive.es.query.SearchQuery;
-import com.cdfive.es.query.UpdateByQuery;
+import com.cdfive.es.query.*;
 import com.cdfive.es.vo.EsEntityVo;
 import com.cdfive.es.vo.EsValueCountVo;
 import com.cdfive.es.vo.EsWriteOptionVo;
@@ -89,6 +86,8 @@ public interface EsRepository<ENTITY, ID> {
     EsEntityVo<ENTITY> findOne(ID id);
 
     boolean exists(ID id);
+
+    long count(CountQuery countQuery);
 
     List<EsEntityVo<ENTITY>> findAll(Collection<ID> ids);
 
