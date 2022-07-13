@@ -457,7 +457,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
 
     @Override
     public void delete(Collection<ID> ids) {
-        this.delete(ids);
+        this.delete(ids, null);
     }
 
     @Override
