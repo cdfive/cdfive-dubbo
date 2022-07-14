@@ -1,5 +1,6 @@
 package com.cdfive.redis.repository;
 
+import com.cdfive.redis.RedisBatchKeysCallback;
 import com.cdfive.redis.RedisKeyCallback;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * @author cdfive
@@ -305,6 +307,30 @@ public class CommonRedisRepository implements CommonRedisRepositoryApi<ShardedJe
     }
 
     @Override
+    public void scan(String keyPattern, int scanSize, RedisBatchKeysCallback callback) {
+        try (ShardedJedis shardedJedis = pool.getResource()) {
+            try (Jedis jedis = shardedJedis.getAllShards().iterator().next()) {
+                ScanParams scanParams = new ScanParams();
+                scanParams.match(keyPattern);
+                scanParams.count(scanSize);
+                String cursor = ScanParams.SCAN_POINTER_START;
+                while (true) {
+                    ScanResult<String> scanResult = jedis.scan(cursor, scanParams);
+                    cursor = scanResult.getStringCursor();
+                    List<String> list = scanResult.getResult();
+                    if (!CollectionUtils.isEmpty(list)) {
+                        callback.doCallback(jedis, list);
+                    }
+
+                    if ("0".equals(cursor)) {
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
     public int scanAndDelete(String keyPattern, int scanSize, int deleteSize) {
         int count = 0;
         try (ShardedJedis shardedJedis = pool.getResource()) {
@@ -347,6 +373,18 @@ public class CommonRedisRepository implements CommonRedisRepositoryApi<ShardedJe
                 pipeline.del(key);
             }
             pipeline.syncAndReturnAll();
+        }
+    }
+
+    @Override
+    public List<String> pipeGet(List<String> keys) {
+        try (ShardedJedis jedis = pool.getResource()) {
+            ShardedJedisPipeline pipeline = jedis.pipelined();
+            for (String key : keys) {
+                pipeline.get(key);
+            }
+            List<Object> list = pipeline.syncAndReturnAll();
+            return list.stream().map(o -> (String) o).collect(Collectors.toList());
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.cdfive.redis.repository;
 
+import com.cdfive.redis.RedisBatchKeysCallback;
 import com.cdfive.redis.RedisKeyCallback;
 import redis.clients.util.Pool;
 
@@ -65,7 +66,11 @@ public interface CommonRedisRepositoryApi<T> {
 
     void scan(String keyPattern, int scanSize, RedisKeyCallback callback);
 
+    void scan(String keyPattern, int scanSize, RedisBatchKeysCallback callback);
+
     int scanAndDelete(String keyPattern, int scanSize, int deleteSize);
 
     void pipeDelete(List<String> keys);
+
+    List<String> pipeGet(List<String> keys);
 }
