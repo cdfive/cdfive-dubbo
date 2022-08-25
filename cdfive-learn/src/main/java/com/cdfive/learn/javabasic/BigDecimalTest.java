@@ -19,5 +19,18 @@ public class BigDecimalTest {
             // java.lang.NumberFormatException
             e.printStackTrace();
         }
+
+        BigDecimal c = new BigDecimal("13.14");
+        // 1314.00
+        System.out.println(c.multiply(new BigDecimal("100")).toString());
+        // 1314
+        System.out.println(c.multiply(new BigDecimal("100")).toBigInteger());
+
+        // 0.01
+        System.out.println(new BigDecimal("1").divide(new BigDecimal("100")));
+        // 0.1
+        System.out.println(new BigDecimal("10").divide(new BigDecimal("100")));
+        // 1
+        System.out.println(new BigDecimal("100").divide(new BigDecimal("100")));
     }
 }
