@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +27,7 @@ public class DuplicateTest {
 
         // Find dulicate productCodes
         // [10001, 10004]
-        List<String> duplicateProductCodes = list.stream().collect(Collectors.toMap(o -> o.getProductCode(), o -> 1, (o1, o2) -> o1 + o2))
+        List<String> duplicateProductCodes = list.stream().collect(Collectors.toMap(o -> o.getProductCode(), o -> 1, (o1, o2) -> o1 + o2, LinkedHashMap::new))
                 .entrySet().stream().filter(o -> o.getValue() > 1).map(o -> o.getKey()).collect(Collectors.toList());
         System.out.println(duplicateProductCodes);
     }
