@@ -8,6 +8,8 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -24,6 +26,8 @@ import org.springframework.util.StringUtils;
 @ConditionalOnClass(RestClientBuilder.class)
 @EnableConfigurationProperties(EsProperties.class)
 public class EsAutoConfig {
+
+    private Logger logger = LoggerFactory.getLogger(EsAutoConfig.class);
 
     @Autowired
     private EsProperties elasticSearchProperties;
@@ -81,6 +85,7 @@ public class EsAutoConfig {
         });
 
         RestHighLevelClient restHighLevelClient = new RestHighLevelClient(clientBuilder);
+        logger.info("EsAutoConfig RestHighLevelClient init success");
         return restHighLevelClient;
     }
 }
