@@ -5,11 +5,13 @@ import com.cdfive.common.util.GenericClassUtil;
 import com.cdfive.es.annotation.Document;
 import com.cdfive.es.annotation.Id;
 import com.cdfive.es.constant.EsConstant;
+import com.cdfive.es.exception.EsException;
 import com.cdfive.es.query.*;
 import com.cdfive.es.vo.EsEntityVo;
 import com.cdfive.es.vo.EsValueCountVo;
 import com.cdfive.es.vo.EsWriteOptionVo;
 import org.elasticsearch.action.ActionListener;
+import org.elasticsearch.action.admin.indices.flush.FlushRequest;
 import org.elasticsearch.action.admin.indices.refresh.RefreshRequest;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.delete.DeleteRequest;
@@ -89,7 +91,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
 
         ID id = this.getId(entity);
         if (id == null) {
-            throw new RuntimeException("id can't be null");
+            throw new EsException("id can't be null");
         }
 
         IndexRequest indexRequest = new IndexRequest(this.index);
@@ -106,7 +108,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         try {
             this.client.index(indexRequest, RequestOptions.DEFAULT);
         } catch (Exception e) {
-            throw new RuntimeException("es save entity error", e);
+            throw new EsException("es save entity error", e);
         }
     }
 
@@ -136,7 +138,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         try {
             this.client.bulk(bulkRequest, RequestOptions.DEFAULT);
         } catch (Exception e) {
-            throw new RuntimeException("es save entities error", e);
+            throw new EsException("es save entities error", e);
         }
     }
 
@@ -148,7 +150,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
     @Override
     public void update(ID id, Map<String, Object> params, EsWriteOptionVo esWriteOptionVo) {
         if (id == null) {
-            throw new RuntimeException("es update entity but id is null");
+            throw new EsException("es update entity but id is null");
         }
 
         if (ObjectUtils.isEmpty(params)) {
@@ -166,7 +168,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         try {
             this.client.update(updateRequest, RequestOptions.DEFAULT);
         } catch (Exception e) {
-            throw new RuntimeException("es update error", e);
+            throw new EsException("es update error", e);
         }
     }
 
@@ -178,7 +180,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
     @Override
     public void update(Collection<ID> ids, List<Map<String, Object>> params, EsWriteOptionVo esWriteOptionVo) {
         if (CollectionUtils.isEmpty(ids)) {
-            throw new RuntimeException("es update batch but empty ids");
+            throw new EsException("es update batch but empty ids");
         }
 
         if (CollectionUtils.isEmpty(params)) {
@@ -186,7 +188,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         }
 
         if (ids.size() != params.size()) {
-            throw new RuntimeException("es update batch but size of ids and params not equal");
+            throw new EsException("es update batch but size of ids and params not equal");
         }
 
         BulkRequest bulkRequest = new BulkRequest();
@@ -206,7 +208,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         try {
             this.client.bulk(bulkRequest, RequestOptions.DEFAULT);
         } catch (Exception e) {
-            throw new RuntimeException("es update batch error", e);
+            throw new EsException("es update batch error", e);
         }
     }
 
@@ -218,11 +220,11 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
     @Override
     public void update(Collection<ID> ids, Map<String, Object> params, EsWriteOptionVo esWriteOptionVo) {
         if (CollectionUtils.isEmpty(ids)) {
-            throw new RuntimeException("es update batch but empty ids");
+            throw new EsException("es update batch but empty ids");
         }
 
         if (ObjectUtils.isEmpty(params)) {
-            throw new RuntimeException("es update batch but empty params");
+            throw new EsException("es update batch but empty params");
         }
 
         BulkRequest bulkRequest = new BulkRequest();
@@ -240,7 +242,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         try {
             this.client.bulk(bulkRequest, RequestOptions.DEFAULT);
         } catch (Exception e) {
-            throw new RuntimeException("es update batch error", e);
+            throw new EsException("es update batch error", e);
         }
     }
 
@@ -297,7 +299,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             try {
                 this.client.updateByQuery(updateByQueryRequest, RequestOptions.DEFAULT);
             } catch (Exception e) {
-                throw new RuntimeException("es updateByQuery error", e);
+                throw new EsException("es updateByQuery error", e);
             }
         }
     }
@@ -375,7 +377,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
 
         ID id = this.getId(entity);
         if (id == null) {
-            throw new RuntimeException("id can't be null");
+            throw new EsException("id can't be null");
         }
 
         UpdateRequest updateRequest = new UpdateRequest(this.index, this.getId(entity).toString());
@@ -393,7 +395,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         try {
             this.client.update(updateRequest, RequestOptions.DEFAULT);
         } catch (Exception e) {
-            throw new RuntimeException("es saveOrUpdate entity error", e);
+            throw new EsException("es saveOrUpdate entity error", e);
         }
     }
 
@@ -424,7 +426,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         try {
             this.client.bulk(bulkRequest, RequestOptions.DEFAULT);
         } catch (Exception e) {
-            throw new RuntimeException("es saveOrUpdate entities error", e);
+            throw new EsException("es saveOrUpdate entities error", e);
         }
     }
 
@@ -436,7 +438,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
     @Override
     public void delete(ID id, EsWriteOptionVo esWriteOptionVo) {
         if (id == null) {
-            throw new RuntimeException("es delete entity but id is null");
+            throw new EsException("es delete entity but id is null");
         }
 
         DeleteRequest deleteRequest = new DeleteRequest(this.index, id.toString());
@@ -451,7 +453,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         try {
             this.client.delete(deleteRequest, RequestOptions.DEFAULT);
         } catch (Exception e) {
-            throw new RuntimeException("es delete entity error", e);
+            throw new EsException("es delete entity error", e);
         }
     }
 
@@ -481,7 +483,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         try {
             this.client.bulk(bulkRequest, RequestOptions.DEFAULT);
         } catch (Exception e) {
-            throw new RuntimeException("es delete entities error", e);
+            throw new EsException("es delete entities error", e);
         }
     }
 
@@ -526,7 +528,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             try {
                 this.client.deleteByQuery(deleteByQueryRequest, RequestOptions.DEFAULT);
             } catch (Exception e) {
-                throw new RuntimeException("es deleteByQuery error", e);
+                throw new EsException("es deleteByQuery error", e);
             }
         }
     }
@@ -544,7 +546,17 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         try {
             this.client.indices().refresh(refreshRequest, RequestOptions.DEFAULT);
         } catch (Exception e) {
-            throw new RuntimeException("es refresh error", e);
+            throw new EsException("es refresh error", e);
+        }
+    }
+
+    @Override
+    public void flush() {
+        FlushRequest flushRequest = new FlushRequest(this.index);
+        try {
+            this.client.indices().flush(flushRequest, RequestOptions.DEFAULT);
+        } catch (Exception e) {
+            throw new EsException("es flush error", e);
         }
     }
 
@@ -560,7 +572,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         try {
             getResponse = this.client.get(getRequest, RequestOptions.DEFAULT);
         } catch (Exception e) {
-            throw new RuntimeException("es find one entity error", e);
+            throw new EsException("es find one entity error", e);
         }
 
         if (!getResponse.isExists()) {
@@ -578,7 +590,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
     @Override
     public boolean exists(ID id) {
         if (id == null) {
-            throw new RuntimeException("es exists query but id is null");
+            throw new EsException("es exists query but id is null");
         }
 
         GetRequest getRequest = new GetRequest(this.index, id.toString());
@@ -588,7 +600,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         try {
             return this.client.exists(getRequest, RequestOptions.DEFAULT);
         } catch (Exception e) {
-            throw new RuntimeException("es exists query error", e);
+            throw new EsException("es exists query error", e);
         }
     }
 
@@ -605,7 +617,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             CountResponse countResponse = this.client.count(countRequest, RequestOptions.DEFAULT);
             return countResponse.getCount();
         } catch (Exception e) {
-            throw new RuntimeException("es count query error", e);
+            throw new EsException("es count query error", e);
         }
     }
 
@@ -625,7 +637,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         try {
             multiGetResponse = this.client.mget(multiGetRequest, RequestOptions.DEFAULT);
         } catch (Exception e) {
-            throw new RuntimeException("es findAll entities error", e);
+            throw new EsException("es findAll entities error", e);
         }
 
         List<EsEntityVo<ENTITY>> esEntityVos = new ArrayList<>(ids.size());
@@ -659,11 +671,11 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         try {
             searchResponse = this.client.search(searchRequest, RequestOptions.DEFAULT);
         } catch (Exception e) {
-            throw new RuntimeException("es search error", e);
+            throw new EsException("es search error", e);
         }
 
         if (!RestStatus.OK.equals(searchResponse.status())) {
-            throw new RuntimeException("es search fail,status=" + searchResponse.status());
+            throw new EsException("es search fail,status=" + searchResponse.status());
         }
 
         return this.buildSearchResult(searchResponse, searchQuery);
@@ -674,7 +686,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         try {
             return this.client.search(searchRequest, RequestOptions.DEFAULT);
         } catch (Exception e) {
-            throw new RuntimeException("es search error");
+            throw new EsException("es search error");
         }
     }
 
@@ -691,11 +703,11 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         try {
             searchResponse = this.client.search(searchRequest, RequestOptions.DEFAULT);
         } catch (Exception e) {
-            throw new RuntimeException("es aggregate error", e);
+            throw new EsException("es aggregate error", e);
         }
 
         if (!RestStatus.OK.equals(searchResponse.status())) {
-            throw new RuntimeException("es aggregate fail,status=" + searchResponse.status());
+            throw new EsException("es aggregate fail,status=" + searchResponse.status());
         }
 
 
@@ -713,7 +725,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
 
             return analyzeResponse.getTokens().stream().map(o -> o.getTerm()).collect(Collectors.toList());
         } catch (Exception e) {
-            throw new RuntimeException("es analyze error", e);
+            throw new EsException("es analyze error", e);
         }
     }
 
@@ -728,7 +740,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
 
             return analyzeResponse.getTokens().stream().map(o -> o.getTerm()).collect(Collectors.toList());
         } catch (Exception e) {
-            throw new RuntimeException("es analyzeWithField error", e);
+            throw new EsException("es analyzeWithField error", e);
         }
     }
 
@@ -738,7 +750,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
 
         Document document = AnnotationUtils.findAnnotation(this.entityClass, Document.class);
         if (document == null) {
-            throw new RuntimeException(this.entityClass.getName() + " must be with annotation:'@cn.wine.base.elasticsearch.annotation.Document'");
+            throw new EsException(this.entityClass.getName() + " must be with annotation:'@cn.wine.base.elasticsearch.annotation.Document'");
         }
         this.index = document.index();
 
@@ -746,28 +758,28 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             Id id = field.getAnnotation(Id.class);
             if (id != null) {
                 if (this.idField != null) {
-                    throw new RuntimeException("Duplicate @cn.wine.base.elasticsearch.annotation.Id field in " + this.entityClass.getName() + " class");
+                    throw new EsException("Duplicate @cn.wine.base.elasticsearch.annotation.Id field in " + this.entityClass.getName() + " class");
                 }
                 this.idField = field;
                 this.idField.setAccessible(true);
             }
         }
         if (this.idField == null) {
-            throw new RuntimeException("Missing @cn.wine.base.elasticsearch.annotation.Id field in " + this.entityClass.getName() + " class");
+            throw new EsException("Missing @cn.wine.base.elasticsearch.annotation.Id field in " + this.entityClass.getName() + " class");
         }
     }
 
     protected void updateByScript(ID id, ScriptType scriptType, String scriptIdOrCode, Map<String, Object> params, EsWriteOptionVo esWriteOptionVo) {
         if (id == null) {
-            throw new RuntimeException("es updateByScript but id is null");
+            throw new EsException("es updateByScript but id is null");
         }
 
         if (scriptType == null) {
-            throw new RuntimeException("es updateByScript but scriptType is null");
+            throw new EsException("es updateByScript but scriptType is null");
         }
 
         if (StringUtils.isEmpty(scriptIdOrCode)) {
-            throw new RuntimeException("es updateByScript but scriptIdOrCode is empty");
+            throw new EsException("es updateByScript but scriptIdOrCode is empty");
         }
 
         UpdateRequest updateRequest = new UpdateRequest(this.index, id.toString());
@@ -784,29 +796,29 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         try {
             this.client.update(updateRequest, RequestOptions.DEFAULT);
         } catch (Exception e) {
-            throw new RuntimeException("es updateByScript error", e);
+            throw new EsException("es updateByScript error", e);
         }
     }
 
     protected void updateByScript(Collection<ID> ids, ScriptType scriptType, String scriptIdOrCode, List<Map<String, Object>> params, EsWriteOptionVo esWriteOptionVo) {
         if (CollectionUtils.isEmpty(ids)) {
-            throw new RuntimeException("es updateByScript batch but ids is empty");
+            throw new EsException("es updateByScript batch but ids is empty");
         }
 
         if (scriptType == null) {
-            throw new RuntimeException("es updateByScript but scriptType is null");
+            throw new EsException("es updateByScript but scriptType is null");
         }
 
         if (StringUtils.isEmpty(scriptIdOrCode)) {
-            throw new RuntimeException("es updateByScript but scriptIdOrCode is empty");
+            throw new EsException("es updateByScript but scriptIdOrCode is empty");
         }
 
         if (CollectionUtils.isEmpty(params)) {
-            throw new RuntimeException("es updateByScript batch but params is empty");
+            throw new EsException("es updateByScript batch but params is empty");
         }
 
         if (ids.size() != params.size()) {
-            throw new RuntimeException("es updateByScript batch but size of ids and params not equal");
+            throw new EsException("es updateByScript batch but size of ids and params not equal");
         }
 
         BulkRequest bulkRequest = new BulkRequest();
@@ -827,25 +839,25 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         try {
             this.client.bulk(bulkRequest, RequestOptions.DEFAULT);
         } catch (Exception e) {
-            throw new RuntimeException("es updateByScript batch error", e);
+            throw new EsException("es updateByScript batch error", e);
         }
     }
 
     protected void updateByScript(Collection<ID> ids, ScriptType scriptType, String scriptIdOrCode, Map<String, Object> params, EsWriteOptionVo esWriteOptionVo) {
         if (CollectionUtils.isEmpty(ids)) {
-            throw new RuntimeException("es updateByScript batch but ids is empty");
+            throw new EsException("es updateByScript batch but ids is empty");
         }
 
         if (scriptType == null) {
-            throw new RuntimeException("es updateByScript but scriptType is null");
+            throw new EsException("es updateByScript but scriptType is null");
         }
 
         if (StringUtils.isEmpty(scriptIdOrCode)) {
-            throw new RuntimeException("es updateByScript but scriptIdOrCode is empty");
+            throw new EsException("es updateByScript but scriptIdOrCode is empty");
         }
 
         if (ObjectUtils.isEmpty(params)) {
-            throw new RuntimeException("es updateByScript batch but params is empty");
+            throw new EsException("es updateByScript batch but params is empty");
         }
 
         BulkRequest bulkRequest = new BulkRequest();
@@ -865,7 +877,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         try {
             this.client.bulk(bulkRequest, RequestOptions.DEFAULT);
         } catch (Exception e) {
-            throw new RuntimeException("es updateByScript batch error", e);
+            throw new EsException("es updateByScript batch error", e);
         }
     }
 
@@ -977,7 +989,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         try {
             return (ID) this.idField.get(entity);
         } catch (IllegalAccessException e) {
-            throw new RuntimeException("get id error", e);
+            throw new EsException("get id error", e);
         }
     }
 }

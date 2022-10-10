@@ -99,6 +99,8 @@ public interface EsRepository<ENTITY, ID> {
 
     void refresh();
 
+    void flush();
+
     List<String> analyze(String analyzer, String... text);
 
     List<String> analyzeWithField(String field, String... text);
