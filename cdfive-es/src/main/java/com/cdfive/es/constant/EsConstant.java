@@ -26,4 +26,7 @@ public class EsConstant {
 
     // 打分相关
     public String SCORE = "_score";
+
+    // 空排序值数组
+    public static final Object[] EMPTY_SORT_VALUES = new Object[0];
 }

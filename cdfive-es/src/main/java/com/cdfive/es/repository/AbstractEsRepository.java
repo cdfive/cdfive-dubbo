@@ -64,7 +64,6 @@ import java.util.stream.Collectors;
 
 /**
  * @author cdfive
- * @date 2022-01-05
  */
 @SuppressWarnings("rawtypes")
 public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<ENTITY, ID>, InitializingBean {
@@ -903,6 +902,9 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
                 esEntityVo.setScore(hit.getScore());
             }
 
+            if (!ObjectUtils.isEmpty(searchQuery.getSortValues())) {
+                esEntityVo.setSortValues(hit.getSortValues());
+            }
             esEntityVos.add(esEntityVo);
         }
 

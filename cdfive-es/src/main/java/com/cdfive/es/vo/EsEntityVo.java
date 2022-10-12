@@ -30,6 +30,9 @@ public class EsEntityVo<ENTITY> implements Serializable {
     // 版本号
     private Long version;
 
+    // sort values for search after
+    private Object[] sortValues;
+
     public ENTITY getEntity() {
         return entity;
     }
@@ -52,5 +55,13 @@ public class EsEntityVo<ENTITY> implements Serializable {
 
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    public Object[] getSortValues() {
+        return sortValues;
+    }
+
+    public void setSortValues(Object[] sortValues) {
+        this.sortValues = sortValues;
     }
 }

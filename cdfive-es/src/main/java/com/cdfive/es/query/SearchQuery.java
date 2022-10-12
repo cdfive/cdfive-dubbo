@@ -1,5 +1,6 @@
 package com.cdfive.es.query;
 
+import com.cdfive.es.constant.EsConstant;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
@@ -8,6 +9,7 @@ import org.elasticsearch.search.fetch.subphase.FetchSourceContext;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -47,6 +49,9 @@ public class SearchQuery implements Serializable {
 
     // 是否返回打分
     private boolean score = false;
+
+    // sort values for search after
+    private Object[] sortValues = null;
 
     public static SearchQuery of() {
         return new SearchQuery();
@@ -140,6 +145,11 @@ public class SearchQuery implements Serializable {
             for (AggregationBuilder aggregation : aggregations) {
                 searchSourceBuilder.aggregation(aggregation);
             }
+        }
+
+        if (!ObjectUtils.isEmpty(this.getSortValues()) && !EsConstant.EMPTY_SORT_VALUES.equals(this.getSortValues())) {
+            searchSourceBuilder.from(0);
+            searchSourceBuilder.searchAfter(this.getSortValues());
         }
 
         return searchSourceBuilder;
@@ -252,6 +262,11 @@ public class SearchQuery implements Serializable {
         return this;
     }
 
+    public SearchQuery sortValues(Object[] sortValues) {
+        this.sortValues = sortValues;
+        return this;
+    }
+
     public QueryBuilder getQuery() {
         return query;
     }
@@ -322,5 +337,13 @@ public class SearchQuery implements Serializable {
 
     public void setScore(boolean score) {
         this.score = score;
+    }
+
+    public Object[] getSortValues() {
+        return sortValues;
+    }
+
+    public void setSortValues(Object[] sortValues) {
+        this.sortValues = sortValues;
     }
 }
