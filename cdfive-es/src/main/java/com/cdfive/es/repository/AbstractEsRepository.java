@@ -51,6 +51,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -69,6 +70,12 @@ import java.util.stream.Collectors;
 public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<ENTITY, ID>, InitializingBean {
 
     protected Logger log = LoggerFactory.getLogger(getClass());
+
+    @Value("${spring.data.elasticsearch.searchDslKeyword:#{null}}")
+    private String searchDslKeyword;
+
+    @Value("${spring.data.elasticsearch.aggregateDslKeyword:#{null}}")
+    private String aggregateDslKeyword;
 
     @Autowired
     protected RestHighLevelClient client;
@@ -661,9 +668,15 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
     public Page<EsEntityVo<ENTITY>> search(SearchQuery searchQuery) {
         SearchRequest searchRequest = new SearchRequest(this.index);
         SearchSourceBuilder searchSourceBuilder = searchQuery.toSearchSourceBuilder();
+
         if (log.isDebugEnabled()) {
             log.debug("searchDsl=>{}", searchSourceBuilder.toString());
+        } else {
+            if (searchSourceBuilder.toString().contains(searchDslKeyword)) {
+                log.info("searchDsl=>{}", searchSourceBuilder.toString());
+            }
         }
+
         searchRequest.source(searchSourceBuilder);
 
         SearchResponse searchResponse;
@@ -693,9 +706,15 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
     public Map<String, List<EsValueCountVo>> aggregate(AggregateQuery aggregateQuery) {
         SearchRequest searchRequest = new SearchRequest(this.index);
         SearchSourceBuilder searchSourceBuilder = aggregateQuery.toSearchSourceBuilder();
+
         if (log.isDebugEnabled()) {
             log.debug("searchDsl=>{}", searchSourceBuilder.toString());
+        } else {
+            if (searchSourceBuilder.toString().contains(aggregateDslKeyword)) {
+                log.info("searchDsl=>{}", searchSourceBuilder.toString());
+            }
         }
+
         searchRequest.source(searchSourceBuilder);
 
         SearchResponse searchResponse;
