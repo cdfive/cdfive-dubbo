@@ -147,7 +147,7 @@ public class SearchQuery implements Serializable {
             }
         }
 
-        if (!ObjectUtils.isEmpty(this.getSortValues()) && !EsConstant.EMPTY_SORT_VALUES.equals(this.getSortValues())) {
+        if (!ObjectUtils.isEmpty(this.getSortValues())) {
             searchSourceBuilder.from(0);
             searchSourceBuilder.searchAfter(this.getSortValues());
         }

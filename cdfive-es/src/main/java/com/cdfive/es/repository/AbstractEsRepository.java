@@ -921,7 +921,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
                 esEntityVo.setScore(hit.getScore());
             }
 
-            if (!ObjectUtils.isEmpty(searchQuery.getSortValues())) {
+            if (!ObjectUtils.isEmpty(searchQuery.getSortValues()) || EsConstant.EMPTY_SORT_VALUES.equals(searchQuery.getSortValues())) {
                 esEntityVo.setSortValues(hit.getSortValues());
             }
             esEntityVos.add(esEntityVo);
