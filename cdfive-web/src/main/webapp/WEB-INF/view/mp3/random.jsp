@@ -5,7 +5,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <title>A simple music player</title>
   <%@ include file="/WEB-INF/view/common/preload.jsp" %>
   <link href="/static/js/plugin/tapplayer/assets/css/tapplayer.css" rel="stylesheet">
@@ -49,7 +49,8 @@
       </div>
     </div>
   </div>
-  
+  <%@ include file="/WEB-INF/view/common/copyright.jsp" %>
+
   <script type="text/javascript" src="/static/plugin/jquery/jquery.1.10.2.js"></script>
   <link rel="stylesheet" href="/static/plugin/dsdialog/dsdialog.css" media="screen" type="text/css" />
   <script type="text/javascript" src="/static/plugin/dsdialog/dsdialog.js"></script>
