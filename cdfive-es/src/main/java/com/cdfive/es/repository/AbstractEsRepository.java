@@ -672,7 +672,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         if (log.isDebugEnabled()) {
             log.debug("searchDsl=>{}", searchSourceBuilder.toString());
         } else {
-            if (searchSourceBuilder.toString().contains(searchDslKeyword)) {
+            if (searchDslKeyword != null && searchSourceBuilder.toString().contains(searchDslKeyword)) {
                 log.info("searchDsl=>{}", searchSourceBuilder.toString());
             }
         }
@@ -708,10 +708,10 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         SearchSourceBuilder searchSourceBuilder = aggregateQuery.toSearchSourceBuilder();
 
         if (log.isDebugEnabled()) {
-            log.debug("searchDsl=>{}", searchSourceBuilder.toString());
+            log.debug("aggregateDsl=>{}", searchSourceBuilder.toString());
         } else {
-            if (searchSourceBuilder.toString().contains(aggregateDslKeyword)) {
-                log.info("searchDsl=>{}", searchSourceBuilder.toString());
+            if (aggregateDslKeyword != null && searchSourceBuilder.toString().contains(aggregateDslKeyword)) {
+                log.info("aggregateDsl=>{}", searchSourceBuilder.toString());
             }
         }
 
