@@ -45,5 +45,14 @@ public class DoubleTest {
         System.out.println(new BigDecimal("19.9").multiply(new BigDecimal("100")).toBigInteger()); // 1990
         System.out.println(new BigDecimal("19.9").multiply(new BigDecimal("100")).toBigInteger().intValue()); // 1990
         System.out.println(new BigDecimal("19.9").multiply(new BigDecimal("100")).intValue()); // 1990
+
+        Double str1 = 12.0D;
+        System.out.println(str1); // 12.0
+        Double str2 = 12.00D;
+        System.out.println(str2); // 12.0
+        Double str3 = 12D;
+        System.out.println(str3); // 12.0
+        Double str4 = Double.parseDouble("12.00");
+        System.out.println(str4); // 12.0
     }
 }
