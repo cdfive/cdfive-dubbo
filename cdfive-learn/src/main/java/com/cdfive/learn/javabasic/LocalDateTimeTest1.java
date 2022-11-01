@@ -1,8 +1,8 @@
 package com.cdfive.learn.javabasic;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import org.apache.commons.lang3.StringUtils;
+
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
@@ -10,7 +10,34 @@ import java.util.Date;
  * @author cdfive
  */
 public class LocalDateTimeTest1 {
+
     public static void main(String[] args) {
+        // now of LocalDate
+        LocalDate nowDate = LocalDate.now();
+        System.out.println(nowDate);
+        System.out.println(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(nowDate));
+        try {
+            System.out.println(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS").format(nowDate));
+        } catch (Exception e) {
+            // Unsupported field: HourOfDay
+            System.out.println("format nowDate error," + e.getMessage());
+        }
+
+        // now of LocalDateTime
+        LocalDateTime nowDateTime = LocalDateTime.now();
+        System.out.println(nowDateTime);
+        System.out.println(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(nowDateTime));
+        System.out.println(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS").format(nowDateTime));
+
+        System.out.println(StringUtils.center("分隔线", 50, "-"));
+
+        // create LocalDate and LocalDateTime
+        System.out.println(LocalDate.of(2022, 11, 1));
+        System.out.println(LocalDateTime.of(2022, 11, 1, 13, 14, 52));
+        System.out.println(LocalDateTime.of(LocalDate.of(2022, 11, 1), LocalTime.of(13, 14, 52)));
+
+        System.out.println(StringUtils.center("分隔线", 50, "-"));
+
         LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(1577808000000L), ZoneId.systemDefault());
         // 2020-01-01T00:00
         System.out.println(localDateTime);
