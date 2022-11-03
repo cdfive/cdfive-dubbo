@@ -59,7 +59,7 @@ public class BizLogServiceImpl extends AbstractLogService implements BizLogServi
              pageable = pageable.next()) {
 
             if (page.getNumber() == 0) {
-                log.info("syncAllToEs total={},totalPage={}", page.getTotalElements(), page.getTotalPages());
+                log.info("syncAllBizLogToEs,total={},totalPage={}", page.getTotalElements(), page.getTotalPages());
             }
 
             List<BizLogPo> songPos = page.getContent();
@@ -69,7 +69,8 @@ public class BizLogServiceImpl extends AbstractLogService implements BizLogServi
                 saveReqVo.setId(o.getId());
                 return saveReqVo;
             }).collect(Collectors.toList());
-            log.info("syncAllToEs save {}", songPos.size());
+
+            log.info("saveBizLogs,size={}", songPos.size());
             bizLogEsService.saveBizLogs(saveReqVos);
         }
     }
