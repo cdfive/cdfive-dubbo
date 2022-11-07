@@ -14,15 +14,23 @@ public class DateTimeUtil {
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_TIME_PATTERN);
 
-    public String format(LocalDateTime localDateTime) {
+    public static String formatLocalDateTime(LocalDateTime localDateTime) {
         return DATE_TIME_FORMATTER.format(localDateTime);
     }
 
-    public String format(Date date) {
+    public static String formatDate(Date date) {
         if (date == null) {
             return null;
         }
 
         return DATE_TIME_FORMATTER.format(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+    }
+
+    public static LocalDateTime parseLocalDateTime(String str) {
+        return LocalDateTime.parse(str, DATE_TIME_FORMATTER);
+    }
+
+    public static Date parseDate(String str) {
+        return Date.from(parseLocalDateTime(str).atZone(ZoneId.systemDefault()).toInstant());
     }
 }
