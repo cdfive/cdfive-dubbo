@@ -9,5 +9,9 @@ import lombok.Data;
 @Data
 public class QueryBizLogPageReqVo extends PageReqVo {
 
+    private Integer id;
+
     private String info;
+
+    private Integer keyId;
 }

@@ -56,9 +56,19 @@ public class BizLogEsServiceImpl implements BizLogEsService {
     public PageRespVo<QueryBizLogPageRespVo> queryBizLogPage(QueryBizLogPageReqVo reqVo) {
         BoolQueryBuilder rootQueryBuilder = QueryBuilders.boolQuery();
 
+        Integer id = reqVo.getId();
+        if (id != null) {
+            rootQueryBuilder.filter(QueryBuilders.termsQuery("id", id));
+        }
+
         String info = reqVo.getInfo();
         if (StringUtil.isNotBlank(info)) {
             rootQueryBuilder.filter(QueryBuilders.matchQuery("info", info));
+        }
+
+        Integer keyId = reqVo.getKeyId();
+        if (keyId != null) {
+            rootQueryBuilder.filter(QueryBuilders.termQuery("keyId", keyId));
         }
 
         SearchQuery searchQuery = new SearchQuery(rootQueryBuilder, PageRequest.of(reqVo.getPageNum() - 1, reqVo.getPageSize()));
