@@ -1,5 +1,6 @@
 package com.cdfive.learn.thread.print;
 
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -16,6 +17,8 @@ public class TwoThreadPrint3 {
 
     public static void main(String[] args) {
         Lock lock = new ReentrantLock();
+        Condition condition1 = lock.newCondition();
+        Condition condition2 = lock.newCondition();
 
         new Thread(() -> {
             while (true) {
@@ -23,12 +26,15 @@ public class TwoThreadPrint3 {
                     break;
                 }
 
+                lock.lock();
                 try {
-                    lock.lock();
-                    if (flag) {
-                        System.out.println(Thread.currentThread().getName() + "=>" + (num++));
-                        flag = false;
+                    if (num % 2 == 0) {
+                        condition1.await();
                     }
+                    System.out.println(Thread.currentThread().getName() + "=>" + (num++));
+                    condition2.signal();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 } finally {
                     lock.unlock();
                 }
@@ -42,12 +48,15 @@ public class TwoThreadPrint3 {
                     break;
                 }
 
+                lock.lock();
                 try {
-                    lock.lock();
-                    if (!flag) {
-                        System.out.println(Thread.currentThread().getName() + "=>" + (num++));
-                        flag = true;
+                    if (num % 2 == 1) {
+                        condition2.await();
                     }
+                    System.out.println(Thread.currentThread().getName() + "=>" + (num++));
+                    condition1.signal();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 } finally {
                     lock.unlock();
                 }
