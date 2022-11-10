@@ -1,5 +1,7 @@
 package com.cdfive.log.service.impl;
 
+import com.cdfive.common.util.SpringContextUtil;
+import com.cdfive.log.event.AddBizLogEvent;
 import com.cdfive.log.po.BizLogPo;
 import com.cdfive.log.repository.BizLogRepository;
 import com.cdfive.log.service.BizLogService;
@@ -48,6 +50,8 @@ public class BizLogServiceImpl extends AbstractLogService implements BizLogServi
         bizLogPo.setDeleted(false);
 
         bizLogRepository.save(bizLogPo);
+
+        SpringContextUtil.publishEvent(new AddBizLogEvent(this, bizLogPo));
         return bizLogPo.getId();
     }
 
