@@ -1,10 +1,8 @@
 package com.cdfive.mp3.advice;
 
-import com.cdfive.common.exception.ServiceException;
-import com.cdfive.common.util.HostNameUtil;
 import com.cdfive.common.util.FastJsonUtil;
+import com.cdfive.common.util.HostNameUtil;
 import com.cdfive.log.vo.AddMethodLogVo;
-import com.cdfive.mp3.exception.Mp3ServiceException;
 import com.cdfive.mp3.message.producer.MethodLogProducer;
 import com.google.common.base.Throwables;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +13,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -23,6 +22,7 @@ import java.util.Date;
  * @author cdfive
  */
 @Slf4j
+@Order(1)
 @Aspect
 @Component
 public class Mp3ServiceMethodAdvice {
@@ -31,7 +31,7 @@ public class Mp3ServiceMethodAdvice {
     private MethodLogProducer methodLogProducer;
 
     @Pointcut("execution(* com.cdfive.mp3.service.impl.*.*(..))")
-    public void pointCut(){
+    public void pointCut() {
 
     }
 
@@ -69,7 +69,6 @@ public class Mp3ServiceMethodAdvice {
             addMethodLogVo.setEndTime(new Date(endTime));
             addMethodLogVo.setTimeCostMs(endTime - startTime);
             methodLogProducer.send(addMethodLogVo);
-            handleException(t);
             throw t;
         }
 
@@ -90,15 +89,5 @@ public class Mp3ServiceMethodAdvice {
         }
         sb.append(")");
         return sb.toString();
-    }
-
-    private void handleException(Throwable t) {
-        if (t instanceof Mp3ServiceException) {
-            log.error("[Mp3ServiceException]", t);
-        } else if (t instanceof ServiceException) {
-            log.error("[ServiceException]", t);
-        } else {
-            log.error("[UnknownException]", t);
-        }
     }
 }

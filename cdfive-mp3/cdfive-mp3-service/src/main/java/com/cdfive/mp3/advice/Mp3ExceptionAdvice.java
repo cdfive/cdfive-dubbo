@@ -1,4 +1,4 @@
-package com.cdfive.log.advice;
+package com.cdfive.mp3.advice;
 
 import com.cdfive.common.exception.ServiceException;
 import com.cdfive.log.exception.LogServiceException;
@@ -18,12 +18,10 @@ import org.springframework.stereotype.Component;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @Aspect
 @Component
-public class LogExceptionAdvice {
+public class Mp3ExceptionAdvice {
 
-    @Pointcut("execution(* com.cdfive.log.service.impl.*.*(..))")
-    public void pointCut() {
-
-    }
+    @Pointcut("execution(* com.cdfive.mp3.service.impl.*.*(..))")
+    public void pointCut(){}
 
     @Around("pointCut()")
     public Object handlerPointCut(ProceedingJoinPoint pjp) throws Throwable {

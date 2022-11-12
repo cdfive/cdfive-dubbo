@@ -1,7 +1,9 @@
 package com.cdfive.common.base;
 
 import com.cdfive.common.exception.ServiceException;
+import com.cdfive.common.util.SpringContextUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.context.ApplicationEvent;
 import org.springframework.util.ObjectUtils;
 
 import java.util.Date;
@@ -10,6 +12,14 @@ import java.util.Date;
  * @author cdfive
  */
 public abstract class AbstractService {
+
+    protected void publishEvent(ApplicationEvent event) {
+        SpringContextUtil.publishEvent(event);
+    }
+
+    protected void publishEvent(Object event) {
+        SpringContextUtil.publishEvent(event);
+    }
 
     protected void checkCondition(boolean condition, String msg) {
         if (!condition) {

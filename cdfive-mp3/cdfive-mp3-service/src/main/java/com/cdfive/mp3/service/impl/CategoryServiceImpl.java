@@ -14,6 +14,7 @@ import com.cdfive.mp3.transformer.QueryCategoryListPageTransformer;
 import com.cdfive.mp3.vo.category.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -31,16 +32,19 @@ public class CategoryServiceImpl extends AbstractMp3Service implements CategoryS
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Transactional(readOnly = true)
     @Override
     public PageRespVo<QueryCategoryListPageRespVo> queryCategoryListPage(QueryCategoryListPageReqVo reqVo) {
         return JpaPageUtil.buildPage(reqVo, categoryRepository, new QueryCategorySpecification(reqVo), QueryCategoryListPageTransformer.INSTANCE);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public BootstrapPageRespVo<QueryCategoryListPageRespVo> queryCategoryListBootstrapPage(QueryCategoryListPageReqVo reqVo) {
         return JpaPageUtil.buildBootstrapPage(reqVo, categoryRepository, new QueryCategorySpecification(reqVo), QueryCategoryListPageTransformer.INSTANCE);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public FindCategoryDetailVo findCategoryDetail(Integer id) {
         checkNotNull(id, "id不能为空");
@@ -57,10 +61,9 @@ public class CategoryServiceImpl extends AbstractMp3Service implements CategoryS
         return detailVo;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Integer addCategory(AddCategoryReqVo reqVo) {
-//        bizLogService.addBizLog(JSON.toJSONString(reqVo));
-
         String name = reqVo.getName();
         checkNotNull(name, "分类名称不能为空");
 
@@ -75,6 +78,7 @@ public class CategoryServiceImpl extends AbstractMp3Service implements CategoryS
         return categoryPo.getId();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void updateCategory(UpdateCategoryReqVo reqVo) {
         checkNotNull(reqVo, "请求参数不能为空");
@@ -98,6 +102,7 @@ public class CategoryServiceImpl extends AbstractMp3Service implements CategoryS
         categoryRepository.save(categoryPo);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void deleteCategory(List<Integer> ids) {
         checkNotEmpty(ids, "记录id列表不能为空");
@@ -116,6 +121,7 @@ public class CategoryServiceImpl extends AbstractMp3Service implements CategoryS
         categoryRepository.saveAll(categoryPos);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<IntegerIdNameVo> findTopCategories() {
         List<CategoryPo> pos = categoryRepository.findListByDeleted(Boolean.FALSE);

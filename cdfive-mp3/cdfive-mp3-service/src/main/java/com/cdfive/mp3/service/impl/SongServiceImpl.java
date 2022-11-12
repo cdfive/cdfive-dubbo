@@ -21,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,9 +35,9 @@ import java.util.stream.Collectors;
 @Service("songService")
 public class SongServiceImpl extends AbstractMp3Service implements SongService {
 
-    private LoadingCache<String, List<SongListVo>> songListByCategoryNameCache = CacheBuilder.newBuilder()
-            .refreshAfterWrite(1, TimeUnit.MINUTES)
-            .expireAfterWrite(5, TimeUnit.MINUTES)
+    private final LoadingCache<String, List<SongListVo>> songListByCategoryNameCache = CacheBuilder.newBuilder()
+            .refreshAfterWrite(5, TimeUnit.SECONDS)
+            .expireAfterWrite(30, TimeUnit.SECONDS)
             .maximumSize(10)
             .build(new CacheLoader<String, List<SongListVo>>() {
                 @Override
@@ -55,6 +56,7 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
     private CategoryRepository categoryRepository;
 
     @Cacheable(value = "song", key = "'all'")
+    @Transactional(readOnly = true)
     @Override
     public FindAllSongRespVo findAllSong() {
         log.info("songService=>findAllSong");
@@ -82,11 +84,11 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
         respVo.setDWt(songRepository.findSongListByCategoryName("无题"));
         respVo.setDDqxh(songRepository.findSongListByCategoryName("单曲循环"));
         respVo.setDSpec(songRepository.findSongListByCategoryName("特别"));
-
         return respVo;
     }
 
     @Cacheable(value = "song", key = "'random'")
+    @Transactional(readOnly = true)
     @Override
     public List<SongListVo> findRandomSongList(Integer num) {
         log.info("songService=>findRandomSongList");
@@ -96,6 +98,7 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
         return list;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Integer play(Integer id, String ip) {
         log.info("songService=>play");
@@ -116,16 +119,19 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
         return playCount;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public PageRespVo<QuerySongListPageRespVo> querySongListPage(QuerySongListPageReqVo reqVo) {
         return JpaPageUtil.buildPage(reqVo, songRepository, new QuerySongSpecification(reqVo), QuerySongListPageTransformer.INSTANCE);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public BootstrapPageRespVo<QuerySongListPageRespVo> querySongListBootstrapPage(QuerySongListPageReqVo reqVo) {
         return JpaPageUtil.buildBootstrapPage(reqVo, songRepository, new QuerySongSpecification(reqVo), QuerySongListPageTransformer.INSTANCE);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public FindSongDetailVo findSongDetail(Integer id) {
         checkNotNull(id, "id不能为空");
@@ -149,6 +155,7 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
         return detailVo;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Integer addSong(AddSongReqVo reqVo) {
         checkNotNull(reqVo, "请求参数不能为空");
@@ -196,6 +203,7 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
         return songPo.getId();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void updateSong(UpdateSongReqVo reqVo) {
         checkNotNull(reqVo, "请求参数不能为空");
@@ -243,6 +251,7 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
         songRepository.save(songPo);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void deleteSong(List<Integer> ids) {
         checkNotEmpty(ids, "记录id列表不能为空");

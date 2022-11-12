@@ -1,11 +1,10 @@
 package com.cdfive.log.service.impl;
 
-import com.cdfive.common.util.SpringContextUtil;
 import com.cdfive.log.event.AddBizLogEvent;
 import com.cdfive.log.po.BizLogPo;
 import com.cdfive.log.repository.BizLogRepository;
-import com.cdfive.log.service.BizLogService;
 import com.cdfive.log.service.AbstractLogService;
+import com.cdfive.log.service.BizLogService;
 import com.cdfive.search.service.BizLogEsService;
 import com.cdfive.search.vo.bizlog.SaveBizLogReqVo;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -33,6 +33,7 @@ public class BizLogServiceImpl extends AbstractLogService implements BizLogServi
     @Autowired
     private BizLogRepository bizLogRepository;
 
+    @Transactional
     @Override
     public Integer addBizLog(String info, Integer keyId, String ip) {
         log.info("bizLogService=>addBizLog");
@@ -51,7 +52,7 @@ public class BizLogServiceImpl extends AbstractLogService implements BizLogServi
 
         bizLogRepository.save(bizLogPo);
 
-        SpringContextUtil.publishEvent(new AddBizLogEvent(this, bizLogPo));
+        publishEvent(new AddBizLogEvent(this, bizLogPo));
         return bizLogPo.getId();
     }
 
