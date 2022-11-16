@@ -22,3 +22,11 @@ spring:
           '[/**]':
             allowedOrigins: "*"
             allowedMethods: "*"
+management:
+  endpoint:
+    gateway:
+      enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: gateway
