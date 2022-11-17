@@ -16,6 +16,18 @@
         <cdfive-mp3-api.version>0.0.1-SNAPSHOT</cdfive-mp3-api.version>
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>Finchley.SR1</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <!-- api -->
         <dependency>
@@ -29,6 +41,12 @@
             <groupId>com.cdfive</groupId>
             <artifactId>cdfive-sentinel</artifactId>
             <version>${cdfive-sentinel.version}</version>
+        </dependency>
+
+        <!-- spring-cloud -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
 
         <!-- spring-boot -->

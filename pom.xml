@@ -98,6 +98,7 @@
         <module>cdfive-admin</module>
         <module>cdfive-user</module>
         <module>cdfive-demo</module>
+        <module>cdfive-eureka</module>
     </modules>
 
     <dependencyManagement>

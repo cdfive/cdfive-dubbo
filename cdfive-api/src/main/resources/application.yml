@@ -1,6 +1,15 @@
 spring:
+  application:
+    name: cdfive-api
   profiles:
     active: dev
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7777/eureka
+    register-with-eureka: true
+    fetch-registry: true
 
 sentinel:
   enable: true

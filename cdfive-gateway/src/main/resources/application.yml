@@ -2,13 +2,17 @@ server:
   port: 9090
 
 spring:
+  application:
+    name: cdfive-gateway
   profiles:
     active: dev
   cloud:
     gateway:
       routes:
         - id: cdfive-api
-          uri: http://localhost:7070
+#          uri: http://localhost:7070
+#          uri: lb://CDFIVE-API
+          uri: lb://cdfive-api
           predicates:
             - Path=/api/v1/**
         - id: httpbin_route
@@ -25,8 +29,15 @@ spring:
 management:
   endpoint:
     gateway:
-      enabled: false
+      enabled: true
   endpoints:
     web:
       exposure:
         include: gateway
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7777/eureka
+    register-with-eureka: true
+    fetch-registry: true

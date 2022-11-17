@@ -2,34 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-<!--    <parent>-->
-<!--        <groupId>org.springframework.boot</groupId>-->
-<!--        <artifactId>spring-boot-starter-parent</artifactId>-->
-<!--        <version>2.0.5.RELEASE</version>-->
-<!--    </parent>-->
-
     <parent>
         <artifactId>cdfive-dubbo</artifactId>
         <groupId>com.cdfive</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>cdfive-gateway</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-
-    <properties>
-        <!-- build -->
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.source.version>1.8</java.source.version>
-        <java.target.version>1.8</java.target.version>
-        <java.encoding>UTF-8</java.encoding>
-
-        <!-- maven plugin -->
-        <maven.compiler.version>3.8.0</maven.compiler.version>
-        <maven.surefire.version>2.22.1</maven.surefire.version>
-    </properties>
+    <artifactId>cdfive-eureka</artifactId>
 
     <dependencyManagement>
         <dependencies>
@@ -43,35 +23,15 @@
         </dependencies>
     </dependencyManagement>
 
-
     <dependencies>
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-gateway</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
-        <!-- logstash-logback-encoder -->
         <dependency>
-            <groupId>net.logstash.logback</groupId>
-            <artifactId>logstash-logback-encoder</artifactId>
-            <version>6.1</version>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
         </dependency>
-
-<!--        <dependency>-->
-<!--            <groupId>com.alibaba.csp</groupId>-->
-<!--            <artifactId>spring-cloud-gateway-starter-ahas-sentinel</artifactId>-->
-<!--            <version>1.0.3</version>-->
-<!--        </dependency>-->
 
         <!-- lombok -->
         <dependency>
@@ -152,7 +112,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.cdfive.gateway.GatewayApplication</mainClass>
+                            <mainClass>com.cdfive.eureka.EurekaApplication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
