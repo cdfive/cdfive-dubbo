@@ -41,3 +41,11 @@ eureka:
       defaultZone: http://localhost:7777/eureka
     register-with-eureka: true
     fetch-registry: true
+    registry-fetch-interval-seconds: 5
+
+ribbon:
+  ServerListRefreshInterval: 5000
+
+#cdfive-api:
+#  ribbon:
+#    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule

@@ -22,3 +22,18 @@ redis:
   host: localhost
   port: 6379
   timeout-ms: 2000
+
+management:
+  endpoint:
+    shutdown:
+      enabled: true
+    pause:
+      enabled: true
+    restart:
+      enabled: true
+    service-registry:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: shutdown,pause,restart,service-registry

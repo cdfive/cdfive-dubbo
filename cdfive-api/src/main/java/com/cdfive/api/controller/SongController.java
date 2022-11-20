@@ -25,7 +25,12 @@ public class SongController extends AbstractController {
 
     @RequestMapping(UriConstant.MP3_ALL)
     public ApiResponse<FindAllSongRespVo> all() {
-        FindAllSongRespVo respVo = songService.findAllSong();
+        FindAllSongRespVo respVo = null;
+        try {
+            respVo = songService.findAllSong();
+        } catch (Exception e) {
+            return ApiResponse.errBizMsg("findAllSong error," + e.getMessage());
+        }
         return succ(respVo);
     }
 
