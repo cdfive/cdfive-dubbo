@@ -87,6 +87,8 @@ public interface EsRepository<ENTITY, ID> {
 
     boolean exists(ID id);
 
+    Map<ID, Boolean> exists(Collection<ID> ids);
+
     long count(CountQuery countQuery);
 
     List<EsEntityVo<ENTITY>> findAll(Collection<ID> ids);

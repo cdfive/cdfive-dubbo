@@ -601,13 +601,43 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
 
         GetRequest getRequest = new GetRequest(this.index, id.toString());
         getRequest.fetchSourceContext(new FetchSourceContext(false));
-        getRequest.storedFields("_none_");
 
         try {
             return this.client.exists(getRequest, RequestOptions.DEFAULT);
         } catch (Exception e) {
             throw new EsException("es exists query error", e);
         }
+    }
+
+    @Override
+    public Map<ID, Boolean> exists(Collection<ID> ids) {
+        if (CollectionUtils.isEmpty(ids)) {
+            return Collections.emptyMap();
+        }
+
+        MultiGetRequest multiGetRequest = new MultiGetRequest();
+        FetchSourceContext fetchSourceContext = new FetchSourceContext(false);
+        for (ID id : ids) {
+            multiGetRequest.add(new MultiGetRequest.Item(this.index, id.toString()).fetchSourceContext(fetchSourceContext));
+        }
+
+        MultiGetResponse multiGetResponse;
+        try {
+            multiGetResponse = this.client.mget(multiGetRequest, RequestOptions.DEFAULT);
+        } catch (Exception e) {
+            throw new EsException("es exists multi query error", e);
+        }
+
+        MultiGetItemResponse[] responses = multiGetResponse.getResponses();
+        Set<String> strIds = new HashSet<>(ids.size());
+        for (MultiGetItemResponse response : responses) {
+            if (!response.getResponse().isExists()) {
+                continue;
+            }
+            strIds.add(response.getId());
+        }
+
+        return ids.stream().filter(Objects::nonNull).collect(Collectors.toMap(o -> o, o -> strIds.contains(String.valueOf(o)), (o, n) -> n));
     }
 
     @Override
@@ -630,7 +660,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
     @Override
     public List<EsEntityVo<ENTITY>> findAll(Collection<ID> ids) {
         if (CollectionUtils.isEmpty(ids)) {
-            return new ArrayList<>();
+            return Collections.emptyList();
         }
 
         MultiGetRequest multiGetRequest = new MultiGetRequest();
