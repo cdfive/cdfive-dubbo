@@ -25,6 +25,9 @@ public class LonLatUtil {
     // 经纬度小数点后保留6位数
     private static final int LON_LAT_SCALE = 6;
 
+    // 用于坐标系转换的常量
+    private static final double X_PI = Math.PI * 3000.0 / 180.0;
+
     private static double PI = Math.PI;
     private static double TWOPI = Math.PI * 2;
     private static double DE2RA = 0.01745329252;
@@ -87,17 +90,45 @@ public class LonLatUtil {
         try {
             double lon = geoPointVo.getLon().doubleValue();
             double lat = geoPointVo.getLat().doubleValue();
-            double x_pi = 3.14159265358979324 * 3000.0 / 180.0;
             double x = lon;
             double y = lat;
-            double z = Math.sqrt(x * x + y * y) + 0.00002 * Math.sin(y * x_pi);
-            double theta = Math.atan2(y, x) + 0.000003 * Math.cos(x * x_pi);
+            double z = Math.sqrt(x * x + y * y) + 0.00002 * Math.sin(y * X_PI);
+            double theta = Math.atan2(y, x) + 0.000003 * Math.cos(x * X_PI);
             double lonBaidu = z * Math.cos(theta) + 0.0065;
             double latBaidu = z * Math.sin(theta) + 0.006;
             return new GeoPointVo(new BigDecimal(String.valueOf(lonBaidu)).setScale(LON_LAT_SCALE, BigDecimal.ROUND_HALF_UP)
                     , new BigDecimal(String.valueOf(latBaidu)).setScale(LON_LAT_SCALE, BigDecimal.ROUND_HALF_UP));
         } catch (Exception e) {
             log.error("marsToBaiduCoordinate error,lon={},lat={}", geoPointVo.getLon(), geoPointVo.getLat(), e);
+            return geoPointVo;
+        }
+    }
+
+    /**
+     * 经纬度转换,百度坐标系转火星坐标系
+     */
+    public static GeoPointVo baiduToMarsCoordinate(GeoPointVo geoPointVo) {
+        if (geoPointVo == null) {
+            return null;
+        }
+
+        if (geoPointVo.getLon() == null || geoPointVo.getLat() == null) {
+            return geoPointVo;
+        }
+
+        try {
+            double lon = geoPointVo.getLon().doubleValue();
+            double lat = geoPointVo.getLat().doubleValue();
+            double x = lon - 0.0065;
+            double y = lat - 0.006;
+            double z = Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * X_PI);
+            double theta = Math.atan2(y, x) - 0.000003 * Math.cos(x * X_PI);
+            double lonMars = z * Math.cos(theta);
+            double latMars = z * Math.sin(theta);
+            return new GeoPointVo(new BigDecimal(String.valueOf(lonMars)).setScale(LON_LAT_SCALE, BigDecimal.ROUND_HALF_UP)
+                    , new BigDecimal(String.valueOf(latMars)).setScale(LON_LAT_SCALE, BigDecimal.ROUND_HALF_UP));
+        } catch (Exception e) {
+            log.error("baiduToMarsCoordinate error,lon={},lat={}", geoPointVo.getLon(), geoPointVo.getLat(), e);
             return geoPointVo;
         }
     }
