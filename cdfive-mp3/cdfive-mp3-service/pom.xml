@@ -18,6 +18,18 @@
 <!--        <cdfive-jpa.version>0.0.1-SNAPSHOT</cdfive-jpa.version>-->
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>Finchley.SR1</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <!-- common -->
         <dependency>
@@ -48,6 +60,12 @@
             <groupId>com.cdfive</groupId>
             <artifactId>cdfive-log-api</artifactId>
             <version>${cdfive-log-api.version}</version>
+        </dependency>
+
+        <!-- spring-cloud -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
 
         <!-- spring-boot -->
