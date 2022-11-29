@@ -1,6 +1,9 @@
 package com.cdfive.learn.thread.print;
 
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -10,7 +13,7 @@ import java.util.stream.IntStream;
  *
  * @author cdfive
  */
-public class ThreeThreadPrintABC4 {
+public class ThreeThreadPrintABC5 {
 
     public static void main(String[] args) throws Exception {
         int max = 10;
@@ -19,21 +22,24 @@ public class ThreeThreadPrintABC4 {
         List<String> keys = IntStream.range('A', 'C' + 1).mapToObj(i -> String.valueOf((char) i)).collect(Collectors.toList());
 
         // Init thread, including key, max and acquireSemaphore
-        List<MyThread> threads = IntStream.range(0, keys.size())
-                .mapToObj(i -> new MyThread(keys.get(i), max, new Semaphore(i == 0 ? 1 : 0)))
+        List<PrintTask> tasks = IntStream.range(0, keys.size())
+                .mapToObj(i -> new PrintTask(keys.get(i), max, new Semaphore(i == 0 ? 1 : 0)))
                 .collect(Collectors.toList());
 
         // Init thread's name and releaseSemaphore
-        IntStream.range(0, threads.size()).forEach(i -> {
-            threads.get(i).setName("print-thread-" + (i + 1));
-            threads.get(i).setReleaseSemaphore(threads.get(i + 1 < threads.size() ? i + 1 : 0).getAcquireSemaphore());
+        IntStream.range(0, tasks.size()).forEach(i -> {
+            tasks.get(i).setReleaseSemaphore(tasks.get(i + 1 < tasks.size() ? i + 1 : 0).getAcquireSemaphore());
         });
 
-        // Start all threads
-        threads.forEach(t -> t.start());
+        // Using a fixed thread pool to execute all tasks
+        ExecutorService es = Executors.newFixedThreadPool(tasks.size());
+        es.invokeAll(tasks);
+        es.shutdown();
+
+        System.out.println("done");
     }
 
-    public static class MyThread extends Thread {
+    public static class PrintTask implements Callable<Object> {
 
         private String key;
 
@@ -43,22 +49,22 @@ public class ThreeThreadPrintABC4 {
 
         private Semaphore releaseSemaphore;
 
-        public MyThread() {
+        public PrintTask() {
 
         }
 
-        public MyThread(String key, Integer max) {
+        public PrintTask(String key, Integer max) {
             this.key = key;
             this.max = max;
         }
 
-        public MyThread(String key, Integer max, Semaphore acquireSemaphore) {
+        public PrintTask(String key, Integer max, Semaphore acquireSemaphore) {
             this.key = key;
             this.max = max;
             this.acquireSemaphore = acquireSemaphore;
         }
 
-        public MyThread(String key, Integer max, Semaphore acquireSemaphore, Semaphore releaseSemaphore) {
+        public PrintTask(String key, Integer max, Semaphore acquireSemaphore, Semaphore releaseSemaphore) {
             this.key = key;
             this.max = max;
             this.acquireSemaphore = acquireSemaphore;
@@ -66,12 +72,14 @@ public class ThreeThreadPrintABC4 {
         }
 
         @Override
-        public void run() {
+        public Object call() throws Exception {
             for (int i = 0; i < max; i++) {
                 acquireSemaphore.acquireUninterruptibly();
                 System.out.println(Thread.currentThread().getName() + "=>" + key + ",times=" + (i + 1));
                 releaseSemaphore.release();
             }
+
+            return null;
         }
 
         public String getKey() {

@@ -14,7 +14,9 @@ public class DifferentMapTest {
 
     public static void main(String[] args) {
         testMap(new HashMap<>());
-        testMap(new TreeMap<>());
+
+        testMap(new TreeMap<>());// new TreeMap<>((a, b) -> a.compareTo(b))
+
         testMap(new LinkedHashMap<>());
     }
 
@@ -26,7 +28,7 @@ public class DifferentMapTest {
         map.put(12, "qq");
         map.put(18, "ww");
         map.put(15, "ee");
-        System.out.println(map.values());
         System.out.println(map.keySet());
+        System.out.println(map.values());
     }
 }

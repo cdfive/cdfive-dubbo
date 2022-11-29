@@ -36,7 +36,7 @@ public class ConditionDemo1 {
         TimeUnit.SECONDS.sleep(2);
 
         // case2
-        // TimeUnit.SECONDS.sleep(4);
+//         TimeUnit.SECONDS.sleep(4);
 
         t2.start();
     }
@@ -51,8 +51,9 @@ public class ConditionDemo1 {
             try {
                 lock.lock();
                 print("doWait start");
+                long start = System.currentTimeMillis();
                 boolean awaitResult = condition.awaitUntil(Date.from(LocalDateTime.now().plusSeconds(3).atZone(ZoneId.systemDefault()).toInstant()));
-                print("doWait end,awaitResult=" + awaitResult);
+                print("doWait end,awaitResult=" + awaitResult + ",cost=" + (System.currentTimeMillis() - start) + "ms");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } finally {

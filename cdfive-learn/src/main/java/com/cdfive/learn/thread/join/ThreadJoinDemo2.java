@@ -33,5 +33,8 @@ public class ThreadJoinDemo2 {
         t2.join();
 
         t3.start();
+        t3.join();
+
+        System.out.println("done");
     }
 }
