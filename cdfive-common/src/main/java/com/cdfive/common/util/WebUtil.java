@@ -85,7 +85,7 @@ public abstract class WebUtil {
             pw.append("});");
             pw.append("</script>");
         } catch (IOException e) {
-            log.error("[exception]WebUtil preloadJs", e);
+            log.error("WebUtil preloadJs error", e);
         }
     }
 }

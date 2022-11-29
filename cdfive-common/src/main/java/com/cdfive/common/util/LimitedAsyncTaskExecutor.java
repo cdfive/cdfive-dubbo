@@ -15,7 +15,7 @@ import java.util.concurrent.CountDownLatch;
  * 受限的异步任务执行器
  * <p>
  * 1. 任务本身需是异步执行的
- * 2. 此执行器控制异步执行并发数, 避免大量并发导致不可控
+ * 2. 此执行器控制异步执行并发数, 避免大量并发导致系统负载过大
  *
  * @author cdfive
  */

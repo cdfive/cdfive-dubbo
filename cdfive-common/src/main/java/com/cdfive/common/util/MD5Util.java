@@ -1,10 +1,13 @@
 package com.cdfive.common.util;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.security.MessageDigest;
 
 /**
  * @author cdfive
  */
+@Slf4j
 public class MD5Util {
     public static String encodeByMD5(String str) {
         try {
@@ -12,6 +15,7 @@ public class MD5Util {
             md.update(str.getBytes());
             return byte2string(md.digest());
         } catch (Exception e) {
+            log.error("encodeByMD5 error,str={}", str, e);
             return str;
         }
     }

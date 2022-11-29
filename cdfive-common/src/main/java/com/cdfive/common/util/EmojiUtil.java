@@ -12,7 +12,7 @@ public class EmojiUtil {
 
     public static final String HIDDEN_STRING = "***";
 
-    private static Pattern PATTERN_EMOJI = Pattern.compile("[\ud83c\udc00-\ud83c\udfff]|[\ud83d\udc00-\ud83d\udfff]|[\u2600-\u27ff]",
+    private static final Pattern PATTERN_EMOJI = Pattern.compile("[\ud83c\udc00-\ud83c\udfff]|[\ud83d\udc00-\ud83d\udfff]|[\u2600-\u27ff]",
             Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
 
     public static boolean containsEmoji(String str) {
@@ -51,5 +51,4 @@ public class EmojiUtil {
 
         return name.substring(0, firstEmoji ? 2 : 1) + HIDDEN_STRING + name.substring(lastEmoji ? name.length() - 2 : name.length() - 1);
     }
-
 }

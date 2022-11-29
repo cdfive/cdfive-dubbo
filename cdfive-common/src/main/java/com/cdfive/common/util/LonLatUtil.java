@@ -28,18 +28,18 @@ public class LonLatUtil {
     // 用于坐标系转换的常量
     private static final double X_PI = Math.PI * 3000.0 / 180.0;
 
-    private static double PI = Math.PI;
-    private static double TWOPI = Math.PI * 2;
-    private static double DE2RA = 0.01745329252;
-    private static double RA2DE = 57.2957795129;
-    private static double ERAD = 6378.135;
-    private static double ERADM = 6378135.0;
-    private static double AVG_ERAD = 6371.0;
-    private static double FLATTENING = 1.0 / 298.257223563;
+    private static final double PI = Math.PI;
+    private static final double TWOPI = Math.PI * 2;
+    private static final double DE2RA = 0.01745329252;
+    private static final double RA2DE = 57.2957795129;
+    private static final double ERAD = 6378.135;
+    private static final double ERADM = 6378135.0;
+    private static final double AVG_ERAD = 6371.0;
+    private static final double FLATTENING = 1.0 / 298.257223563;
 
-    private static double EPS = 0.000000000005;
-    private static double KM2MI = 0.621371;
-    private static double GEOSTATIONARY_ALT = 35786.0; // km
+    private static final double EPS = 0.000000000005;
+    private static final double KM2MI = 0.621371;
+    private static final double GEOSTATIONARY_ALT = 35786.0; // km
 
     /**
      * 验证经纬度合法
