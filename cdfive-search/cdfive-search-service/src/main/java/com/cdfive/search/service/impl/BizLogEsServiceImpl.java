@@ -58,7 +58,7 @@ public class BizLogEsServiceImpl implements BizLogEsService {
 
         Integer id = reqVo.getId();
         if (id != null) {
-            rootQueryBuilder.filter(QueryBuilders.termsQuery("id", id));
+            rootQueryBuilder.filter(QueryBuilders.termQuery("id", id));
         }
 
         String info = reqVo.getInfo();
