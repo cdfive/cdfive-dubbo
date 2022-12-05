@@ -12,7 +12,7 @@ import java.util.List;
  * @author cdfive
  */
 @FeignClient(name = "cdfive-mp3")
-public interface SongFeign {
+public interface SongApi {
 
     @RequestMapping("/mp3/all")
     FindAllSongRespVo findAllSong();
