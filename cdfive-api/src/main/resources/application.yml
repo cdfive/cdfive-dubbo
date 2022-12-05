@@ -3,6 +3,10 @@ spring:
     name: cdfive-api
   profiles:
     active: dev
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
 
 eureka:
   client:

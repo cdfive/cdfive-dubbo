@@ -7,6 +7,9 @@ spring:
   profiles:
     active: dev
   cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
     gateway:
       routes:
         - id: cdfive-api
