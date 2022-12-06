@@ -7,6 +7,8 @@ spring:
     nacos:
       discovery:
         server-addr: localhost:8848
+        namespace: bf318517-a87b-420a-bdaa-58cdeb49d873
+        group: cdfive-dubbo
 
 eureka:
   client:
