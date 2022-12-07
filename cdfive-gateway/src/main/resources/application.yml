@@ -1,54 +1,21 @@
-#server:
-#  port: 9090
-#
-#spring:
-#  application:
-#    name: cdfive-gateway
-#  profiles:
-#    active: dev
-#  cloud:
-#    nacos:
-#      discovery:
-#        server-addr: localhost:8848
-#    gateway:
-#      routes:
-#        - id: cdfive-api
-##          uri: http://localhost:7070
-##          uri: lb://CDFIVE-API
-#          uri: lb://cdfive-api
-#          predicates:
-#            - Path=/api/v1/**
-#        - id: httpbin_route
-#          uri: https://httpbin.org
-#          predicates:
-#            - Path=/httpbin/**
-#          filters:
-#            - RewritePath=/httpbin/(?<segment>.*), /$\{segment}
-#      globalcors:
-#        corsConfigurations:
-#          '[/**]':
-#            allowedOrigins: "*"
-#            allowedMethods: "*"
-#management:
-#  endpoint:
-#    gateway:
-#      enabled: true
-#  endpoints:
-#    web:
-#      exposure:
-#        include: gateway
-#
-#eureka:
-#  client:
-#    service-url:
-#      defaultZone: http://localhost:7777/eureka
-#    register-with-eureka: true
-#    fetch-registry: true
-#    registry-fetch-interval-seconds: 5
-#
-#ribbon:
-#  ServerListRefreshInterval: 5000
-#
-##cdfive-api:
-##  ribbon:
-##    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
+spring:
+  application:
+    name: cdfive-gateway
+  cloud:
+    nacos:
+      config:
+        import-check:
+          enabled: false
+        enabled: true
+        server-addr: localhost:8848
+        username: nacos
+        password: nacos
+        namespace: 118a7c59-6e15-41c9-b11d-a5f94e9e75b0
+        group: cdfive-dubbo
+        file-extension: yml
+  config:
+    import: nacos:${spring.application.name}.${spring.cloud.nacos.config.file-extension}
+
+eureka:
+  client:
+    enabled: false

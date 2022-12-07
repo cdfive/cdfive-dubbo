@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 import springfox.documentation.spring.web.DocumentationCache;
+import springfox.documentation.spring.web.plugins.DocumentationPluginsManager;
 import springfox.documentation.swagger.web.InMemorySwaggerResourcesProvider;
 import springfox.documentation.swagger.web.SwaggerResource;
 import springfox.documentation.swagger.web.SwaggerResourcesProvider;
@@ -23,14 +24,14 @@ public class SwaggerDubboConfig {
 
     @Primary
     @Bean
-    public SwaggerResourcesProvider swaggerResourcesProvider(Environment environment, DocumentationCache documentationCache) {
-        return new CustormSwaggerResourcesProvider(environment, documentationCache);
+    public SwaggerResourcesProvider swaggerResourcesProvider(Environment environment, DocumentationCache documentationCache, DocumentationPluginsManager pluginsManager) {
+        return new CustormSwaggerResourcesProvider(environment, documentationCache, pluginsManager);
     }
 
     static class CustormSwaggerResourcesProvider extends InMemorySwaggerResourcesProvider {
 
-        public CustormSwaggerResourcesProvider(Environment environment, DocumentationCache documentationCache) {
-            super(environment, documentationCache);
+        public CustormSwaggerResourcesProvider(Environment environment, DocumentationCache documentationCache, DocumentationPluginsManager pluginsManager) {
+            super(environment, documentationCache, pluginsManager);
         }
 
         @Override

@@ -20,6 +20,6 @@ public interface SongApi {
     @RequestMapping("/mp3/random_list")
     List<SongListVo> findRandomSongList(@RequestParam("num") Integer num);
 
-    @RequestMapping("/play")
+    @RequestMapping("/mp3/play")
     Integer play(@RequestParam("id") Integer id, @RequestParam("ip") String ip);
 }

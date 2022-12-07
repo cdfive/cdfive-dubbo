@@ -3,6 +3,12 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>cdfive-dubbo</artifactId>
+        <groupId>com.cdfive</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
     <groupId>com.cdfive</groupId>
     <artifactId>cdfive-ejob</artifactId>
     <version>0.0.1-SNAPSHOT</version>
@@ -25,7 +31,10 @@
         <dependency>
             <groupId>com.dangdang</groupId>
             <artifactId>elastic-job-lite-core</artifactId>
-            <version>${elastic-job.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.dangdang</groupId>
+            <artifactId>elastic-job-lite-spring</artifactId>
         </dependency>
     </dependencies>
 

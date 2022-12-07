@@ -5,10 +5,15 @@ spring:
     active: dev
   cloud:
     nacos:
+      config:
+        import-check:
+          enabled: false
       discovery:
         server-addr: localhost:8848
-        namespace: bf318517-a87b-420a-bdaa-58cdeb49d873
+        namespace: 118a7c59-6e15-41c9-b11d-a5f94e9e75b0
         group: cdfive-dubbo
+        username: nacos
+        password: nacos
 
 eureka:
   client:
