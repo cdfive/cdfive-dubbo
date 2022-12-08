@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/cdfive2019?autoReconnect=true&failOverReadOnly=false&rewriteBatchedStatements=true
+    url: jdbc:mysql://localhost:3306/cdfive2019?autoReconnect=true&failOverReadOnly=false&rewriteBatchedStatements=true&useSSL=false
     username: root
     password: 123456
   redis:
