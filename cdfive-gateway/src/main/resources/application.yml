@@ -14,8 +14,7 @@ spring:
         group: cdfive-dubbo
         file-extension: yml
   config:
-    import: nacos:${spring.application.name}.${spring.cloud.nacos.config.file-extension}
-
+    import: optional:nacos:${spring.application.name}.${spring.cloud.nacos.config.file-extension}
 eureka:
   client:
     enabled: false
