@@ -1,19 +1,23 @@
 package com.cdfive.es.repository;
 
 import com.alibaba.fastjson.JSON;
+import com.cdfive.common.util.CommonUtil;
 import com.cdfive.common.util.GenericClassUtil;
 import com.cdfive.es.annotation.Document;
 import com.cdfive.es.annotation.Id;
 import com.cdfive.es.constant.EsConstant;
 import com.cdfive.es.exception.EsException;
 import com.cdfive.es.query.*;
+import com.cdfive.es.vo.BatchUpdateRespVo;
 import com.cdfive.es.vo.EsEntityVo;
 import com.cdfive.es.vo.EsValueCountVo;
 import com.cdfive.es.vo.EsWriteOptionVo;
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.admin.indices.flush.FlushRequest;
 import org.elasticsearch.action.admin.indices.refresh.RefreshRequest;
+import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.get.*;
 import org.elasticsearch.action.index.IndexRequest;
@@ -179,18 +183,19 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
     }
 
     @Override
-    public void update(Collection<ID> ids, List<Map<String, Object>> params) {
-        this.update(ids, params, null);
+    public BatchUpdateRespVo<ID> update(Collection<ID> ids, List<Map<String, Object>> params) {
+        return this.update(ids, params, null);
     }
 
     @Override
-    public void update(Collection<ID> ids, List<Map<String, Object>> params, EsWriteOptionVo esWriteOptionVo) {
+    public BatchUpdateRespVo<ID> update(Collection<ID> ids, List<Map<String, Object>> params, EsWriteOptionVo esWriteOptionVo) {
+        BatchUpdateRespVo<ID> respVo = new BatchUpdateRespVo<>(CommonUtil.getTraceId());
         if (CollectionUtils.isEmpty(ids)) {
             throw new EsException("es update batch but empty ids");
         }
 
         if (CollectionUtils.isEmpty(params)) {
-            return;
+            return respVo;
         }
 
         if (ids.size() != params.size()) {
@@ -212,19 +217,22 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             }
         }
         try {
-            this.client.bulk(bulkRequest, RequestOptions.DEFAULT);
+            BulkResponse bulkResponse = this.client.bulk(bulkRequest, RequestOptions.DEFAULT);
+            this.buildBulkResponse(bulkResponse, respVo, ids, "update");
+            return respVo;
         } catch (Exception e) {
             throw new EsException("es update batch error", e);
         }
     }
 
     @Override
-    public void update(Collection<ID> ids, Map<String, Object> params) {
-        this.update(ids, params, null);
+    public BatchUpdateRespVo<ID> update(Collection<ID> ids, Map<String, Object> params) {
+        return this.update(ids, params, null);
     }
 
     @Override
-    public void update(Collection<ID> ids, Map<String, Object> params, EsWriteOptionVo esWriteOptionVo) {
+    public BatchUpdateRespVo<ID> update(Collection<ID> ids, Map<String, Object> params, EsWriteOptionVo esWriteOptionVo) {
+        BatchUpdateRespVo<ID> respVo = new BatchUpdateRespVo<>(CommonUtil.getTraceId());
         if (CollectionUtils.isEmpty(ids)) {
             throw new EsException("es update batch but empty ids");
         }
@@ -246,7 +254,9 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             }
         }
         try {
-            this.client.bulk(bulkRequest, RequestOptions.DEFAULT);
+            BulkResponse bulkResponse = this.client.bulk(bulkRequest, RequestOptions.DEFAULT);
+            this.buildBulkResponse(bulkResponse, respVo, ids, "update");
+            return respVo;
         } catch (Exception e) {
             throw new EsException("es update batch error", e);
         }
@@ -464,14 +474,15 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
     }
 
     @Override
-    public void delete(Collection<ID> ids) {
-        this.delete(ids, null);
+    public BatchUpdateRespVo<ID> delete(Collection<ID> ids) {
+        return this.delete(ids, null);
     }
 
     @Override
-    public void delete(Collection<ID> ids, EsWriteOptionVo esWriteOptionVo) {
+    public BatchUpdateRespVo<ID> delete(Collection<ID> ids, EsWriteOptionVo esWriteOptionVo) {
+        BatchUpdateRespVo<ID> respVo = new BatchUpdateRespVo<>(CommonUtil.getTraceId());
         if (CollectionUtils.isEmpty(ids)) {
-            return;
+            return respVo;
         }
 
         BulkRequest bulkRequest = new BulkRequest();
@@ -487,7 +498,9 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             }
         }
         try {
-            this.client.bulk(bulkRequest, RequestOptions.DEFAULT);
+            BulkResponse bulkResponse = this.client.bulk(bulkRequest, RequestOptions.DEFAULT);
+            this.buildBulkResponse(bulkResponse, respVo, ids, "delete");
+            return respVo;
         } catch (Exception e) {
             throw new EsException("es delete entities error", e);
         }
@@ -720,7 +733,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             throw new EsException("es search fail,status=" + searchResponse.status());
         }
 
-        return this.buildSearchResult(searchResponse, searchQuery);
+        return this.buildSearchResponse(searchResponse, searchQuery);
     }
 
     @Override
@@ -759,7 +772,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         }
 
 
-        return this.buildAggregateResult(searchResponse);
+        return this.buildAggregateResponse(searchResponse);
     }
 
     @Override
@@ -929,7 +942,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         }
     }
 
-    protected Page<EsEntityVo<ENTITY>> buildSearchResult(SearchResponse searchResponse, SearchQuery searchQuery) {
+    protected Page<EsEntityVo<ENTITY>> buildSearchResponse(SearchResponse searchResponse, SearchQuery searchQuery) {
         SearchHits hits = searchResponse.getHits();
         long total = hits.getTotalHits().value;
         if (total == 0) {
@@ -970,13 +983,13 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         return new PageImpl(esEntityVos, searchQuery.getPageable(), total);
     }
 
-    protected Map<String, List<EsValueCountVo>> buildAggregateResult(SearchResponse searchResponse) {
+    protected Map<String, List<EsValueCountVo>> buildAggregateResponse(SearchResponse searchResponse) {
         Map<String, List<EsValueCountVo>> resultMap = new LinkedHashMap<>();
-        this.buildAggregateResult(searchResponse.getAggregations(), resultMap);
+        this.buildAggregateResponse(searchResponse.getAggregations(), resultMap);
         return resultMap;
     }
 
-    protected void buildAggregateResult(Aggregations aggregations, Map<String, List<EsValueCountVo>> resultMap) {
+    protected void buildAggregateResponse(Aggregations aggregations, Map<String, List<EsValueCountVo>> resultMap) {
         if (aggregations == null) {
             return;
         }
@@ -998,7 +1011,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             if (aggregation instanceof ParsedFilter) {
                 ParsedFilter parsedFilter = (ParsedFilter) aggregation;
                 Aggregations subAggregations = parsedFilter.getAggregations();
-                this.buildAggregateResult(subAggregations, resultMap);
+                this.buildAggregateResponse(subAggregations, resultMap);
             } else if (aggregation instanceof ParsedTerms) {
                 List<? extends Terms.Bucket> buckets = ((ParsedTerms) aggregation).getBuckets();
                 if (CollectionUtils.isEmpty(buckets)) {
@@ -1032,6 +1045,31 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
                 esValueCountVos.add(new EsValueCountVo(parsedCardinality.getName(), parsedCardinality.getValue()));
                 resultMap.put(key, esValueCountVos);
             }
+        }
+    }
+
+    protected void buildBulkResponse(BulkResponse bulkResponse, BatchUpdateRespVo<ID> respVo, Collection<ID> ids, String operation) {
+        if (bulkResponse.hasFailures()) {
+            Set<String> successIds = new HashSet<>();
+            Set<String> errorIds = new HashSet<>();
+            for (BulkItemResponse bulkItemResponse : bulkResponse) {
+                if (bulkItemResponse.isFailed()) {
+                    errorIds.add(bulkItemResponse.getId());
+                    BulkItemResponse.Failure failure = bulkItemResponse.getFailure();
+                    log.error(respVo.getTraceId() + ",es {} error,id={}", operation, bulkItemResponse.getId(), failure.getCause());
+                } else {
+                    successIds.add(bulkItemResponse.getId());
+                }
+            }
+            log.error(respVo.getTraceId() + ",es {} error,errorCount={},totalCount={}", operation, errorIds.size(), errorIds.size() + successIds.size());
+            if (successIds.size() > 0) {
+                respVo.getSuccessIds().addAll(ids.stream().filter(o -> o != null && successIds.contains(String.valueOf(o))).collect(Collectors.toList()));
+            }
+            if (errorIds.size() > 0) {
+                respVo.getErrorIds().addAll(ids.stream().filter(o -> o != null && errorIds.contains(String.valueOf(o))).collect(Collectors.toList()));
+            }
+        } else {
+            respVo.getSuccessIds().addAll(ids);
         }
     }
 

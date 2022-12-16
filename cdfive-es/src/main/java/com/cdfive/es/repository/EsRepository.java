@@ -1,6 +1,7 @@
 package com.cdfive.es.repository;
 
 import com.cdfive.es.query.*;
+import com.cdfive.es.vo.BatchUpdateRespVo;
 import com.cdfive.es.vo.EsEntityVo;
 import com.cdfive.es.vo.EsValueCountVo;
 import com.cdfive.es.vo.EsWriteOptionVo;
@@ -29,13 +30,13 @@ public interface EsRepository<ENTITY, ID> {
 
     void update(ID id, Map<String, Object> params, EsWriteOptionVo esWriteOptionVo);
 
-    void update(Collection<ID> ids, List<Map<String, Object>> params);
+    BatchUpdateRespVo<ID> update(Collection<ID> ids, List<Map<String, Object>> params);
 
-    void update(Collection<ID> ids, List<Map<String, Object>> params, EsWriteOptionVo esWriteOptionVo);
+    BatchUpdateRespVo<ID> update(Collection<ID> ids, List<Map<String, Object>> params, EsWriteOptionVo esWriteOptionVo);
 
-    void update(Collection<ID> ids, Map<String, Object> params);
+    BatchUpdateRespVo<ID> update(Collection<ID> ids, Map<String, Object> params);
 
-    void update(Collection<ID> ids, Map<String, Object> params, EsWriteOptionVo esWriteOptionVo);
+    BatchUpdateRespVo<ID> update(Collection<ID> ids, Map<String, Object> params, EsWriteOptionVo esWriteOptionVo);
 
     void updateByQuery(UpdateByQuery updateByQuery);
 
@@ -75,9 +76,9 @@ public interface EsRepository<ENTITY, ID> {
 
     void delete(ID id, EsWriteOptionVo esWriteOptionVo);
 
-    void delete(Collection<ID> ids);
+    BatchUpdateRespVo<ID> delete(Collection<ID> ids);
 
-    void delete(Collection<ID> ids, EsWriteOptionVo esWriteOptionVo);
+    BatchUpdateRespVo<ID> delete(Collection<ID> ids, EsWriteOptionVo esWriteOptionVo);
 
     void deleteByQuery(DeleteByQuery deleteByQuery);
 

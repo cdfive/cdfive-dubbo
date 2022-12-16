@@ -1,11 +1,12 @@
 package com.cdfive.es.vo;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author cdfive
  */
-public class EsKeywordVo {
+public class EsKeywordVo implements Serializable {
 
     private String keyword;
 
