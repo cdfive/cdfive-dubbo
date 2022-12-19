@@ -22,9 +22,9 @@ public interface EsRepository<ENTITY, ID> {
 
     void save(ENTITY entity, EsWriteOptionVo esWriteOptionVo);
 
-    void save(Collection<ENTITY> entities);
+    BatchUpdateRespVo<ENTITY> save(Collection<ENTITY> entities);
 
-    void save(Collection<ENTITY> entities, EsWriteOptionVo esWriteOptionVo);
+    BatchUpdateRespVo<ENTITY> save(Collection<ENTITY> entities, EsWriteOptionVo esWriteOptionVo);
 
     void update(ID id, Map<String, Object> params);
 
@@ -68,9 +68,9 @@ public interface EsRepository<ENTITY, ID> {
 
     void saveOrUpdate(ENTITY entity, EsWriteOptionVo esWriteOptionVo);
 
-    void saveOrUpdate(Collection<ENTITY> entities);
+    BatchUpdateRespVo<ENTITY> saveOrUpdate(Collection<ENTITY> entities);
 
-    void saveOrUpdate(Collection<ENTITY> entities, EsWriteOptionVo esWriteOptionVo);
+    BatchUpdateRespVo<ENTITY> saveOrUpdate(Collection<ENTITY> entities, EsWriteOptionVo esWriteOptionVo);
 
     void delete(ID id);
 

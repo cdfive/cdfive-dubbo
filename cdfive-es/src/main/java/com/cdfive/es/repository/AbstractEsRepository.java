@@ -123,14 +123,15 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
     }
 
     @Override
-    public void save(Collection<ENTITY> entities) {
-        this.save(entities, null);
+    public BatchUpdateRespVo<ENTITY> save(Collection<ENTITY> entities) {
+        return this.save(entities, null);
     }
 
     @Override
-    public void save(Collection<ENTITY> entities, EsWriteOptionVo esWriteOptionVo) {
+    public BatchUpdateRespVo<ENTITY> save(Collection<ENTITY> entities, EsWriteOptionVo esWriteOptionVo) {
+        BatchUpdateRespVo<ENTITY> respVo = new BatchUpdateRespVo<>(CommonUtil.getTraceId());
         if (CollectionUtils.isEmpty(entities)) {
-            return;
+            return respVo;
         }
 
         BulkRequest bulkRequest = new BulkRequest();
@@ -146,7 +147,9 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             }
         }
         try {
-            this.client.bulk(bulkRequest, RequestOptions.DEFAULT);
+            BulkResponse bulkResponse = this.client.bulk(bulkRequest, RequestOptions.DEFAULT);
+            this.buildEntitiesBulkResponse(bulkResponse, respVo, entities, "save");
+            return respVo;
         } catch (Exception e) {
             throw new EsException("es save entities error", e);
         }
@@ -218,7 +221,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         }
         try {
             BulkResponse bulkResponse = this.client.bulk(bulkRequest, RequestOptions.DEFAULT);
-            this.buildBulkResponse(bulkResponse, respVo, ids, "update");
+            this.buildIdsBulkResponse(bulkResponse, respVo, ids, "update");
             return respVo;
         } catch (Exception e) {
             throw new EsException("es update batch error", e);
@@ -255,7 +258,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         }
         try {
             BulkResponse bulkResponse = this.client.bulk(bulkRequest, RequestOptions.DEFAULT);
-            this.buildBulkResponse(bulkResponse, respVo, ids, "update");
+            this.buildIdsBulkResponse(bulkResponse, respVo, ids, "update");
             return respVo;
         } catch (Exception e) {
             throw new EsException("es update batch error", e);
@@ -416,14 +419,15 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
     }
 
     @Override
-    public void saveOrUpdate(Collection<ENTITY> entities) {
-        this.saveOrUpdate(entities, null);
+    public BatchUpdateRespVo<ENTITY> saveOrUpdate(Collection<ENTITY> entities) {
+        return this.saveOrUpdate(entities, null);
     }
 
     @Override
-    public void saveOrUpdate(Collection<ENTITY> entities, EsWriteOptionVo esWriteOptionVo) {
+    public BatchUpdateRespVo<ENTITY> saveOrUpdate(Collection<ENTITY> entities, EsWriteOptionVo esWriteOptionVo) {
+        BatchUpdateRespVo<ENTITY> respVo = new BatchUpdateRespVo<>(CommonUtil.getTraceId());
         if (CollectionUtils.isEmpty(entities)) {
-            return;
+            return respVo;
         }
 
         BulkRequest bulkRequest = new BulkRequest();
@@ -440,7 +444,9 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             }
         }
         try {
-            this.client.bulk(bulkRequest, RequestOptions.DEFAULT);
+            BulkResponse bulkResponse = this.client.bulk(bulkRequest, RequestOptions.DEFAULT);
+            this.buildEntitiesBulkResponse(bulkResponse, respVo, entities, "saveOrUpdate");
+            return respVo;
         } catch (Exception e) {
             throw new EsException("es saveOrUpdate entities error", e);
         }
@@ -499,7 +505,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         }
         try {
             BulkResponse bulkResponse = this.client.bulk(bulkRequest, RequestOptions.DEFAULT);
-            this.buildBulkResponse(bulkResponse, respVo, ids, "delete");
+            this.buildIdsBulkResponse(bulkResponse, respVo, ids, "delete");
             return respVo;
         } catch (Exception e) {
             throw new EsException("es delete entities error", e);
@@ -1048,7 +1054,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         }
     }
 
-    protected void buildBulkResponse(BulkResponse bulkResponse, BatchUpdateRespVo<ID> respVo, Collection<ID> ids, String operation) {
+    protected void buildIdsBulkResponse(BulkResponse bulkResponse, BatchUpdateRespVo<ID> respVo, Collection<ID> ids, String operation) {
         if (bulkResponse.hasFailures()) {
             Set<String> successIds = new HashSet<>();
             Set<String> errorIds = new HashSet<>();
@@ -1063,13 +1069,38 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             }
             log.error(respVo.getTraceId() + ",es {} error,errorCount={},totalCount={}", operation, errorIds.size(), errorIds.size() + successIds.size());
             if (successIds.size() > 0) {
-                respVo.getSuccessIds().addAll(ids.stream().filter(o -> o != null && successIds.contains(String.valueOf(o))).collect(Collectors.toList()));
+                respVo.getSuccessItems().addAll(ids.stream().filter(o -> o != null && successIds.contains(String.valueOf(o))).collect(Collectors.toList()));
             }
             if (errorIds.size() > 0) {
-                respVo.getErrorIds().addAll(ids.stream().filter(o -> o != null && errorIds.contains(String.valueOf(o))).collect(Collectors.toList()));
+                respVo.getErrorItems().addAll(ids.stream().filter(o -> o != null && errorIds.contains(String.valueOf(o))).collect(Collectors.toList()));
             }
         } else {
-            respVo.getSuccessIds().addAll(ids);
+            respVo.getSuccessItems().addAll(ids);
+        }
+    }
+
+    protected void buildEntitiesBulkResponse(BulkResponse bulkResponse, BatchUpdateRespVo<ENTITY> respVo, Collection<ENTITY> entities, String operation) {
+        if (bulkResponse.hasFailures()) {
+            Set<String> successIds = new HashSet<>();
+            Set<String> errorIds = new HashSet<>();
+            for (BulkItemResponse bulkItemResponse : bulkResponse) {
+                if (bulkItemResponse.isFailed()) {
+                    errorIds.add(bulkItemResponse.getId());
+                    BulkItemResponse.Failure failure = bulkItemResponse.getFailure();
+                    log.error(respVo.getTraceId() + ",es {} error,id={}", operation, bulkItemResponse.getId(), failure.getCause());
+                } else {
+                    successIds.add(bulkItemResponse.getId());
+                }
+            }
+            log.error(respVo.getTraceId() + ",es {} error,errorCount={},totalCount={}", operation, errorIds.size(), errorIds.size() + successIds.size());
+            if (successIds.size() > 0) {
+                respVo.getSuccessItems().addAll(entities.stream().filter(o -> o != null && successIds.contains(String.valueOf(this.getId(o)))).collect(Collectors.toList()));
+            }
+            if (errorIds.size() > 0) {
+                respVo.getErrorItems().addAll(entities.stream().filter(o -> o != null && errorIds.contains(String.valueOf(this.getId(o)))).collect(Collectors.toList()));
+            }
+        } else {
+            respVo.getSuccessItems().addAll(entities);
         }
     }
 

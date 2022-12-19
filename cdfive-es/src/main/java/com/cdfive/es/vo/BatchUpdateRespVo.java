@@ -9,15 +9,15 @@ import java.util.List;
  */
 public class BatchUpdateRespVo<ID> implements Serializable {
 
-    private List<ID> successIds;
+    private List<ID> successItems;
 
-    private List<ID> errorIds;
+    private List<ID> errorItems;
 
     private String traceId;
 
     public BatchUpdateRespVo() {
-        this.successIds = new ArrayList<>();
-        this.errorIds = new ArrayList<>();
+        this.successItems = new ArrayList<>();
+        this.errorItems = new ArrayList<>();
     }
 
     public BatchUpdateRespVo(String traceId) {
@@ -25,20 +25,20 @@ public class BatchUpdateRespVo<ID> implements Serializable {
         this.traceId = traceId;
     }
 
-    public List<ID> getSuccessIds() {
-        return successIds;
+    public List<ID> getSuccessItems() {
+        return successItems;
     }
 
-    public void setSuccessIds(List<ID> successIds) {
-        this.successIds = successIds;
+    public void setSuccessItems(List<ID> successItems) {
+        this.successItems = successItems;
     }
 
-    public List<ID> getErrorIds() {
-        return errorIds;
+    public List<ID> getErrorItems() {
+        return errorItems;
     }
 
-    public void setErrorIds(List<ID> errorIds) {
-        this.errorIds = errorIds;
+    public void setErrorItems(List<ID> errorItems) {
+        this.errorItems = errorItems;
     }
 
     public String getTraceId() {
