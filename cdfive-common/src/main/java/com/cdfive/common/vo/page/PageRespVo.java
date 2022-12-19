@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author cdfive
@@ -20,9 +21,9 @@ public class PageRespVo<Vo> implements Serializable {
 
     private Integer totalPage;
 
-    private Vo data;
+    private List<Vo> data;
 
-    public PageRespVo(Integer pageNum, Integer pageSize, Integer total, Vo data) {
+    public PageRespVo(Integer pageNum, Integer pageSize, Integer total, List<Vo> data) {
         this.pageNum = pageNum;
         this.pageSize = pageSize;
         this.total = total;
