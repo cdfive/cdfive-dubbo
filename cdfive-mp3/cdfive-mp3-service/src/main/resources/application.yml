@@ -54,6 +54,9 @@ spring:
       ddl-auto: update
       naming:
         physical-strategy: com.cdfive.support.jpa.util.UnderscoreNameCustomizer
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
 
 eureka:
   client:
@@ -68,3 +71,7 @@ sentinel:
   transport-dashboard: localhost:8080
   transport-port: ${sentinel.transport.port}
   datasource-type: redis
+
+logging:
+  level:
+    org.springframework.web: info

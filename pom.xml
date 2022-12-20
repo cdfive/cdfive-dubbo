@@ -42,9 +42,11 @@
         <fastjson.version>1.2.55</fastjson.version>
 <!--        <jackson.version>2.9.6</jackson.version>-->
 <!--        <swagger2.version>2.7.0</swagger2.version>-->
-        <swagger2.version>3.0.0</swagger2.version>
-        <swagger-ui.version>3.0.0</swagger-ui.version>
+<!--        <swagger2.version>3.0.0</swagger2.version>-->
+        <swagger2.version>2.9.2</swagger2.version>
+        <swagger-ui.version>2.9.2</swagger-ui.version>
         <swagger-dubbo.version>2.0.1</swagger-dubbo.version>
+        <swagger.version>1.6.9</swagger.version>
         <elastic-job.version>2.1.5</elastic-job.version>
         <commons-lang3.version>3.5</commons-lang3.version>
         <commons-codec.version>1.10</commons-codec.version>

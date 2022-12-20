@@ -24,14 +24,18 @@ public class SwaggerDubboConfig {
 
     @Primary
     @Bean
-    public SwaggerResourcesProvider swaggerResourcesProvider(Environment environment, DocumentationCache documentationCache, DocumentationPluginsManager pluginsManager) {
-        return new CustormSwaggerResourcesProvider(environment, documentationCache, pluginsManager);
+//    public SwaggerResourcesProvider swaggerResourcesProvider(Environment environment, DocumentationCache documentationCache, DocumentationPluginsManager pluginsManager) {
+    public SwaggerResourcesProvider swaggerResourcesProvider(Environment environment, DocumentationCache documentationCache) {
+//        return new CustormSwaggerResourcesProvider(environment, documentationCache, pluginsManager);
+        return new CustormSwaggerResourcesProvider(environment, documentationCache);
     }
 
     static class CustormSwaggerResourcesProvider extends InMemorySwaggerResourcesProvider {
 
-        public CustormSwaggerResourcesProvider(Environment environment, DocumentationCache documentationCache, DocumentationPluginsManager pluginsManager) {
-            super(environment, documentationCache, pluginsManager);
+//        public CustormSwaggerResourcesProvider(Environment environment, DocumentationCache documentationCache, DocumentationPluginsManager pluginsManager) {
+        public CustormSwaggerResourcesProvider(Environment environment, DocumentationCache documentationCache) {
+            super(environment, documentationCache);
+//            super(environment, documentationCache, pluginsManager);
         }
 
         @Override
