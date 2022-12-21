@@ -1,4 +1,4 @@
-package com.cdfive.mp3.config.springwebmvc;
+package com.cdfive.common.spring.webmvc;
 
 import com.cdfive.common.util.JacksonUtil;
 import org.springframework.core.MethodParameter;
@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class RequestResponseBodyMethodProcessorWrapper implements HandlerMethodArgumentResolver {
 
-    public final static String resolveArgumentKey = "resolveArgumentObject";
+    public static final String REQUEST_KEY_REQUEST_BODY = "_request_body";
 
     private HandlerMethodArgumentResolver handlerMethodReturnValueHandler;
 
@@ -35,14 +35,14 @@ public class RequestResponseBodyMethodProcessorWrapper implements HandlerMethodA
         Object argumentObject = handlerMethodReturnValueHandler.resolveArgument(methodParameter, modelAndViewContainer, nativeWebRequest, webDataBinderFactory);
         if (argumentObject != null) {
             HttpServletRequest request = ((ServletRequestAttributes) (RequestContextHolder.currentRequestAttributes())).getRequest();
-            request.setAttribute(resolveArgumentKey, argumentObject);
+            request.setAttribute(REQUEST_KEY_REQUEST_BODY, argumentObject);
         }
         return argumentObject;
     }
 
     public static String getRequestBody() {
         HttpServletRequest request = ((ServletRequestAttributes) (RequestContextHolder.currentRequestAttributes())).getRequest();
-        Object data = request.getAttribute(RequestResponseBodyMethodProcessorWrapper.resolveArgumentKey);
+        Object data = request.getAttribute(REQUEST_KEY_REQUEST_BODY);
         return data != null ? JacksonUtil.objToJson(data) : null;
     }
 }

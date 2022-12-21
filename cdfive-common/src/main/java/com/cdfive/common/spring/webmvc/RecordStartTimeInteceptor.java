@@ -1,4 +1,4 @@
-package com.cdfive.mp3.config.springwebmvc;
+package com.cdfive.common.spring.webmvc;
 
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class RecordStartTimeInteceptor implements HandlerInterceptor {
 
-    private final static String REQUEST_KEY_START_TIME = "_start_time";
+    private static final String REQUEST_KEY_START_TIME = "_start_time";
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

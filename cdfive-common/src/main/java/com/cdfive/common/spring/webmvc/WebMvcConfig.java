@@ -1,4 +1,4 @@
-package com.cdfive.mp3.config.springwebmvc;
+package com.cdfive.common.spring.webmvc;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

@@ -1,4 +1,4 @@
-package com.cdfive.mp3.config.springwebmvc;
+package com.cdfive.common.spring.webmvc;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
