@@ -1,5 +1,9 @@
 package com.cdfive.common.spring.webmvc;
 
+import com.alibaba.fastjson.JSON;
+import com.cdfive.common.exception.ServiceException;
+import com.cdfive.common.util.FastJsonUtil;
+import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -40,14 +44,32 @@ public class ServiceHandlerExceptionResolver implements HandlerExceptionResolver
                 , RequestResponseBodyMethodProcessorWrapper.getRequestBody(), ex);
 
         ModelAndView mav = new ModelAndView(new MappingJackson2JsonView());
-        mav.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-        mav.addObject("code", errorCode);
-        mav.addObject("msg", errorMsg);
-        mav.addObject("ts", System.currentTimeMillis());
+//        mav.addObject("ts", System.currentTimeMillis());
+
+        if (ex instanceof ServiceException) {
+            mav.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+
+            ServiceException se = (ServiceException) ex;
+            mav.addObject("msg", se.getMessage());
+        } else if (ex instanceof FeignException) {
+            mav.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+
+            FeignException fe = (FeignException) ex;
+//            mav.addObject("msg", fe.contentUTF8());
+            mav.addAllObjects(FastJsonUtil.json2Map(fe.contentUTF8()));
+//            throw fe;
+        } else {
+            mav.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+
+            mav.addObject("code", errorCode);
+            mav.addObject("msg", errorMsg);
 //        mav.addObject("timestamp", System.currentTimeMillis());
 //        mav.addObject("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
 //        mav.addObject("error", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
 //        mav.addObject("path", request.getRequestURI());
+        }
+
+        mav.addObject("ts", System.currentTimeMillis());
         return mav;
     }
 }
