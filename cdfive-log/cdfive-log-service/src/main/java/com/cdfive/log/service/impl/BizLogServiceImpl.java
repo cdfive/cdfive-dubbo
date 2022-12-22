@@ -33,13 +33,13 @@ public class BizLogServiceImpl extends AbstractLogService implements BizLogServi
     @Autowired
     private BizLogRepository bizLogRepository;
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Integer addBizLog(String info, Integer keyId, String ip) {
         log.info("bizLogService=>addBizLog");
-        checkNotNull(info, "信息不能为空");
-        checkNotNull(info, "keyId不能为空");
-        checkNotNull(info, "ip不能为空");
+        checkNotBlank(info, "信息不能为空");
+        checkNotNull(keyId, "keyId不能为空");
+        checkNotBlank(ip, "ip不能为空");
 
         BizLogPo bizLogPo = new BizLogPo();
         bizLogPo.setInfo(info);

@@ -8,6 +8,7 @@ import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionalEventListener;
 
@@ -21,7 +22,8 @@ public class AddBizLogEventListener {
     @Autowired
     private BizLogEsService bizLogEsService;
 
-    @TransactionalEventListener
+//    @TransactionalEventListener
+    @EventListener
     public void handleAddBizLogEvent(AddBizLogEvent event) {
         log.info("AddBizLogEventListener add biz log");
         BizLogPo po = event.getBizLogPo();

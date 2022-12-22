@@ -3,6 +3,7 @@ package com.cdfive.mp3.service.impl;
 import com.cdfive.common.util.JpaPageUtil;
 import com.cdfive.common.vo.page.BootstrapPageRespVo;
 import com.cdfive.common.vo.page.PageRespVo;
+import com.cdfive.log.api.BizLogApi;
 import com.cdfive.log.service.BizLogService;
 import com.cdfive.mp3.entity.po.CategoryPo;
 import com.cdfive.mp3.entity.po.CategorySongPo;
@@ -20,6 +21,7 @@ import com.google.common.cache.LoadingCache;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,6 +50,10 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
 
     @Autowired
     private BizLogService bizLogService;
+
+    @Lazy
+    @Autowired
+    private BizLogApi bizLogApi;
 
     @Autowired
     private SongRepository songRepository;
@@ -104,7 +110,8 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
         log.info("songService=>play");
         checkNotNull(id, "id不能为空");
 
-        bizLogService.addBizLog("播放mp3", id, ip);
+//        bizLogService.addBizLog("播放mp3", id, ip);
+        bizLogApi.addBizLog("播放mp3", id, ip);
 
         SongPo songPo = songRepository.findById(id).orElseThrow(() -> exception("记录不存在,id=" + id));
         checkCondition(!songPo.getDeleted(), "记录已删除");
