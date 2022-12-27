@@ -30,11 +30,13 @@ import org.elasticsearch.client.core.CountRequest;
 import org.elasticsearch.client.core.CountResponse;
 import org.elasticsearch.client.indices.AnalyzeRequest;
 import org.elasticsearch.client.indices.AnalyzeResponse;
+import org.elasticsearch.client.tasks.TaskSubmissionResponse;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.reindex.BulkByScrollResponse;
 import org.elasticsearch.index.reindex.DeleteByQueryRequest;
+import org.elasticsearch.index.reindex.ReindexRequest;
 import org.elasticsearch.index.reindex.UpdateByQueryRequest;
 import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.script.Script;
@@ -808,6 +810,16 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             return analyzeResponse.getTokens().stream().map(o -> o.getTerm()).collect(Collectors.toList());
         } catch (Exception e) {
             throw new EsException("es analyzeWithField error", e);
+        }
+    }
+
+    @Override
+    public String reindex(ReindexRequest reindexRequest) {
+        try {
+            TaskSubmissionResponse taskSubmissionResponse = this.client.submitReindexTask(reindexRequest, RequestOptions.DEFAULT);
+            return taskSubmissionResponse.getTask();
+        } catch (Exception e) {
+            throw new EsException("es reindex error", e);
         }
     }
 
