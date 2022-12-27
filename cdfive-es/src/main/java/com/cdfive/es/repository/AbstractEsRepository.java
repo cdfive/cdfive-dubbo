@@ -267,7 +267,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
 
     @Override
     public void updateByQuery(UpdateByQuery updateByQuery) {
-        if (StringUtils.isEmpty(updateByQuery.getScript()) && StringUtils.isEmpty(updateByQuery.getScriptId())) {
+        if (!StringUtils.hasText(updateByQuery.getScript()) && !StringUtils.hasText(updateByQuery.getScriptId())) {
             return;
         }
 
@@ -275,10 +275,10 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         QueryBuilder query = updateByQuery.getQuery();
         updateByQueryRequest.setQuery(query);
 
-        if (!StringUtils.isEmpty(updateByQuery.getScript())) {
+        if (!!StringUtils.hasText(updateByQuery.getScript())) {
             Script inline = new Script(ScriptType.INLINE, Script.DEFAULT_SCRIPT_LANG, updateByQuery.getScript(), updateByQuery.getParams());
             updateByQueryRequest.setScript(inline);
-        } else if (!StringUtils.isEmpty(updateByQuery.getScriptId())) {
+        } else if (!!StringUtils.hasText(updateByQuery.getScriptId())) {
             Script scriptStored = new Script(ScriptType.STORED, null, updateByQuery.getScriptId(), updateByQuery.getParams());
             updateByQueryRequest.setScript(scriptStored);
         }
@@ -817,7 +817,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
 
         Document document = AnnotationUtils.findAnnotation(this.entityClass, Document.class);
         if (document == null) {
-            throw new EsException(this.entityClass.getName() + " must be with annotation:'@cn.wine.base.elasticsearch.annotation.Document'");
+            throw new EsException(this.entityClass.getName() + " must be with annotation:'@com.cdfive.es.annotation.Document'");
         }
         this.index = document.index();
 
@@ -825,14 +825,14 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             Id id = field.getAnnotation(Id.class);
             if (id != null) {
                 if (this.idField != null) {
-                    throw new EsException("Duplicate @cn.wine.base.elasticsearch.annotation.Id field in " + this.entityClass.getName() + " class");
+                    throw new EsException("Duplicate @com.cdfive.es.annotation.Id field in " + this.entityClass.getName() + " class");
                 }
                 this.idField = field;
                 this.idField.setAccessible(true);
             }
         }
         if (this.idField == null) {
-            throw new EsException("Missing @cn.wine.base.elasticsearch.annotation.Id field in " + this.entityClass.getName() + " class");
+            throw new EsException("Missing @com.cdfive.es.annotation.Id field in " + this.entityClass.getName() + " class");
         }
     }
 
@@ -845,7 +845,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             throw new EsException("es updateByScript but scriptType is null");
         }
 
-        if (StringUtils.isEmpty(scriptIdOrCode)) {
+        if (!StringUtils.hasText(scriptIdOrCode)) {
             throw new EsException("es updateByScript but scriptIdOrCode is empty");
         }
 
@@ -876,7 +876,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             throw new EsException("es updateByScript but scriptType is null");
         }
 
-        if (StringUtils.isEmpty(scriptIdOrCode)) {
+        if (!StringUtils.hasText(scriptIdOrCode)) {
             throw new EsException("es updateByScript but scriptIdOrCode is empty");
         }
 
@@ -919,7 +919,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             throw new EsException("es updateByScript but scriptType is null");
         }
 
-        if (StringUtils.isEmpty(scriptIdOrCode)) {
+        if (!StringUtils.hasText(scriptIdOrCode)) {
             throw new EsException("es updateByScript but scriptIdOrCode is empty");
         }
 
