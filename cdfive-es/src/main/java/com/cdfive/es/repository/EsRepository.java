@@ -8,6 +8,7 @@ import com.cdfive.es.vo.EsWriteOptionVo;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.reindex.ReindexRequest;
+import org.elasticsearch.tasks.TaskInfo;
 import org.springframework.data.domain.Page;
 
 import java.util.Collection;
@@ -110,4 +111,6 @@ public interface EsRepository<ENTITY, ID> {
     List<String> analyzeWithField(String field, String... text);
 
     String reindex(ReindexRequest reindexRequest);
+
+    TaskInfo getTask(String taskId);
 }

@@ -13,6 +13,8 @@ import com.cdfive.es.vo.EsEntityVo;
 import com.cdfive.es.vo.EsValueCountVo;
 import com.cdfive.es.vo.EsWriteOptionVo;
 import org.elasticsearch.action.ActionListener;
+import org.elasticsearch.action.admin.cluster.node.tasks.list.ListTasksRequest;
+import org.elasticsearch.action.admin.cluster.node.tasks.list.ListTasksResponse;
 import org.elasticsearch.action.admin.indices.flush.FlushRequest;
 import org.elasticsearch.action.admin.indices.refresh.RefreshRequest;
 import org.elasticsearch.action.bulk.BulkItemResponse;
@@ -53,6 +55,8 @@ import org.elasticsearch.search.aggregations.metrics.ParsedCardinality;
 import org.elasticsearch.search.aggregations.metrics.TopHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.FetchSourceContext;
+import org.elasticsearch.tasks.TaskId;
+import org.elasticsearch.tasks.TaskInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -820,6 +824,19 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             return taskSubmissionResponse.getTask();
         } catch (Exception e) {
             throw new EsException("es reindex error", e);
+        }
+    }
+
+    @Override
+    public TaskInfo getTask(String taskId) {
+        ListTasksRequest listTasksRequest = new ListTasksRequest();
+        listTasksRequest.setTaskId(new TaskId(taskId));
+        try {
+            ListTasksResponse listTasksResponse = this.client.tasks().list(listTasksRequest, RequestOptions.DEFAULT);
+            List<TaskInfo> tasks = listTasksResponse.getTasks();
+            return (tasks != null && tasks.size() > 0) ? tasks.get(0) : null;
+        } catch (Exception e) {
+            throw new EsException("es get task error", e);
         }
     }
 
