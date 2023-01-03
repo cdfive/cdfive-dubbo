@@ -13,6 +13,8 @@ import com.cdfive.es.vo.EsEntityVo;
 import com.cdfive.es.vo.EsValueCountVo;
 import com.cdfive.es.vo.EsWriteOptionVo;
 import org.elasticsearch.action.ActionListener;
+import org.elasticsearch.action.admin.cluster.health.ClusterHealthRequest;
+import org.elasticsearch.action.admin.cluster.health.ClusterHealthResponse;
 import org.elasticsearch.action.admin.cluster.node.tasks.list.ListTasksRequest;
 import org.elasticsearch.action.admin.cluster.node.tasks.list.ListTasksResponse;
 import org.elasticsearch.action.admin.indices.flush.FlushRequest;
@@ -33,6 +35,7 @@ import org.elasticsearch.client.core.CountResponse;
 import org.elasticsearch.client.indices.AnalyzeRequest;
 import org.elasticsearch.client.indices.AnalyzeResponse;
 import org.elasticsearch.client.tasks.TaskSubmissionResponse;
+import org.elasticsearch.cluster.health.ClusterHealthStatus;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -69,6 +72,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -837,6 +841,17 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             return (tasks != null && tasks.size() > 0) ? tasks.get(0) : null;
         } catch (Exception e) {
             throw new EsException("es get task error", e);
+        }
+    }
+
+    @Override
+    public ClusterHealthStatus getClusterHealthStatus() {
+        ClusterHealthRequest clusterHealthRequest = new ClusterHealthRequest();
+        try {
+            ClusterHealthResponse clusterHealthResponse = this.client.cluster().health(clusterHealthRequest, RequestOptions.DEFAULT);
+            return clusterHealthResponse.getStatus();
+        } catch (Exception e) {
+            throw new EsException("es get clusterHealthStatus error", e);
         }
     }
 

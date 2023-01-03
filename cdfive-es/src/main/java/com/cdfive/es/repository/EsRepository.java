@@ -7,6 +7,7 @@ import com.cdfive.es.vo.EsValueCountVo;
 import com.cdfive.es.vo.EsWriteOptionVo;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.cluster.health.ClusterHealthStatus;
 import org.elasticsearch.index.reindex.ReindexRequest;
 import org.elasticsearch.tasks.TaskInfo;
 import org.springframework.data.domain.Page;
@@ -113,4 +114,6 @@ public interface EsRepository<ENTITY, ID> {
     String reindex(ReindexRequest reindexRequest);
 
     TaskInfo getTask(String taskId);
+
+    ClusterHealthStatus getClusterHealthStatus();
 }
