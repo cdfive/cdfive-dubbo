@@ -326,7 +326,11 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             });
         } else {
             try {
-                this.client.updateByQuery(updateByQueryRequest, RequestOptions.DEFAULT);
+                BulkByScrollResponse bulkByScrollResponse = this.client.updateByQuery(updateByQueryRequest, RequestOptions.DEFAULT);
+                List<BulkItemResponse.Failure> bulkFailures = bulkByScrollResponse.getBulkFailures();
+                if (!CollectionUtils.isEmpty(bulkFailures)) {
+                    throw new EsException("es updateByQuery error,error size=" + bulkFailures.size());
+                }
             } catch (Exception e) {
                 throw new EsException("es updateByQuery error", e);
             }
