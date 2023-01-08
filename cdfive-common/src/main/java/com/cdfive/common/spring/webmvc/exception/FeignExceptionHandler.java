@@ -2,6 +2,7 @@ package com.cdfive.common.spring.webmvc.exception;
 
 import com.cdfive.common.util.FastJsonUtil;
 import feign.FeignException;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author cdfive
  */
 //@Order(value = 1)
+@ConditionalOnClass(FeignException.class)
 @Component
 public class FeignExceptionHandler extends AbstractExceptionHandler<FeignException> {
 
