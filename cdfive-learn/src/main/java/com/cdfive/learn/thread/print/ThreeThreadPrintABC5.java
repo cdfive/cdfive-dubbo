@@ -17,9 +17,10 @@ public class ThreeThreadPrintABC5 {
 
     public static void main(String[] args) throws Exception {
         int max = 10;
+        int num = 3;
 
         // Keys to print
-        List<String> keys = IntStream.range('A', 'C' + 1).mapToObj(i -> String.valueOf((char) i)).collect(Collectors.toList());
+        List<String> keys = IntStream.range('A', 'A' + num).mapToObj(i -> String.valueOf((char) i)).collect(Collectors.toList());
 
         // Init thread, including key, max and acquireSemaphore
         List<PrintTask> tasks = IntStream.range(0, keys.size())
