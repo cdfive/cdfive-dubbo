@@ -13,7 +13,7 @@ public class CharIntegerConvertTest {
         char c1 = str.charAt(0);
         // a
         System.out.println(c1);
-        // 95
+        // 97
         System.out.println((int) c1);
         // 10
         System.out.println(Character.getNumericValue(c1));
