@@ -333,7 +333,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
                 }
                 long versionConflicts = bulkByScrollResponse.getVersionConflicts();
                 if (versionConflicts > 0L) {
-                    throw new EsException("es updateByQuery version conflicts error ,error size=" + bulkFailures.size());
+                    log.error(CommonUtil.getTraceId() + ",es updateByQuery version conflicts error ,conflicts size=" + bulkFailures.size());
                 }
             } catch (Exception e) {
                 throw new EsException("es updateByQuery error", e);
