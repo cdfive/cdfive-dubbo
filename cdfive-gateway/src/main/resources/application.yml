@@ -15,6 +15,6 @@ spring:
         file-extension: yml
   config:
     import: optional:nacos:${spring.application.name}.${spring.cloud.nacos.config.file-extension}
-eureka:
-  client:
-    enabled: false
+#eureka:
+#  client:
+#    enabled: false

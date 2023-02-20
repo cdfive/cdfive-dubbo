@@ -19,7 +19,7 @@ import java.util.List;
  * @author cdfive
  */
 @Slf4j
-@Component
+//@Component
 public class MethodLogConsumer {
 
     @Autowired

@@ -73,6 +73,12 @@
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
 
+        <!-- spring-cloud 2021 not support-->
+        <!--<dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
+        </dependency>-->
+
         <!-- spring-boot -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
