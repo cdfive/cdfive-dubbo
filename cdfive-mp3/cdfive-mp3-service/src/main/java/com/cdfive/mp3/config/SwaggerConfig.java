@@ -55,55 +55,55 @@ public class SwaggerConfig {
                 .build();
     }
 
-//    @Bean
-//    public WebMvcConfigurer webMvcConfigurer() {
-//        return new WebMvcConfigurer() {
-//
-//            @Override
-//            public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//                registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
-//                registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
-//                registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
-//            }
-//        };
-//    }
+    @Bean
+    public WebMvcConfigurer webMvcConfigurer() {
+        return new WebMvcConfigurer() {
 
-    @Configuration(proxyBeanMethods = false)
-    @ConditionalOnClass(WebMvcRequestHandlerProvider.class)
-    public static class FixNpeForSpringfoxHandlerProviderBeanPostProcessorConfiguration {
-
-        @Bean
-        public static BeanPostProcessor springfoxHandlerProviderBeanPostProcessor() {
-            return new BeanPostProcessor() {
-
-                @Override
-                public Object postProcessAfterInitialization(@Nonnull Object bean, @Nonnull String beanName) throws BeansException {
-//                    if (bean instanceof WebMvcRequestHandlerProvider || bean instanceof WebFluxRequestHandlerProvider) {
-                    if (bean instanceof WebMvcRequestHandlerProvider) {
-                        customizeSpringfoxHandlerMappings(getHandlerMappings(bean));
-                    }
-                    return bean;
-                }
-
-                private <T extends RequestMappingInfoHandlerMapping> void customizeSpringfoxHandlerMappings(List<T> mappings) {
-                    List<T> copy = mappings.stream()
-                            .filter(mapping -> mapping.getPatternParser() == null)
-                            .collect(Collectors.toList());
-                    mappings.clear();
-                    mappings.addAll(copy);
-                }
-
-                @SuppressWarnings("unchecked")
-                private List<RequestMappingInfoHandlerMapping> getHandlerMappings(Object bean) {
-                    try {
-                        Field field = ReflectionUtils.findField(bean.getClass(), "handlerMappings");
-                        field.setAccessible(true);
-                        return (List<RequestMappingInfoHandlerMapping>) field.get(bean);
-                    } catch (IllegalArgumentException | IllegalAccessException e) {
-                        throw new IllegalStateException(e);
-                    }
-                }
-            };
-        }
+            @Override
+            public void addResourceHandlers(ResourceHandlerRegistry registry) {
+                registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
+                registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
+                registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+            }
+        };
     }
+
+//    @Configuration(proxyBeanMethods = false)
+//    @ConditionalOnClass(WebMvcRequestHandlerProvider.class)
+//    public static class FixNpeForSpringfoxHandlerProviderBeanPostProcessorConfiguration {
+//
+//        @Bean
+//        public static BeanPostProcessor springfoxHandlerProviderBeanPostProcessor() {
+//            return new BeanPostProcessor() {
+//
+//                @Override
+//                public Object postProcessAfterInitialization(@Nonnull Object bean, @Nonnull String beanName) throws BeansException {
+////                    if (bean instanceof WebMvcRequestHandlerProvider || bean instanceof WebFluxRequestHandlerProvider) {
+//                    if (bean instanceof WebMvcRequestHandlerProvider) {
+//                        customizeSpringfoxHandlerMappings(getHandlerMappings(bean));
+//                    }
+//                    return bean;
+//                }
+//
+//                private <T extends RequestMappingInfoHandlerMapping> void customizeSpringfoxHandlerMappings(List<T> mappings) {
+//                    List<T> copy = mappings.stream()
+//                            .filter(mapping -> mapping.getPatternParser() == null)
+//                            .collect(Collectors.toList());
+//                    mappings.clear();
+//                    mappings.addAll(copy);
+//                }
+//
+//                @SuppressWarnings("unchecked")
+//                private List<RequestMappingInfoHandlerMapping> getHandlerMappings(Object bean) {
+//                    try {
+//                        Field field = ReflectionUtils.findField(bean.getClass(), "handlerMappings");
+//                        field.setAccessible(true);
+//                        return (List<RequestMappingInfoHandlerMapping>) field.get(bean);
+//                    } catch (IllegalArgumentException | IllegalAccessException e) {
+//                        throw new IllegalStateException(e);
+//                    }
+//                }
+//            };
+//        }
+//    }
 }

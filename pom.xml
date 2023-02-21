@@ -7,7 +7,8 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.11</version>
+<!--        <version>2.6.11</version>-->
+        <version>2.3.12.RELEASE</version>
     </parent>
 
     <groupId>com.cdfive</groupId>
@@ -16,7 +17,7 @@
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
-    <description>A hobby project for learning Dubbo</description>
+    <description>A hobby project for learning Dubbo and Spring Cloud</description>
     <url></url>
 
     <developers>
@@ -105,6 +106,24 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <!--                <version>2021.0.4</version>-->
+                <version>Hoxton.SR12</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <!--                <version>2021.0.4.0</version>-->
+                <version>2.2.9.RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
             <!-- dubbo -->
             <dependency>
                 <groupId>com.alibaba</groupId>

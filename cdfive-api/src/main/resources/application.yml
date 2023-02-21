@@ -48,3 +48,8 @@ management:
     web:
       exposure:
         include: shutdown,pause,restart,service-registry
+
+#debug: true
+
+#ribbon:
+#  readTimeout: 10000
