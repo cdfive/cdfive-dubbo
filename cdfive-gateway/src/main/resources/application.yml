@@ -1,20 +1,20 @@
-spring:
-  application:
-    name: cdfive-gateway
-  cloud:
-    nacos:
-      config:
-        import-check:
-          enabled: false
-        enabled: true
-        server-addr: localhost:8848
-        username: nacos
-        password: nacos
-        namespace: 118a7c59-6e15-41c9-b11d-a5f94e9e75b0
-        group: cdfive-dubbo
-        file-extension: yml
-  config:
-    import: optional:nacos:${spring.application.name}.${spring.cloud.nacos.config.file-extension}
+#spring:
+#  application:
+#    name: cdfive-gateway
+#  cloud:
+#    nacos:
+#      config:
+#        import-check:
+#          enabled: false
+#        enabled: true
+#        server-addr: localhost:8848
+#        username: nacos
+#        password: nacos
+#        namespace: 118a7c59-6e15-41c9-b11d-a5f94e9e75b0
+#        group: cdfive-dubbo
+#        file-extension: yml
+#  config:
+#    import: optional:nacos:${spring.application.name}.${spring.cloud.nacos.config.file-extension}
 #eureka:
 #  client:
 #    enabled: false

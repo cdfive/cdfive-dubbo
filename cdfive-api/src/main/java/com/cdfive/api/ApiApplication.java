@@ -36,17 +36,7 @@ import org.springframework.context.annotation.ImportResource;
 //        , NacosServiceRegistryAutoConfiguration.class
 //        , NacosDiscoveryEndpointAutoConfiguration.class})
 
-@SpringBootApplication(scanBasePackages = {"com.cdfive"}, exclude = {
-        NacosDiscoveryAutoConfiguration.class
-        , NacosDiscoveryEndpointAutoConfiguration.class
-        , NacosServiceRegistryAutoConfiguration.class
-        , NacosDiscoveryClientConfiguration.class
-        , NacosReactiveDiscoveryClientConfiguration.class
-//        , LoadBalancerNacosAutoConfiguration.class
-        , NacosServiceAutoConfiguration.class
-//        , UtilIPv6AutoConfiguration.class
-        , RibbonNacosAutoConfiguration.class
-})
+@SpringBootApplication(scanBasePackages = {"com.cdfive"})
 public class ApiApplication {
 
     public static void main(String[] args) {

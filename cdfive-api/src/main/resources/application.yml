@@ -1,53 +1,53 @@
-spring:
-  application:
-    name: cdfive-api
-  profiles:
-    active: dev
-  cloud:
-    nacos:
-      config:
-        import-check:
-          enabled: false
-#      discovery:
-#        server-addr: localhost:8848
-#        namespace: 118a7c59-6e15-41c9-b11d-a5f94e9e75b0
-#        group: cdfive-dubbo
-#        username: nacos
-#        password: nacos
+#spring:
+#  application:
+#    name: cdfive-api
+#  profiles:
+#    active: dev
+#  cloud:
+#    nacos:
+#      config:
+#        import-check:
+#          enabled: false
+##      discovery:
+##        server-addr: localhost:8848
+##        namespace: 118a7c59-6e15-41c9-b11d-a5f94e9e75b0
+##        group: cdfive-dubbo
+##        username: nacos
+##        password: nacos
 
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:7777/eureka
-    register-with-eureka: true
-    fetch-registry: true
-
-sentinel:
-  enable: true
-  app-name: cdfive-api
-  transport-dashboard: localhost:8080
-  transport-port: 8721
-  datasource-type: redis
-
-redis:
-  host: localhost
-  port: 6379
-  timeout-ms: 2000
-
-management:
-  endpoint:
-    shutdown:
-      enabled: true
-    pause:
-      enabled: true
-    restart:
-      enabled: true
-    service-registry:
-      enabled: true
-  endpoints:
-    web:
-      exposure:
-        include: shutdown,pause,restart,service-registry
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:7777/eureka
+#    register-with-eureka: true
+#    fetch-registry: true
+#
+#sentinel:
+#  enable: true
+#  app-name: cdfive-api
+#  transport-dashboard: localhost:8080
+#  transport-port: 8721
+#  datasource-type: redis
+#
+#redis:
+#  host: localhost
+#  port: 6379
+#  timeout-ms: 2000
+#
+#management:
+#  endpoint:
+#    shutdown:
+#      enabled: true
+#    pause:
+#      enabled: true
+#    restart:
+#      enabled: true
+#    service-registry:
+#      enabled: true
+#  endpoints:
+#    web:
+#      exposure:
+#        include: shutdown,pause,restart,service-registry
 
 #debug: true
 

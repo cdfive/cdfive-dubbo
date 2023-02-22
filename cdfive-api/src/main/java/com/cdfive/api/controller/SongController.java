@@ -9,6 +9,8 @@ import com.cdfive.mp3.api.SongApi;
 import com.cdfive.mp3.service.SongService;
 import com.cdfive.mp3.vo.song.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +20,7 @@ import java.util.List;
 /**
  * @author cdfive
  */
+@RefreshScope
 @RestController
 public class SongController extends AbstractController {
 
@@ -26,6 +29,14 @@ public class SongController extends AbstractController {
 
     @Autowired
     private SongApi songApi;
+
+    @Value("${test:}")
+    private String test;
+
+    @RequestMapping("/test")
+    public String test() {
+        return test;
+    }
 
     @RequestMapping(UriConstant.MP3_ALL)
     public ApiResponse<FindAllSongRespVo> all() {
