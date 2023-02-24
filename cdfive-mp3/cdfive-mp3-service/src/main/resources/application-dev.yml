@@ -1,29 +1,62 @@
-spring:
-  datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/cdfive2020?autoReconnect=true&failOverReadOnly=false&rewriteBatchedStatements=true
-    username: root
-    password: 12345678
-  redis:
-    host: localhost
-    port: 6379
-    lettuce:
-      pool:
-        max-active: 20
-        max-wait: 1000ms
-    timeout: 1000ms
-  activemq:
-    broker-url: tcp://localhost:61616
-    pool:
-      enabled: true
-      max-connections: 20
-
-redis:
-  host: localhost
-  port: 6379
-  timeout-ms: 2000
-
-swagger:
-  enable: true
-  dubbo:
-    enable: true
+#server:
+#  port: 10001
+#
+#spring:
+#  jpa:
+#    database: mysql
+#    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+#    generate-ddl: true
+#    show-sql: false
+#    hibernate:
+#      ddl-auto: update
+#      naming:
+#        physical-strategy: com.cdfive.support.jpa.util.UnderscoreNameCustomizer
+#  mvc:
+#    pathmatch:
+#      matching-strategy: ANT_PATH_MATCHER
+#  datasource:
+#    driver-class-name: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/cdfive2020?autoReconnect=true&failOverReadOnly=false&rewriteBatchedStatements=true
+#    username: root
+#    password: 12345678
+#  redis:
+#    host: localhost
+#    port: 6379
+#    lettuce:
+#      pool:
+#        max-active: 20
+#        max-wait: 1000ms
+#    timeout: 1000ms
+#  activemq:
+#    broker-url: tcp://localhost:61616
+#    pool:
+#      enabled: true
+#      max-connections: 20
+#
+#redis:
+#  host: localhost
+#  port: 6379
+#  timeout-ms: 2000
+#
+#swagger:
+#  enable: true
+#  dubbo:
+#    enable: true
+#
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:7777/eureka
+#    register-with-eureka: true
+#    fetch-registry: true
+#
+#sentinel:
+#  enable: true
+#  app-name: cdfive-mp3
+#  transport-dashboard: localhost:8080
+#  transport-port: ${sentinel.transport.port}
+#  datasource-type: redis
+#
+#logging:
+#  level:
+#    org.springframework.web: info

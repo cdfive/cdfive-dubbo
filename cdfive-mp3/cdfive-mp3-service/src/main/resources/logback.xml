@@ -3,6 +3,7 @@
 <configuration scan="false" scanPeriod="5 seconds" debug="false">
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
     <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+<!--    <property name="log.base" value="logs" />-->
     <property name="log.context.name" value="cdfive-mp3" />
     <property name="log.pattern" value="[ %-5level] [%date] [%thread] %logger{96} [%line] - %msg%n"/>
 
@@ -14,6 +15,7 @@
     </appender>
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+<!--        <file>${log.base}/${log.context.name}.log</file>-->
         <encoder>
             <pattern>
                 ${log.pattern}
