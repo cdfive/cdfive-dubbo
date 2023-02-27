@@ -2,6 +2,7 @@ package com.cdfive.api.config;
 
 import com.netflix.loadbalancer.ServerListUpdater;
 import com.netflix.niws.loadbalancer.EurekaNotificationServerListUpdater;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.netflix.ribbon.eureka.EurekaRibbonClientConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * @author cdfive
  */
+@Slf4j
 @Configuration
 public class RibbonConfig {
 
@@ -20,6 +22,7 @@ public class RibbonConfig {
      */
     @Bean
     public ServerListUpdater ribbonServerListUpdater() {
+        log.info("Init EurekaNotificationServerListUpdater");
         return new EurekaNotificationServerListUpdater();
     }
 }
