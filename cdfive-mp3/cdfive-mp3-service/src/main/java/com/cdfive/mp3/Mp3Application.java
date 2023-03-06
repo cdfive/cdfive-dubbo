@@ -33,16 +33,17 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories(repositoryFactoryBeanClass = BaseRepositoryFactoryBean.class, basePackages = "com.cdfive.mp3")
 //@ComponentScan(excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {SwaggerConfig.class, SwaggerDubboConfig.class})})
 //@SpringBootApplication(scanBasePackages = {"com.cdfive"}, exclude = {EurekaClientAutoConfiguration.class, EurekaDiscoveryClientConfiguration.class})
-@SpringBootApplication(scanBasePackages = {"com.cdfive"}, exclude = {
-        NacosDiscoveryAutoConfiguration.class
-        , NacosDiscoveryEndpointAutoConfiguration.class
-        , NacosServiceRegistryAutoConfiguration.class
-        , NacosDiscoveryClientConfiguration.class
-        , NacosReactiveDiscoveryClientConfiguration.class
-//        , LoadBalancerNacosAutoConfiguration.class
-        , NacosServiceAutoConfiguration.class
-//        , UtilIPv6AutoConfiguration.class
-})
+//@SpringBootApplication(scanBasePackages = {"com.cdfive"}, exclude = {
+//        NacosDiscoveryAutoConfiguration.class
+//        , NacosDiscoveryEndpointAutoConfiguration.class
+//        , NacosServiceRegistryAutoConfiguration.class
+//        , NacosDiscoveryClientConfiguration.class
+//        , NacosReactiveDiscoveryClientConfiguration.class
+////        , LoadBalancerNacosAutoConfiguration.class
+//        , NacosServiceAutoConfiguration.class
+////        , UtilIPv6AutoConfiguration.class
+//})
+@SpringBootApplication(scanBasePackages = {"com.cdfive"})
 public class Mp3Application {
 
     public static void main(String[] args) {

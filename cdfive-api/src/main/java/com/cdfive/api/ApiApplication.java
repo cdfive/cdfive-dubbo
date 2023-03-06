@@ -28,14 +28,14 @@ import org.springframework.context.annotation.ImportResource;
 @Slf4j
 @EnableFeignClients(basePackages = {"com.cdfive.mp3.api"})
 @ImportResource("classpath:/config/applicationContext.xml")
-@ComponentScan(excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {ApplicationController.class, ApplicationCloseListener.class})})
+//@ComponentScan(basePackages = {"com.cdfive"}, excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {ApplicationController.class, ApplicationCloseListener.class})})
 //@SpringBootApplication(scanBasePackages = {"com.cdfive"}, exclude = {EurekaClientAutoConfiguration.class, EurekaDiscoveryClientConfiguration.class})
 //@SpringBootApplication(scanBasePackages = {"com.cdfive"}, exclude = {
 //        NacosDiscoveryClientConfiguration.class
 //        , NacosDiscoveryAutoConfiguration.class
 //        , NacosServiceRegistryAutoConfiguration.class
 //        , NacosDiscoveryEndpointAutoConfiguration.class})
-
+//@SpringBootApplication
 @SpringBootApplication(scanBasePackages = {"com.cdfive"})
 public class ApiApplication {
 
