@@ -8,6 +8,13 @@ import java.math.BigDecimal;
 public class DoubleTest {
 
     public static void main(String[] args) {
+        // 7950.0
+        System.out.println(79.5 * 100);
+        // 7940.000000000001
+        System.out.println(79.4 * 100);
+        // 7959.999999999999
+        System.out.println(79.6 * 100);
+
         // 0.30000000000000004
         System.out.println(0.1 * 3); // 0.30000000000000004
 
