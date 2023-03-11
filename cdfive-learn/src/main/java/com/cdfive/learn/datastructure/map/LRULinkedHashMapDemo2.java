@@ -16,12 +16,12 @@ public class LRULinkedHashMapDemo2<K, V> {
         map.put(2, 2);
         map.put(3, 3);
         map.put(4, 4);
-        printSizeAndKey(map);
+        print(map);
 //        map.get(2);
         map.put(2, 22);
-        printSizeAndKey(map);
+        print(map);
         map.put(5, 5);
-        printSizeAndKey(map);
+        print(map);
     }
 
     private LinkedHashMap<K, V> map;
@@ -64,11 +64,23 @@ public class LRULinkedHashMapDemo2<K, V> {
         return map.keySet();
     }
 
-    private static void printSizeAndKey(LRULinkedHashMapDemo2<?, ?> map) {
+    public LinkedHashMap<K, V> getMap() {
+        return map;
+    }
+
+    private static void print(LRULinkedHashMapDemo2<Integer, Integer> map) {
         System.out.println(StringUtils.center("分隔线", 30, "-"));
         System.out.println("size=" + map.size());
-        for (Object key : map.keySet()) {
-            System.out.println(key);
-        }
+
+        /*
+        for (Integer key : map.keySet()) {
+//            Exception in thread "main" java.util.ConcurrentModificationException
+//            at java.util.LinkedHashMap$LinkedHashIterator.nextNode(LinkedHashMap.java:719)
+//            at java.util.LinkedHashMap$LinkedKeyIterator.next(LinkedHashMap.java:742)
+            System.out.println(key + "=>" + map.get(key));
+//            System.out.println(key);// OK
+        }*/
+
+        System.out.println(map.getMap()); // OK
     }
 }
