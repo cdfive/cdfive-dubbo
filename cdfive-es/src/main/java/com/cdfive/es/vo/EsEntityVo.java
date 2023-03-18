@@ -1,6 +1,7 @@
 package com.cdfive.es.vo;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * @author cdfive
@@ -21,8 +22,18 @@ public class EsEntityVo<ENTITY> implements Serializable {
         this.version = version;
     }
 
+    public EsEntityVo(ENTITY entity, Map<String, Object> extInfos, Float score, Long version) {
+        this.entity = entity;
+        this.extInfos = extInfos;
+        this.score = score;
+        this.version = version;
+    }
+
     // 文档对应实体
     private ENTITY entity;
+
+    // 扩展信息
+    private Map<String, Object> extInfos;
 
     // 打分
     private Float score;
@@ -39,6 +50,14 @@ public class EsEntityVo<ENTITY> implements Serializable {
 
     public void setEntity(ENTITY entity) {
         this.entity = entity;
+    }
+
+    public Map<String, Object> getExtInfos() {
+        return extInfos;
+    }
+
+    public void setExtInfos(Map<String, Object> extInfos) {
+        this.extInfos = extInfos;
     }
 
     public Float getScore() {

@@ -1,7 +1,8 @@
 package com.cdfive.es.query;
 
-import com.cdfive.es.constant.EsConstant;
 import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.script.Script;
+import org.elasticsearch.script.ScriptType;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.collapse.CollapseBuilder;
@@ -15,6 +16,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author cdfive
@@ -31,6 +33,9 @@ public class SearchQuery implements Serializable {
 
     // 返回字段列表
     private List<String> fields;
+
+    // 返回脚本字段列表
+    private List<SearchSourceBuilder.ScriptField> scriptFields;
 
     // 分页
     private Pageable pageable;
@@ -73,6 +78,10 @@ public class SearchQuery implements Serializable {
         return new SearchQuery(query, sorts, fields, pageable);
     }
 
+    public static SearchQuery of(QueryBuilder query, List<SortBuilder> sorts, List<String> fields, List<SearchSourceBuilder.ScriptField> scriptFields, Pageable pageable) {
+        return new SearchQuery(query, sorts, fields, scriptFields, pageable);
+    }
+
     public SearchQuery() {
 
     }
@@ -96,6 +105,14 @@ public class SearchQuery implements Serializable {
         this.query = query;
         this.sorts = sorts;
         this.fields = fields;
+        this.pageable = pageable;
+    }
+
+    public SearchQuery(QueryBuilder query, List<SortBuilder> sorts, List<String> fields, List<SearchSourceBuilder.ScriptField> scriptFields, Pageable pageable) {
+        this.query = query;
+        this.sorts = sorts;
+        this.fields = fields;
+        this.scriptFields = scriptFields;
         this.pageable = pageable;
     }
 
@@ -224,6 +241,46 @@ public class SearchQuery implements Serializable {
         return this;
     }
 
+    public SearchQuery withScriptField(String name, Script script) {
+        return withScriptField(name, script, false);
+    }
+
+    public SearchQuery withScriptField(String name, Script script, boolean ignoreFailure) {
+        if (scriptFields == null) {
+            this.scriptFields = new ArrayList<>();
+        }
+        this.scriptFields.add(new SearchSourceBuilder.ScriptField(name, script, ignoreFailure));
+        return this;
+    }
+
+    public SearchQuery withScriptField(String name, String script, Map<String, Object> params) {
+        return withScriptField(name, script, params, false);
+    }
+
+    public SearchQuery withScriptField(String name, String script, Map<String, Object> params, boolean ignoreFailure) {
+        return withScriptField(name, new Script(ScriptType.INLINE, Script.DEFAULT_SCRIPT_LANG, script, params), ignoreFailure);
+    }
+
+    public SearchQuery addScriptField(String name, Script script) {
+        return addScriptField(name, script, false);
+    }
+
+    public SearchQuery addScriptField(String name, Script script, boolean ignoreFailure) {
+        if (scriptFields == null) {
+            this.scriptFields = new ArrayList<>();
+        }
+        this.scriptFields.add(new SearchSourceBuilder.ScriptField(name, script, ignoreFailure));
+        return this;
+    }
+
+    public SearchQuery addScriptField(String name, String script, Map<String, Object> params) {
+        return addScriptField(name, script, params, false);
+    }
+
+    public SearchQuery addScriptField(String name, String script, Map<String, Object> params, boolean ignoreFailure) {
+        return addScriptField(name, new Script(ScriptType.INLINE, Script.DEFAULT_SCRIPT_LANG, script, params), ignoreFailure);
+    }
+
     public SearchQuery addSort(SortBuilder sort) {
         if (this.sorts == null) {
             this.sorts = new ArrayList<>();
@@ -289,6 +346,14 @@ public class SearchQuery implements Serializable {
 
     public void setFields(List<String> fields) {
         this.fields = fields;
+    }
+
+    public List<SearchSourceBuilder.ScriptField> getScriptFields() {
+        return scriptFields;
+    }
+
+    public void setScriptFields(List<SearchSourceBuilder.ScriptField> scriptFields) {
+        this.scriptFields = scriptFields;
     }
 
     public Pageable getPageable() {

@@ -36,6 +36,7 @@ import org.elasticsearch.client.indices.AnalyzeRequest;
 import org.elasticsearch.client.indices.AnalyzeResponse;
 import org.elasticsearch.client.tasks.TaskSubmissionResponse;
 import org.elasticsearch.cluster.health.ClusterHealthStatus;
+import org.elasticsearch.common.document.DocumentField;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -72,7 +73,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -1013,6 +1013,21 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             ENTITY entity = JSON.parseObject(source, this.entityClass);
 
             EsEntityVo esEntityVo = new EsEntityVo(entity);
+
+            List<SearchSourceBuilder.ScriptField> scriptFields = searchQuery.getScriptFields();
+            if (!CollectionUtils.isEmpty(scriptFields)) {
+                Map<String, Object> extInfos = new HashMap<>();
+                for (SearchSourceBuilder.ScriptField scriptField : scriptFields) {
+                    Map<String, DocumentField> fields = hit.getFields();
+                    if (!ObjectUtils.isEmpty(fields)) {
+                        DocumentField documentField = fields.get(scriptField.fieldName());
+                        extInfos.put(scriptField.fieldName(), documentField != null ? documentField.getValue() : null);
+                    } else {
+                        extInfos.put(scriptField.fieldName(), null);
+                    }
+                    esEntityVo.setExtInfos(extInfos);
+                }
+            }
 
             if (searchQuery.isVersion()) {
                 esEntityVo.setVersion(hit.getVersion());
