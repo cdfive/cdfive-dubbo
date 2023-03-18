@@ -1,6 +1,6 @@
 package com.cdfive.common.spring.webmvc.exception;
 
-import com.cdfive.common.spring.webmvc.RecordStartTimeInteceptor;
+import com.cdfive.common.spring.webmvc.RecordStartTimeInterceptor;
 import com.cdfive.common.spring.webmvc.RequestResponseBodyMethodProcessorWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +43,7 @@ public class ServiceHandlerExceptionResolver implements HandlerExceptionResolver
         log.error(LOG_PREFIX + "requestUrl={},remoteAddr={},cost={}ms,body={}"
                 , request.getRequestURL()
                 , request.getRemoteAddr()
-                , RecordStartTimeInteceptor.getRequestCostMs()
+                , RecordStartTimeInterceptor.getRequestCostMs()
                 , RequestResponseBodyMethodProcessorWrapper.getRequestBody(), ex);
 
         /**
