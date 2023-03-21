@@ -333,7 +333,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
                 }
                 long versionConflicts = bulkByScrollResponse.getVersionConflicts();
                 if (versionConflicts > 0L) {
-                    log.error(CommonUtil.getTraceId() + ",es updateByQuery version conflicts error ,conflicts size=" + bulkFailures.size());
+                    log.warn(CommonUtil.getTraceId() + ",es updateByQuery version conflicts error ,conflicts size=" + bulkFailures.size());
                 }
             } catch (Exception e) {
                 throw new EsException("es updateByQuery error", e);
@@ -1129,12 +1129,12 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
                 if (bulkItemResponse.isFailed()) {
                     errorIds.add(bulkItemResponse.getId());
                     BulkItemResponse.Failure failure = bulkItemResponse.getFailure();
-                    log.error(respVo.getTraceId() + ",es {} error,id={}", operation, bulkItemResponse.getId(), failure.getCause());
+                    log.warn(respVo.getTraceId() + ",es {} error,id={}", operation, bulkItemResponse.getId(), failure.getCause());
                 } else {
                     successIds.add(bulkItemResponse.getId());
                 }
             }
-            log.error(respVo.getTraceId() + ",es {} error,errorCount={},totalCount={}", operation, errorIds.size(), errorIds.size() + successIds.size());
+            log.warn(respVo.getTraceId() + ",es {} error,errorCount={},totalCount={}", operation, errorIds.size(), errorIds.size() + successIds.size());
             if (successIds.size() > 0) {
                 respVo.getSuccessItems().addAll(ids.stream().filter(o -> o != null && successIds.contains(String.valueOf(o))).collect(Collectors.toList()));
             }
@@ -1154,12 +1154,12 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
                 if (bulkItemResponse.isFailed()) {
                     errorIds.add(bulkItemResponse.getId());
                     BulkItemResponse.Failure failure = bulkItemResponse.getFailure();
-                    log.error(respVo.getTraceId() + ",es {} error,id={}", operation, bulkItemResponse.getId(), failure.getCause());
+                    log.warn(respVo.getTraceId() + ",es {} error,id={}", operation, bulkItemResponse.getId(), failure.getCause());
                 } else {
                     successIds.add(bulkItemResponse.getId());
                 }
             }
-            log.error(respVo.getTraceId() + ",es {} error,errorCount={},totalCount={}", operation, errorIds.size(), errorIds.size() + successIds.size());
+            log.warn(respVo.getTraceId() + ",es {} error,errorCount={},totalCount={}", operation, errorIds.size(), errorIds.size() + successIds.size());
             if (successIds.size() > 0) {
                 respVo.getSuccessItems().addAll(entities.stream().filter(o -> o != null && successIds.contains(String.valueOf(this.getId(o)))).collect(Collectors.toList()));
             }
