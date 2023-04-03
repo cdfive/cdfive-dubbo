@@ -17,8 +17,13 @@ public class IntegerTest {
         System.out.println(Integer.MIN_VALUE); // -2147483648
         System.out.println(Integer.MAX_VALUE); // 2147483647
 
-        System.out.println(Integer.MAX_VALUE + 1);
-        System.out.println((Integer.MAX_VALUE + 1) == Integer.MIN_VALUE);
+        System.out.println(Integer.MAX_VALUE + 1); // -2147483648
+        System.out.println((Integer.MAX_VALUE + 1) == Integer.MIN_VALUE); // true
+
+        int i = 1;
+        Integer ii = (Integer) i;
+        int iii = (int) ii;
+        System.out.println(i + "," + ii + "," + iii); // 1,1,1
 
 //        Integer i = 11456725200; // Compile error: Integer number too large
         // Exception in thread "main" java.lang.NumberFormatException: For input string: "11456725200"
