@@ -1,19 +1,24 @@
 package com.cdfive.common.spring.webmvc.exception;
 
+import com.cdfive.common.exception.ServiceException;
+import com.cdfive.common.properties.AppProperties;
 import com.cdfive.common.spring.webmvc.RecordStartTimeInterceptor;
 import com.cdfive.common.spring.webmvc.RequestResponseBodyMethodProcessorWrapper;
+import com.cdfive.common.util.CommonUtil;
+import com.cdfive.common.vo.AppRestApiContextVo;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.internal.Throwables;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * @author cdfive
@@ -32,63 +37,50 @@ public class ServiceHandlerExceptionResolver implements HandlerExceptionResolver
     private String errorMsg;
 
     @Autowired
-    private List<ExceptionHandler> exceptionHandlers;
-
-    @Autowired
-    private ExceptionHandler defaultExceptionHandler;
+    private AppProperties appProperties;
 
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
 //    public ResponseEntity<Map<String, Object>> resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-        log.error(LOG_PREFIX + "requestUrl={},remoteAddr={},cost={}ms,body={}"
-                , request.getRequestURL()
+        String traceId = CommonUtil.getTraceId();
+        log.error(LOG_PREFIX + "{},requestUri={},remoteAddr={},cost={}ms,body={},exceptionClass={}"
+                , traceId
+                , request.getRequestURI()
                 , request.getRemoteAddr()
                 , RecordStartTimeInterceptor.getRequestCostMs()
-                , RequestResponseBodyMethodProcessorWrapper.getRequestBody(), ex);
+                , RequestResponseBodyMethodProcessorWrapper.getRequestBody()
+                , ex.getClass().getName()
+                , ex);
 
-        /**
+        AppRestApiContextVo apiContextVo = buildAppRestApiContextVo(traceId, request, ex);
+        // TODO
+
         ModelAndView mav = new ModelAndView(new MappingJackson2JsonView());
-//        mav.addObject("ts", System.currentTimeMillis());
-
+        mav.addObject("ts", System.currentTimeMillis());
+        mav.addObject("traceId", traceId);
         if (ex instanceof ServiceException) {
-            mav.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-
             ServiceException se = (ServiceException) ex;
-            mav.addObject("msg", se.getMessage());
-        } else if (ex instanceof FeignException) {
-            mav.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-
-            FeignException fe = (FeignException) ex;
-//            mav.addObject("msg", fe.contentUTF8());
-            mav.addAllObjects(FastJsonUtil.json2Map(fe.contentUTF8()));
-//            throw fe;
+            mav.addObject("code", se.getCode());
+            mav.addObject("msg", se.getDescription());
         } else {
             mav.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-
             mav.addObject("code", errorCode);
             mav.addObject("msg", errorMsg);
-//        mav.addObject("timestamp", System.currentTimeMillis());
-//        mav.addObject("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
-//        mav.addObject("error", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
-//        mav.addObject("path", request.getRequestURI());
         }
-
-        mav.addObject("ts", System.currentTimeMillis());
-        return mav;*/
-
-        ExceptionHandler exceptionHandler = this.findExceptionHandler(ex);
-
-        ModelAndView mav = exceptionHandler.handleException(request, response, handler, ex);
         return mav;
     }
 
-    private ExceptionHandler findExceptionHandler(Exception ex) {
-        Optional<ExceptionHandler> optExceptionHandler = exceptionHandlers.stream().filter(h -> h != defaultExceptionHandler && h.supportException(ex)).findFirst();
-        if (optExceptionHandler.isPresent()) {
-            return optExceptionHandler.get();
-        }
-
-//        throw new RuntimeException("can't findExceptionHandler,ex=" + ex.getClass().getSimpleName());
-        return defaultExceptionHandler;
+    private AppRestApiContextVo buildAppRestApiContextVo(String traceId, HttpServletRequest request, Exception ex) {
+        AppRestApiContextVo apiContextVo = new AppRestApiContextVo();
+        apiContextVo.setTraceId(traceId);
+        apiContextVo.setAppName(appProperties.getAppName());
+        apiContextVo.setServerPort(appProperties.getServerPort());
+        apiContextVo.setRequestUri(request.getRequestURI());
+        apiContextVo.setRemoteAddr(request.getRemoteAddr());
+        apiContextVo.setCostMs(RecordStartTimeInterceptor.getRequestCostMs());
+        apiContextVo.setRequestBody(RequestResponseBodyMethodProcessorWrapper.getRequestBody());
+        apiContextVo.setExClassName(ex.getClass().getName());
+        apiContextVo.setExStackTrace(Throwables.getStacktrace(ex));
+        return apiContextVo;
     }
 }
