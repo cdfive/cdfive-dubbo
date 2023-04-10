@@ -16,4 +16,9 @@ public class ActiveMQConfig {
     public Queue methodLogQueue() {
         return new ActiveMQQueue("methodLogQueue");
     }
+
+    @Bean
+    public Queue appRestApiQueue() {
+        return new ActiveMQQueue("appRestApiQueue");
+    }
 }

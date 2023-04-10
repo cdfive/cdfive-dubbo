@@ -1,13 +1,14 @@
 package com.cdfive.common.spring.webmvc.exception;
 
 import com.cdfive.common.exception.ServiceException;
+import com.cdfive.common.message.producer.AppRestApiProducer;
 import com.cdfive.common.properties.AppProperties;
 import com.cdfive.common.spring.webmvc.RecordStartTimeInterceptor;
 import com.cdfive.common.spring.webmvc.RequestResponseBodyMethodProcessorWrapper;
 import com.cdfive.common.util.CommonUtil;
 import com.cdfive.common.vo.AppRestApiContextVo;
+import com.google.common.base.Throwables;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.internal.Throwables;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -39,6 +40,9 @@ public class ServiceHandlerExceptionResolver implements HandlerExceptionResolver
     @Autowired
     private AppProperties appProperties;
 
+    @Autowired
+    private AppRestApiProducer appRestApiProducer;
+
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
 //    public ResponseEntity<Map<String, Object>> resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
@@ -52,8 +56,8 @@ public class ServiceHandlerExceptionResolver implements HandlerExceptionResolver
                 , ex.getClass().getName()
                 , ex);
 
-        AppRestApiContextVo apiContextVo = buildAppRestApiContextVo(traceId, request, ex);
-        // TODO
+        AppRestApiContextVo contextVo = buildAppRestApiContextVo(traceId, request, ex);
+        appRestApiProducer.send(contextVo);
 
         ModelAndView mav = new ModelAndView(new MappingJackson2JsonView());
         mav.addObject("ts", System.currentTimeMillis());
@@ -80,7 +84,7 @@ public class ServiceHandlerExceptionResolver implements HandlerExceptionResolver
         apiContextVo.setCostMs(RecordStartTimeInterceptor.getRequestCostMs());
         apiContextVo.setRequestBody(RequestResponseBodyMethodProcessorWrapper.getRequestBody());
         apiContextVo.setExClassName(ex.getClass().getName());
-        apiContextVo.setExStackTrace(Throwables.getStacktrace(ex));
+        apiContextVo.setExStackTrace(Throwables.getStackTraceAsString(ex));
         return apiContextVo;
     }
 }

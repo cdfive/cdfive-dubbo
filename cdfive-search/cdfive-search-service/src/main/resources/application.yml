@@ -10,6 +10,13 @@ spring:
       password: elastic
       maxConnPerRoute: 2
       maxConnTotal: 20
+  activemq:
+    broker-url: tcp://localhost:61616
+    pool:
+      enabled: true
+      max-connections: 20
+    packages:
+      trust-all: true
 
 sentinel:
   enable: true
