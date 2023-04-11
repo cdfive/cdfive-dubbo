@@ -1,7 +1,7 @@
-// PUT /methodlog_v1
+// PUT /method_log_v1
 {
   "aliases": {
-    "methodlog": {}
+    "methodLog": {}
   },
   "settings": {
     "number_of_shards": 1,

@@ -20,8 +20,10 @@ import java.util.Date;
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(index = "methodlog")
+@Document(index = "methodLog")
 public class MethodLogEo implements Serializable {
+
+    private static final long serialVersionUID = -3311893505802552524L;
 
     @Id
     private Integer id;

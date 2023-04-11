@@ -6,7 +6,7 @@ import com.cdfive.common.properties.AppProperties;
 import com.cdfive.common.spring.webmvc.RecordStartTimeInterceptor;
 import com.cdfive.common.spring.webmvc.RequestResponseBodyMethodProcessorWrapper;
 import com.cdfive.common.util.CommonUtil;
-import com.cdfive.common.vo.AppRestApiContextVo;
+import com.cdfive.common.vo.AppRestApiLogContextVo;
 import com.google.common.base.Throwables;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +20,7 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 
 /**
  * @author cdfive
@@ -56,7 +57,7 @@ public class ServiceHandlerExceptionResolver implements HandlerExceptionResolver
                 , ex.getClass().getName()
                 , ex);
 
-        AppRestApiContextVo contextVo = buildAppRestApiContextVo(traceId, request, ex);
+        AppRestApiLogContextVo contextVo = buildAppRestApiContextVo(traceId, request, ex);
         appRestApiProducer.send(contextVo);
 
         ModelAndView mav = new ModelAndView(new MappingJackson2JsonView());
@@ -65,7 +66,7 @@ public class ServiceHandlerExceptionResolver implements HandlerExceptionResolver
         if (ex instanceof ServiceException) {
             ServiceException se = (ServiceException) ex;
             mav.addObject("code", se.getCode());
-            mav.addObject("msg", se.getDescription());
+            mav.addObject("msg", se.getMessage());
         } else {
             mav.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
             mav.addObject("code", errorCode);
@@ -74,8 +75,8 @@ public class ServiceHandlerExceptionResolver implements HandlerExceptionResolver
         return mav;
     }
 
-    private AppRestApiContextVo buildAppRestApiContextVo(String traceId, HttpServletRequest request, Exception ex) {
-        AppRestApiContextVo apiContextVo = new AppRestApiContextVo();
+    private AppRestApiLogContextVo buildAppRestApiContextVo(String traceId, HttpServletRequest request, Exception ex) {
+        AppRestApiLogContextVo apiContextVo = new AppRestApiLogContextVo();
         apiContextVo.setTraceId(traceId);
         apiContextVo.setAppName(appProperties.getAppName());
         apiContextVo.setServerPort(appProperties.getServerPort());
@@ -85,6 +86,7 @@ public class ServiceHandlerExceptionResolver implements HandlerExceptionResolver
         apiContextVo.setRequestBody(RequestResponseBodyMethodProcessorWrapper.getRequestBody());
         apiContextVo.setExClassName(ex.getClass().getName());
         apiContextVo.setExStackTrace(Throwables.getStackTraceAsString(ex));
+        apiContextVo.setCreateTime(new Date());
         return apiContextVo;
     }
 }

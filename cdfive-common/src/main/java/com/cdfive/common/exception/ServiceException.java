@@ -14,21 +14,6 @@ public class ServiceException extends RuntimeException {
     @Setter
     private Integer code = 100000;
 
-    @Getter
-    @Setter
-    private String description;
-
-    public ServiceException(Integer code, String description) {
-        this.code = code;
-        this.description = description;
-    }
-
-    public ServiceException(String message, Integer code, String description) {
-        super(message);
-        this.code = code;
-        this.description = description;
-    }
-
     public ServiceException() {
 
     }
@@ -45,7 +30,22 @@ public class ServiceException extends RuntimeException {
         super(cause);
     }
 
-    public ServiceException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
+    public ServiceException(Integer code) {
+        this.code = code;
+    }
+
+    public ServiceException(String message, Integer code) {
+        super(message);
+        this.code = code;
+    }
+
+    public ServiceException(String message, Throwable cause, Integer code) {
+        super(message, cause);
+        this.code = code;
+    }
+
+    public ServiceException(Throwable cause, Integer code) {
+        super(cause);
+        this.code = code;
     }
 }

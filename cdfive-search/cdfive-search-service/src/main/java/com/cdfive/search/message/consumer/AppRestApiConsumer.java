@@ -1,8 +1,10 @@
 package com.cdfive.search.message.consumer;
 
 import com.cdfive.common.util.JacksonUtil;
-import com.cdfive.common.vo.AppRestApiContextVo;
+import com.cdfive.common.vo.AppRestApiLogContextVo;
+import com.cdfive.search.service.AppRestApiLogEsService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
@@ -14,8 +16,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class AppRestApiConsumer {
 
-    @JmsListener(destination = "appRestApiQueue")
-    public void receive(AppRestApiContextVo contextVo) {
-        log.info(JacksonUtil.objToJson(contextVo));
+    @Autowired
+    private AppRestApiLogEsService appRestApiLogEsService;
+
+    @JmsListener(destination = "appRestApiLogQueue")
+    public void receive(AppRestApiLogContextVo contextVo) {
+        if (log.isDebugEnabled()) {
+            log.debug(JacksonUtil.objToJson(contextVo));
+        }
+
+        appRestApiLogEsService.saveAppRestApiLog(contextVo);
     }
 }

@@ -1,0 +1,56 @@
+// PUT /app_rest_api_log_v1
+{
+    "aliases": {
+        "appRestApiLog": {}
+    },
+    "settings": {
+        "number_of_shards": 1,
+        "number_of_replicas": 2
+    },
+    "mappings": {
+        "properties": {
+            "id": {
+                "type": "keyword",
+                "store": true
+            },
+            "appName": {
+                "type": "keyword",
+                "store": true
+            },
+            "serverPort": {
+                "type": "integer",
+                "store": true
+            },
+            "requestUri": {
+                "type": "keyword",
+                "store": true
+            },
+            "remoteAddr": {
+                "type": "keyword",
+                "store": true
+            },
+            "costMs": {
+                "type": "long",
+                "store": true
+            },
+            "requestBody": {
+                "type": "text"
+            },
+            "exClassName": {
+                "type": "text",
+                "store": true
+            },
+            "exStackTrace": {
+                "type": "text"
+            },
+            "createTime": {
+                "type": "date",
+                "format": "yyyy-MM-dd HH:mm:ss.SSS||yyyy-MM-dd HH:mm:ss||epoch_millis"
+            },
+            "updateTime": {
+                "type": "date",
+                "format": "yyyy-MM-dd HH:mm:ss.SSS||yyyy-MM-dd HH:mm:ss||epoch_millis"
+            }
+        }
+    }
+}

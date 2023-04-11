@@ -2,6 +2,7 @@ package com.cdfive.common.properties;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Configuration;
 
 import java.io.Serializable;
@@ -11,6 +12,7 @@ import java.io.Serializable;
  * @date 2023-03-31
  */
 @Data
+@RefreshScope
 @Configuration
 public class AppProperties implements Serializable {
 

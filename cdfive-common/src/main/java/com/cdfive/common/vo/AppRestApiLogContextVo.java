@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author xiejihan
@@ -13,7 +14,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class AppRestApiContextVo implements Serializable {
+public class AppRestApiLogContextVo implements Serializable {
 
     private static final long serialVersionUID = 2759547270469554188L;
 
@@ -34,4 +35,9 @@ public class AppRestApiContextVo implements Serializable {
     private String exClassName;
 
     private String exStackTrace;
+
+    // TODO
+    private String location;
+
+    private Date createTime;
 }

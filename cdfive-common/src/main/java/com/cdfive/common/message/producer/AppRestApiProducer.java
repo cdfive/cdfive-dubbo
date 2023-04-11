@@ -1,7 +1,7 @@
 package com.cdfive.common.message.producer;
 
 import com.cdfive.common.util.JacksonUtil;
-import com.cdfive.common.vo.AppRestApiContextVo;
+import com.cdfive.common.vo.AppRestApiLogContextVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,10 +22,10 @@ public class AppRestApiProducer {
     private JmsMessagingTemplate jmsMessagingTemplate;
 
     @Autowired
-    @Qualifier("appRestApiQueue")
+    @Qualifier("appRestApiLogQueue")
     private Queue appRestApiQueue;
 
-    public void send(AppRestApiContextVo contextVo) {
+    public void send(AppRestApiLogContextVo contextVo) {
         jmsMessagingTemplate.convertAndSend(appRestApiQueue, contextVo);
         if (log.isDebugEnabled()) {
             log.debug("AppRestApiProducer send={}", JacksonUtil.objToJson(appRestApiQueue));

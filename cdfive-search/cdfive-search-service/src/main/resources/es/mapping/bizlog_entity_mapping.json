@@ -1,7 +1,7 @@
-// PUT /bizlog_v1
+// PUT /biz_log_v1
 {
   "aliases": {
-    "bizlog": {}
+    "bizLog": {}
   },
   "settings": {
     "number_of_shards": 1,
