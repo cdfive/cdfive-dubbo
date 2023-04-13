@@ -79,7 +79,9 @@ public class ServiceHandlerExceptionResolver implements HandlerExceptionResolver
         AppRestApiLogContextVo apiContextVo = new AppRestApiLogContextVo();
         apiContextVo.setTraceId(traceId);
         apiContextVo.setAppName(appProperties.getAppName());
-        apiContextVo.setServerPort(appProperties.getServerPort());
+        // TODO
+//        apiContextVo.setAppIp();
+        apiContextVo.setAppPort(appProperties.getServerPort());
         apiContextVo.setRequestUri(request.getRequestURI());
         apiContextVo.setRemoteAddr(request.getRemoteAddr());
         apiContextVo.setCostMs(RecordStartTimeInterceptor.getRequestCostMs());

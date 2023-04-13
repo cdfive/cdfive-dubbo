@@ -22,7 +22,9 @@ public class AppRestApiLogContextVo implements Serializable {
 
     private String appName;
 
-    private Integer serverPort;
+    private String appIp;
+
+    private Integer appPort;
 
     private String requestUri;
 
