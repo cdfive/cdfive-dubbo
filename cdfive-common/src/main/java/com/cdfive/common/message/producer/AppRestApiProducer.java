@@ -23,12 +23,12 @@ public class AppRestApiProducer {
 
     @Autowired
     @Qualifier("appRestApiLogQueue")
-    private Queue appRestApiQueue;
+    private Queue appRestApiLogQueue;
 
     public void send(AppRestApiLogContextVo contextVo) {
-        jmsMessagingTemplate.convertAndSend(appRestApiQueue, contextVo);
+        jmsMessagingTemplate.convertAndSend(appRestApiLogQueue, contextVo);
         if (log.isDebugEnabled()) {
-            log.debug("AppRestApiProducer send={}", JacksonUtil.objToJson(appRestApiQueue));
+            log.debug("AppRestApiProducer send={}", JacksonUtil.objToJson(appRestApiLogQueue));
         }
     }
 }

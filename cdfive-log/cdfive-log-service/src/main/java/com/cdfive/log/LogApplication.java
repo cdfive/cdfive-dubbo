@@ -16,7 +16,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @Slf4j
 @ImportResource("classpath:/config/applicationContext.xml")
 @EnableJpaRepositories(repositoryFactoryBeanClass = BaseRepositoryFactoryBean.class, basePackages = "com.cdfive.log")
-@SpringBootApplication(scanBasePackages = {"com.cdfive"}, exclude = {EurekaClientAutoConfiguration.class, EurekaDiscoveryClientConfiguration.class})
+//@SpringBootApplication(scanBasePackages = {"com.cdfive"}, exclude = {EurekaClientAutoConfiguration.class, EurekaDiscoveryClientConfiguration.class})
+@SpringBootApplication(scanBasePackages = {"com.cdfive"})
 public class LogApplication {
     public static void main(String[] args) {
         ConfigurableApplicationContext ctx = SpringApplication.run(LogApplication.class, args);
