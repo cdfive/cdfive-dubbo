@@ -12,7 +12,7 @@ import org.springframework.jms.annotation.EnableJms;
 @Slf4j
 @EnableJms
 @ImportResource({"classpath:/config/applicationContext.xml"})
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.cdfive")
 public class SearchApplication {
 
     public static void main(String[] args) {

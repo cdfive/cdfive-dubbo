@@ -26,7 +26,7 @@ public class AppRestApiLogEsServiceImpl implements AppRestApiLogEsService {
         AppRestApiLogEo eo = new AppRestApiLogEo();
         eo.setId(contextVo.getTraceId());
         eo.setAppName(contextVo.getAppName());
-        eo.setServerPort(contextVo.getServerPort());
+        eo.setServerPort(contextVo.getAppPort());
         eo.setRequestUri(contextVo.getRequestUri());
         eo.setRemoteAddr(contextVo.getRemoteAddr());
         eo.setCostMs(contextVo.getCostMs());

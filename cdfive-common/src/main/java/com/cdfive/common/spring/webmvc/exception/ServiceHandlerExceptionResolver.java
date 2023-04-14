@@ -30,6 +30,8 @@ import java.util.Date;
 @Component
 public class ServiceHandlerExceptionResolver implements HandlerExceptionResolver {
 
+    private static final String ATTRIBUTE_TRACE_ID = "_traceId";
+
     private static final String LOG_PREFIX = "[ServiceError]";
 
     @Value("${biz.error.code:500}")
@@ -47,18 +49,19 @@ public class ServiceHandlerExceptionResolver implements HandlerExceptionResolver
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
 //    public ResponseEntity<Map<String, Object>> resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-        String traceId = CommonUtil.getTraceId();
-        log.error(LOG_PREFIX + "{},requestUri={},remoteAddr={},cost={}ms,body={},exceptionClass={}"
-                , traceId
-                , request.getRequestURI()
-                , request.getRemoteAddr()
-                , RecordStartTimeInterceptor.getRequestCostMs()
-                , RequestResponseBodyMethodProcessorWrapper.getRequestBody()
-                , ex.getClass().getName()
-                , ex);
+//        String traceId = CommonUtil.getTraceId();
+        String traceId = request.getAttribute(ATTRIBUTE_TRACE_ID).toString();
+//        log.error(LOG_PREFIX + "{},requestUri={},remoteAddr={},cost={}ms,body={},exceptionClass={}"
+//                , traceId
+//                , request.getRequestURI()
+//                , request.getRemoteAddr()
+//                , RecordStartTimeInterceptor.getRequestCostMs()
+//                , RequestResponseBodyMethodProcessorWrapper.getRequestBody()
+//                , ex.getClass().getName()
+//                , ex);
 
-        AppRestApiLogContextVo contextVo = buildAppRestApiContextVo(traceId, request, ex);
-        appRestApiProducer.send(contextVo);
+//        AppRestApiLogContextVo contextVo = buildAppRestApiContextVo(traceId, request, ex);
+//        appRestApiProducer.send(contextVo);
 
         ModelAndView mav = new ModelAndView(new MappingJackson2JsonView());
         mav.addObject("ts", System.currentTimeMillis());

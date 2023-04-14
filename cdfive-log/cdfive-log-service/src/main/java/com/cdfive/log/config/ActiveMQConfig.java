@@ -22,10 +22,10 @@ public class ActiveMQConfig { //implements InitializingBean {
         return new ActiveMQQueue("methodLogQueue");
     }
 
-    @Bean
-    public Queue appRestApiLogQueue() {
-        return new ActiveMQQueue("appRestApiLogQueue");
-    }
+//    @Bean
+//    public Queue appRestApiLogQueue() {
+//        return new ActiveMQQueue("appRestApiLogQueue");
+//    }
 
 //    @Autowired
 //    private PooledConnectionFactory pooledConnectionFactory;
