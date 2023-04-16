@@ -30,9 +30,10 @@ public class AppRestApiProducer {
 //    private String appRestApiLogQueue;
 
     public void send(AppRestApiLogContextVo contextVo) {
-        jmsMessagingTemplate.convertAndSend(appRestApiLogQueue, contextVo);
-        if (log.isDebugEnabled()) {
-            log.debug("AppRestApiProducer send={}", JacksonUtil.objToJson(appRestApiLogQueue));
+        if (log.isInfoEnabled()) {
+            log.info("AppRestApiProducer contextVo={}", JacksonUtil.objToJson(contextVo));
         }
+
+        jmsMessagingTemplate.convertAndSend(appRestApiLogQueue, contextVo);
     }
 }

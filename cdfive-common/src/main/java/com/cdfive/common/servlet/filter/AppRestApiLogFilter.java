@@ -7,16 +7,19 @@ import com.cdfive.common.vo.AppRestApiLogContextVo;
 import com.google.common.base.Charsets;
 import com.google.common.base.Throwables;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StreamUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.ServletWebRequest;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -26,7 +29,7 @@ import java.util.Date;
 @Component
 public class AppRestApiLogFilter implements Filter, InitializingBean {
 
-    private static final String ATTRIBUTE_TRACE_ID = "_traceId";
+    private static final String TRACE_ID = "_traceId";
 
     @Autowired
     private AppProperties appProperties;
@@ -47,31 +50,45 @@ public class AppRestApiLogFilter implements Filter, InitializingBean {
 
         long startTime = System.currentTimeMillis();
 
-        String traceId = CommonUtil.getTraceId();
-        request.setAttribute(ATTRIBUTE_TRACE_ID, traceId);
+        String traceId = getTraceId(httpServletRequest);
+        request.setAttribute(TRACE_ID, traceId);
 
-        Throwable ex = null;
         try {
-            httpServletRequest = wrapServletRequest(httpServletRequest);
-            chain.doFilter(httpServletRequest, response);
-        } catch (Exception e) {
-            ex = e;
-            throw e;
-        } finally {
-            long costTimeMs = System.currentTimeMillis() - startTime;
+            MDC.put(TRACE_ID, traceId);
+            Throwable ex = null;
+            try {
+                // TODO log start of this inovke
+                httpServletRequest = wrapServletRequest(httpServletRequest);
+                chain.doFilter(httpServletRequest, response);
+            } catch (Exception e) {
+                ex = e;
+                throw e;
+            } finally {
+                long costTimeMs = System.currentTimeMillis() - startTime;
 
-            if (ex == null) {
-                ex = errorAttributes.getError(new ServletWebRequest(httpServletRequest));
+                if (ex == null) {
+                    ex = errorAttributes.getError(new ServletWebRequest(httpServletRequest));
+                }
+
+                log(traceId, httpServletRequest, ex, costTimeMs);
+
+                AppRestApiLogContextVo logContextVo = buildAppRestApiContextVo(traceId, startTime, httpServletRequest, ex, costTimeMs);
+                appRestApiProducer.send(logContextVo);
             }
-
-            log(traceId, httpServletRequest, ex, costTimeMs);
-
-            AppRestApiLogContextVo logContextVo = buildAppRestApiContextVo(traceId, httpServletRequest, ex, costTimeMs);
-            appRestApiProducer.send(logContextVo);
+        } finally {
+            MDC.clear();
         }
     }
 
-    private AppRestApiLogContextVo buildAppRestApiContextVo(String traceId, HttpServletRequest request, Throwable ex, long costTimeMs) throws IOException {
+    private String getTraceId(HttpServletRequest httpServletRequest) {
+        String traceId = httpServletRequest.getHeader(TRACE_ID);
+        if (StringUtils.isEmpty(traceId)) {
+            traceId = CommonUtil.getTraceId();
+        }
+        return traceId;
+    }
+
+    private AppRestApiLogContextVo buildAppRestApiContextVo(String traceId, long startTime, HttpServletRequest httpServletRequest, Throwable ex, long costTimeMs) throws IOException {
         AppRestApiLogContextVo logContextVo = new AppRestApiLogContextVo();
         logContextVo.setTraceId(traceId);
 
@@ -80,42 +97,41 @@ public class AppRestApiLogFilter implements Filter, InitializingBean {
 //        apiContextVo.setAppIp();
         logContextVo.setAppPort(appProperties.getServerPort());
 
-        logContextVo.setRequestUri(request.getRequestURI());
-        logContextVo.setRemoteAddr(request.getRemoteAddr());
+        logContextVo.setRequestUri(httpServletRequest.getRequestURI());
+        logContextVo.setRemoteAddr(httpServletRequest.getRemoteAddr());
 
         logContextVo.setCostMs(costTimeMs);
 
-        logContextVo.setRequestBody(getRequestBody(request));
+        logContextVo.setRequestBody(getRequestBody(httpServletRequest));
 
         if (ex != null) {
             logContextVo.setExClassName(ex.getClass().getName());
             logContextVo.setExStackTrace(Throwables.getStackTraceAsString(ex));
         }
 
-        logContextVo.setCreateTime(new Date());
+        logContextVo.setCreateTime(new Date(startTime));
         return logContextVo;
     }
 
-    private void log(String traceId, HttpServletRequest request, Throwable ex, long costTimeMs) throws IOException {
+    private void log(String traceId, HttpServletRequest httpServletRequest, Throwable ex, long costTimeMs) throws IOException {
         if (ex == null) {
-            log.info("\ntraceId={},\nrequestUri={},\nremoteAddr={},\ncost={}ms,\nbody={}"
-                    , traceId
-                    , request.getRequestURI()
-                    , request.getRemoteAddr()
+            log.info("\nrequestUri={},\nremoteAddr={},\ncost={}ms,\nbody={}"
+                    , httpServletRequest.getRequestURI()
+                    , httpServletRequest.getRemoteAddr()
                     , costTimeMs
-                    , getRequestBody(request));
+                    , getRequestBody(httpServletRequest));
         } else {
-            log.error("\ntraceId={},\nrequestUri={},\nremoteAddr={},\ncost={}ms,\nbody={}"
-                    , traceId
-                    , request.getRequestURI()
-                    , request.getRemoteAddr()
+            log.error("\nrequestUri={},\nremoteAddr={},\ncost={}ms,\nbody={}"
+                    , httpServletRequest.getRequestURI()
+                    , httpServletRequest.getRemoteAddr()
                     , costTimeMs
-                    , getRequestBody(request)
+                    , getRequestBody(httpServletRequest)
                     , ex);
         }
     }
 
     private String getRequestBody(HttpServletRequest httpServletRequest) throws IOException {
+        // TODO instanceof BodyReaderHttpServletRequestWrapper
         return StreamUtils.copyToString(httpServletRequest.getInputStream(), Charsets.UTF_8);
     }
 

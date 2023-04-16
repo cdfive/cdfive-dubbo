@@ -32,34 +32,44 @@ public class AppRestApiLogEo implements Serializable {
     private String id;
 
     @JSONField(ordinal = 2)
-    private String appName;
+    private String traceId;
 
     @JSONField(ordinal = 3)
-    private Integer serverPort;
+    private String appName;
 
     @JSONField(ordinal = 4)
-    private String requestUri;
+    private Integer serverPort;
 
     @JSONField(ordinal = 5)
-    private String remoteAddr;
+    private String requestUri;
 
     @JSONField(ordinal = 6)
-    private Long costMs;
+    private String remoteAddr;
 
     @JSONField(ordinal = 7)
-    private String requestBody;
+    private Long costMs;
 
     @JSONField(ordinal = 8)
-    private String exClassName;
+    private String requestBody;
+
+    // TODO
+    // private boolean exExist;
 
     @JSONField(ordinal = 9)
+    private String exClassName;
+
+    @JSONField(ordinal = 10)
     private String exStackTrace;
 
-    @JSONField(ordinal = 10, format = "yyyy-MM-dd HH:mm:ss.SSS")
+    // TODO start time of log
+    @JSONField(ordinal = 11, format = "yyyy-MM-dd HH:mm:ss.SSS")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private Date createTime;
 
-    @JSONField(ordinal = 11, format = "yyyy-MM-dd HH:mm:ss.SSS")
+    // TODO create time of log
+    @JSONField(ordinal = 12, format = "yyyy-MM-dd HH:mm:ss.SSS")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private Date updateTime;
+
+    // TODO startTime createTime updateTime
 }
