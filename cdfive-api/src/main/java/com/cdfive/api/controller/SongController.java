@@ -11,9 +11,7 @@ import com.cdfive.mp3.vo.song.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -51,8 +49,11 @@ public class SongController extends AbstractController {
     }
 
     @RequestMapping(UriConstant.MP3_PLAY)
-    public ApiResponse<Integer> play(Integer id) {
-        Integer play = songApi.play(id, WebUtil.getIp());
+//    public ApiResponse<Integer> play(@RequestBody PlaySongReqVo reqVo) {
+    public ApiResponse<Integer> play(PlaySongReqVo reqVo) {
+//    public ApiResponse<Integer> play(@RequestParam("id") Integer id) {
+        Integer play = songApi.play(reqVo != null ? reqVo.getId() : null, WebUtil.getIp());
+//        Integer play = songApi.play(id, WebUtil.getIp());
         return succ(play);
     }
 

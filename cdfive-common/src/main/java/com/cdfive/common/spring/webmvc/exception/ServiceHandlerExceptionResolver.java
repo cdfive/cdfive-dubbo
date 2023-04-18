@@ -10,6 +10,7 @@ import com.google.common.base.Throwables;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -26,6 +27,7 @@ import java.util.Date;
  */
 @Slf4j
 @RefreshScope
+@ConditionalOnBean(AppRestApiProducer.class)
 @Component
 public class ServiceHandlerExceptionResolver implements HandlerExceptionResolver {
 
@@ -77,6 +79,7 @@ public class ServiceHandlerExceptionResolver implements HandlerExceptionResolver
         return mav;
     }
 
+    @Deprecated
     private AppRestApiLogContextVo buildAppRestApiContextVo(String traceId, HttpServletRequest request, Exception ex) {
         AppRestApiLogContextVo apiContextVo = new AppRestApiLogContextVo();
         apiContextVo.setTraceId(traceId);

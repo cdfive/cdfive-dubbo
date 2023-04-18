@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StreamUtils;
@@ -26,6 +28,7 @@ import java.util.Date;
  * @author cdfive
  */
 @Slf4j
+@ConditionalOnBean(AppRestApiProducer.class)
 @Component
 public class AppRestApiLogFilter implements Filter, InitializingBean {
 
@@ -39,6 +42,12 @@ public class AppRestApiLogFilter implements Filter, InitializingBean {
 
     @Autowired
     private ErrorAttributes errorAttributes;
+
+
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+
+    }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -80,6 +89,11 @@ public class AppRestApiLogFilter implements Filter, InitializingBean {
         }
     }
 
+    @Override
+    public void destroy() {
+
+    }
+
     private String getTraceId(HttpServletRequest httpServletRequest) {
         String traceId = httpServletRequest.getHeader(TRACE_ID);
         if (StringUtils.isEmpty(traceId)) {
@@ -109,7 +123,8 @@ public class AppRestApiLogFilter implements Filter, InitializingBean {
             logContextVo.setExStackTrace(Throwables.getStackTraceAsString(ex));
         }
 
-        logContextVo.setCreateTime(new Date(startTime));
+        logContextVo.setStartTime(new Date(startTime));
+        logContextVo.setCreateTime(new Date());
         return logContextVo;
     }
 

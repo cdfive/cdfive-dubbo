@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: cdfive-web
   mvc:
     view:
       prefix: /WEB-INF/view/

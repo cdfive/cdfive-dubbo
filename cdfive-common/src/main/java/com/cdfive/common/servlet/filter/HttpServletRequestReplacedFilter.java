@@ -54,20 +54,6 @@ public class HttpServletRequestReplacedFilter implements Filter {
         public ServletInputStream getInputStream() throws IOException {
             final ByteArrayInputStream bais = new ByteArrayInputStream(body);
             return new ServletInputStream() {
-                @Override
-                public boolean isFinished() {
-                    return false;
-                }
-
-                @Override
-                public boolean isReady() {
-                    return false;
-                }
-
-                @Override
-                public void setReadListener(ReadListener listener) {
-
-                }
 
                 @Override
                 public int read() throws IOException {

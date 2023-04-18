@@ -43,6 +43,10 @@
             "exStackTrace": {
                 "type": "text"
             },
+            "startTime": {
+                "type": "date",
+                "format": "yyyy-MM-dd HH:mm:ss.SSS||yyyy-MM-dd HH:mm:ss||epoch_millis"
+            },
             "createTime": {
                 "type": "date",
                 "format": "yyyy-MM-dd HH:mm:ss.SSS||yyyy-MM-dd HH:mm:ss||epoch_millis"

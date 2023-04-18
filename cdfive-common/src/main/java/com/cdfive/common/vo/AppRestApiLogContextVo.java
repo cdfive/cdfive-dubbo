@@ -41,7 +41,7 @@ public class AppRestApiLogContextVo implements Serializable {
     // TODO
     private String location;
 
-    private Date createTime;
+    private Date startTime;
 
-    // TODO startTime createTime
+    private Date createTime;
 }

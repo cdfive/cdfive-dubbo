@@ -35,6 +35,7 @@ public class AppRestApiLogEsServiceImpl implements AppRestApiLogEsService {
         eo.setRequestBody(contextVo.getRequestBody());
         eo.setExClassName(contextVo.getExClassName());
         eo.setExStackTrace(contextVo.getExStackTrace());
+        eo.setStartTime(contextVo.getStartTime());
         eo.setCreateTime(contextVo.getCreateTime());
         eo.setUpdateTime(new Date());
         appRestApiLogEsRepository.save(eo);

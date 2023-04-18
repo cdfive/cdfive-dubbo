@@ -61,15 +61,15 @@ public class AppRestApiLogEo implements Serializable {
     @JSONField(ordinal = 10)
     private String exStackTrace;
 
-    // TODO start time of log
     @JSONField(ordinal = 11, format = "yyyy-MM-dd HH:mm:ss.SSS")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+    private Date startTime;
+
+    @JSONField(ordinal = 12, format = "yyyy-MM-dd HH:mm:ss.SSS")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private Date createTime;
 
-    // TODO create time of log
     @JSONField(ordinal = 12, format = "yyyy-MM-dd HH:mm:ss.SSS")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private Date updateTime;
-
-    // TODO startTime createTime updateTime
 }
