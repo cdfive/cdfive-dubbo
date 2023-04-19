@@ -5,6 +5,7 @@ import com.cdfive.common.message.producer.AppRestApiProducer;
 import com.cdfive.common.properties.AppProperties;
 import com.cdfive.common.spring.webmvc.RecordStartTimeInterceptor;
 import com.cdfive.common.spring.webmvc.RequestResponseBodyMethodProcessorWrapper;
+import com.cdfive.common.util.CommonUtil;
 import com.cdfive.common.vo.AppRestApiLogContextVo;
 import com.google.common.base.Throwables;
 import lombok.extern.slf4j.Slf4j;
@@ -51,7 +52,7 @@ public class ServiceHandlerExceptionResolver implements HandlerExceptionResolver
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
 //    public ResponseEntity<Map<String, Object>> resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
 //        String traceId = CommonUtil.getTraceId();
-        String traceId = request.getAttribute(TRACE_ID).toString();
+        String traceId = request.getAttribute(TRACE_ID) != null ? request.getAttribute(TRACE_ID).toString() : CommonUtil.getTraceId();
 //        log.error(LOG_PREFIX + "{},requestUri={},remoteAddr={},cost={}ms,body={},exceptionClass={}"
 //                , traceId
 //                , request.getRequestURI()

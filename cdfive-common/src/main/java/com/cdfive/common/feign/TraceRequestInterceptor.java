@@ -18,6 +18,10 @@ public class TraceRequestInterceptor implements RequestInterceptor {
 
     @Override
     public void apply(RequestTemplate template) {
+        if (WebUtil.getCurrentHttpServletRequest().getAttribute(TRACE_ID) == null) {
+            return;
+        }
+
         String traceId = WebUtil.getCurrentHttpServletRequest().getAttribute(TRACE_ID).toString();
         template.header(TRACE_ID, traceId);
     }

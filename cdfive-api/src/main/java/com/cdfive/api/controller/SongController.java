@@ -50,10 +50,12 @@ public class SongController extends AbstractController {
 
     @RequestMapping(UriConstant.MP3_PLAY)
 //    public ApiResponse<Integer> play(@RequestBody PlaySongReqVo reqVo) {
-    public ApiResponse<Integer> play(PlaySongReqVo reqVo) {
+//    public ApiResponse<Integer> play(PlaySongReqVo reqVo) {
 //    public ApiResponse<Integer> play(@RequestParam("id") Integer id) {
-        Integer play = songApi.play(reqVo != null ? reqVo.getId() : null, WebUtil.getIp());
-//        Integer play = songApi.play(id, WebUtil.getIp());
+    public ApiResponse<Integer> play(Integer id) {
+//        log.info("play,id={}", id);
+//        Integer play = songApi.play(reqVo != null ? reqVo.getId() : null, WebUtil.getIp());
+        Integer play = songApi.play(id, WebUtil.getIp());
         return succ(play);
     }
 

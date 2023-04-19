@@ -163,6 +163,9 @@ public class AppRestApiLogFilter implements Filter, InitializingBean {
             return httpServletRequest;
         }
 
+        // !!! important
+        httpServletRequest.getParameterMap();
+
         return new HttpServletRequestReplacedFilter.BodyReaderHttpServletRequestWrapper((HttpServletRequest) httpServletRequest);
     }
 
