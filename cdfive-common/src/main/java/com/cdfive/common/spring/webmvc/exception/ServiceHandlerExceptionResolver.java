@@ -52,7 +52,8 @@ public class ServiceHandlerExceptionResolver implements HandlerExceptionResolver
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
 //    public ResponseEntity<Map<String, Object>> resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
 //        String traceId = CommonUtil.getTraceId();
-        String traceId = request.getAttribute(TRACE_ID) != null ? request.getAttribute(TRACE_ID).toString() : CommonUtil.getTraceId();
+//        String traceId = request.getAttribute(TRACE_ID) != null ? request.getAttribute(TRACE_ID).toString() : CommonUtil.getTraceId();
+        String traceId = getTraceId(request);
 //        log.error(LOG_PREFIX + "{},requestUri={},remoteAddr={},cost={}ms,body={},exceptionClass={}"
 //                , traceId
 //                , request.getRequestURI()
@@ -96,5 +97,14 @@ public class ServiceHandlerExceptionResolver implements HandlerExceptionResolver
         apiContextVo.setExStackTrace(Throwables.getStackTraceAsString(ex));
         apiContextVo.setCreateTime(new Date());
         return apiContextVo;
+    }
+
+    private String getTraceId(HttpServletRequest request) {
+        Object objTraceId = request.getAttribute(TRACE_ID);
+        if (objTraceId != null) {
+            return objTraceId.toString();
+        }
+
+        return CommonUtil.getTraceId();
     }
 }

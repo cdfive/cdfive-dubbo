@@ -274,7 +274,7 @@
 	        // url: "http://localhost:9090/api/v1/mp3/play" + '?r=' + Math.random(),
 	        // dataType: "json",
 			// contentType: "application/json;charset=utf-8",
-			// contentType: "application/json;charset=utf-8",
+			// contentType: "application/x-www-form-urlencoded",
 	        // data: JSON.stringify({id:currentMusic.id}),
 	        data: {id:currentMusic.id},
 	        // data: 'id=' + currentMusic.id,

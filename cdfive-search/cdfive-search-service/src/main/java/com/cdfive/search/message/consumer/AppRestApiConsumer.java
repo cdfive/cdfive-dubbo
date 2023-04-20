@@ -21,8 +21,8 @@ public class AppRestApiConsumer {
 
     @JmsListener(destination = "appRestApiLogQueue")
     public void receive(AppRestApiLogContextVo contextVo) {
-        if (log.isInfoEnabled()) {
-            log.info(JacksonUtil.objToJson(contextVo));
+        if (log.isDebugEnabled()) {
+            log.debug(JacksonUtil.objToJson(contextVo));
         }
 
         appRestApiLogEsService.saveAppRestApiLog(contextVo);

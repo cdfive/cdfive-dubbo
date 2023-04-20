@@ -27,6 +27,10 @@ public class ApiResponse<T> implements Serializable {
     @Setter
     private T data;
 
+    @Getter
+    @Setter
+    private String traceId;
+
     public ApiResponse() {
     }
 

@@ -40,8 +40,8 @@ public class AppRestApiProducer {
 //    private String appRestApiLogQueue;
 
     public void send(AppRestApiLogContextVo contextVo) {
-        if (log.isInfoEnabled()) {
-            log.info("AppRestApiProducer contextVo={}", JacksonUtil.objToJson(contextVo));
+        if (log.isDebugEnabled()) {
+            log.debug("AppRestApiProducer contextVo={}", JacksonUtil.objToJson(contextVo));
         }
 
         jmsMessagingTemplate.convertAndSend(appRestApiLogQueue, contextVo);

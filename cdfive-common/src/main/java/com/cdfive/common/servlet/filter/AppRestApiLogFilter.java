@@ -70,6 +70,7 @@ public class AppRestApiLogFilter implements Filter, InitializingBean {
                 httpServletRequest = wrapServletRequest(httpServletRequest);
                 chain.doFilter(httpServletRequest, response);
             } catch (Exception e) {
+                log.error(traceId + ",AppRestApiLogFilter internal error,e");
                 ex = e;
                 throw e;
             } finally {
@@ -96,10 +97,11 @@ public class AppRestApiLogFilter implements Filter, InitializingBean {
 
     private String getTraceId(HttpServletRequest httpServletRequest) {
         String traceId = httpServletRequest.getHeader(TRACE_ID);
-        if (StringUtils.isEmpty(traceId)) {
-            traceId = CommonUtil.getTraceId();
+        if (!StringUtils.isEmpty(traceId)) {
+            return traceId;
         }
-        return traceId;
+
+        return CommonUtil.getTraceId();
     }
 
     private AppRestApiLogContextVo buildAppRestApiContextVo(String traceId, long startTime, HttpServletRequest httpServletRequest, Throwable ex, long costTimeMs) throws IOException {
@@ -107,7 +109,7 @@ public class AppRestApiLogFilter implements Filter, InitializingBean {
         logContextVo.setTraceId(traceId);
 
         logContextVo.setAppName(appProperties.getAppName());
-        // TODO
+        // TODO store app ip?
 //        apiContextVo.setAppIp();
         logContextVo.setAppPort(appProperties.getServerPort());
 
