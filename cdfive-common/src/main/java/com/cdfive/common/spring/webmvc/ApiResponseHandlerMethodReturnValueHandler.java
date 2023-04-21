@@ -32,23 +32,23 @@ public class ApiResponseHandlerMethodReturnValueHandler implements HandlerMethod
     private RequestMappingHandlerAdapter requestMappingHandlerAdapter;
 
     @Override
-    public boolean supportsReturnType(MethodParameter methodParameter) {
+    public boolean supportsReturnType(MethodParameter returnType) {
         return true;
     }
 
     @Override
-    public void handleReturnValue(Object o, MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer, NativeWebRequest nativeWebRequest) throws Exception {
+    public void handleReturnValue(Object returnValue, MethodParameter returnType, ModelAndViewContainer mavContainer, NativeWebRequest webRequest) throws Exception {
         ApiResponse<?> apiResponse = null;
-        if (o instanceof ApiResponse) {
-            apiResponse = (ApiResponse<?>) o;
+        if (returnValue instanceof ApiResponse) {
+            apiResponse = (ApiResponse<?>) returnValue;
         } else {
-            apiResponse = ApiResponse.succ(o);
+            apiResponse = ApiResponse.succ(returnValue);
         }
 
-        HttpServletRequest httpServletRequest = nativeWebRequest.getNativeRequest(HttpServletRequest.class);
+        HttpServletRequest httpServletRequest = webRequest.getNativeRequest(HttpServletRequest.class);
         apiResponse.setTraceId(getTraceId(httpServletRequest));
 
-        HttpServletResponse nativeResponse = nativeWebRequest.getNativeResponse(HttpServletResponse.class);
+        HttpServletResponse nativeResponse = webRequest.getNativeResponse(HttpServletResponse.class);
         nativeResponse.setContentType("application/json;charset=UTF-8");
         PrintWriter writer = nativeResponse.getWriter();
         writer.write(JacksonUtil.objToJson(apiResponse));

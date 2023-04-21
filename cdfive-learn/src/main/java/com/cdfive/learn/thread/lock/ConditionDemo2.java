@@ -11,7 +11,7 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * @author cdfive
  */
-public class ConditionDemo1 {
+public class ConditionDemo2 {
 
     public static void main(String[] args) throws Exception {
         Item item = new Item();
@@ -32,7 +32,7 @@ public class ConditionDemo1 {
 
         t1.start();
 
-        TimeUnit.SECONDS.sleep(2);
+        TimeUnit.SECONDS.sleep(4);
 
         t2.start();
     }
