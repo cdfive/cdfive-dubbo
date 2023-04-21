@@ -5,6 +5,7 @@ import com.cdfive.common.util.CommonUtil;
 import com.cdfive.common.util.JacksonUtil;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -23,8 +24,9 @@ import java.util.List;
  * @author xiejihan
  * @date 2023-04-19
  */
+@ConditionalOnProperty(name = "cdfive.framework.wrapApiResponse", havingValue = "true")
 @Component
-public class ApiResponseHandlerMethodReturnValueHandler implements HandlerMethodReturnValueHandler, InitializingBean {
+public class WrapApiResponseHandlerMethodReturnValueHandler implements HandlerMethodReturnValueHandler, InitializingBean {
 
     private static final String TRACE_ID = "_traceId";
 
