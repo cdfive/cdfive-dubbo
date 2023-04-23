@@ -5,7 +5,9 @@ import com.cdfive.common.util.CommonUtil;
 import com.cdfive.common.util.JacksonUtil;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -25,10 +27,14 @@ import java.util.List;
  * @date 2023-04-19
  */
 @ConditionalOnProperty(name = "cdfive.framework.wrapApiResponse", havingValue = "true")
+@RefreshScope
 @Component
 public class WrapApiResponseHandlerMethodReturnValueHandler implements HandlerMethodReturnValueHandler, InitializingBean {
 
     private static final String TRACE_ID = "_traceId";
+
+//    @Value("${cdfive.framework.wrapApiResponse:false}")
+//    private boolean wrapApiResponse;
 
     @Autowired
     private RequestMappingHandlerAdapter requestMappingHandlerAdapter;
@@ -40,6 +46,10 @@ public class WrapApiResponseHandlerMethodReturnValueHandler implements HandlerMe
 
     @Override
     public void handleReturnValue(Object returnValue, MethodParameter returnType, ModelAndViewContainer mavContainer, NativeWebRequest webRequest) throws Exception {
+//        if (!wrapApiResponse) {
+//            return;
+//        }
+
         ApiResponse<?> apiResponse = null;
         if (returnValue instanceof ApiResponse) {
             apiResponse = (ApiResponse<?>) returnValue;

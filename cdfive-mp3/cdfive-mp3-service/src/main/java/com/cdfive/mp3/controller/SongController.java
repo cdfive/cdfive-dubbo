@@ -20,6 +20,10 @@ public class SongController implements SongApi {
 
     @Override
     public FindAllSongRespVo findAllSong() {
+//        if (true) throw new RuntimeException("debug");
+//        if (true) throw new ServiceException("debug", 100100);
+//        if (true) throw new ServiceException("debug", 500);
+//        if (true) throw new RuntimeException("debug");
         FindAllSongRespVo respVo = songService.findAllSong();
         return respVo;
     }

@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
@@ -33,6 +34,12 @@ import java.util.Date;
 public class AppRestApiLogFilter implements Filter, InitializingBean {
 
     private static final String TRACE_ID = "_traceId";
+
+    @Value("${appRestApiLog.logSuccessRequest:false}")
+    private boolean logSuccessRequest;
+
+    @Value("${appRestApiLog.logSuccessRequest:true}")
+    private boolean logErrorRequest;
 
     @Autowired
     private AppProperties appProperties;
@@ -70,7 +77,7 @@ public class AppRestApiLogFilter implements Filter, InitializingBean {
                 httpServletRequest = wrapServletRequest(httpServletRequest);
                 chain.doFilter(httpServletRequest, response);
             } catch (Exception e) {
-                log.error(traceId + ",AppRestApiLogFilter internal error,e");
+                log.error(traceId + ",AppRestApiLogFilter internal error", e);
                 ex = e;
                 throw e;
             } finally {
@@ -168,7 +175,7 @@ public class AppRestApiLogFilter implements Filter, InitializingBean {
         // !!! important
         httpServletRequest.getParameterMap();
 
-        return new HttpServletRequestReplacedFilter.BodyReaderHttpServletRequestWrapper((HttpServletRequest) httpServletRequest);
+        return new HttpServletRequestReplacedFilter.BodyReaderHttpServletRequestWrapper(httpServletRequest);
     }
 
     @Override
