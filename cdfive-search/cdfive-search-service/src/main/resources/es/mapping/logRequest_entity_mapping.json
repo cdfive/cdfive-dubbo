@@ -1,7 +1,7 @@
-// PUT /app_rest_api_log_v1
+// PUT /log_request_v1
 {
     "aliases": {
-        "appRestApiLog": {}
+        "logRequest": {}
     },
     "settings": {
         "number_of_shards": 1,
@@ -17,7 +17,7 @@
                 "type": "keyword",
                 "store": true
             },
-            "serverPort": {
+            "appPort": {
                 "type": "integer",
                 "store": true
             },
@@ -35,6 +35,10 @@
             },
             "requestBody": {
                 "type": "text"
+            },
+            "exExist": {
+                "type": "boolean",
+                "store": true
             },
             "exClassName": {
                 "type": "text",

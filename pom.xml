@@ -71,6 +71,7 @@
         <maven.resources.version>3.1.0</maven.resources.version>
 
         <!-- module version -->
+        <cdfive-framework.version>0.0.1-SNAPSHOT</cdfive-framework.version>
         <cdfive-common.version>0.0.1-SNAPSHOT</cdfive-common.version>
         <cdfive-user-api.version>0.0.1-SNAPSHOT</cdfive-user-api.version>
         <cdfive-mp3-api.version>0.0.1-SNAPSHOT</cdfive-mp3-api.version>
@@ -82,6 +83,7 @@
     </properties>
 
     <modules>
+        <module>cdfive-framework</module>
         <module>cdfive-mp3</module>
         <module>cdfive-common</module>
         <module>cdfive-log</module>
