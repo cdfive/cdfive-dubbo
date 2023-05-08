@@ -12,6 +12,8 @@ import lombok.Setter;
 @Data
 public class ServiceException extends RuntimeException {
 
+    private static final long serialVersionUID = -1579765760968375988L;
+
     @Getter
     @Setter
     private Integer code = 100000;
@@ -20,17 +22,21 @@ public class ServiceException extends RuntimeException {
         this.code = code;
     }
 
-    public ServiceException(String message, Integer code) {
+    public ServiceException(String message) {
+        super(message);
+    }
+
+    public ServiceException(Integer code, String message) {
         super(message);
         this.code = code;
     }
 
-    public ServiceException(String message, Throwable cause, Integer code) {
+    public ServiceException(Integer code, String message, Throwable cause) {
         super(message, cause);
         this.code = code;
     }
 
-    public ServiceException(Throwable cause, Integer code) {
+    public ServiceException(Integer code, Throwable cause) {
         super(cause);
         this.code = code;
     }
