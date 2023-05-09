@@ -1099,9 +1099,9 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
                                 return new EsValueCountVo(o.getKeyAsString(), o.getDocCount());
                             } else {
                                 List<String> subValues = new ArrayList<>();
-                                Aggregation firstAgg = subAggList.get(0);
-                                if (firstAgg instanceof TopHits) {
-                                    TopHits parsedTopHits = (TopHits) firstAgg;
+                                Optional<Aggregation> optAggTopHits = subAggList.stream().filter(agg -> agg instanceof TopHits).findFirst();
+                                if (optAggTopHits.isPresent()) {
+                                    TopHits parsedTopHits = (TopHits) optAggTopHits.get();
                                     for (SearchHit hit : parsedTopHits.getHits()) {
                                         subValues.add(hit.getSourceAsString());
                                     }
