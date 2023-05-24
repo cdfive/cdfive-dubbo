@@ -12,6 +12,13 @@
     <artifactId>cdfive-user-service</artifactId>
 
     <dependencies>
+        <!-- framework -->
+        <dependency>
+            <groupId>com.cdfive</groupId>
+            <artifactId>cdfive-framework</artifactId>
+            <version>${cdfive-framework.version}</version>
+        </dependency>
+
         <!-- common -->
         <dependency>
             <groupId>com.cdfive</groupId>
