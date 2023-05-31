@@ -6,8 +6,11 @@ package com.cdfive.learn.javabasic;
 public class ClassForNameTest {
 
     public static void main(String[] args) throws ClassNotFoundException {
-//        Class.forName("com.cdfive.learn.javabasic.StaticClass");
-        Class.forName("com.cdfive.learn.javabasic.StaticClassTest", false, Thread.currentThread().getContextClassLoader());
+        // print => StaticClass's static block
+        Class.forName("com.cdfive.learn.javabasic.StaticClassTest");
+
+        // won't print => StaticClass's static block
+//        Class.forName("com.cdfive.learn.javabasic.StaticClassTest", false, Thread.currentThread().getContextClassLoader());
         System.out.println("ClassForNameTest done");
     }
 }
