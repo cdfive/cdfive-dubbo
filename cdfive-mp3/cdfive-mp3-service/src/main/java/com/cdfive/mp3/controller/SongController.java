@@ -1,9 +1,12 @@
 package com.cdfive.mp3.controller;
 
+import com.cdfive.common.exception.ServiceException;
+import com.cdfive.common.util.JacksonUtil;
 import com.cdfive.mp3.api.SongApi;
 import com.cdfive.mp3.service.SongService;
 import com.cdfive.mp3.vo.song.FindAllSongRespVo;
 import com.cdfive.mp3.vo.song.SongListVo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,6 +15,7 @@ import java.util.List;
 /**
  * @author cdfive
  */
+@Slf4j
 @RestController
 public class SongController implements SongApi {
 
@@ -25,6 +29,8 @@ public class SongController implements SongApi {
 //        if (true) throw new ServiceException("debug", 500);
 //        if (true) throw new RuntimeException("debug");
         FindAllSongRespVo respVo = songService.findAllSong();
+
+//        log.info("findAllSong => " + JacksonUtil.objToJson(respVo));
         return respVo;
     }
 

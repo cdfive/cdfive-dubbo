@@ -21,6 +21,9 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
+
+import java.util.Map;
 
 /**
  * @author cdfive
@@ -46,5 +49,8 @@ public class ApiApplication {
 //        EurekaRibbonClientConfiguration bean = ctx.getBean(EurekaRibbonClientConfiguration.class);
 //        ServerIntrospector bean = ctx.getBean(ServerIntrospector.class);
 //        System.out.println(bean);
+
+        Map<String, HandlerMethodReturnValueHandler> beansOfType = ctx.getBeansOfType(HandlerMethodReturnValueHandler.class);
+        System.out.println("done");
     }
 }
