@@ -22,18 +22,18 @@ public class SpringContextUtil implements ApplicationContextAware {
     }
 
     public static <T> T getBean(Class<T> beanType) {
-        return getApplicationContext() != null ? getApplicationContext().getBean(beanType) : null;
+        return (T) context.getBean(beanType);
     }
 
     public static Object getBean(String beanName) {
-        return getApplicationContext() != null ? getApplicationContext().getBean(beanName) : null;
+        return context.getBean(beanName);
     }
 
     public static void publishEvent(ApplicationEvent event) {
-        getApplicationContext().publishEvent(event);
+        context.publishEvent(event);
     }
 
     public static void publishEvent(Object event) {
-        getApplicationContext().publishEvent(event);
+        context.publishEvent(event);
     }
 }

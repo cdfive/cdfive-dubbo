@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * @author cdfive
  */
-@ConditionalOnProperty(name = "cdfive.framework.wrapApiResponse", havingValue = "true")
+@ConditionalOnProperty(name = "cdfive.framework.wrapApiResponse", havingValue = "true", matchIfMissing = false)
 @RefreshScope
 @Component
 public class WrapApiResponseHandlerMethodReturnValueHandler implements HandlerMethodReturnValueHandler, InitializingBean {

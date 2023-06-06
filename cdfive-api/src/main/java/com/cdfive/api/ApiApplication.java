@@ -50,7 +50,7 @@ public class ApiApplication {
 //        ServerIntrospector bean = ctx.getBean(ServerIntrospector.class);
 //        System.out.println(bean);
 
-        Map<String, HandlerMethodReturnValueHandler> beansOfType = ctx.getBeansOfType(HandlerMethodReturnValueHandler.class);
-        System.out.println("done");
+//        Map<String, HandlerMethodReturnValueHandler> beansOfType = ctx.getBeansOfType(HandlerMethodReturnValueHandler.class);
+//        System.out.println("done");
     }
 }
