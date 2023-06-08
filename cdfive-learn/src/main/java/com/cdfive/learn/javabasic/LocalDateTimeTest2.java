@@ -2,7 +2,9 @@ package com.cdfive.learn.javabasic;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Date;
 
@@ -29,5 +31,14 @@ public class LocalDateTimeTest2 {
         System.out.println(date);
         System.out.println(localDateTime);
         System.out.println(newDate);
+
+        System.out.println(StringUtils.center("分隔线", 50, "-"));
+
+        LocalDate nowDate = LocalDate.now();
+        System.out.println(nowDate);
+        LocalDateTime nowDateMin = LocalDateTime.of(nowDate, LocalTime.MIN);
+        System.out.println(nowDateMin);
+        LocalDateTime nowDateMax = LocalDateTime.of(nowDate, LocalTime.MAX);
+        System.out.println(nowDateMax);
     }
 }
