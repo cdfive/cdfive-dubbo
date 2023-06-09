@@ -74,6 +74,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -873,7 +874,17 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         }
         this.index = document.index();
 
-        for (Field field : this.entityClass.getDeclaredFields()) {
+        List<Field> nonStaticFields = new ArrayList<>();
+        Class<?> clazz = this.entityClass;
+        do {
+            Field[] fields = clazz.getDeclaredFields();
+            if (fields != null && fields.length > 0) {
+                nonStaticFields.addAll(Arrays.stream(fields).filter(f -> !Modifier.isStatic(f.getModifiers())).collect(Collectors.toList()));
+            }
+            clazz = clazz.getSuperclass();
+        } while (clazz != null);
+
+        for (Field field : nonStaticFields) {
             Id id = field.getAnnotation(Id.class);
             if (id != null) {
                 if (this.idField != null) {
