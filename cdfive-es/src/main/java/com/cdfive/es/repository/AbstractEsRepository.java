@@ -5,6 +5,7 @@ import com.cdfive.common.util.CommonUtil;
 import com.cdfive.common.util.GenericClassUtil;
 import com.cdfive.es.annotation.Document;
 import com.cdfive.es.annotation.Id;
+import com.cdfive.es.config.EsProperties;
 import com.cdfive.es.constant.EsConstant;
 import com.cdfive.es.exception.EsException;
 import com.cdfive.es.query.*;
@@ -86,11 +87,8 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
 
     protected Logger log = LoggerFactory.getLogger(getClass());
 
-    @Value("${spring.data.elasticsearch.searchDslKeyword:#{null}}")
-    private String searchDslKeyword;
-
-    @Value("${spring.data.elasticsearch.aggregateDslKeyword:#{null}}")
-    private String aggregateDslKeyword;
+    @Autowired
+    private EsProperties esProperties;;
 
     @Autowired
     protected RestHighLevelClient client;
@@ -740,7 +738,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         if (log.isDebugEnabled()) {
             log.debug("searchDsl=>{}", searchSourceBuilder.toString());
         } else {
-            if (searchDslKeyword != null && searchSourceBuilder.toString().contains(searchDslKeyword)) {
+            if (StringUtils.hasText(esProperties.getSearchDslKeyword()) && searchSourceBuilder.toString().contains(esProperties.getSearchDslKeyword())) {
                 log.info("searchDsl=>{}", searchSourceBuilder.toString());
             }
         }
@@ -778,7 +776,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         if (log.isDebugEnabled()) {
             log.debug("aggregateDsl=>{}", searchSourceBuilder.toString());
         } else {
-            if (aggregateDslKeyword != null && searchSourceBuilder.toString().contains(aggregateDslKeyword)) {
+            if (StringUtils.hasText(esProperties.getAggregateDslKeyword()) && searchSourceBuilder.toString().contains(esProperties.getAggregateDslKeyword())) {
                 log.info("aggregateDsl=>{}", searchSourceBuilder.toString());
             }
         }

@@ -24,6 +24,10 @@ public class EsProperties {
 
     private Integer maxConnTotal = 1500;
 
+    private String searchDslKeyword;
+
+    private String aggregateDslKeyword;
+
     public String getClusterNodes() {
         return clusterNodes;
     }
@@ -86,5 +90,21 @@ public class EsProperties {
 
     public void setMaxConnTotal(Integer maxConnTotal) {
         this.maxConnTotal = maxConnTotal;
+    }
+
+    public String getSearchDslKeyword() {
+        return searchDslKeyword;
+    }
+
+    public void setSearchDslKeyword(String searchDslKeyword) {
+        this.searchDslKeyword = searchDslKeyword;
+    }
+
+    public String getAggregateDslKeyword() {
+        return aggregateDslKeyword;
+    }
+
+    public void setAggregateDslKeyword(String aggregateDslKeyword) {
+        this.aggregateDslKeyword = aggregateDslKeyword;
     }
 }
