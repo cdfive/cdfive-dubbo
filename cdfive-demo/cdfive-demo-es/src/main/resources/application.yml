@@ -1,0 +1,9 @@
+server:
+  port: 8080
+
+spring:
+  data:
+    elasticsearch:
+      clusterNodes: test1-10-k8s-es.19k8s.cn:9200
+      username:
+      password:

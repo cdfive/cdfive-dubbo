@@ -1,0 +1,32 @@
+PUT depot_v1
+{
+  "aliases": {
+    "depot": {}
+  },
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 2,
+    "refresh_interval": "1s"
+  },
+  "mappings": {
+    "properties": {
+      "id": {
+        "type": "keyword",
+        "store": true
+      },
+      "code": {
+        "type": "keyword",
+        "store": true
+      },
+      "name": {
+        "type": "text",
+        "analyzer": "ik_smart",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        }
+      }
+    }
+  }
+}
