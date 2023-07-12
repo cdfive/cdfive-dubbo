@@ -36,9 +36,9 @@ public class CommonUtil {
         } while (clazz != null);
         return nonStaticFields.stream()
                 .filter(f -> !Modifier.isStatic(f.getModifiers()))
-                .collect(Collectors.toMap(f -> f.getName(), f -> {
+                .collect(LinkedHashMap::new, (m, f) -> {
                     ReflectionUtils.makeAccessible(f);
-                    return ReflectionUtils.getField(f, obj);
-                }, (o, n) -> n, LinkedHashMap::new));
+                    m.put(f.getName(), ReflectionUtils.getField(f, obj));
+                }, LinkedHashMap::putAll);
     }
 }

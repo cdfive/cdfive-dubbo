@@ -16,7 +16,7 @@ public class CommonUtilTest {
 
     @Test
     public void testObjToMap() {
-        Item item = new Item("test", 5, null);
+        Item item = new Item("test", 5, null, null);
 
         Map<String, Object> properties = new HashMap<>();
         properties.put("year", 2023);
@@ -24,7 +24,7 @@ public class CommonUtilTest {
         item.setProperties(properties);
 
         Map<String, Object> map = CommonUtil.objToMap(item);
-        System.out.println(map);
+        System.out.println(map);;
     }
 
     @NoArgsConstructor
@@ -35,6 +35,8 @@ public class CommonUtilTest {
         private String name;
 
         private Integer quantity;
+
+        private String description;
 
         private Map<String, Object> properties;
     }
