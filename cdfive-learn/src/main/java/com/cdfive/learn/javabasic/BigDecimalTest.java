@@ -10,6 +10,15 @@ import java.math.BigDecimal;
 public class BigDecimalTest {
 
     public static void main(String[] args) {
+        BigDecimal x = new BigDecimal(3.33);
+        BigDecimal y = new BigDecimal("3.33");
+        // x=3.3300000000000000710542735760100185871124267578125
+        System.out.println("x=" + x);
+        // y=3.33
+        System.out.println("y=" + y);
+
+        System.out.println(StringUtils.center("分隔线", 50, "-"));
+
         BigDecimal a = new BigDecimal("102.7");
         System.out.println(a);
 
@@ -19,7 +28,10 @@ public class BigDecimalTest {
             System.out.println(b);
         } catch (Exception e) {
             // java.lang.NumberFormatException
-            e.printStackTrace();
+            System.out.println(e.getClass().getName());
+
+            // at java.math.BigDecimal.<init>
+            // e.printStackTrace();
         }
 
         System.out.println(StringUtils.center("分隔线", 50, "-"));
@@ -44,8 +56,10 @@ public class BigDecimalTest {
             System.out.println("nonTerminatingDecimal=" + nonTerminatingDecimal);
         } catch (Exception e) {
             // java.lang.NumberFormatException
+            System.out.println(e.getClass().getName());
+
             // Non-terminating decimal expansion; no exact representable decimal result.
-            e.printStackTrace();
+            // e.printStackTrace();
         }
     }
 }
