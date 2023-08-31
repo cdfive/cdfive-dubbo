@@ -3,6 +3,7 @@ package com.cdfive.learn.javabasic;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * @author cdfive
@@ -21,7 +22,6 @@ public class BigDecimalTest {
 
         BigDecimal a = new BigDecimal("102.7");
         System.out.println(a);
-
         BigDecimal b = null;
         try {
             b = new BigDecimal("102.7 ");
@@ -41,7 +41,6 @@ public class BigDecimalTest {
         System.out.println(c.multiply(new BigDecimal("100")).toString());
         // 1314
         System.out.println(c.multiply(new BigDecimal("100")).toBigInteger());
-
         // 0.01
         System.out.println(new BigDecimal("1").divide(new BigDecimal("100")));
         // 0.1
@@ -57,9 +56,11 @@ public class BigDecimalTest {
         } catch (Exception e) {
             // java.lang.NumberFormatException
             System.out.println(e.getClass().getName());
-
             // Non-terminating decimal expansion; no exact representable decimal result.
             // e.printStackTrace();
         }
+        BigDecimal nonTerminatingDecimal2 = new BigDecimal("1").divide(new BigDecimal("3"), 2, RoundingMode.HALF_DOWN);
+        // 0.33
+        System.out.println(nonTerminatingDecimal2);
     }
 }
