@@ -270,7 +270,7 @@
 		currentMusic = musicFiles[index];
 		$.ajax({
 	        type: "post",
-	        url: "http://www.cdfive.com:9090/api/v1/mp3/play" + '?r=' + Math.random(),
+	        url: "http://api.cdfive.com/api/v1/mp3/play" + '?r=' + Math.random(),
 	        // url: "http://localhost:9090/api/v1/mp3/play" + '?r=' + Math.random(),
 	        // dataType: "json",
 			// contentType: "application/json;charset=utf-8",
@@ -438,7 +438,7 @@
 		$reasonDiv = $(".reasonDiv");
 		
 		$.ajax({
-	        url : 'http://www.cdfive.com:9090/api/v1/mp3/all' +'?r='+Math.random(),
+	        url : 'http://api.cdfive.com/api/v1/mp3/all' +'?r='+Math.random(),
 	        // url : 'http://localhost:9090/api/v1/mp3/all' +'?r='+Math.random(),
 	        dataType:'json',
 	        type : 'post',

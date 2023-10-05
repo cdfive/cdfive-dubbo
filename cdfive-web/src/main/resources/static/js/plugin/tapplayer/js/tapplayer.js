@@ -45,7 +45,7 @@ var tapplayer = (function(){
 		
 		$.ajax({
 	        type: "post",
-	        url: "http://www.cdfive.com:9090/api/v1/mp3/play" + '?r=' + Math.random(),
+	        url: "http://api.cdfive.com/api/v1/mp3/play" + '?r=' + Math.random(),
 	        // url: "http://localhost:9090/api/v1/mp3/play" + '?r=' + Math.random(),
 	        dataType: "json",
 	        data: {id:mp3.id},
@@ -138,7 +138,7 @@ var tapplayer = (function(){
 		});
 		
 		$.ajax({
-	        url : 'http://www.cdfive.com:9090/api/v1/mp3/random_list' + '?r=' + Math.random(),
+	        url : 'http://api.cdfive.com/api/v1/mp3/random_list' + '?r=' + Math.random(),
 	        // url : 'http://localhost:9090/api/v1/mp3/random_list' + '?r=' + Math.random(),
 	        dataType:'json',
 	        type : 'post',
