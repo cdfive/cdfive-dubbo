@@ -40,5 +40,7 @@ public class ListRetainAllTest {
         System.out.println(list2);
         // [1, 2, 3, 4]
         System.out.println(CollectionUtils.union(list2, Lists.newArrayList( 2, 4)));
+        // [1, 2, 2, 3, 4] !!Note the element 2 is not unique
+        System.out.println(CollectionUtils.union(list2, Lists.newArrayList( 2, 2, 4)));
     }
 }
