@@ -1,0 +1,63 @@
+#server:
+#  port: 9090
+#
+#spring:
+#  cloud:
+#    nacos:
+#      discovery:
+#        server-addr: localhost:8848
+#        username: nacos
+#        password: nacos
+#        namespace: 118a7c59-6e15-41c9-b11d-a5f94e9e75b0
+#        group: cdfive-dubbo
+#    gateway:
+#      routes:
+#        - id: cdfive-api
+##          uri: http://localhost:7070
+##          uri: lb://CDFIVE-API
+#          uri: lb://cdfive-api
+#          predicates:
+#            - Path=/api/v1/**
+#        - id: cdfive-api2
+#          uri: lb://cdfive-api
+#          predicates:
+#            - Path=/api/v3/**
+#          filters:
+#            - RewritePath=/api/v3/(?<segment>.*), /api/v1/$\{segment}
+#        - id: httpbin_route
+#          uri: https://httpbin.org
+#          predicates:
+#            - Path=/httpbin/**
+#          filters:
+#            - RewritePath=/httpbin/(?<segment>.*), /$\{segment}
+#      globalcors:
+#        corsConfigurations:
+#          '[/**]':
+#              allowedOrigins: "*"
+#              allowedMethods: "*"
+#              allowedHeaders: "*"
+#              allowCredentials: true
+#      default-filters:
+#        - DedupeResponseHeader=Access-Control-Allow-Origin, RETAIN_FIRST
+#management:
+#  endpoint:
+#    gateway:
+#      enabled: true
+#  endpoints:
+#    web:
+#      exposure:
+#        include: gateway
+#
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:7777/eureka
+#    register-with-eureka: true
+#    fetch-registry: true
+#    registry-fetch-interval-seconds: 5
+#
+#ribbon:
+#  ServerListRefreshInterval: 5000
+#
+#biz:
+#  name: hello cdfive
