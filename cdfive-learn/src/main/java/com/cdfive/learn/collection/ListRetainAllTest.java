@@ -38,5 +38,7 @@ public class ListRetainAllTest {
         System.out.println(CollectionUtils.intersection(list2, Lists.newArrayList(1, 2)));
         // [1, 2, 3] !!Note that the data of original list has no change
         System.out.println(list2);
+        // [1, 2, 3, 4]
+        System.out.println(CollectionUtils.union(list2, Lists.newArrayList( 2, 4)));
     }
 }
