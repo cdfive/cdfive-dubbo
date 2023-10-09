@@ -18,5 +18,9 @@ public class StringReplaceTest {
         result = name.replaceAll(".","。");
         // 。。。。。。。。
         System.out.println(result);
+
+        // 123。ab。c
+        result = name.replaceAll("\\.","。");
+        System.out.println(result);
     }
 }
