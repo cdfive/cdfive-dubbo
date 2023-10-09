@@ -9,11 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.context.request.ServletWebRequest;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author cdfive
@@ -49,7 +53,7 @@ public class LogRequestFilter implements Filter {
 
         Throwable ex = null;
         try {
-            chain.doFilter(request, response);
+            chain.doFilter(httpServletRequest, response);
         } catch (Throwable e) {
             log.error(traceId + ",LogRequestFilter internal error", e);
             ex = e;
@@ -85,8 +89,21 @@ public class LogRequestFilter implements Filter {
             return httpServletRequest;
         }
 
+//        String body1 = StreamUtils.copyToString(httpServletRequest.getInputStream(), Charset.defaultCharset());
+//        log.info("body1={}", body1);
+
         // !!! important
-        httpServletRequest.getParameterMap();
+        // at least read once
+        Map<String, String[]> parameterMap = httpServletRequest.getParameterMap();
+
+//        Set<Map.Entry<String, String[]>> entries = parameterMap.entrySet();
+//        log.info("parameterMap=>");
+//        for (Map.Entry<String, String[]> entry : entries) {
+//            log.info(entry.getKey() + "=>" + String.join(",", entry.getValue()));
+//        }
+//
+//        String body2 = StreamUtils.copyToString(httpServletRequest.getInputStream(), Charset.defaultCharset());
+//        log.info("body2={}", body2);
 
         return new ReadBodyHttpServletRequestWrapper(httpServletRequest);
     }

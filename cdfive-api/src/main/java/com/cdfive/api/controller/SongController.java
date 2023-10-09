@@ -1,8 +1,11 @@
 package com.cdfive.api.controller;
 
+import com.alibaba.nacos.api.config.annotation.NacosValue;
+import com.cdfive.api.TestReqVo;
 import com.cdfive.api.constant.UriConstant;
 import com.cdfive.common.api.ApiResponse;
 import com.cdfive.common.base.AbstractController;
+import com.cdfive.common.util.FastJsonUtil;
 import com.cdfive.common.util.JacksonUtil;
 import com.cdfive.common.util.WebUtil;
 import com.cdfive.common.vo.page.PageRespVo;
@@ -30,17 +33,19 @@ public class SongController extends AbstractController {
     @Autowired
     private SongApi songApi;
 
-    @Value("${test:}")
+    @Value("${test:#{null}}")
+//    @NacosValue(value = "${test}", autoRefreshed = true)
     private String test;
 
-    @RequestMapping("/test")
+    @RequestMapping("/api/v1/test")
     public String test() {
         return test;
     }
 
     @RequestMapping(UriConstant.MP3_ALL)
 //    public ApiResponse<FindAllSongRespVo> all() {
-    public FindAllSongRespVo all() {
+    public FindAllSongRespVo all(@RequestBody(required = false) TestReqVo reqVo) {
+        log.info("reqVo={}", FastJsonUtil.obj2Json(reqVo));
 //        FindAllSongRespVo findAllSongRespVo = new FindAllSongRespVo();
 //        SongListVo songListVo = new SongListVo();
 //        songListVo.setId(1);
@@ -72,7 +77,7 @@ public class SongController extends AbstractController {
 //    public ApiResponse<Integer> play(@RequestParam("id") Integer id) {
 //    public ApiResponse<Integer> play(Integer id) {
     public Integer play(Integer id) {
-//        log.info("play,id={}", id);
+        log.info("play,id={}", id);
 //        Integer play = songApi.play(reqVo != null ? reqVo.getId() : null, WebUtil.getIp());
         Integer play = songApi.play(id, WebUtil.getIp());
 //        return succ(play);

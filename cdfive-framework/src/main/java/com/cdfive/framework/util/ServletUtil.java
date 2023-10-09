@@ -17,7 +17,7 @@ public class ServletUtil {
 
     public static final String REQUEST_START_TIME = "_request_start_time";
 
-    public static final String REQUEST_COST_TIME_MS = "_request_cost_time_ms";
+    public static final String REQUEST_TIME_COST_MS = "_request_time_cost_ms";
 
     public static HttpServletRequest getCurrentHttpServletRequest() {
         if (RequestContextHolder.getRequestAttributes() == null) {
@@ -70,7 +70,7 @@ public class ServletUtil {
     }
 
     public static Long getRequestCostTimeMs(HttpServletRequest request) {
-        Object attr = request.getAttribute(REQUEST_COST_TIME_MS);
+        Object attr = request.getAttribute(REQUEST_TIME_COST_MS);
         if (attr != null && attr instanceof Long) {
             return (Long) attr;
         }
@@ -79,7 +79,7 @@ public class ServletUtil {
     }
 
     public static void setRequestCostTimeMs(HttpServletRequest request, Long value) {
-        request.setAttribute(REQUEST_COST_TIME_MS, value);
+        request.setAttribute(REQUEST_TIME_COST_MS, value);
     }
 
     @SneakyThrows
