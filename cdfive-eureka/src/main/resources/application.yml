@@ -3,6 +3,10 @@ server:
 spring:
   application:
     name: eureka-server
+  boot:
+    admin:
+      client:
+        url: localhost:8888
 eureka:
   client:
     service-url:
@@ -12,3 +16,12 @@ eureka:
   server:
     enable-self-preservation: false
     use-read-only-response-cache: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: \\*
+  info:
+    env:
+      enabled: true
