@@ -39,12 +39,14 @@ public class SongController extends AbstractController {
 
     @RequestMapping("/api/v1/test")
     public String test() {
+        log.debug("test={}", test);
         return test;
     }
 
     @RequestMapping(UriConstant.MP3_ALL)
 //    public ApiResponse<FindAllSongRespVo> all() {
-    public FindAllSongRespVo all(@RequestBody(required = false) TestReqVo reqVo) {
+//    public FindAllSongRespVo all(@RequestBody(required = false) TestReqVo reqVo) {
+    public ApiResponse<FindAllSongRespVo> all(@RequestBody(required = false) TestReqVo reqVo) {
         log.info("reqVo={}", FastJsonUtil.obj2Json(reqVo));
 //        FindAllSongRespVo findAllSongRespVo = new FindAllSongRespVo();
 //        SongListVo songListVo = new SongListVo();
@@ -60,28 +62,28 @@ public class SongController extends AbstractController {
 
         FindAllSongRespVo respVo = songApi.findAllSong();
 //        log.info("all => " + JacksonUtil.objToJson(respVo));
-        return respVo;
+        return ApiResponse.succ(respVo);
     }
 
     @RequestMapping(UriConstant.MP3_RANDOM_LIST)
-//    public ApiResponse<List<SongListVo>> randomList() {
-    public List<SongListVo> randomList() {
+//    public List<SongListVo> randomList() {
+    public ApiResponse<List<SongListVo>> randomList() {
         List<SongListVo> list = songApi.findRandomSongList(20);
-//        return succ(list);
-        return list;
+        return succ(list);
+//        return list;
     }
 
     @RequestMapping(UriConstant.MP3_PLAY)
 //    public ApiResponse<Integer> play(@RequestBody PlaySongReqVo reqVo) {
 //    public ApiResponse<Integer> play(PlaySongReqVo reqVo) {
 //    public ApiResponse<Integer> play(@RequestParam("id") Integer id) {
-//    public ApiResponse<Integer> play(Integer id) {
-    public Integer play(Integer id) {
+    public ApiResponse<Integer> play(Integer id) {
+//    public Integer play(Integer id) {
         log.info("play,id={}", id);
 //        Integer play = songApi.play(reqVo != null ? reqVo.getId() : null, WebUtil.getIp());
         Integer play = songApi.play(id, WebUtil.getIp());
-//        return succ(play);
-        return play;
+        return succ(play);
+//        return play;
     }
 
     @RequestMapping(UriConstant.MP3_LIST)

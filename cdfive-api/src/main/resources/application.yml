@@ -53,3 +53,12 @@
 
 #ribbon:
 #  readTimeout: 10000
+
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: \\*
+#  info:
+#    env:
+#      enabled: true

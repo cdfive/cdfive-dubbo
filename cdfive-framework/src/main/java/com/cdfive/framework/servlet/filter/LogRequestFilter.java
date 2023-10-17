@@ -67,7 +67,7 @@ public class LogRequestFilter implements Filter {
             }
 
             if (ex != null) {
-                log.error("\nrequestUri={},\nremoteAddr={},\ncost={}ms,\nbody={}"
+                log.error(traceId + ",requestUri={},\nremoteAddr={},\ncost={}ms,\nbody={}"
                         , httpServletRequest.getRequestURI()
                         , httpServletRequest.getRemoteAddr()
                         , costTimeMs
