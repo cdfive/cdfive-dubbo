@@ -45,6 +45,8 @@ public class LogRequestFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         httpServletRequest = wrapServletRequest(httpServletRequest);
 
+//        log.error("{},init body={}", httpServletRequest.getRequestURI(), ServletUtil.getRequestBody(httpServletRequest));
+
         long startTime = System.currentTimeMillis();
         ServletUtil.setRequestStartTime(httpServletRequest, startTime);
 
@@ -59,6 +61,8 @@ public class LogRequestFilter implements Filter {
             ex = e;
             throw e;
         } finally {
+//            log.error("{},finally body={}", httpServletRequest.getRequestURI(), ServletUtil.getRequestBody(httpServletRequest));
+
             long costTimeMs = System.currentTimeMillis() - startTime;
             ServletUtil.setRequestCostTimeMs(httpServletRequest, costTimeMs);
 
