@@ -12,7 +12,7 @@
     <artifactId>cdfive-es</artifactId>
 
     <properties>
-        <elasticsearch.version>7.4.0</elasticsearch.version>
+        <elasticsearch.version>7.14.0</elasticsearch.version>
     </properties>
 
     <dependencies>
