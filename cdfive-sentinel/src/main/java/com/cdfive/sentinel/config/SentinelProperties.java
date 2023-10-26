@@ -1,6 +1,6 @@
 package com.cdfive.sentinel.config;
 
-import com.alibaba.csp.sentinel.util.StringUtil;
+import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +11,7 @@ import org.springframework.context.annotation.PropertySource;
 /**
  * @author cdfive
  */
+@Data
 @Configuration
 @ConfigurationProperties(prefix = "sentinel")
 @PropertySource(value = "classpath:sentinel.properties", ignoreResourceNotFound = true)
@@ -24,125 +25,59 @@ public class SentinelProperties {
     @Value("${sentinel.appName:#{null}}")
     private String appName;
 
-    @Value("${sentinel.transport.dashboard:#{null}}")
-    private String transportDashboard;
+    @Value("${sentinel.enableSpringWebMvc:true}")
+    private boolean enableSpringWebMvc;
 
-    @Value("${sentinel.transport.port:#{null}}")
-    private Integer transportPort;
+    @Value("${sentinel.enableServlet:false}")
+    private boolean enableServlet;
 
-    @Value("${sentinel.datasource.type:#{null}}")
-    private String datasourceType;
+//    @Value("${sentinel.transport.dashboard:#{null}}")
+//    private String transportDashboard;
+//
+//    @Value("${sentinel.transport.port:#{null}}")
+//    private Integer transportPort;
 
-    @Value("${redis.host:#{null}}")
-    private String redisHost;
+//    @Value("${sentinel.datasource.type:#{null}}")
+//    private String dataSourceType;
 
-    @Value("${redis.port:#{null}}")
-    private String redisPort;
+//    @Value("${redis.host:#{null}}")
+//    private String redisHost;
+//
+//    @Value("${redis.port:#{null}}")
+//    private String redisPort;
+//
+//    @Value("${redis.password:#{null}}")
+//    private String redisPassword;
 
-    @Value("${redis.password:#{null}}")
-    private String redisPassword;
+    private Transport transport;
 
-    private Transport transport = new Transport();
+    private DataSource dataSource;
 
-    public boolean isEnable() {
-        return enable;
-    }
+//    private RedisProperties redis;
 
-    public void setEnable(boolean enable) {
-        this.enable = enable;
-    }
-
-    public String getAppName() {
-        return appName;
-    }
-
-    public void setAppName(String appName) {
-        this.appName = appName;
-    }
-
-    public String getTransportDashboard() {
-        if (StringUtil.isNotBlank(transportDashboard)) {
-            return transportDashboard;
-        }
-
-        return transport.getDashboard();
-    }
-
-    public void setTransportDashboard(String transportDashboard) {
-        this.transportDashboard = transportDashboard;
-    }
-
-    public Integer getTransportPort() {
-        if (transportPort != null) {
-            return transportPort;
-        }
-
-        return transport.getPort();
-    }
-
-    public void setTransportPort(Integer transportPort) {
-        this.transportPort = transportPort;
-    }
-
-    public String getDatasourceType() {
-        return datasourceType;
-    }
-
-    public void setDatasourceType(String datasourceType) {
-        this.datasourceType = datasourceType;
-    }
-
-    public String getRedisHost() {
-        return redisHost;
-    }
-
-    public void setRedisHost(String redisHost) {
-        this.redisHost = redisHost;
-    }
-
-    public String getRedisPort() {
-        return redisPort;
-    }
-
-    public void setRedisPort(String redisPort) {
-        this.redisPort = redisPort;
-    }
-
-    public String getRedisPassword() {
-        return redisPassword;
-    }
-
-    public void setRedisPassword(String redisPassword) {
-        this.redisPassword = redisPassword;
-    }
-
-    public Transport getTransport() {
-        return transport;
-    }
-
-    public void setTransport(Transport transport) {
-        this.transport = transport;
-    }
-
+    @Data
     public static class Transport {
+
         private String dashboard;
 
         private Integer port;
+    }
 
-        public String getDashboard() {
-            return dashboard;
-        }
+    @Data
+    public static class DataSource {
 
-        public void setDashboard(String dashboard) {
-            this.dashboard = dashboard;
-        }
+        private String type;
 
-        public Integer getPort() {
-            return port;
-        }
+        private RedisProperties redis;
+    }
 
-        public void setPort(Integer port) {
-            this.port = port;
-        }
+    @Data
+    public static class RedisProperties {
+
+        private String host;
+
+        private String port;
+
+        private String password;
     }
 }
