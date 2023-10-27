@@ -79,5 +79,7 @@ public class SentinelProperties {
         private String port;
 
         private String password;
+
+        private String channelSuffix;
     }
 }

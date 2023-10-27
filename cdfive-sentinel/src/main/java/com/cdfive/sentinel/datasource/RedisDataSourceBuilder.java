@@ -20,6 +20,7 @@ import com.cdfive.sentinel.config.SentinelProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -58,9 +59,14 @@ public class RedisDataSourceBuilder extends AbstractDataSourceBuilder {
         }
         RedisConnectionConfig redisConfig = redisConfigBuilder.build();
 
+        String channelSuffix = redisProperties.getChannelSuffix();
+        if (!StringUtils.hasText(channelSuffix)) {
+            channelSuffix = "";
+        }
+
         // Init RedisDataSource for flow rules
         String flowRuleKey = buildRuleKey(appName, ip, port, "flow");
-        RedisDataSource<List<FlowRule>> flowRuleRedisDataSource = new RedisDataSource<>(redisConfig, flowRuleKey, flowRuleKey, new Converter<String, List<FlowRule>>() {
+        RedisDataSource<List<FlowRule>> flowRuleRedisDataSource = new RedisDataSource<>(redisConfig, flowRuleKey, flowRuleKey + channelSuffix, new Converter<String, List<FlowRule>>() {
             @Override
             public List<FlowRule> convert(String source) {
                 return JSON.parseObject(source, new TypeReference<List<FlowRule>>() {
@@ -71,7 +77,7 @@ public class RedisDataSourceBuilder extends AbstractDataSourceBuilder {
 
         // Init RedisDataSource for degrade rules
         String degradeRuleKey = buildRuleKey(appName, ip, port, "degrade");
-        RedisDataSource<List<DegradeRule>> degradeRuleRedisDataSource = new RedisDataSource<>(redisConfig, degradeRuleKey, degradeRuleKey, new Converter<String, List<DegradeRule>>() {
+        RedisDataSource<List<DegradeRule>> degradeRuleRedisDataSource = new RedisDataSource<>(redisConfig, degradeRuleKey, degradeRuleKey + channelSuffix, new Converter<String, List<DegradeRule>>() {
             @Override
             public List<DegradeRule> convert(String source) {
                 return JSON.parseObject(source, new TypeReference<List<DegradeRule>>() {
@@ -82,7 +88,7 @@ public class RedisDataSourceBuilder extends AbstractDataSourceBuilder {
 
         // Init RedisDataSource for system rules
         String systemRuleKey = buildRuleKey(appName, ip, port, "system");
-        RedisDataSource<List<SystemRule>> systemRuleRedisDataSource = new RedisDataSource<>(redisConfig, systemRuleKey, systemRuleKey, new Converter<String, List<SystemRule>>() {
+        RedisDataSource<List<SystemRule>> systemRuleRedisDataSource = new RedisDataSource<>(redisConfig, systemRuleKey, systemRuleKey + channelSuffix, new Converter<String, List<SystemRule>>() {
             @Override
             public List<SystemRule> convert(String source) {
                 return JSON.parseObject(source, new TypeReference<List<SystemRule>>() {
@@ -93,7 +99,7 @@ public class RedisDataSourceBuilder extends AbstractDataSourceBuilder {
 
         // Init RedisDataSource for authority rules
         String authorityRuleKey = buildRuleKey(appName, ip, port, "authority");
-        RedisDataSource<List<AuthorityRule>> authorityRuleRedisDataSource = new RedisDataSource<>(redisConfig, authorityRuleKey, authorityRuleKey, new Converter<String, List<AuthorityRule>>() {
+        RedisDataSource<List<AuthorityRule>> authorityRuleRedisDataSource = new RedisDataSource<>(redisConfig, authorityRuleKey, authorityRuleKey + channelSuffix, new Converter<String, List<AuthorityRule>>() {
             @Override
             public List<AuthorityRule> convert(String source) {
                 return JSON.parseObject(source, new TypeReference<List<AuthorityRule>>() {
@@ -104,7 +110,7 @@ public class RedisDataSourceBuilder extends AbstractDataSourceBuilder {
 
         // Init RedisDataSource for paramFlow rules
         String paramFlowRuleKey = buildRuleKey(appName, ip, port, "paramFlow");
-        RedisDataSource<List<ParamFlowRule>> paramFlowRuleRedisDataSource = new RedisDataSource<>(redisConfig, paramFlowRuleKey, paramFlowRuleKey, new Converter<String, List<ParamFlowRule>>() {
+        RedisDataSource<List<ParamFlowRule>> paramFlowRuleRedisDataSource = new RedisDataSource<>(redisConfig, paramFlowRuleKey, paramFlowRuleKey + channelSuffix, new Converter<String, List<ParamFlowRule>>() {
             @Override
             public List<ParamFlowRule> convert(String source) {
                 return JSON.parseObject(source, new TypeReference<List<ParamFlowRule>>() {
