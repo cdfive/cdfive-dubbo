@@ -68,11 +68,13 @@ public class SentinelProperties {
 
         private String type;
 
-        private RedisProperties redis;
+        private RedisDataSourceProperties redisDataSourceProperties;
+
+        private NacosDataSourceProperties nacosDataSourceProperties;
     }
 
     @Data
-    public static class RedisProperties {
+    public static class RedisDataSourceProperties {
 
         private String host;
 
@@ -81,5 +83,21 @@ public class SentinelProperties {
         private String password;
 
         private String channelSuffix;
+    }
+
+    @Data
+    public static class NacosDataSourceProperties {
+
+        private static final String DEFAULT_GROUP_ID = "SENTINEL_GROUP";
+
+        private String serverAddr;
+
+        private String namespace;
+
+        private String groupId;
+
+        public String getGroupId() {
+            return groupId != null && groupId.length() > 0 ? groupId : DEFAULT_GROUP_ID;
+        }
     }
 }

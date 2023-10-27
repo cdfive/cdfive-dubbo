@@ -40,16 +40,16 @@ public class RedisDataSourceBuilder extends AbstractDataSourceBuilder {
 
     @Override
     public void buildDataSource(SentinelProperties sentinelProperties, String appName, String ip, Integer port) {
-        SentinelProperties.RedisProperties redisProperties = sentinelProperties.getDataSource().getRedis();
-        Assert.notNull(redisProperties, "empty RedisProperties");
+        SentinelProperties.RedisDataSourceProperties redisDataSourceProperties = sentinelProperties.getDataSource().getRedisDataSourceProperties();
+        Assert.notNull(redisDataSourceProperties, "redisDataSourceProperties can't be empty");
 
-        String redisHost = redisProperties.getHost();
-        Assert.hasText(redisHost, "redisHost empty");
+        String redisHost = redisDataSourceProperties.getHost();
+        Assert.hasText(redisHost, "redis host can't be empty");
 
-        String redisPort = redisProperties.getPort();
-        Assert.hasText(redisPort, "redisPort empty");
+        String redisPort = redisDataSourceProperties.getPort();
+        Assert.hasText(redisPort, "redis port can't be empty");
 
-        String redisPassword = redisProperties.getPassword();
+        String redisPassword = redisDataSourceProperties.getPassword();
         log.info("{}SentinelConfiguration init redis datasource,host={},port={},password={}", LOG_PRIFEX, redisHost, redisPort, redisPassword);
 
         RedisConnectionConfig.Builder redisConfigBuilder = RedisConnectionConfig.builder();
@@ -59,7 +59,7 @@ public class RedisDataSourceBuilder extends AbstractDataSourceBuilder {
         }
         RedisConnectionConfig redisConfig = redisConfigBuilder.build();
 
-        String channelSuffix = redisProperties.getChannelSuffix();
+        String channelSuffix = redisDataSourceProperties.getChannelSuffix();
         if (!StringUtils.hasText(channelSuffix)) {
             channelSuffix = "";
         }
@@ -118,6 +118,5 @@ public class RedisDataSourceBuilder extends AbstractDataSourceBuilder {
             }
         });
         ParamFlowRuleManager.register2Property(paramFlowRuleRedisDataSource.getProperty());
-
     }
 }

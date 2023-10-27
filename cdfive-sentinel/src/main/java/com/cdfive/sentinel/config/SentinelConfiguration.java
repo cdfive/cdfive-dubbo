@@ -1,6 +1,7 @@
 package com.cdfive.sentinel.config;
 
 import com.alibaba.csp.sentinel.Constants;
+import com.alibaba.csp.sentinel.adapter.dubbo.DubboAdapterGlobalConfig;
 import com.alibaba.csp.sentinel.adapter.dubbo.fallback.DubboFallback;
 import com.alibaba.csp.sentinel.adapter.dubbo.fallback.DubboFallbackRegistry;
 import com.alibaba.csp.sentinel.adapter.servlet.callback.UrlBlockHandler;
