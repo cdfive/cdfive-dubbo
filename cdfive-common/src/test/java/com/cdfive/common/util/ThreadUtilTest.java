@@ -62,7 +62,6 @@ public class ThreadUtilTest {
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
-            threadPoolExecutor.shutdownNow();
         }
 
         statThread.interrupt();
