@@ -71,6 +71,10 @@ public class SentinelProperties {
         private RedisDataSourceProperties redisDataSourceProperties;
 
         private NacosDataSourceProperties nacosDataSourceProperties;
+
+        private ZookeeperDataSourceProperties zookeeperDataSourceProperties;
+
+        private ApolloDataSourceProperties apolloDataSourceProperties;
     }
 
     @Data
@@ -99,5 +103,19 @@ public class SentinelProperties {
         public String getGroupId() {
             return groupId != null && groupId.length() > 0 ? groupId : DEFAULT_GROUP_ID;
         }
+    }
+
+    @Data
+    public static class ZookeeperDataSourceProperties {
+
+        private String serverAddr;
+    }
+
+    @Data
+    public static class ApolloDataSourceProperties {
+
+        private String serverAddress;
+
+        private String namespaceName;
     }
 }
