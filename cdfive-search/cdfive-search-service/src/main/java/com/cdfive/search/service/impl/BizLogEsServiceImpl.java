@@ -13,6 +13,7 @@ import com.cdfive.search.vo.bizlog.QueryBizLogPageReqVo;
 import com.cdfive.search.vo.bizlog.QueryBizLogPageRespVo;
 import com.cdfive.search.vo.bizlog.SaveBizLogReqVo;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.lucene.queryparser.classic.QueryParser;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.BeanUtils;
@@ -63,7 +64,7 @@ public class BizLogEsServiceImpl implements BizLogEsService {
 
         String info = reqVo.getInfo();
         if (StringUtil.isNotBlank(info)) {
-            rootQueryBuilder.filter(QueryBuilders.matchQuery("info", info));
+            rootQueryBuilder.filter(QueryBuilders.matchQuery("info", QueryParser.escape(info)));
         }
 
         Integer keyId = reqVo.getKeyId();
