@@ -15,6 +15,10 @@ public class DateTimeUtil {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_TIME_PATTERN);
 
     public static String formatLocalDateTime(LocalDateTime localDateTime) {
+        if (localDateTime == null) {
+            return null;
+        }
+
         return DATE_TIME_FORMATTER.format(localDateTime);
     }
 
@@ -23,14 +27,27 @@ public class DateTimeUtil {
             return null;
         }
 
-        return DATE_TIME_FORMATTER.format(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+        return formatLocalDateTime(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
     }
 
     public static LocalDateTime parseLocalDateTime(String str) {
+        if (str == null) {
+            return null;
+        }
+
         return LocalDateTime.parse(str, DATE_TIME_FORMATTER);
     }
 
     public static Date parseDate(String str) {
-        return Date.from(parseLocalDateTime(str).atZone(ZoneId.systemDefault()).toInstant());
+        if (str == null) {
+            return null;
+        }
+
+        LocalDateTime localDateTime = parseLocalDateTime(str);
+        if (localDateTime == null) {
+            return null;
+        }
+
+        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
 }
