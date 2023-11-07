@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.util.Assert;
 
 import java.io.Serializable;
@@ -12,7 +14,7 @@ import java.util.Iterator;
 import java.util.concurrent.CountDownLatch;
 
 /**
- * 受限的异步任务执行器
+ * 限制批处理的异步任务执行器
  * <p>
  * 1. 任务本身需是异步执行的
  * 2. 此执行器控制异步执行并发数, 避免大量并发导致系统负载过大
@@ -20,35 +22,35 @@ import java.util.concurrent.CountDownLatch;
  * @author cdfive
  */
 @Slf4j
-public class LimitedAsyncTaskExecutor {
+public class LimitBatchAsyncTaskExecutor {
 
-    // 并发数
-    private int concurrency;
+    // 每批次处理数
+    private int batch;
 
     // 跟踪id
     private String traceId;
 
-    public LimitedAsyncTaskExecutor(int concurrency) {
-        this(concurrency, CommonUtil.getTraceId());
+    public LimitBatchAsyncTaskExecutor(int batch) {
+        this(batch, CommonUtil.getTraceId());
     }
 
-    public LimitedAsyncTaskExecutor(int concurrency, String traceId) {
-        Assert.isTrue(concurrency > 0, "concurrency must be greater than 0");
-        this.concurrency = concurrency;
+    public LimitBatchAsyncTaskExecutor(int batch, String traceId) {
+        Assert.isTrue(batch > 0, "batch must be greater than 0");
+        this.batch = batch;
         this.traceId = traceId;
     }
 
-    public <T> void executeTasks(Collection<T> tasks, TaskExecutor<T> taskExecutor) {
+    public <T> void executeTasks(Collection<T> tasks, AsyncTaskExecutor<T> asyncTaskExecutor) {
         Assert.isTrue(tasks != null && tasks.size() > 0, "tasks can't be empty");
-        this.executeTasks(tasks.iterator(), tasks.size(), taskExecutor);
+        this.executeTasks(tasks.iterator(), tasks.size(), asyncTaskExecutor);
     }
 
-    public <T> void executeTasks(Iterator<T> tasks, int total, TaskExecutor<T> taskExecutor) {
+    public <T> void executeTasks(Iterator<T> tasks, int total, AsyncTaskExecutor<T> asyncTaskExecutor) {
         Assert.notNull(tasks, "tasks can't be null");
         Assert.isTrue(total > 0, "total must be greater than 0");
-        Assert.notNull(taskExecutor, "taskExecutor can't be null");
+        Assert.notNull(asyncTaskExecutor, "asyncTaskExecutor can't be null");
 
-        log.info(traceId + ",LimitedAsyncTaskExecutor executeTasks start,total={},concurrency={}", total, concurrency);
+        log.info(traceId + ",LimitBatchAsyncTaskExecutor executeTasks start,total={},batch={}", total, batch);
         long totalStart = System.currentTimeMillis();
         long batchStart = System.currentTimeMillis();
 
@@ -56,14 +58,14 @@ public class LimitedAsyncTaskExecutor {
         Runnable callback = null;
         int index = 0;
         int batchIndex = 0;
-        int batchTotal = (total / concurrency) + (total % concurrency == 0 ? 0 : 1);
+        int batchTotal = (total / batch) + (total % batch == 0 ? 0 : 1);
         while (tasks.hasNext()) {
             T task = tasks.next();
             index++;
             if (latch == null) {
                 batchStart = System.currentTimeMillis();
                 batchIndex++;
-                latch = new CountDownLatch((batchIndex < batchTotal) ? concurrency : (total - index + 1));
+                latch = new CountDownLatch((batchIndex < batchTotal) ? batch : (total - index + 1));
                 CountDownLatch finalLatch = latch;
                 callback = new Runnable() {
                     @Override
@@ -74,28 +76,33 @@ public class LimitedAsyncTaskExecutor {
             }
 
             Context context = new Context(index, total, batchIndex, batchTotal);
-            log.info(traceId + ",LimitedAsyncTaskExecutor executeTask start,concurrency={},context={}", concurrency, context);
-            taskExecutor.executeTask(task, callback, context);
+            log.info(traceId + ",LimitBatchAsyncTaskExecutor executeTask start,batch={},context={}", batch, context);
+            long start = System.currentTimeMillis();
+            Runnable finalCallback = callback;
+            asyncTaskExecutor.executeTask(task, () -> {
+                log.info(traceId + ",LimitBatchAsyncTaskExecutor executeTask done,cost={}ms,batch={},context={}", (System.currentTimeMillis() - start), batch, context);
+                finalCallback.run();
+            }, context);
 
-            if (index % concurrency == 0 || index == total) {
+            if (index % batch == 0 || index == total) {
                 try {
                     latch.await();
                 } catch (InterruptedException e) {
-                    log.error(traceId + ",LimitedAsyncTaskExecutor await error", e);
+                    log.error(traceId + ",LimitBatchAsyncTaskExecutor await error", e);
                 }
 
                 latch = null;
                 callback = null;
-                log.info(traceId + ",LimitedAsyncTaskExecutor batch done,cost={}ms,index=({}/{}),batch=({}/{})"
+                log.info(traceId + ",LimitBatchAsyncTaskExecutor batch done,cost={}ms,index=({}/{}),batchIndex=({}/{})"
                         , (System.currentTimeMillis() - batchStart), index, total, batchIndex, batchTotal);
             }
         }
 
-        log.info(traceId + ",LimitedAsyncTaskExecutor executeTasks success,total cost={}ms,concurrency={}", (System.currentTimeMillis() - totalStart), concurrency);
+        log.info(traceId + ",LimitBatchAsyncTaskExecutor executeTasks success,total cost={}ms,batch={}", (System.currentTimeMillis() - totalStart), batch);
     }
 
-    public int getConcurrency() {
-        return concurrency;
+    public int getBatch() {
+        return batch;
     }
 
     public String getTraceId() {
@@ -103,9 +110,9 @@ public class LimitedAsyncTaskExecutor {
     }
 
     /**
-     * 任务执行器
+     * 异步任务执行器
      */
-    public static interface TaskExecutor<T> {
+    public static interface AsyncTaskExecutor<T> {
 
         /**
          * 执行任务,任务本身需是异步执行的
@@ -134,12 +141,17 @@ public class LimitedAsyncTaskExecutor {
 
         // 批量总数
         private int batchTotal;
+
+        @Override
+        public String toString() {
+            return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
+        }
     }
 
     @Override
     public String toString() {
-        return "LimitedAsyncTaskExecutor{" +
-                "concurrency=" + concurrency +
+        return "LimitBatchAsyncTaskExecutor{" +
+                "batch=" + batch +
                 ", traceId='" + traceId + '\'' +
                 '}';
     }
