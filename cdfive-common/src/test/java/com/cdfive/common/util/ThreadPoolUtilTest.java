@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * @author cdfive
  */
-public class ThreadUtilTest {
+public class ThreadPoolUtilTest {
 
     private static final int threadNum = 10;
     private static final int totalTaskNum = 100;
@@ -72,7 +72,7 @@ public class ThreadUtilTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("ThreadUtilTest done,cost=" + (System.currentTimeMillis() - start) + "ms");
+        System.out.println("ThreadPoolUtilTest done,cost=" + (System.currentTimeMillis() - start) + "ms");
     }
 
     public static ThreadPoolExecutor defaultFixedThreadPool(int threadNum) {
@@ -92,7 +92,7 @@ public class ThreadUtilTest {
     }
 
     public static ThreadPoolExecutor custormFixedThreadPool(int threadNum) {
-        return ThreadUtil.newFixedBlockingThreadPool(threadNum);
+        return ThreadPoolUtil.newFixedBlockingThreadPool(threadNum);
     }
 
     public static void printThreadPoolInfo(ThreadPoolExecutor executor) {
@@ -106,7 +106,7 @@ public class ThreadUtilTest {
             }
 
             System.out.println("activeThreadNum=" + executor.getActiveCount() + ",queueSize=" + executor.getQueue().size()
-                    + ",unProcessedThreadNum=" + ThreadUtilTest.unProcessedThreadNum.get());
+                    + ",unProcessedThreadNum=" + ThreadPoolUtilTest.unProcessedThreadNum.get());
         }
     }
 
@@ -129,7 +129,7 @@ public class ThreadUtilTest {
                 e.printStackTrace();
             }
 
-            ThreadUtilTest.unProcessedThreadNum.decrementAndGet();
+            ThreadPoolUtilTest.unProcessedThreadNum.decrementAndGet();
 //            System.out.println(Thread.currentThread().getName() + "=>task[" + taskIndex + "] end,cost=" + (System.currentTimeMillis() - start) + "ms");
         }
     }

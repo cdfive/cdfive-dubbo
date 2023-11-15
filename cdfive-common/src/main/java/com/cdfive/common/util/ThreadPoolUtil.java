@@ -7,7 +7,7 @@ import java.util.concurrent.*;
 /**
  * @author cdfive
  */
-public class ThreadUtil {
+public class ThreadPoolUtil {
 
     public static ThreadPoolExecutor newFixedBlockingThreadPool(int nThreads) {
         return new ThreadPoolExecutor(nThreads, nThreads, 0, TimeUnit.SECONDS, new SynchronousQueue<Runnable>(), new RejectedExecutionHandler() {
@@ -37,5 +37,10 @@ public class ThreadUtil {
 
     public static ThreadPoolExecutor newFixedBlockingThreadPool(int nThreads, String threadNamePrefix) {
         return newFixedBlockingThreadPool(nThreads, new CustomizableThreadFactory(threadNamePrefix));
+    }
+
+    public static ThreadPoolExecutor newSingleThreadExecutorDiscard() {
+        return new ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS
+                , new SynchronousQueue<>(), new ThreadPoolExecutor.DiscardPolicy());
     }
 }
