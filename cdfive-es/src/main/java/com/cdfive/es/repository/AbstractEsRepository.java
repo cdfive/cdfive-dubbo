@@ -764,7 +764,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         try {
             return this.client.search(searchRequest, RequestOptions.DEFAULT);
         } catch (Exception e) {
-            throw new EsException("es search error");
+            throw new EsException("es search error", e);
         }
     }
 
