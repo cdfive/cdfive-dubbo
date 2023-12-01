@@ -53,6 +53,7 @@ import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.filter.ParsedFilter;
+import org.elasticsearch.search.aggregations.bucket.nested.ParsedNested;
 import org.elasticsearch.search.aggregations.bucket.terms.ParsedTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.UnmappedTerms;
@@ -1093,6 +1094,10 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             if (aggregation instanceof ParsedFilter) {
                 ParsedFilter parsedFilter = (ParsedFilter) aggregation;
                 Aggregations subAggregations = parsedFilter.getAggregations();
+                this.buildAggregateResponse(subAggregations, resultMap);
+            } else if (aggregation instanceof ParsedNested) {
+                ParsedNested parsedNested = (ParsedNested) aggregation;
+                Aggregations subAggregations = parsedNested.getAggregations();
                 this.buildAggregateResponse(subAggregations, resultMap);
             } else if (aggregation instanceof ParsedTerms) {
                 List<? extends Terms.Bucket> buckets = ((ParsedTerms) aggregation).getBuckets();
