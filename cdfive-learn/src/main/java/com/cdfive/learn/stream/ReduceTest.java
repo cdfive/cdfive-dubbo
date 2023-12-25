@@ -18,5 +18,17 @@ public class ReduceTest {
         List<Integer> list = Lists.newArrayList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
         Integer sum2 = list.stream().reduce(0, (a, b) -> a + b);
         System.out.println("sum2=" + sum2); // 55
+
+        Integer sum3 = list.parallelStream().reduce(0, (a, b) -> a + b);
+        System.out.println("sum3=" + sum3); // 55
+
+        Integer sum4 = list.stream().reduce(100, (a, b) -> a + b);
+        System.out.println("sum4=" + sum4);// 155
+
+        Integer sum5 = list.parallelStream().reduce(100, (a, b) -> a + b);
+        System.out.println("sum5=" + sum5);// 1055
+
+        String str = list.stream().map(o -> String.valueOf(o)).reduce((a, b) -> a + "," + b).get();
+        System.out.println("str=" + str);// 1,2,3,4,5,6,7,8,9,10
     }
 }
