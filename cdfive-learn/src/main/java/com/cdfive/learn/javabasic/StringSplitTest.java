@@ -44,5 +44,9 @@ public class StringSplitTest {
         System.out.println(Arrays.asList("1--1".split("-", 2)));
         // 1
         System.out.println(Arrays.asList("1".split("-", 2).length));
+
+        String[] tokens = "--".split("-");
+        // true
+        System.out.println(tokens.length == 0);
     }
 }
