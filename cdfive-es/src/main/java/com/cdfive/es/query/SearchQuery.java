@@ -155,6 +155,12 @@ public class SearchQuery implements Serializable {
             searchSourceBuilder.fetchSource(sourceContext);
         }
 
+        if (!CollectionUtils.isEmpty(scriptFields)) {
+            for (SearchSourceBuilder.ScriptField scriptField : scriptFields) {
+                searchSourceBuilder.scriptField(scriptField.fieldName(), scriptField.script(), scriptField.ignoreFailure());
+            }
+        }
+
         if (this.getCollapse() != null) {
             searchSourceBuilder.collapse(this.getCollapse());
         }
