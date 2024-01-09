@@ -17,6 +17,8 @@ import java.util.List;
 @SuppressWarnings("rawtypes")
 public class AggregateQuery implements Serializable {
 
+    private static final long serialVersionUID = -8132560746248553816L;
+
     private QueryBuilder query;
 
     private List<SortBuilder> sorts;

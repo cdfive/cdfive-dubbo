@@ -9,6 +9,8 @@ import java.io.Serializable;
  */
 public class CountQuery implements Serializable {
 
+    private static final long serialVersionUID = 2890276392886164954L;
+
     private QueryBuilder query;
 
     public CountQuery of() {

@@ -12,6 +12,8 @@ import java.util.Map;
  */
 public class UpdateByQuery implements Serializable {
 
+    private static final long serialVersionUID = 6555057248028930805L;
+
     private QueryBuilder query;
 
     private String script;

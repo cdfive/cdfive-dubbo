@@ -10,6 +10,8 @@ import java.io.Serializable;
  */
 public class DeleteByQuery implements Serializable {
 
+    private static final long serialVersionUID = -8242227810696954945L;
+
     private QueryBuilder query;
 
     private Integer batchSize;

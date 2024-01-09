@@ -25,6 +25,8 @@ import java.util.Map;
 @SuppressWarnings("rawtypes")
 public class SearchQuery implements Serializable {
 
+    private static final long serialVersionUID = -4566279863200250787L;
+
     // 查询
     private QueryBuilder query;
 
