@@ -740,7 +740,9 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             log.debug("searchDsl=>{}", searchSourceBuilder.toString());
         } else {
             if (StringUtils.hasText(esProperties.getSearchDslKeyword()) && searchSourceBuilder.toString().contains(esProperties.getSearchDslKeyword())) {
-                log.info("searchDsl=>{}", searchSourceBuilder.toString());
+                if (log.isInfoEnabled()) {
+                    log.info("searchDsl=>{}", searchSourceBuilder.toString());
+                }
             }
         }
 
@@ -778,7 +780,9 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             log.debug("aggregateDsl=>{}", searchSourceBuilder.toString());
         } else {
             if (StringUtils.hasText(esProperties.getAggregateDslKeyword()) && searchSourceBuilder.toString().contains(esProperties.getAggregateDslKeyword())) {
-                log.info("aggregateDsl=>{}", searchSourceBuilder.toString());
+                if (log.isInfoEnabled()) {
+                    log.info("aggregateDsl=>{}", searchSourceBuilder.toString());
+                }
             }
         }
 
@@ -794,7 +798,6 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         if (!RestStatus.OK.equals(searchResponse.status())) {
             throw new EsException("es aggregate fail,status=" + searchResponse.status());
         }
-
 
         return this.buildAggregateResponse(searchResponse);
     }
