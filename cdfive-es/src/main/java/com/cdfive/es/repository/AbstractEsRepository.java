@@ -58,6 +58,7 @@ import org.elasticsearch.search.aggregations.bucket.terms.ParsedTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.UnmappedTerms;
 import org.elasticsearch.search.aggregations.metrics.ParsedCardinality;
+import org.elasticsearch.search.aggregations.metrics.ParsedSingleValueNumericMetricsAggregation;
 import org.elasticsearch.search.aggregations.metrics.TopHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.FetchSourceContext;
@@ -1115,17 +1116,24 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
                             if (CollectionUtils.isEmpty(subAggList)) {
                                 return new EsValueCountVo(o.getKeyAsString(), o.getDocCount());
                             } else {
-                                List<String> subValues = new ArrayList<>();
+                                EsValueCountVo esValueCountVO = new EsValueCountVo(o.getKeyAsString(), o.getDocCount());
                                 Optional<Aggregation> optAggTopHits = subAggList.stream().filter(agg -> agg instanceof TopHits).findFirst();
                                 if (optAggTopHits.isPresent()) {
+                                    List<String> subValues = new ArrayList<>();
                                     TopHits parsedTopHits = (TopHits) optAggTopHits.get();
                                     for (SearchHit hit : parsedTopHits.getHits()) {
                                         subValues.add(hit.getSourceAsString());
                                     }
-                                    return new EsValueCountVo(o.getKeyAsString(), o.getDocCount(), subValues);
-                                } else {
-                                    return new EsValueCountVo(o.getKeyAsString(), o.getDocCount());
                                 }
+
+                                Map<String, Double> numericMetrics = subAggList.stream().filter(agg -> agg instanceof ParsedSingleValueNumericMetricsAggregation)
+                                        .map(m -> (ParsedSingleValueNumericMetricsAggregation) m)
+                                        .collect(Collectors.toMap(m -> m.getName(), m -> m.value(), (m1, m2) -> m2));
+                                if (numericMetrics != null && numericMetrics.size() > 0) {
+                                    esValueCountVO.setNumericMetrics(numericMetrics);
+                                }
+
+                                return esValueCountVO;
                             }
                         })
                         .collect(Collectors.toList()));
