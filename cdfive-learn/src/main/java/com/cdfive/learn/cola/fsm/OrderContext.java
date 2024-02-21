@@ -1,4 +1,4 @@
-package com.cdfive.learn.cola;
+package com.cdfive.learn.cola.fsm;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

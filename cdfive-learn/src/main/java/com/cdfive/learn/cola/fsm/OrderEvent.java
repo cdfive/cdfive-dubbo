@@ -1,4 +1,4 @@
-package com.cdfive.learn.cola;
+package com.cdfive.learn.cola.fsm;
 
 /**
  * @author cdfive
@@ -9,5 +9,7 @@ public enum OrderEvent {
 
     PAY_SUCCESS,
 
-    PAY_FAILED;
+    PAY_FAILED,
+
+    PAY_EXPIRED;
 }

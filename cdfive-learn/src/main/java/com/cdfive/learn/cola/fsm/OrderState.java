@@ -1,4 +1,4 @@
-package com.cdfive.learn.cola;
+package com.cdfive.learn.cola.fsm;
 
 /**
  * @author cdfive

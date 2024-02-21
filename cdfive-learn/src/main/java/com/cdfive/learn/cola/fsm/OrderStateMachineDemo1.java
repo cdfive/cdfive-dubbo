@@ -1,9 +1,9 @@
-package com.cdfive.learn.cola;
+package com.cdfive.learn.cola.fsm;
 
-import com.alibaba.cola.statemachine.Action;
 import com.alibaba.cola.statemachine.StateMachine;
 import com.alibaba.cola.statemachine.builder.StateMachineBuilder;
 import com.alibaba.cola.statemachine.builder.StateMachineBuilderFactory;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author cdfive
@@ -24,13 +24,24 @@ public class OrderStateMachineDemo1 {
                     System.out.println(ctx.getOrderCode() + ": " + event + ", " + from + "=>" + to);
                 });
 
+        builder.externalTransition()
+                .from(OrderState.TO_PAY)
+                .to(OrderState.EXPIRED)
+                .on(OrderEvent.PAY_EXPIRED)
+                .when((ctx) -> true)
+                .perform((from, to, event, ctx) -> {
+                    System.out.println(ctx.getOrderCode() + ": " + event + ", " + from + "=>" + to);
+                });
+
         StateMachine<OrderState, OrderEvent, OrderContext> stateMachine = builder.build(machineId);
 
         OrderContext ctx = new OrderContext("ORDER_1001");
 
-        OrderState toState = stateMachine.fireEvent(OrderState.CREATING, OrderEvent.CREATE, ctx);
+        System.out.println(stateMachine.fireEvent(OrderState.CREATING, OrderEvent.CREATE, ctx));
 
-        System.out.println(toState);
+        System.out.println(StringUtils.center("分隔线", 50, "-"));
+
+        System.out.println(stateMachine.fireEvent(OrderState.TO_PAY, OrderEvent.PAY_EXPIRED, ctx));
 
         System.out.println("done");
     }
