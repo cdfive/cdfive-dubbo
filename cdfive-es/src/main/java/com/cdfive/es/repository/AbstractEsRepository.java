@@ -1119,10 +1119,16 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
                                 EsValueCountVo esValueCountVO = new EsValueCountVo(o.getKeyAsString(), o.getDocCount());
                                 Optional<Aggregation> optAggTopHits = subAggList.stream().filter(agg -> agg instanceof TopHits).findFirst();
                                 if (optAggTopHits.isPresent()) {
-                                    List<String> subValues = new ArrayList<>();
+                                    List<String> subValues = null;
                                     TopHits parsedTopHits = (TopHits) optAggTopHits.get();
                                     for (SearchHit hit : parsedTopHits.getHits()) {
+                                        if (subValues == null) {
+                                            subValues = new ArrayList<>();
+                                        }
                                         subValues.add(hit.getSourceAsString());
+                                    }
+                                    if (subValues != null) {
+                                        esValueCountVO.setSubValues(subValues);
                                     }
                                 }
 
