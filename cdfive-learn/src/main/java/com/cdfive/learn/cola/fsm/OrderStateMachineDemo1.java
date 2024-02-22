@@ -3,6 +3,7 @@ package com.cdfive.learn.cola.fsm;
 import com.alibaba.cola.statemachine.StateMachine;
 import com.alibaba.cola.statemachine.builder.StateMachineBuilder;
 import com.alibaba.cola.statemachine.builder.StateMachineBuilderFactory;
+import com.alibaba.cola.statemachine.impl.Debugger;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -11,6 +12,8 @@ import org.apache.commons.lang3.StringUtils;
 public class OrderStateMachineDemo1 {
 
     public static void main(String[] args) {
+        Debugger.enableDebug();
+
         String machineId = "ORDER";
 
         StateMachineBuilder<OrderState, OrderEvent, OrderContext> builder = StateMachineBuilderFactory.create();
@@ -42,6 +45,10 @@ public class OrderStateMachineDemo1 {
         System.out.println(StringUtils.center("分隔线", 50, "-"));
 
         System.out.println(stateMachine.fireEvent(OrderState.TO_PAY, OrderEvent.PAY_EXPIRED, ctx));
+
+        System.out.println(StringUtils.center("分隔线", 50, "-"));
+
+        System.out.println(stateMachine.fireEvent(OrderState.CREATING, OrderEvent.PAY_EXPIRED, ctx));
 
         System.out.println("done");
     }
