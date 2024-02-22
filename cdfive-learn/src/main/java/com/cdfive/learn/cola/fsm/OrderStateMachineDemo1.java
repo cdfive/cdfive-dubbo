@@ -19,7 +19,7 @@ public class OrderStateMachineDemo1 {
         StateMachineBuilder<OrderState, OrderEvent, OrderContext> builder = StateMachineBuilderFactory.create();
 
         builder.externalTransition()
-                .from(OrderState.CREATING)
+                .from(OrderState.INIT)
                 .to(OrderState.TO_PAY)
                 .on(OrderEvent.CREATE)
                 .when((ctx) -> true)
@@ -29,8 +29,8 @@ public class OrderStateMachineDemo1 {
 
         builder.externalTransition()
                 .from(OrderState.TO_PAY)
-                .to(OrderState.EXPIRED)
-                .on(OrderEvent.PAY_EXPIRED)
+                .to(OrderState.PAY_EXPIRED)
+                .on(OrderEvent.EXPIRED_PAY)
                 .when((ctx) -> true)
                 .perform((from, to, event, ctx) -> {
                     System.out.println(ctx.getOrderCode() + ": " + event + ", " + from + "=>" + to);
@@ -40,15 +40,15 @@ public class OrderStateMachineDemo1 {
 
         OrderContext ctx = new OrderContext("ORDER_1001");
 
-        System.out.println(stateMachine.fireEvent(OrderState.CREATING, OrderEvent.CREATE, ctx));
+        System.out.println(stateMachine.fireEvent(OrderState.INIT, OrderEvent.CREATE, ctx));
 
         System.out.println(StringUtils.center("分隔线", 50, "-"));
 
-        System.out.println(stateMachine.fireEvent(OrderState.TO_PAY, OrderEvent.PAY_EXPIRED, ctx));
+        System.out.println(stateMachine.fireEvent(OrderState.TO_PAY, OrderEvent.EXPIRED_PAY, ctx));
 
         System.out.println(StringUtils.center("分隔线", 50, "-"));
 
-        System.out.println(stateMachine.fireEvent(OrderState.CREATING, OrderEvent.PAY_EXPIRED, ctx));
+        System.out.println(stateMachine.fireEvent(OrderState.INIT, OrderEvent.EXPIRED_PAY, ctx));
 
         System.out.println("done");
     }

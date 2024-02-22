@@ -7,9 +7,13 @@ public enum OrderEvent {
 
     CREATE,
 
-    PAY_SUCCESS,
+    PAY,
 
-    PAY_FAILED,
+    EXPIRED_PAY,
 
-    PAY_EXPIRED;
+    CANCEL_PAY,
+
+    DELIVERY,
+
+    CONFIRM_RECEIVE;
 }

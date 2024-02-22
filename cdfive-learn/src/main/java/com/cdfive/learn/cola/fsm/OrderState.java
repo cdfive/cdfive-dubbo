@@ -5,21 +5,29 @@ package com.cdfive.learn.cola.fsm;
  */
 public enum OrderState {
 
-    CREATING,
+    INIT,
 
     TO_PAY,
 
-    EXPIRED,
-
     PAID,
 
-    DELIVERED,
+    PAY_EXPIRED,
 
-    RECEIVED,
+    PAY_CANCEL,
 
-    REJECTED,
+    TO_RECEIVE,
 
-    FINISHED,
+    RECEIVED;
 
-    CLOSED;
+//    REJECTED,
+
+//    APPLY_RETURN,
+//
+//    RETURNING,
+//
+//    RETURN_RECEIVED,
+//
+//    RETURN_REJECTED,
+
+//    FINISHED;
 }
