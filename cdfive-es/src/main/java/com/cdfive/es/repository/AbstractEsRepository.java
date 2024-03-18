@@ -1139,6 +1139,15 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
                                     esValueCountVO.setNumericMetrics(numericMetrics);
                                 }
 
+                                List<Aggregation> childrenAggs = subAggList.stream()
+                                        .filter(agg -> agg instanceof ParsedFilter || agg instanceof ParsedNested || agg instanceof ParsedTerms)
+                                        .collect(Collectors.toList());
+                                if (!CollectionUtils.isEmpty(childrenAggs)) {
+                                    Map<String, List<EsValueCountVo>> childrenMap = new LinkedHashMap<>();
+                                    buildAggregateResponse(new Aggregations(childrenAggs), childrenMap);
+                                    esValueCountVO.setChildren(childrenMap);
+                                }
+
                                 return esValueCountVO;
                             }
                         })

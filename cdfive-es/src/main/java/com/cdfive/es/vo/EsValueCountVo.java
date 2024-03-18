@@ -31,6 +31,14 @@ public class EsValueCountVo implements Serializable {
         this.numericMetrics = numericMetrics;
     }
 
+    public EsValueCountVo(String value, Long count, List<String> subValues, Map<String, Double> numericMetrics, Map<String, List<EsValueCountVo>> children) {
+        this.value = value;
+        this.count = count;
+        this.subValues = subValues;
+        this.numericMetrics = numericMetrics;
+        this.children = children;
+    }
+
     private String value;
 
     private Long count;
@@ -38,6 +46,8 @@ public class EsValueCountVo implements Serializable {
     private List<String> subValues;
 
     private Map<String, Double> numericMetrics;
+
+    private Map<String, List<EsValueCountVo>> children;
 
     public String getValue() {
         return value;
@@ -69,5 +79,13 @@ public class EsValueCountVo implements Serializable {
 
     public void setNumericMetrics(Map<String, Double> numericMetrics) {
         this.numericMetrics = numericMetrics;
+    }
+
+    public Map<String, List<EsValueCountVo>> getChildren() {
+        return children;
+    }
+
+    public void setChildren(Map<String, List<EsValueCountVo>> children) {
+        this.children = children;
     }
 }
