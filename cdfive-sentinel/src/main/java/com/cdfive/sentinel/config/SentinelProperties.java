@@ -68,13 +68,13 @@ public class SentinelProperties {
 
         private String type;
 
-        private RedisDataSourceProperties redisDataSourceProperties;
+        private RedisDataSourceProperties redis;
 
-        private NacosDataSourceProperties nacosDataSourceProperties;
+        private NacosDataSourceProperties nacos;
 
-        private ZookeeperDataSourceProperties zookeeperDataSourceProperties;
+        private ZookeeperDataSourceProperties zookeeper;
 
-        private ApolloDataSourceProperties apolloDataSourceProperties;
+        private ApolloDataSourceProperties apollo;
     }
 
     @Data

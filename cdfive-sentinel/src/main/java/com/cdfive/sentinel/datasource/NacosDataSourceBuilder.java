@@ -38,7 +38,7 @@ public class NacosDataSourceBuilder extends AbstractDataSourceBuilder {
 
     @Override
     public void buildDataSource(SentinelProperties sentinelProperties, String appName, String ip, Integer port) {
-        SentinelProperties.NacosDataSourceProperties nacosDataSourceProperties = sentinelProperties.getDataSource().getNacosDataSourceProperties();
+        SentinelProperties.NacosDataSourceProperties nacosDataSourceProperties = sentinelProperties.getDataSource().getNacos();
         Assert.notNull(nacosDataSourceProperties, "nacosDataSourceProperties can't be empty");
 
         String serverAddr = nacosDataSourceProperties.getServerAddr();

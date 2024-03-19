@@ -35,7 +35,7 @@ public class ApolloDataSourceBuilder extends AbstractDataSourceBuilder {
 
     @Override
     public void buildDataSource(SentinelProperties sentinelProperties, String appName, String ip, Integer port) {
-        SentinelProperties.ApolloDataSourceProperties apolloDataSourceProperties = sentinelProperties.getDataSource().getApolloDataSourceProperties();
+        SentinelProperties.ApolloDataSourceProperties apolloDataSourceProperties = sentinelProperties.getDataSource().getApollo();
         Assert.notNull(apolloDataSourceProperties, "apolloDataSourceProperties can't be empty");
 
         String serverAddress = apolloDataSourceProperties.getServerAddress();

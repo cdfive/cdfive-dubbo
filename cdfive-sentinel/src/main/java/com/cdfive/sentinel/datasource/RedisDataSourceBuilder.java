@@ -40,7 +40,7 @@ public class RedisDataSourceBuilder extends AbstractDataSourceBuilder {
 
     @Override
     public void buildDataSource(SentinelProperties sentinelProperties, String appName, String ip, Integer port) {
-        SentinelProperties.RedisDataSourceProperties redisDataSourceProperties = sentinelProperties.getDataSource().getRedisDataSourceProperties();
+        SentinelProperties.RedisDataSourceProperties redisDataSourceProperties = sentinelProperties.getDataSource().getRedis();
         Assert.notNull(redisDataSourceProperties, "redisDataSourceProperties can't be empty");
 
         String redisHost = redisDataSourceProperties.getHost();

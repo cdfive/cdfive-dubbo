@@ -35,7 +35,7 @@ public class ZookeeperDataSourceBuilder extends AbstractDataSourceBuilder {
 
     @Override
     public void buildDataSource(SentinelProperties sentinelProperties, String appName, String ip, Integer port) {
-        SentinelProperties.ZookeeperDataSourceProperties zookeeperDataSourceProperties = sentinelProperties.getDataSource().getZookeeperDataSourceProperties();
+        SentinelProperties.ZookeeperDataSourceProperties zookeeperDataSourceProperties = sentinelProperties.getDataSource().getZookeeper();
         Assert.notNull(zookeeperDataSourceProperties, "zookeeperDataSourceProperties can't be empty");
 
         String serverAddr = zookeeperDataSourceProperties.getServerAddr();
