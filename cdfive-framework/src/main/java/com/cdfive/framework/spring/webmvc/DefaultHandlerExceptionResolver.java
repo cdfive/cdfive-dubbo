@@ -6,6 +6,8 @@ import com.cdfive.framework.util.ServletUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -21,8 +23,10 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Slf4j
 @RefreshScope
+@ConditionalOnProperty(value = "cdfive.framework.error.enable", havingValue = "true", matchIfMissing = true)
+@ConditionalOnClass(HandlerExceptionResolver.class)
 @Component
-public class ServiceHandlerExceptionResolver implements HandlerExceptionResolver {
+public class DefaultHandlerExceptionResolver implements HandlerExceptionResolver {
 
     @Value("${cdfive.framework.error.code:500}")
     private Integer errorCode;
@@ -30,6 +34,7 @@ public class ServiceHandlerExceptionResolver implements HandlerExceptionResolver
     @Value("${cdfive.framework.error.msg:服务繁忙，请稍候再试}")
     private String errorMsg;
 
+    // TODO remove this?
     @Autowired
     private AppProperties appProperties;
 

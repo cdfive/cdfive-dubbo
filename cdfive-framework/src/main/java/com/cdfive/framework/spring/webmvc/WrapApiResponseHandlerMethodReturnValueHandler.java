@@ -5,6 +5,7 @@ import com.cdfive.framework.util.ServletUtil;
 import com.cdfive.framework.vo.api.ApiResponse;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.core.MethodParameter;
@@ -23,6 +24,7 @@ import java.util.List;
 /**
  * @author cdfive
  */
+@ConditionalOnClass(HandlerMethodReturnValueHandler.class)
 @ConditionalOnProperty(name = "cdfive.framework.wrapApiResponse", havingValue = "true", matchIfMissing = false)
 @RefreshScope
 @Component

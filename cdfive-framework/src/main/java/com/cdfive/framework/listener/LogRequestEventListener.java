@@ -7,6 +7,7 @@ import com.cdfive.framework.properties.AppProperties;
 import com.cdfive.framework.util.CommonUtil;
 import com.cdfive.framework.util.ServletUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +17,7 @@ import java.util.Date;
 /**
  * @author cdfive
  */
+@ConditionalOnBean(LogRequestProducer.class)
 @Component
 public class LogRequestEventListener implements ApplicationListener<LogRequestEvent> {
 

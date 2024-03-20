@@ -1,4 +1,4 @@
-package com.cdfive.framework.feigin;
+package com.cdfive.framework.springcloud.feigin;
 
 import com.cdfive.framework.util.ServletUtil;
 import feign.RequestInterceptor;

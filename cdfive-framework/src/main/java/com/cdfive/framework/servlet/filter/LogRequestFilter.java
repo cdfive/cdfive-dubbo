@@ -6,6 +6,7 @@ import com.cdfive.framework.util.ServletUtil;
 import com.cdfive.framework.util.SpringContextUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.stereotype.Component;
@@ -23,6 +24,7 @@ import java.util.Set;
  * @author cdfive
  */
 @Slf4j
+@ConditionalOnClass(Filter.class)
 @ConditionalOnProperty(name = "cdfive.framework.logRequest", havingValue = "true", matchIfMissing = true)
 @Component
 public class LogRequestFilter implements Filter {

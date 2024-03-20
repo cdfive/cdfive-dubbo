@@ -3,6 +3,7 @@ package com.cdfive.framework.servlet.filter;
 import com.cdfive.framework.util.ServletUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,7 @@ import java.io.IOException;
  * @author cdfive
  */
 @Slf4j
+@ConditionalOnClass(Filter.class)
 @ConditionalOnProperty(name = "cdfive.framework.slfMdcTraceId", havingValue = "true", matchIfMissing = true)
 @Component
 public class SlfMdcTraceIdFilter implements Filter {
