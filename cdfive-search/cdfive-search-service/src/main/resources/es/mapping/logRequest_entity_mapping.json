@@ -17,6 +17,10 @@
                 "type": "keyword",
                 "store": true
             },
+            "appIp": {
+                "type": "keyword",
+                "store": true
+            },
             "appPort": {
                 "type": "integer",
                 "store": true

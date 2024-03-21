@@ -41,8 +41,9 @@ public class LogRequestEventListener implements ApplicationListener<LogRequestEv
         messageVo.setTraceId(ServletUtil.getRequestTraceId(request));
 
         messageVo.setAppName(appProperties.getAppName());
-        // TODO
-//        messageVo.setAppIp();
+
+        messageVo.setAppIp(appProperties.getAppIp());
+
         messageVo.setAppPort(appProperties.getAppPort());
 
         messageVo.setRequestUri(request.getRequestURI());

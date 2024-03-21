@@ -1,0 +1,18 @@
+package com.cdfive.search.api;
+
+import com.cdfive.common.vo.page.PageRespVo;
+import com.cdfive.search.vo.logrequest.QueryLogRequestPageReqVo;
+import com.cdfive.search.vo.logrequest.QueryLogRequestPageRespVo;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+/**
+ * @author cdfive
+ */
+@FeignClient(name = "cdfive-search")
+public interface LogRequestApi {
+
+    @RequestMapping("/logRequest/list")
+    PageRespVo<QueryLogRequestPageRespVo> queryLogRequestPage(@RequestBody(required = false) QueryLogRequestPageReqVo reqVo);
+}

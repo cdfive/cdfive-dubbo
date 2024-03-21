@@ -29,7 +29,7 @@ import java.util.Map;
  * @author cdfive
  */
 @Slf4j
-@EnableFeignClients(basePackages = {"com.cdfive.mp3.api"})
+@EnableFeignClients(basePackages = {"com.cdfive.mp3.api", "com.cdfive.search.api"})
 @ImportResource("classpath:/config/applicationContext.xml")
 //@ComponentScan(basePackages = {"com.cdfive"}, excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {ApplicationController.class, ApplicationCloseListener.class})})
 //@SpringBootApplication(scanBasePackages = {"com.cdfive"}, exclude = {EurekaClientAutoConfiguration.class, EurekaDiscoveryClientConfiguration.class})

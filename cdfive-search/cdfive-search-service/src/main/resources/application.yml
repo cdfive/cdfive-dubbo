@@ -20,9 +20,25 @@ spring:
     packages:
       trust-all: true
 
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7777/eureka
+    register-with-eureka: true
+    fetch-registry: true
+
 sentinel:
   enable: true
   app-name: cdfive-search
   transport-dashboard: localhost:8080
   transport-port: 8751
-  datasource-type: redis
+  dataSource:
+    type: redis
+    redis:
+      host: localhost
+      port: 6379
+      password:
+
+cdfive:
+  framework:
+    logRequest: true

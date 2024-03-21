@@ -5,11 +5,15 @@
     <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
 <!--    <property name="log.base" value="logs" />-->
     <property name="log.context.name" value="cdfive-mp3" />
-    <property name="log.pattern" value="[ %-5level] [%date] [%thread] [%X{_trace_id}] %logger{96} [%line] - %msg%n"/>
+    <property name="console.pattern" value="[ %-5level] [%date] [%thread] [%yellow(%X{_trace_id})] %logger{96} [%line] - %msg%n"/>
+    <property name="log.pattern" value="[ %-5level] [%date] [%thread] [%yellow(%X{_trace_id})] %logger{96} [%line] - %msg%n"/>
+
+<!--    <property name="log.pattern"-->
+<!--              value="|%p|%d{yyyy-MM-dd HH:mm:ss.SSS}|%t|%logger{10}:%line%n     %m [TraceId:%yellow(%X{traceId:-None})]%n%n"/>-->
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>${log.pattern}</pattern>
+            <pattern>${console.pattern}</pattern>
             <charset>UTF-8</charset>
         </encoder>
     </appender>

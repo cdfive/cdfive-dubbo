@@ -24,6 +24,12 @@ public class LogRequestConsumer {
             log.debug(JacksonUtil.objToJson(messageVo));
         }
 
+        // TODO exclude some designated requestUris
+        String requestUri = messageVo.getRequestUri();
+        if (requestUri.contains("logRequest")) {
+            return;
+        }
+
         appRestApiLogEsService.saveLogRequest(messageVo);
     }
 }

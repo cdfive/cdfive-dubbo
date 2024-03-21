@@ -3,6 +3,7 @@ package com.cdfive.framework.spring.webmvc;
 import com.cdfive.framework.exception.ServiceException;
 import com.cdfive.framework.properties.AppProperties;
 import com.cdfive.framework.util.ServletUtil;
+import com.cdfive.framework.util.SpringContextUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -53,7 +54,12 @@ public class DefaultHandlerExceptionResolver implements HandlerExceptionResolver
             // TODO need status 500?
             mav.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
             mav.addObject("code", errorCode);
-            mav.addObject("msg", errorMsg);
+
+            if (SpringContextUtil.getApplicationContext().getEnvironment().getActiveProfiles().length == 0) {
+                mav.addObject("msg", ex.getMessage());
+            } else {
+                mav.addObject("msg", errorMsg);
+            }
         }
         return mav;
     }

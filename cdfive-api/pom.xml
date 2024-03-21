@@ -30,6 +30,11 @@
             <artifactId>cdfive-mp3-api</artifactId>
             <version>${cdfive-mp3-api.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.cdfive</groupId>
+            <artifactId>cdfive-search-api</artifactId>
+            <version>${cdfive-search-api.version}</version>
+        </dependency>
 
         <!-- support -->
         <dependency>

@@ -21,7 +21,7 @@ public class AppProperties implements InitializingBean {
     @Value("${spring.application.name}")
     private String appName;
 
-    @Value("${server.ip:#{null}")
+    @Value("${server.ip:#{null}}")
     private String appIp;
 
     @Value("${server.port}")

@@ -32,6 +32,13 @@
     </properties>
 
     <dependencies>
+        <!-- framework -->
+        <dependency>
+            <groupId>com.cdfive</groupId>
+            <artifactId>cdfive-framework</artifactId>
+            <version>${cdfive-framework.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-gateway</artifactId>

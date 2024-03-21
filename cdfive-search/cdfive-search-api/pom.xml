@@ -19,6 +19,18 @@
             <version>${cdfive-framework.version}</version>
         </dependency>
 
+        <!-- spring-cloud -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-openfeign-core</artifactId>
+        </dependency>
+
+        <!-- spring -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
+
         <!-- common -->
         <dependency>
             <groupId>com.cdfive</groupId>

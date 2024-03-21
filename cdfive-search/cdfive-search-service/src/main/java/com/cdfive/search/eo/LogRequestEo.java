@@ -37,38 +37,41 @@ public class LogRequestEo implements Serializable {
     private String appName;
 
     @JSONField(ordinal = 4)
-    private Integer appPort;
+    private String appIp;
 
     @JSONField(ordinal = 5)
-    private String requestUri;
+    private Integer appPort;
 
     @JSONField(ordinal = 6)
-    private String remoteAddr;
+    private String requestUri;
 
     @JSONField(ordinal = 7)
-    private Long costMs;
+    private String remoteAddr;
 
     @JSONField(ordinal = 8)
-    private String requestBody;
+    private Long costMs;
 
     @JSONField(ordinal = 9)
-     private boolean exExist;
+    private String requestBody;
 
     @JSONField(ordinal = 10)
-    private String exClassName;
+     private Boolean ExExist;
 
     @JSONField(ordinal = 11)
-    private String exStackTrace;
+    private String exClassName;
 
-    @JSONField(ordinal = 12, format = "yyyy-MM-dd HH:mm:ss.SSS")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
-    private Date startTime;
+    @JSONField(ordinal = 12)
+    private String exStackTrace;
 
     @JSONField(ordinal = 13, format = "yyyy-MM-dd HH:mm:ss.SSS")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
-    private Date createTime;
+    private Date startTime;
 
     @JSONField(ordinal = 14, format = "yyyy-MM-dd HH:mm:ss.SSS")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+    private Date createTime;
+
+    @JSONField(ordinal = 15, format = "yyyy-MM-dd HH:mm:ss.SSS")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private Date updateTime;
 }

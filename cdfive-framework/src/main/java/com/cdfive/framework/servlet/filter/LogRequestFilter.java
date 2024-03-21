@@ -44,6 +44,8 @@ public class LogRequestFilter implements Filter {
             return;
         }
 
+        // TODO config include requestUris
+
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         httpServletRequest = wrapServletRequest(httpServletRequest);
 
@@ -73,7 +75,7 @@ public class LogRequestFilter implements Filter {
             }
 
             if (ex != null) {
-                log.error(traceId + ",requestUri={},\nremoteAddr={},\ncost={}ms,\nbody={}"
+                log.error(traceId + ",\nrequestUri={},\nremoteAddr={},\ncost={}ms,\nbody={}"
                         , httpServletRequest.getRequestURI()
                         , httpServletRequest.getRemoteAddr()
                         , costTimeMs
