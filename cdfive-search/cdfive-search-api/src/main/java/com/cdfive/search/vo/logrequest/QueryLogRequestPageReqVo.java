@@ -17,9 +17,15 @@ public class QueryLogRequestPageReqVo extends PageReqVo {
 
     private String appName;
 
-    private String appIp;
+    private String ip;
 
-    private Integer appPort;
+    private Integer port;
 
     private String requestUri;
+
+    private Boolean success;
+
+    private String sortField;
+
+    private String sortOrder;
 }

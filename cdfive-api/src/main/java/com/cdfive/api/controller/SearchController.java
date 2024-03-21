@@ -4,6 +4,8 @@ import com.cdfive.common.api.ApiResponse;
 import com.cdfive.common.base.AbstractController;
 import com.cdfive.common.vo.page.PageRespVo;
 import com.cdfive.search.api.LogRequestApi;
+import com.cdfive.search.vo.logrequest.QueryLogRequestDetailReqVo;
+import com.cdfive.search.vo.logrequest.QueryLogRequestDetailRespVo;
 import com.cdfive.search.vo.logrequest.QueryLogRequestPageReqVo;
 import com.cdfive.search.vo.logrequest.QueryLogRequestPageRespVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +28,10 @@ public class SearchController extends AbstractController {
             reqVo = new QueryLogRequestPageReqVo();
         }
         return succ(logRequestApi.queryLogRequestPage(reqVo));
+    }
+
+    @RequestMapping("/api/v1/logRequest/detail")
+    public ApiResponse<QueryLogRequestDetailRespVo> logRequestDetail(@RequestBody(required = false) QueryLogRequestDetailReqVo reqVo) {
+        return succ(logRequestApi.queryLogRequestDetail(reqVo));
     }
 }

@@ -10,9 +10,9 @@ import java.util.Date;
  * @author cdfive
  */
 @Data
-public class QueryLogRequestPageRespVo implements Serializable {
+public class QueryLogRequestDetailRespVo implements Serializable {
 
-    private static final long serialVersionUID = -2158277900699345906L;
+    private static final long serialVersionUID = 88699865629131294L;
 
     private String id;
 
@@ -35,6 +35,8 @@ public class QueryLogRequestPageRespVo implements Serializable {
     private Boolean success;
 
     private String exceptionClassName;
+
+    private String exceptionStackTrace;
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date startTime;

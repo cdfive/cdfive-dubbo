@@ -55,7 +55,7 @@ public class LogRequestEo implements Serializable {
     private String requestBody;
 
     @JSONField(ordinal = 10)
-     private Boolean ExExist;
+     private Boolean exExist;
 
     @JSONField(ordinal = 11)
     private String exClassName;
