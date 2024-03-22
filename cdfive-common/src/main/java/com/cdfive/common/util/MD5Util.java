@@ -20,6 +20,10 @@ public class MD5Util {
         }
     }
 
+    public static String encodeByMD5(String str, String salt) {
+        return encodeByMD5(String.format("%s%s", str, salt));
+    }
+
     public static String byte2string(byte[] b) {
         StringBuffer hs = new StringBuffer(100);
         for (int n = 0; n < b.length; n++) {
