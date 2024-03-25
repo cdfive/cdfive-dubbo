@@ -1,8 +1,9 @@
 package com.cdfive.gateway.filter.auth;
 
-import com.cdfive.gateway.util.JwtUtil;
+import com.cdfive.framework.component.jwt.JwtComponent;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.stereotype.Component;
@@ -16,14 +17,16 @@ import java.util.List;
 @Component
 public class JwtAuthGatewayFilterFactory extends AbstractGatewayFilterFactory<JwtAuthGatewayFilterFactory.Config> {
 
+    @Autowired
+    private JwtComponent jwtComponent;
+
     public JwtAuthGatewayFilterFactory() {
         super(Config.class);
     }
 
     @Override
     public GatewayFilter apply(Config config) {
-        JwtUtil.init(config.getJwtSecret(), config.getAccessTokenExpire());
-        return new JwtAuthGatewayFilter(config.whiteList);
+        return new JwtAuthGatewayFilter(jwtComponent, config.whiteList);
     }
 
     @Override
@@ -35,9 +38,5 @@ public class JwtAuthGatewayFilterFactory extends AbstractGatewayFilterFactory<Jw
     @Setter
     public static class Config {
         private List<String> whiteList;
-
-        private String jwtSecret;
-
-        private Long accessTokenExpire;
     }
 }

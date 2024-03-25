@@ -2,9 +2,10 @@ package com.cdfive.gateway.filter.auth;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.cdfive.gateway.util.JwtUtil;
+import com.cdfive.framework.component.jwt.JwtComponent;
 import com.cdfive.gateway.util.WebUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.core.Ordered;
@@ -39,9 +40,12 @@ public class JwtAuthGatewayFilter implements GatewayFilter, Ordered {
 
     private static final String PARAMETER_KEY_USER_ID = "userId";
 
+    private JwtComponent jwtComponent;
+
     private List<String> whiteList;
 
-    public JwtAuthGatewayFilter(List<String> whiteList) {
+    public JwtAuthGatewayFilter(JwtComponent jwtComponent, List<String> whiteList) {
+        this.jwtComponent = jwtComponent;
         this.whiteList = whiteList;
     }
 
@@ -61,7 +65,7 @@ public class JwtAuthGatewayFilter implements GatewayFilter, Ordered {
             return WebUtil.writeAuthFailResponse(exchange, AUTH_FAIL_CODE, AUTH_FAIL_MSG);
         }
 
-        JwtUtil.JwtClaims jwtClaims = JwtUtil.parseToken(token);
+        JwtComponent.JwtClaims jwtClaims = jwtComponent.parseToken(token);
         if (jwtClaims == null) {
             log.error("jwtClaims empty");
             return WebUtil.writeAuthFailResponse(exchange, AUTH_FAIL_CODE, AUTH_FAIL_MSG);
