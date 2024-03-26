@@ -118,9 +118,14 @@ public class SentinelConfiguration {
 
     public void initDataSource() {
         SentinelProperties.DataSource dataSource = sentinelProperties.getDataSource();
+        if (dataSource == null) {
+            log.warn("{}SentinelConfiguration empty dataSource", LOG_PRIFEX);
+            return;
+        }
+
         String dataSourceType = dataSource.getType();
         if (!StringUtils.hasText(dataSourceType)) {
-            log.error("{}SentinelConfiguration empty DataSourceType");
+            log.error("{}SentinelConfiguration empty DataSourceType", LOG_PRIFEX);
             return;
         }
 
