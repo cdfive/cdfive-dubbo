@@ -11,6 +11,8 @@ import java.util.List;
  */
 public interface AdminService {
 
+    LoginRespVo login(LoginReqVo reqVo);
+
     FindAdminByUsernameRespVo findAdminByUsername(String username);
 
     PageRespVo<QueryAdminListPageRespVo> queryAdminListPage(QueryAdminListPageReqVo reqVo);

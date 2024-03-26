@@ -8,6 +8,9 @@ import lombok.Getter;
  */
 public class ApplicationStartupInfo {
 
+    private ApplicationStartupInfo() {
+    }
+
     private static Long startingTime;
 
     private static Long startedTime;

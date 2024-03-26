@@ -2,6 +2,8 @@ server:
   port: 10004
 
 spring:
+  application:
+    name: cdfive-user
   jpa:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
@@ -14,9 +16,31 @@ spring:
   profiles:
     active: dev
 
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7777/eureka
+    register-with-eureka: true
+    fetch-registry: true
+
 sentinel:
   enable: true
-  app-name: cdfive-user
-  transport-dashboard: localhost:8080
-  transport-port: 8741
-  datasource-type: redis
+  appName: cdfive-user
+  transport:
+    dashboard: localhost:8080
+    port: 8741
+  dataSource:
+    type: redis
+    redis:
+      host: localhost
+      port: 6379
+      password:
+
+jwt:
+  enable: true
+  secret: testJwt
+  expireTimeMs: 1800000
+
+cdfive:
+  framework:
+    wrapApiResponse: true

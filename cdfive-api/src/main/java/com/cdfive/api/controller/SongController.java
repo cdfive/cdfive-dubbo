@@ -37,7 +37,7 @@ public class SongController extends AbstractController {
 //    @NacosValue(value = "${test}", autoRefreshed = true)
     private String test;
 
-    @RequestMapping("/api/v1/test")
+    @RequestMapping("/api/v1/mp3/test")
     public String test() {
 //        log.debug("test={}", test);
         log.info("test={}", test);

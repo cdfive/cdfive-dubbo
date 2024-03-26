@@ -18,7 +18,7 @@ public class JwtComponentTest {
     }
 
     @Test
-    public void test() {
+    public void testCreateToken() {
         JwtComponent.JwtClaims claims = new JwtComponent.JwtClaims();
         claims.setUserId(100001L);
         String token = component.createToken(claims);

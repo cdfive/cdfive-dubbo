@@ -4,6 +4,7 @@ import com.cdfive.common.util.JpaPageUtil;
 import com.cdfive.common.util.MD5Util;
 import com.cdfive.common.vo.page.BootstrapPageRespVo;
 import com.cdfive.common.vo.page.PageRespVo;
+import com.cdfive.framework.component.jwt.JwtComponent;
 import com.cdfive.user.enums.AdminStatusEnum;
 import com.cdfive.user.po.AdminPo;
 import com.cdfive.user.po.MenuPo;
@@ -18,12 +19,13 @@ import com.cdfive.user.vo.admin.*;
 import com.cdfive.user.vo.menu.MenuVo;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -35,9 +37,74 @@ import java.util.stream.Collectors;
 public class AdminServiceImpl extends AbstractUserService implements AdminService {
 
     @Autowired
+    private JwtComponent jwtComponent;
+
+    @Autowired
     private AdminRepository adminRepository;
+
     @Autowired
     private RoleRepository roleRepository;
+
+    @Override
+    public LoginRespVo login(LoginReqVo reqVo) {
+        checkNotNull(reqVo, "请求参数不能为空");
+
+        String username = reqVo.getUsername();
+        checkNotBlank(username, "用户名不能为空");
+
+        String password = reqVo.getPassword();
+        checkNotBlank(password, "密码不能为空");
+
+        AdminPo adminPo = adminRepository.findByUsername(username);
+        checkNotNull(adminPo, "用户名或密码错误");
+
+        checkCondition(Objects.equals(adminPo.getPassword(), MD5Util.encodeByMD5(password)), "用户名或密码错误");
+
+        LoginRespVo respVo = new LoginRespVo();
+        respVo.setMenus(Collections.emptyList());
+        List<RolePo> roles = adminPo.getRoles();
+        if (!CollectionUtils.isEmpty(roles)) {
+            List<MenuVo> menuVos = Lists.newArrayList();
+            respVo.setMenus(menuVos);
+
+            List<MenuPo> menuPos = roles.stream().flatMap(o -> o.getMenus().stream()).collect(Collectors.toList());
+
+            List<MenuPo> topMenuPos = menuPos.stream().filter(o -> o.getParent() == null).collect(Collectors.toList());
+            List<MenuPo> subMenuPos = menuPos.stream().filter(o -> o.getParent() != null).collect(Collectors.toList());
+
+            for (MenuPo topMenuPo : topMenuPos) {
+                MenuVo menuVo = new MenuVo();
+                menuVo.setId(topMenuPo.getId());
+                menuVo.setName(topMenuPo.getName());
+                menuVo.setDescription(topMenuPo.getDescription());
+                menuVo.setUrl(topMenuPo.getUrl());
+                menuVo.setIcon(topMenuPo.getIcon());
+                menuVos.add(menuVo);
+
+                List<MenuVo> subMenuVos = Lists.newArrayList();
+                menuVo.setSubMenus(subMenuVos);
+
+                for (MenuPo subMenuPo : subMenuPos) {
+                    if (subMenuPo.getParent() != null && subMenuPo.getParent().getId().equals(menuVo.getId())) {
+                        MenuVo subMenuVo = new MenuVo();
+                        subMenuVo.setId(subMenuPo.getId());
+                        subMenuVo.setName(subMenuPo.getName());
+                        subMenuVo.setDescription(subMenuPo.getDescription());
+                        subMenuVo.setUrl(subMenuPo.getUrl());
+                        subMenuVo.setIcon(subMenuPo.getIcon());
+                        subMenuVos.add(subMenuVo);
+                    }
+                }
+            }
+        }
+
+        JwtComponent.JwtClaims jwtClaims = new JwtComponent.JwtClaims();
+        jwtClaims.setUserId(Long.valueOf(adminPo.getId()));
+        jwtClaims.setUserName(adminPo.getUsername());
+        String token = jwtComponent.createToken(jwtClaims);
+        respVo.setToken(token);
+        return respVo;
+    }
 
     @Override
     public FindAdminByUsernameRespVo findAdminByUsername(String username) {

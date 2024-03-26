@@ -38,6 +38,8 @@ public class JwtAuthGatewayFilter implements GatewayFilter, Ordered {
 
     private static final String HEADER_KEY_TOKEN = "Authorization";
 
+    private static final String HEADER_KEY_USER_ID = "userId";
+
     private static final String PARAMETER_KEY_USER_ID = "userId";
 
     private JwtComponent jwtComponent;
@@ -89,7 +91,7 @@ public class JwtAuthGatewayFilter implements GatewayFilter, Ordered {
             return WebUtil.writeAuthFailResponse(exchange, AUTH_FAIL_CODE, AUTH_FAIL_MSG);
         }
 
-        boolean authSucc = false;
+        boolean authSucc = true;
 //        String bodyStr = WebUtil.resolveBodyFromRequest(exchange);
 //        String bodyStr = WebUtil.resolveBodyFromRequest(exchange.getRequest());
         String bodyStr = resolveBodyFromRequest(exchange.getRequest());
@@ -126,7 +128,10 @@ public class JwtAuthGatewayFilter implements GatewayFilter, Ordered {
             return WebUtil.writeAuthFailResponse(exchange, AUTH_FAIL_CODE, AUTH_FAIL_MSG);
         }
 
-        return chain.filter(exchange);
+        ServerHttpRequest request = exchange.getRequest().mutate().headers((headers) -> {
+            headers.remove(HEADER_KEY_TOKEN);
+        }).header(HEADER_KEY_USER_ID, tokenUserId.toString()).build();
+        return chain.filter(exchange.mutate().request(request).build());
     }
 
     @Override

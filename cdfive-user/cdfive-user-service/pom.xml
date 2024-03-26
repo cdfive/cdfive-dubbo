@@ -19,6 +19,12 @@
             <version>${cdfive-framework.version}</version>
         </dependency>
 
+        <!-- spring-cloud -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+
         <!-- common -->
         <dependency>
             <groupId>com.cdfive</groupId>

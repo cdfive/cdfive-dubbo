@@ -51,8 +51,6 @@ public class JwtComponent {
 
         private Long expireTime;
 
-        private String mobile;
-
         private Long userId;
 
         private String userName;
@@ -66,14 +64,6 @@ public class JwtComponent {
             return expireTime;
         }
 
-        public String getMobile() {
-            Object object = this.get("mobile");
-            if (object == null) {
-                return null;
-            }
-            this.mobile = object.toString();
-            return mobile;
-        }
 
         public Long getUserId() {
             Object object = this.get("userId");
@@ -198,11 +188,6 @@ public class JwtComponent {
         protected void setExpireTime(Long expireTime) {
             this.expireTime = expireTime;
             setValue("expireTime", this.expireTime);
-        }
-
-        public void setMobile(String mobile) {
-            this.mobile = mobile;
-            setValue("mobile", this.mobile);
         }
 
         public void setUserId(Long userId) {
