@@ -39,7 +39,7 @@ sentinel:
 jwt:
   enable: true
   secret: testJwt
-  expireTimeMs: 1800000
+  expireTimeMs: 36000000
 
 cdfive:
   framework:

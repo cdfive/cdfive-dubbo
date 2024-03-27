@@ -5,10 +5,7 @@ import com.cdfive.common.util.JacksonUtil;
 import com.cdfive.common.vo.page.PageRespVo;
 import com.cdfive.mp3.api.SongApi;
 import com.cdfive.mp3.service.SongService;
-import com.cdfive.mp3.vo.song.FindAllSongRespVo;
-import com.cdfive.mp3.vo.song.QuerySongListPageReqVo;
-import com.cdfive.mp3.vo.song.QuerySongListPageRespVo;
-import com.cdfive.mp3.vo.song.SongListVo;
+import com.cdfive.mp3.vo.song.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,5 +49,10 @@ public class SongController implements SongApi {
     @Override
     public PageRespVo<QuerySongListPageRespVo> querySongListPage(QuerySongListPageReqVo reqVo) {
         return songService.querySongListPage(reqVo);
+    }
+
+    @Override
+    public Integer addSong(AddSongReqVo reqVo) {
+        return songService.addSong(reqVo);
     }
 }

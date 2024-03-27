@@ -2,6 +2,7 @@ package com.cdfive.mp3.repository.db.specification;
 
 import com.cdfive.mp3.entity.po.SongPo;
 import com.cdfive.mp3.vo.song.QuerySongListPageReqVo;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -18,6 +19,8 @@ import java.util.List;
  */
 @AllArgsConstructor
 public class QuerySongSpecification implements Specification<SongPo> {
+
+    private static final List<String> CAN_SORT_FIELDS = ImmutableList.of("id", "digit", "playCount", "createTime", "updateTime");
 
     private QuerySongListPageReqVo reqVo;
 
@@ -44,7 +47,18 @@ public class QuerySongSpecification implements Specification<SongPo> {
 
         query.where(predicates.toArray(new Predicate[0]));
 
-        query.orderBy(cb.desc(root.get("updateTime")));
+        String sortField = reqVo.getSortField();
+        String sortOrder = reqVo.getSortOrder();
+        if (StringUtils.isNotBlank(sortField) && StringUtils.isNotBlank(sortOrder) && CAN_SORT_FIELDS.contains(sortField)) {
+            if ("ascending".equals(sortOrder)) {
+                query.orderBy(cb.asc(root.get(sortField)));
+            } else {
+                query.orderBy(cb.desc(root.get(sortField)));
+            }
+        } else {
+            query.orderBy(cb.desc(root.get("updateTime")));
+        }
+
         return query.getRestriction();
     }
 }

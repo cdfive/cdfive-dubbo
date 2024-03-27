@@ -1,10 +1,7 @@
 package com.cdfive.mp3.api;
 
 import com.cdfive.common.vo.page.PageRespVo;
-import com.cdfive.mp3.vo.song.FindAllSongRespVo;
-import com.cdfive.mp3.vo.song.QuerySongListPageReqVo;
-import com.cdfive.mp3.vo.song.QuerySongListPageRespVo;
-import com.cdfive.mp3.vo.song.SongListVo;
+import com.cdfive.mp3.vo.song.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,4 +26,7 @@ public interface SongApi {
 
     @RequestMapping("/api/v1/mp3/song/list")
     PageRespVo<QuerySongListPageRespVo> querySongListPage(@RequestBody(required = false) QuerySongListPageReqVo reqVo);
+
+    @RequestMapping("/api/v1/mp3/song/add")
+    Integer addSong(@RequestBody(required = false) AddSongReqVo reqVo);
 }

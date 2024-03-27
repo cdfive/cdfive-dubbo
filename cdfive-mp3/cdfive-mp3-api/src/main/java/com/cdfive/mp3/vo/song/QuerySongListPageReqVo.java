@@ -9,9 +9,15 @@ import lombok.Data;
 @Data
 public class QuerySongListPageReqVo extends PageReqVo {
 
+    private static final long serialVersionUID = 1447169538199149750L;
+
     private String name;
 
     private String author;
 
     private Integer digit;
+
+    private String sortField;
+
+    private String sortOrder;
 }
