@@ -109,17 +109,14 @@ public class LogRequestEsServiceImpl extends AbstractSearchService implements Lo
         SearchQuery searchQuery = new SearchQuery(rootQueryBuilder, PageRequest.of(reqVo.getPageNum() - 1, reqVo.getPageSize()));
 
         String sortField = reqVo.getSortField();
-        if (StringUtils.isBlank(sortField)) {
-            searchQuery.withSort(SortBuilders.fieldSort("startTime").order(SortOrder.DESC));
-        } else {
-            String sortOrder = reqVo.getSortOrder();
-            if (StringUtils.isNotBlank(sortOrder)) {
-                if ("costMs".equals(sortField)) {
-                    searchQuery.withSort(SortBuilders.fieldSort("costMs").order("ascending".equals(sortOrder) ? SortOrder.ASC : SortOrder.DESC));
-                }
+        String sortOrder = reqVo.getSortOrder();
+        if (StringUtils.isNotBlank(sortField) && StringUtils.isNotBlank(sortOrder)) {
+            if ("costMs".equals(sortField)) {
+                searchQuery.withSort(SortBuilders.fieldSort("costMs").order("ascending".equals(sortOrder) ? SortOrder.ASC : SortOrder.DESC));
             }
+        } else {
+            searchQuery.withSort(SortBuilders.fieldSort("startTime").order(SortOrder.DESC));
         }
-
 
         Page<EsEntityVo<LogRequestEo>> page = logRequestEsRepository.search(searchQuery);
 
