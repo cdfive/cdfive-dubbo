@@ -5,6 +5,7 @@ import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferUtils;
+import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpRequestDecorator;
 import org.springframework.stereotype.Component;
@@ -20,7 +21,12 @@ public class CacheBodyGlobalFilter implements GlobalFilter, Ordered {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        if (exchange.getRequest().getHeaders().getContentType() == null) {
+        MediaType contentType = exchange.getRequest().getHeaders().getContentType();
+        if (contentType == null) {
+            return chain.filter(exchange);
+        }
+        if (MediaType.MULTIPART_FORM_DATA.getType().equals(contentType.getType())
+                && MediaType.MULTIPART_FORM_DATA.getSubtype().equals(contentType.getSubtype())) {
             return chain.filter(exchange);
         } else {
             return DataBufferUtils.join(exchange.getRequest().getBody())

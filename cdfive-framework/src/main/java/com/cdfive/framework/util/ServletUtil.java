@@ -84,6 +84,10 @@ public class ServletUtil {
 
     @SneakyThrows
     public static String getRequestBody(HttpServletRequest request) {
+        if (request.getContentType() != null && request.getContentType().toLowerCase().startsWith("multipart/form-data")) {
+            return "";
+        }
+
         return StreamUtils.copyToString(request.getInputStream(), Charset.forName("UTF-8"));
     }
 }
