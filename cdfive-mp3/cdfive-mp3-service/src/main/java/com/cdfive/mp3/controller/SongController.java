@@ -52,7 +52,17 @@ public class SongController implements SongApi {
     }
 
     @Override
+    public QuerySongDetailRespVo querySongDetail(QuerySongDetailReqVo reqVo) {
+        return songService.querySongDetail(reqVo);
+    }
+
+    @Override
     public Integer addSong(AddSongReqVo reqVo) {
         return songService.addSong(reqVo);
+    }
+
+    @Override
+    public void updateSong(UpdateSongReqVo reqVo) {
+        songService.updateSong(reqVo);
     }
 }

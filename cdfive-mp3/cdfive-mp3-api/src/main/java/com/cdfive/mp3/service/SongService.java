@@ -23,6 +23,8 @@ public interface SongService {
 
     FindSongDetailVo findSongDetail(Integer id);
 
+    QuerySongDetailRespVo querySongDetail(QuerySongDetailReqVo reqVo);
+
     Integer addSong(AddSongReqVo reqVo);
 
     void updateSong(UpdateSongReqVo reqVo);

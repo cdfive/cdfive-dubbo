@@ -9,6 +9,7 @@ import com.cdfive.mp3.entity.po.CategoryPo;
 import com.cdfive.mp3.entity.po.CategorySongPo;
 import com.cdfive.mp3.entity.po.SongPo;
 import com.cdfive.mp3.repository.db.CategoryRepository;
+import com.cdfive.mp3.repository.db.CategorySongRepository;
 import com.cdfive.mp3.repository.db.SongRepository;
 import com.cdfive.mp3.repository.db.specification.QuerySongSpecification;
 import com.cdfive.mp3.service.AbstractMp3Service;
@@ -25,8 +26,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -60,6 +60,9 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private CategorySongRepository categorySongRepository;
 
     @Cacheable(value = "song", key = "'all'")
     @Transactional(readOnly = true)
@@ -162,6 +165,36 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
         return detailVo;
     }
 
+    @Override
+    public QuerySongDetailRespVo querySongDetail(QuerySongDetailReqVo reqVo) {
+        checkNotNull(reqVo, "请求参数不能为空");
+
+        Integer id = reqVo.getId();
+        checkNotNull(id, "id不能为空");
+
+        SongPo songPo = songRepository.findById(id).orElseThrow(() -> exception("记录不存在,id=" + id));
+
+        QuerySongDetailRespVo respVo = new QuerySongDetailRespVo();
+        List<CategorySongPo> songCategoryPos = songPo.getSongCategoryPos();
+        if (songCategoryPos != null) {
+            List<Integer> categoryIds = songPo.getSongCategoryPos().stream().map(o -> o.getCategoryPo().getId()).collect(Collectors.toList());
+            respVo.setCategoryIds(categoryIds);
+        }
+
+        respVo.setId(songPo.getId());
+        respVo.setName(songPo.getSongName());
+        respVo.setAuthor(songPo.getAuthor());
+        respVo.setDescription(songPo.getDescription());
+        respVo.setPath(songPo.getPath());
+        respVo.setDigit(songPo.getDigit());
+        respVo.setReason(songPo.getReason());
+        respVo.setPlayCount(songPo.getPlayCount());
+        respVo.setSort(songPo.getSort());
+        respVo.setCreateTime(songPo.getCreateTime());
+        respVo.setUpdateTime(songPo.getUpdateTime());
+        return respVo;
+    }
+
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Integer addSong(AddSongReqVo reqVo) {
@@ -184,6 +217,9 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
 
         String path = reqVo.getPath();
         checkNotBlank(path, "文件路径不能为空");
+        songPo.setPath(path);
+
+        songPo.setDigit(name.length());
 
         String reason = reqVo.getReason();
         songPo.setReason(reason);
@@ -198,6 +234,10 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
                 CategorySongPo categorySongPo = new CategorySongPo();
                 categorySongPo.setSongPo(songPo);
                 categorySongPo.setCategoryPo(o);
+                categorySongPo.setCreateTime(now());
+
+//                o.getCategorySongPos().add(categorySongPo);
+//                categorySongPo.setId(128);
                 return categorySongPo;
             }).collect(Collectors.toList());
             songPo.setSongCategoryPos(categorySongPos);
@@ -207,6 +247,7 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
         songPo.setDeleted(false);
 
         songRepository.save(songPo);
+//        categorySongRepository.saveAll(songPo.getSongCategoryPos());
         return songPo.getId();
     }
 
@@ -243,19 +284,53 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
         songPo.setSort(sort);
 
         List<Integer> categoryIds = reqVo.getCategoryIds();
+        List<CategorySongPo> delPos = Collections.emptyList();
         if (isNotEmpty(categoryIds)) {
+            List<CategorySongPo> songCategoryPos = songPo.getSongCategoryPos();
+
+//            songCategoryPos.removeIf(o -> {
+//                boolean result = !categoryIds.contains(o.getCategoryPo().getId());
+//                System.out.println(categoryIds + "," + o.getCategoryPo().getId() + "," + result);
+//                return result;
+//            });
+
+            delPos = songCategoryPos.stream().filter(o -> !categoryIds.contains(o.getCategoryPo().getId())).collect(Collectors.toList());
+            System.out.println("delete size=" + delPos.size());
+
+            songCategoryPos.removeAll(delPos);
+            System.out.println("update size=" + songCategoryPos.size());
+//            categorySongRepository.flush();
+
+            Set<Integer> existCategoryIds = songCategoryPos.stream().map(o -> o.getCategoryPo().getId()).collect(Collectors.toSet());
+            categoryIds.removeIf(o -> existCategoryIds.contains(o));
+            System.out.println("add size=" + categoryIds.size());
+
             List<CategoryPo> categoryPos = categoryRepository.findAllById(categoryIds);
             List<CategorySongPo> categorySongPos = categoryPos.stream().map(o -> {
                 CategorySongPo categorySongPo = new CategorySongPo();
                 categorySongPo.setSongPo(songPo);
                 categorySongPo.setCategoryPo(o);
+                categorySongPo.setCreateTime(now());
+//                categorySongPo.setId(128);
+
+//                o.getCategorySongPos().add(categorySongPo);
                 return categorySongPo;
             }).collect(Collectors.toList());
-            songPo.setSongCategoryPos(categorySongPos);
+//            songPo.setSongCategoryPos(categorySongPos);
+            songCategoryPos.addAll(categorySongPos);
+        } else {
+            delPos = songPo.getSongCategoryPos();
+            songPo.setSongCategoryPos(Collections.emptyList());
+            System.out.println("add size=0");
+            System.out.println("update size=0");
+            System.out.println("delete size=" + delPos.size());
         }
 
         songPo.setUpdateTime(now());
         songRepository.save(songPo);
+
+        categorySongRepository.deleteAll(delPos);
+        categorySongRepository.saveAll(songPo.getSongCategoryPos());
     }
 
     @Transactional(rollbackFor = Exception.class)

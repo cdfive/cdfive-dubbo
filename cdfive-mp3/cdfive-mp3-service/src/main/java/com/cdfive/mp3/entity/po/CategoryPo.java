@@ -3,10 +3,7 @@ package com.cdfive.mp3.entity.po;
 import com.cdfive.support.jpa.po.BasePo;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 @Data
@@ -14,7 +11,7 @@ import java.util.List;
 @Table(name = "cdfive_category")
 public class CategoryPo extends BasePo<Integer> {
 
-    @OneToMany(mappedBy = "categoryPo")
+    @OneToMany(mappedBy = "categoryPo", cascade = CascadeType.ALL)
     private List<CategorySongPo> categorySongPos;
 
     @Column(name = "category_name")
@@ -23,4 +20,9 @@ public class CategoryPo extends BasePo<Integer> {
     private String description;
 
     private Integer sort;
+
+    @Override
+    public String toString() {
+        return id != null ? String.valueOf(id) : null;
+    }
 }

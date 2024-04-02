@@ -27,6 +27,12 @@ public interface SongApi {
     @RequestMapping("/api/v1/mp3/song/list")
     PageRespVo<QuerySongListPageRespVo> querySongListPage(@RequestBody(required = false) QuerySongListPageReqVo reqVo);
 
+    @RequestMapping("/api/v1/mp3/song/detail")
+    QuerySongDetailRespVo querySongDetail(@RequestBody(required = false) QuerySongDetailReqVo reqVo);
+
     @RequestMapping("/api/v1/mp3/song/add")
     Integer addSong(@RequestBody(required = false) AddSongReqVo reqVo);
+
+    @RequestMapping("/api/v1/mp3/song/update")
+    void updateSong(@RequestBody(required = false) UpdateSongReqVo reqVo);
 }
