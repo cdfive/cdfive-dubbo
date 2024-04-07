@@ -35,4 +35,7 @@ public interface SongApi {
 
     @RequestMapping("/api/v1/mp3/song/update")
     void updateSong(@RequestBody(required = false) UpdateSongReqVo reqVo);
+
+    @RequestMapping("/api/v1/mp3/song/delete")
+    void deleteSong(@RequestBody(required = false) DeleteSongReqVo reqVo);
 }

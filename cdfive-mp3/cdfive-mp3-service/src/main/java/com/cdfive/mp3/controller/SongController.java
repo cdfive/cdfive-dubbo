@@ -65,4 +65,9 @@ public class SongController implements SongApi {
     public void updateSong(UpdateSongReqVo reqVo) {
         songService.updateSong(reqVo);
     }
+
+    @Override
+    public void deleteSong(DeleteSongReqVo reqVo) {
+        songService.deleteSong(reqVo);
+    }
 }

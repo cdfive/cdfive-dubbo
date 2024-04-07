@@ -327,10 +327,23 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
         }
 
         songPo.setUpdateTime(now());
-        songRepository.save(songPo);
 
         categorySongRepository.deleteAll(delPos);
-        categorySongRepository.saveAll(songPo.getSongCategoryPos());
+        songRepository.save(songPo);
+    }
+
+    @Override
+    public void deleteSong(DeleteSongReqVo reqVo) {
+        checkNotNull(reqVo, "请求参数不能为空");
+
+        Integer id = reqVo.getId();
+        checkNotNull(id, "记录id不能为空");
+
+        SongPo songPo = songRepository.findById(id).orElseThrow(() -> exception("记录不存在,id=" + id));
+
+        songPo.setDeleted(true);
+        songPo.setUpdateTime(now());
+        songRepository.save(songPo);
     }
 
     @Transactional(rollbackFor = Exception.class)

@@ -24,14 +24,15 @@ public class BasePo<T extends Serializable> implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private T id;
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+    protected T id;
 
-    private Date createTime;
+    protected Date createTime;
 
     @UpdateTimestamp
-    private Date updateTime;
+    protected Date updateTime;
 
-    private Boolean deleted;
+    protected Boolean deleted;
 
     @Override
     public boolean equals(Object o) {

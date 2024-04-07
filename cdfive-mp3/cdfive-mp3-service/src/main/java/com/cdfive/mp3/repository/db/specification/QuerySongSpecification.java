@@ -56,7 +56,7 @@ public class QuerySongSpecification implements Specification<SongPo> {
                 query.orderBy(cb.desc(root.get(sortField)));
             }
         } else {
-            query.orderBy(cb.desc(root.get("updateTime")));
+            query.orderBy(cb.desc(root.get("id")));
         }
 
         return query.getRestriction();

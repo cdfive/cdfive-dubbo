@@ -29,5 +29,7 @@ public interface SongService {
 
     void updateSong(UpdateSongReqVo reqVo);
 
+    void deleteSong(DeleteSongReqVo reqVo);
+
     void deleteSong(List<Integer> ids);
 }
