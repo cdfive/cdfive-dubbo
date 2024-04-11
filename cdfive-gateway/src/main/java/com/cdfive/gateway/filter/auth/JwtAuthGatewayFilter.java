@@ -4,14 +4,16 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.cdfive.framework.component.jwt.JwtComponent;
 import com.cdfive.gateway.util.WebUtil;
+import io.netty.buffer.ByteBufAllocator;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.core.Ordered;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferUtils;
+import org.springframework.core.io.buffer.NettyDataBufferFactory;
 import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.http.server.reactive.ServerHttpRequestDecorator;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
@@ -131,6 +133,12 @@ public class JwtAuthGatewayFilter implements GatewayFilter, Ordered {
         ServerHttpRequest request = exchange.getRequest().mutate().headers((headers) -> {
             headers.remove(HEADER_KEY_TOKEN);
         }).header(HEADER_KEY_USER_ID, tokenUserId.toString()).build();
+
+        if (bodyStr != null) {
+            ServerHttpRequest httpRequest = this.resRequest(bodyStr, request);
+            return chain.filter(exchange.mutate().request(httpRequest).build());
+        }
+
         return chain.filter(exchange.mutate().request(request).build());
     }
 
@@ -148,5 +156,31 @@ public class JwtAuthGatewayFilter implements GatewayFilter, Ordered {
             bodyRef.set(charBuffer.toString());
         });
         return bodyRef.get();
+    }
+
+    private ServerHttpRequest resRequest(String body, ServerHttpRequest request) {
+        DataBuffer bodyDataBuffer = stringBuffer(body);
+        Flux<DataBuffer> bodyFlux = Flux.just(bodyDataBuffer);
+
+        request = new ServerHttpRequestDecorator(request) {
+            @Override
+            public Flux<DataBuffer> getBody() {
+                return bodyFlux;
+            }
+        };
+        return request;
+
+    }
+
+    private DataBuffer stringBuffer(String value) {
+        if (value == null) {
+            return null;
+        }
+
+        byte[] bytes = value.getBytes(StandardCharsets.UTF_8);
+        NettyDataBufferFactory nettyDataBufferFactory = new NettyDataBufferFactory(ByteBufAllocator.DEFAULT);
+        DataBuffer buffer = nettyDataBufferFactory.allocateBuffer(bytes.length);
+        buffer.write(bytes);
+        return buffer;
     }
 }
