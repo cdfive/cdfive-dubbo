@@ -15,6 +15,14 @@ public class LongTest {
         // 19
         System.out.println(String.valueOf(Long.MAX_VALUE).length());
 
+//        Long tooLarge = 12738430987973591044L; // Long number too large
+        try {
+            Long tooLarge = Long.parseLong("12738430987973591044");
+        } catch (NumberFormatException e) {
+            // java.lang.NumberFormatException: For input string: "12738430987973591044"
+            System.out.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+
         String s = "343651486535913456";
         // 343651486535913456
         System.out.println(Long.valueOf(s));
