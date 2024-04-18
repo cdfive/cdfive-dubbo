@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class PayOrderRespVo {
-    
+
     private String orderCode;
 }
