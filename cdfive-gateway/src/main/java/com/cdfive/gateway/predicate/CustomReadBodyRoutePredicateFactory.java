@@ -23,6 +23,7 @@ import static org.springframework.cloud.gateway.filter.AdaptCachedBodyGlobalFilt
  * @author cdfive
  * @see {@link org.springframework.cloud.gateway.handler.predicate.ReadBodyPredicateFactory}
  */
+@Deprecated
 public class CustomReadBodyRoutePredicateFactory extends AbstractRoutePredicateFactory<CustomReadBodyRoutePredicateFactory.Config> {
 
     protected static final Log LOGGER = LogFactory.getLog(CustomReadBodyRoutePredicateFactory.class);
