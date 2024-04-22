@@ -61,6 +61,25 @@ public class CategoryServiceImpl extends AbstractMp3Service implements CategoryS
         return detailVo;
     }
 
+    @Override
+    public QueryCategoryDetailRespVo queryCategoryDetail(QueryCategoryDetailReqVo reqVo) {
+        checkNotNull(reqVo, "请求参数不能为空");
+
+        Integer id = reqVo.getId();
+        checkNotNull(id, "id不能为空");
+
+        CategoryPo categoryPo = categoryRepository.findById(id).orElseThrow(() -> exception("记录不存在,id=" + id));
+
+        QueryCategoryDetailRespVo respVo = new QueryCategoryDetailRespVo();
+        respVo.setId(categoryPo.getId());
+        respVo.setName(categoryPo.getCategoryName());
+        respVo.setDescription(categoryPo.getDescription());
+        respVo.setSort(categoryPo.getSort());
+        respVo.setCreateTime(categoryPo.getCreateTime());
+        respVo.setUpdateTime(categoryPo.getUpdateTime());
+        return respVo;
+    }
+
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Integer addCategory(AddCategoryReqVo reqVo) {
@@ -98,6 +117,19 @@ public class CategoryServiceImpl extends AbstractMp3Service implements CategoryS
         Integer sort = reqVo.getSort();
         categoryPo.setSort(sort);
 
+        categoryPo.setUpdateTime(now());
+        categoryRepository.save(categoryPo);
+    }
+
+    @Override
+    public void deleteCategory(DeleteCategoryReqVo reqVo) {
+        checkNotNull(reqVo, "请求参数不能为空");
+
+        Integer id = reqVo.getId();
+        checkNotNull(id, "记录id不能为空");
+
+        CategoryPo categoryPo = categoryRepository.findById(id).orElseThrow(() -> exception("记录不存在,id=" + id));
+        categoryPo.setDeleted(true);
         categoryPo.setUpdateTime(now());
         categoryRepository.save(categoryPo);
     }

@@ -12,4 +12,8 @@ import java.io.Serializable;
 public class QueryCategoryListPageReqVo extends PageReqVo {
 
     private String name;
+
+    private String sortField;
+
+    private String sortOrder;
 }

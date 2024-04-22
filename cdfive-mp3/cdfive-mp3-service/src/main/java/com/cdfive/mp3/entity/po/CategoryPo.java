@@ -14,6 +14,10 @@ public class CategoryPo extends BasePo<Integer> {
     @OneToMany(mappedBy = "categoryPo", cascade = CascadeType.ALL)
     private List<CategorySongPo> categorySongPos;
 
+    @ManyToOne
+    @JoinColumn(name = "parent_id")
+    private CategoryPo categoryPo;
+
     @Column(name = "category_name")
     private String categoryName;
 

@@ -18,9 +18,13 @@ public interface CategoryService {
 
     FindCategoryDetailVo findCategoryDetail(Integer id);
 
+    QueryCategoryDetailRespVo queryCategoryDetail(QueryCategoryDetailReqVo reqVo);
+
     Integer addCategory(AddCategoryReqVo reqVo);
 
     void updateCategory(UpdateCategoryReqVo reqVo);
+
+    void deleteCategory(DeleteCategoryReqVo reqVo);
 
     void deleteCategory(List<Integer> ids);
 

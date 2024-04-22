@@ -17,3 +17,11 @@ spring:
         enabled: false
   config:
     import: optional:nacos:${spring.application.name}.${spring.cloud.nacos.config.file-extension}
+
+---
+spring:
+  profiles: test2
+  cloud:
+    nacos:
+      config:
+        prefix: cdfive-mp3-test2

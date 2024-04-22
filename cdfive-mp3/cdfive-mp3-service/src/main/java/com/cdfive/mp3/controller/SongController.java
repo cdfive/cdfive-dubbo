@@ -8,6 +8,7 @@ import com.cdfive.mp3.service.SongService;
 import com.cdfive.mp3.vo.song.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -21,6 +22,12 @@ public class SongController implements SongApi {
 
     @Autowired
     private SongService songService;
+
+    @RequestMapping("/api/v1/mp3/test")
+    public String test() {
+        log.info("test success");
+        return "test success";
+    }
 
     @Override
     public FindAllSongRespVo findAllSong() {
