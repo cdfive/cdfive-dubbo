@@ -61,6 +61,7 @@ public class AdminServiceImpl extends AbstractUserService implements AdminServic
         checkCondition(Objects.equals(adminPo.getPassword(), MD5Util.encodeByMD5(password)), "用户名或密码错误");
 
         LoginRespVo respVo = new LoginRespVo();
+        respVo.setName(adminPo.getAliasname());
         respVo.setMenus(Collections.emptyList());
         List<RolePo> roles = adminPo.getRoles();
         if (!CollectionUtils.isEmpty(roles)) {

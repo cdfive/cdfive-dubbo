@@ -16,5 +16,7 @@ public class LoginRespVo implements Serializable {
 
     private String token;
 
+    private String name;
+
     private List<MenuVo> menus;
 }
