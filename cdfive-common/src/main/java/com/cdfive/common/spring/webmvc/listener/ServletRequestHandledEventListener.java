@@ -15,7 +15,7 @@ public class ServletRequestHandledEventListener implements ApplicationListener<S
     @Override
     public void onApplicationEvent(ServletRequestHandledEvent event) {
         if (event.wasFailure()) {
-            log.error("[springwebmvc process error]" + event.toString());
+            log.error("[springwebmvc process error]" + event.toString(), event.getFailureCause());
         }
 //        if (event.wasFailure()) {
 //            log.error("[mvc_error]requestUrl={},clientAddress={},cost={}ms"
