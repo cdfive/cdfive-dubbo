@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 /**
  * @author cdfive
@@ -45,15 +46,20 @@ public class SmartRule extends AbstractLoadBalancerRule {
             return null;
         }
 
+        reachableServers = reachableServers.stream().filter(o -> o.isAlive()).collect(Collectors.toList());
+        if (reachableServers == null || reachableServers.size() == 0) {
+            log.error("no reachable alive server");
+            return null;
+        }
+
         int count = 0;
         int serverCount = reachableServers.size();
+        int nextServerIndex = incrementAndGetModulo(serverCount);
         boolean failed = false;
         while (true) {
             count++;
 
-            int nextServerIndex = incrementAndGetModulo(reachableServers.size());
             Server server = reachableServers.get(nextServerIndex);
-
             if (server == null) {
                 log.error("empty server");
                 return null;
@@ -83,6 +89,8 @@ public class SmartRule extends AbstractLoadBalancerRule {
                 log.error("exceed serverCount,count={},serverCount={}", count, serverCount);
                 return null;
             }
+
+            nextServerIndex = (nextServerIndex + 1) % serverCount;
         }
     }
 

@@ -21,7 +21,7 @@ public class RibbonConfig {
      */
     @Bean
     public ServerListUpdater ribbonServerListUpdater() {
-        log.info("Init EurekaNotificationServerListUpdater");
+        log.debug("Init EurekaNotificationServerListUpdater");
         return new EurekaNotificationServerListUpdater();
     }
 }
