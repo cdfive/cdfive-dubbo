@@ -11,6 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
+
 /**
  * @author cdfive
  */
@@ -20,6 +23,19 @@ public class LogRequestController implements LogRequestApi {
 
     @Autowired
     private LogRequestEsService logRequestEsService;
+
+    @Override
+    public String test() {
+        log.info("search test start");
+        int cost = ThreadLocalRandom.current().nextInt(5_000, 10_000);
+        try {
+            TimeUnit.MILLISECONDS.sleep(cost);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        log.info("search test success,cost={}ms", cost);
+        return "search test,cost=" + cost + "ms";
+    }
 
     @Override
     public PageRespVo<QueryLogRequestPageRespVo> queryLogRequestPage(QueryLogRequestPageReqVo reqVo) {

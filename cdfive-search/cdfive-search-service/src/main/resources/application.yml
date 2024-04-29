@@ -1,5 +1,12 @@
 server:
   port: 10003
+  tomcat:
+    threads:
+      min-spare: 10
+      max: 500
+#    connection-timeout: 500
+#    accept-count: 1
+#    max-connections: 1
 
 spring:
   application:

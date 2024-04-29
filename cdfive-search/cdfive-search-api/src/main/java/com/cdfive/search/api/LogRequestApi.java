@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @FeignClient(name = "cdfive-search")
 public interface LogRequestApi {
 
+    @RequestMapping("/api/v1/search/test")
+    String test();
+
     @RequestMapping("/api/v1/search/logRequest/list")
     PageRespVo<QueryLogRequestPageRespVo> queryLogRequestPage(@RequestBody(required = false) QueryLogRequestPageReqVo reqVo);
 

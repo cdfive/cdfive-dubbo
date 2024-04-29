@@ -14,5 +14,5 @@
        http://www.springframework.org/schema/aop/spring-aop.xsd">
 
 	<!-- dubbo provider -->
-	<import resource="../dubbo/dubbo-cdfive-search-service.xml" />
+<!--	<import resource="../dubbo/dubbo-cdfive-search-service.xml" />-->
 </beans>
