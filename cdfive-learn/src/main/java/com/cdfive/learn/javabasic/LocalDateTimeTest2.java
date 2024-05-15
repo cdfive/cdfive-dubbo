@@ -40,5 +40,10 @@ public class LocalDateTimeTest2 {
         System.out.println(nowDateMin);
         LocalDateTime nowDateMax = LocalDateTime.of(nowDate, LocalTime.MAX);
         System.out.println(nowDateMax);
+
+        LocalDateTime min = LocalDateTime.of(LocalDate.from(LocalDateTime.now()), LocalDateTime.MIN.toLocalTime());
+        System.out.println(min);
+        LocalDateTime max = LocalDateTime.of(LocalDate.from(LocalDateTime.now()), LocalDateTime.MAX.toLocalTime());
+        System.out.println(max);
     }
 }
