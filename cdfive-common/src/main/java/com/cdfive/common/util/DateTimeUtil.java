@@ -1,5 +1,7 @@
 package com.cdfive.common.util;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -49,5 +51,36 @@ public class DateTimeUtil {
         }
 
         return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    public static LocalDate getPrevWeekDate() {
+        return LocalDate.now().minusDays(DayOfWeek.values().length);
+    }
+
+
+    public static LocalDate getWeekStartDate() {
+        return getWeekStartDate(LocalDate.now());
+    }
+
+    public static LocalDate getWeekStartDate(LocalDate date) {
+        DayOfWeek dayOfWeek = date.getDayOfWeek();
+        if (DayOfWeek.MONDAY.equals(dayOfWeek)) {
+            return date;
+        }
+
+        return date.minusDays(dayOfWeek.getValue() - DayOfWeek.MONDAY.getValue());
+    }
+
+    public static LocalDate getWeekEndDate() {
+        return getWeekEndDate(LocalDate.now());
+    }
+
+    public static LocalDate getWeekEndDate(LocalDate date) {
+        DayOfWeek dayOfWeek = date.getDayOfWeek();
+        if (DayOfWeek.SUNDAY.equals(dayOfWeek)) {
+            return date;
+        }
+
+        return date.plusDays(DayOfWeek.SUNDAY.getValue() - dayOfWeek.getValue());
     }
 }
