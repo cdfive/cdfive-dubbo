@@ -20,22 +20,23 @@ import java.util.List;
 /**
  * @author cdfive
  */
-public abstract class BaseQueryBuilder implements QueryBuilder {
+public abstract class BaseQueryBuilder<Param extends QueryParameter> implements QueryBuilder<Param> {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
     protected String searchType;
 
-    private BaseQueryBuilder nextQueryBuilder;
+    private BaseQueryBuilder<Param> nextQueryBuilder;
 
     private QueryHandler queryHandler;
 
-    public BaseQueryBuilder withSearchType(String searchType) {
+    public BaseQueryBuilder<Param> withSearchType(String searchType) {
         this.searchType = searchType;
         return this;
     }
 
-    public BaseQueryBuilder withBuilder(BaseQueryBuilder nextQueryBuilder) {
+
+    public BaseQueryBuilder<Param> withBuilder(BaseQueryBuilder<Param> nextQueryBuilder) {
         Assert.notNull(nextQueryBuilder, "nextQueryBuilder can't be null");
 
         if (this.nextQueryBuilder != null) {
@@ -46,13 +47,13 @@ public abstract class BaseQueryBuilder implements QueryBuilder {
         return this;
     }
 
-    public BaseQueryBuilder withHandler(QueryHandler queryHandler) {
+    public BaseQueryBuilder<Param> withHandler(QueryHandler queryHandler) {
         this.queryHandler = queryHandler;
         return this;
     }
 
     @Override
-    public void build(QueryBuilderContext context, QueryParameter param) {
+    public void build(QueryBuilderContext context, Param param) {
         if (context.isSkip()) {
             return;
         }
@@ -65,7 +66,7 @@ public abstract class BaseQueryBuilder implements QueryBuilder {
     }
 
     @Override
-    public SearchQuery buildSearchQuery(QueryParameter param) {
+    public SearchQuery buildSearchQuery(Param param) {
         QueryBuilderContext context = new QueryBuilderContext();
 
         this.build(context, param);
@@ -81,7 +82,7 @@ public abstract class BaseQueryBuilder implements QueryBuilder {
     }
 
     @Override
-    public AggregateQuery buildAggregateQuery(QueryParameter param) {
+    public AggregateQuery buildAggregateQuery(Param param) {
         QueryBuilderContext context = new QueryBuilderContext();
 
         this.build(context, param);
@@ -96,7 +97,7 @@ public abstract class BaseQueryBuilder implements QueryBuilder {
         return aggregateQuery;
     }
 
-    abstract protected void doBuild(QueryBuilderContext context, QueryParameter param);
+    abstract protected void doBuild(QueryBuilderContext context, Param param);
 
     private SearchQuery buildSearchQuery(QueryBuilderContext context) {
         SearchQuery searchQuery = new SearchQuery();
@@ -125,7 +126,7 @@ public abstract class BaseQueryBuilder implements QueryBuilder {
         return searchType;
     }
 
-    public BaseQueryBuilder getNextQueryBuilder() {
+    public BaseQueryBuilder<Param> getNextQueryBuilder() {
         return nextQueryBuilder;
     }
 

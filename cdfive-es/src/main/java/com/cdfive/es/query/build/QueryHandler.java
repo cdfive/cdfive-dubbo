@@ -7,9 +7,9 @@ import com.cdfive.es.query.SearchQuery;
 /**
  * @author cdfive
  */
-public interface QueryHandler {
+public interface QueryHandler<Param> {
 
-    void handle(SearchQuery searchQuery, QueryParameter param);
+    void handle(SearchQuery searchQuery, Param param);
 
-    void handle(AggregateQuery aggregateQuery, QueryParameter param);
+    void handle(AggregateQuery aggregateQuery, Param param);
 }

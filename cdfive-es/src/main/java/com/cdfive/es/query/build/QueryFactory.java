@@ -9,22 +9,13 @@ import java.util.function.Consumer;
 /**
  * @author cdfive
  */
-public class QueryFactory {
+public class QueryFactory<Param extends QueryParameter> {
 
-    private static final ConcurrentHashMap<String, BaseQueryBuilder> QUERY_BUILDER_MAP = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, BaseQueryBuilder<Param>> QUERY_BUILDER_MAP = new ConcurrentHashMap<>();
 
-    private static final QueryFactory INSTANCE = new QueryFactory();
-
-    private QueryFactory() {
-    }
-
-    public QueryFactory getInstance() {
-        return INSTANCE;
-    }
-
-    public BaseQueryBuilder of(String searchType, Consumer<BaseQueryBuilder> initConsumer) {
+    public BaseQueryBuilder<Param> of(String searchType, Consumer<BaseQueryBuilder<Param>> initConsumer) {
         return QUERY_BUILDER_MAP.computeIfAbsent(searchType, (type) -> {
-            BaseQueryBuilder queryBuilder = new StartQueryBuilder().withSearchType(type);
+            BaseQueryBuilder<Param> queryBuilder = new StartQueryBuilder<Param>().withSearchType(type);
             initConsumer.accept(queryBuilder);
             return queryBuilder;
         });

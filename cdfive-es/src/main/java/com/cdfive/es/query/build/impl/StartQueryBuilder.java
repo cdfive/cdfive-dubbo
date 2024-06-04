@@ -7,7 +7,7 @@ import com.cdfive.es.query.build.QueryParameter;
 /**
  * @author cdfive
  */
-public class StartQueryBuilder extends BaseQueryBuilder {
+public class StartQueryBuilder<Param extends QueryParameter> extends BaseQueryBuilder<Param> {
 
     public StartQueryBuilder() {
         super();

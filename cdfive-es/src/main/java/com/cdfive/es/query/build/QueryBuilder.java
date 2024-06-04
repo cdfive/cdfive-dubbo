@@ -7,11 +7,11 @@ import com.cdfive.es.query.SearchQuery;
 /**
  * @author cdfive
  */
-public interface QueryBuilder {
+public interface QueryBuilder<Param> {
 
-    void build(QueryBuilderContext context, QueryParameter param);
+    void build(QueryBuilderContext context, Param param);
 
-    SearchQuery buildSearchQuery(QueryParameter param);
+    SearchQuery buildSearchQuery(Param param);
 
-    AggregateQuery buildAggregateQuery(QueryParameter param);
+    AggregateQuery buildAggregateQuery(Param param);
 }

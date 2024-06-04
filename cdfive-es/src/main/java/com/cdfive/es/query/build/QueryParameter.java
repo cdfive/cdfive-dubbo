@@ -7,7 +7,7 @@ import com.cdfive.common.util.JacksonUtil;
  */
 public interface QueryParameter {
 
-    default <S> QueryParameter from(S source) {
-        return JacksonUtil.jsonToObj(JacksonUtil.objToJson(source), QueryParameter.class);
+    public static <Param extends QueryParameter, S> Param from(S source, Class<Param> clazz) {
+        return JacksonUtil.jsonToObj(JacksonUtil.objToJson(source), clazz);
     }
 }

@@ -10,17 +10,17 @@ import org.slf4j.LoggerFactory;
 /**
  * @author cdfive
  */
-public abstract class BaseQueryHandler implements QueryHandler {
+public abstract class BaseQueryHandler<Param extends QueryParameter> implements QueryHandler<Param> {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
-    public void handle(SearchQuery searchQuery, QueryParameter param) {
+    public void handle(SearchQuery searchQuery, Param param) {
 
     }
 
     @Override
-    public void handle(AggregateQuery aggregateQuery, QueryParameter param) {
+    public void handle(AggregateQuery aggregateQuery, Param param) {
 
     }
 }
