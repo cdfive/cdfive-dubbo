@@ -2,8 +2,12 @@ package com.cdfive.learn.javabasic;
 
 import org.apache.commons.lang3.time.DateUtils;
 
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 /**
  * @author cdfive
@@ -32,6 +36,23 @@ public class LocalDateTest2 {
         } catch (Exception e) {
             System.out.println("localDate3 error," + e.getMessage());
         }
+
+        LocalDate nowDate= LocalDate.now();
+        LocalDate nowDatePlus3Days = nowDate.plusDays(3);
+        // 3
+        System.out.println(ChronoUnit.DAYS.between(nowDate, nowDatePlus3Days));
+        // -3
+        System.out.println(ChronoUnit.DAYS.between(nowDatePlus3Days, nowDate));
+
+        // java.time.temporal.UnsupportedTemporalTypeException: Unsupported unit: Seconds
+        //	at java.time.LocalDate.until(LocalDate.java:1614)
+//        System.out.println(Duration.between(nowDate, nowDatePlus3Days).toDays());
+//        System.out.println(Duration.between(nowDatePlus3Days, nowDate).toDays());
+
+        // 3
+        System.out.println(ChronoUnit.DAYS.between(LocalDateTime.of(nowDate, LocalTime.MIN), LocalDateTime.of(nowDatePlus3Days, LocalTime.MIN)));
+        // -3
+        System.out.println(ChronoUnit.DAYS.between(LocalDateTime.of(nowDatePlus3Days, LocalTime.MIN), LocalDateTime.of(nowDate, LocalTime.MIN)));
 
         System.out.println("done");
     }
