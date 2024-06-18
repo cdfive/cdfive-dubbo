@@ -3,6 +3,7 @@ package com.cdfive.common.util;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -15,11 +16,14 @@ public class LimitBatchAsyncTaskExecutorTest {
 
     @Test
     public void testCase1() {
+        long start = System.currentTimeMillis();
         int batch = 5;
+        int total = 1000;
+        CountDownLatch latch = new CountDownLatch(total);
 
         LimitBatchAsyncTaskExecutor limitBatchAsyncTaskExecutor = new LimitBatchAsyncTaskExecutor(batch);
 
-        List<String> codes = IntStream.range(1, 1 + 100).mapToObj(i -> String.valueOf(i)).collect(Collectors.toList());
+        List<String> codes = IntStream.range(1, 1 + total).mapToObj(i -> String.valueOf(i)).collect(Collectors.toList());
 
         LimitBatchAsyncTaskExecutor.AsyncTaskExecutor<String> asyncTaskExecutor = new LimitBatchAsyncTaskExecutor.AsyncTaskExecutor<String>() {
             @Override
@@ -28,7 +32,7 @@ public class LimitBatchAsyncTaskExecutorTest {
                     @Override
                     public void run() {
                         try {
-                            TimeUnit.MILLISECONDS.sleep(ThreadLocalRandom.current().nextInt(200));
+                            TimeUnit.MILLISECONDS.sleep(ThreadLocalRandom.current().nextInt(180, 200));
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -36,11 +40,22 @@ public class LimitBatchAsyncTaskExecutorTest {
                         System.err.println(limitBatchAsyncTaskExecutor.getTraceId() + "," + Thread.currentThread().getName() + "=>code=" + code + ",context=" + context);
 
                         callback.run();
+
+                        latch.countDown();
                     }
                 }).start();
             }
         };
 
         limitBatchAsyncTaskExecutor.executeTasks(codes, asyncTaskExecutor);
+
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // more than 40s
+        System.out.println("total done,cost=" + (System.currentTimeMillis() - start) + "ms");
     }
 }

@@ -3,6 +3,7 @@ package com.cdfive.common.util;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -15,11 +16,14 @@ public class LimitConcurrencyAsyncTaskExecutorTest {
 
     @Test
     public void testCase1() {
+        long start = System.currentTimeMillis();
         int concurrency = 5;
+        int total = 1000;
+        CountDownLatch latch = new CountDownLatch(total);
 
         LimitConcurrencyAsyncTaskExecutor limitConcurrencyAsyncTaskExecutor = new LimitConcurrencyAsyncTaskExecutor(concurrency);
 
-        List<String> codes = IntStream.range(1, 1 + 100).mapToObj(i -> String.valueOf(i)).collect(Collectors.toList());
+        List<String> codes = IntStream.range(1, 1 + total).mapToObj(i -> String.valueOf(i)).collect(Collectors.toList());
 
         LimitConcurrencyAsyncTaskExecutor.AsyncTaskExecutor<String> asyncTaskExecutor = new LimitConcurrencyAsyncTaskExecutor.AsyncTaskExecutor<String>() {
             @Override
@@ -28,7 +32,7 @@ public class LimitConcurrencyAsyncTaskExecutorTest {
                     @Override
                     public void run() {
                         try {
-                            TimeUnit.MILLISECONDS.sleep(ThreadLocalRandom.current().nextInt(200));
+                            TimeUnit.MILLISECONDS.sleep(ThreadLocalRandom.current().nextInt(180, 200));
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -36,6 +40,8 @@ public class LimitConcurrencyAsyncTaskExecutorTest {
                         System.err.println(limitConcurrencyAsyncTaskExecutor.getTraceId() + "," + Thread.currentThread().getName() + "=>code=" + code + ",context=" + context);
 
                         callback.run();
+
+                        latch.countDown();
                     }
                 }).start();
             }
@@ -44,11 +50,12 @@ public class LimitConcurrencyAsyncTaskExecutorTest {
         limitConcurrencyAsyncTaskExecutor.executeTasks(codes, asyncTaskExecutor);
 
         try {
-            // Important, main thread wait 3 second,
-            // otherwise some threads may not be executed since sub thread exit with main thread
-            TimeUnit.MILLISECONDS.sleep(3_000);
+            latch.await();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        // less than 40s
+        System.out.println("total done,cost=" + (System.currentTimeMillis() - start) + "ms");
     }
 }
