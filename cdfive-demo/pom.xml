@@ -17,6 +17,7 @@
 
     <modules>
         <module>cdfive-demo-spring-data-jpa</module>
+        <module>cdfive-demo-mybatis</module>
         <module>cdfive-demo-rabbitmq</module>
         <module>cdfive-demo-es</module>
     </modules>
