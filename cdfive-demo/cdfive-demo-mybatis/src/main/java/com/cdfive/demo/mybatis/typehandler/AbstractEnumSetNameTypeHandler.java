@@ -1,4 +1,4 @@
-package com.cdfive.demo.mybatis.base;
+package com.cdfive.demo.mybatis.typehandler;
 
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;

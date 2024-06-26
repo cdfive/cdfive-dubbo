@@ -3,7 +3,9 @@ package com.cdfive.demo.mybatis.convert;
 import com.cdfive.demo.mybatis.entity.Notice;
 import com.cdfive.demo.mybatis.enums.NoticeStatus;
 import com.cdfive.demo.mybatis.enums.NoticeType;
+import com.cdfive.demo.mybatis.vo.AppQueryLatestNoticeRespVo;
 import com.cdfive.demo.mybatis.vo.PageQueryNoticeListRespVo;
+import com.cdfive.demo.mybatis.vo.QueryNoticeDetailRespVo;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -25,6 +27,11 @@ public interface NoticeConvert {
     @Mapping(target = "effectiveStartTime", source = "effectiveStartTime", qualifiedByName = "formatLocalDateTime")
     @Mapping(target = "effectiveEndTime", source = "effectiveEndTime", qualifiedByName = "formatLocalDateTime")
     PageQueryNoticeListRespVo toPageQueryNoticeListRespVo(Notice notice);
+
+    QueryNoticeDetailRespVo toQueryNoticeDetailRespVo(Notice notice);
+
+    @Mapping(target = "typeText", source = "type", qualifiedByName = "noticeTypeText")
+    AppQueryLatestNoticeRespVo toAppQueryLatestNoticeRespVo(Notice notice);
 
     @Named("noticeStatusText")
     default String noticeStatusText(NoticeStatus noticeStatus) {

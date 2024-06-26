@@ -1,6 +1,7 @@
 package com.cdfive.demo.mybatis.vo;
 
 import com.cdfive.demo.mybatis.base.PageReqVo;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 /**
  * @author cdfive
  */
+@ApiModel("分页查询公告列表请求vo")
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,7 +26,7 @@ public class PageQueryNoticeListReqVo extends PageReqVo {
     @ApiModelProperty("公告标题")
     private String title;
 
-    @ApiModelProperty("公告状态,NEW-新建,ENABLE-开启,DISABLE-禁用")
+    @ApiModelProperty("公告状态,NEW-新建,ENABLE-启用,DISABLE-禁用")
     private String status;
 
     @ApiModelProperty("弹窗类型")

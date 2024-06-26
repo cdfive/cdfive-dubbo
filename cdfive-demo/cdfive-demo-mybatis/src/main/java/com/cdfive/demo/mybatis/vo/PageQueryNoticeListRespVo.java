@@ -5,6 +5,7 @@ import com.cdfive.demo.mybatis.enums.NoticeScene;
 import com.cdfive.demo.mybatis.enums.NoticeStatus;
 import com.cdfive.demo.mybatis.enums.NoticeType;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,6 +18,7 @@ import java.util.LinkedHashSet;
 /**
  * @author cdfive
  */
+@ApiModel("分页查询公告列表响应vo")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -36,7 +38,7 @@ public class PageQueryNoticeListRespVo implements Serializable {
     @ApiModelProperty("弹窗类型文案,公告弹窗,图片弹窗")
     private String typeText;
 
-    @ApiModelProperty("客户端类型集合,CHIHE_B2C-1919吃喝小程序(C端),AGENT_MERCHANT-1919吃喝代理商端,RESTAURANT-1919吃喝餐厅端")
+    @ApiModelProperty("客户端类型集合,WEXIN_APPLET-微信小程序")
     private LinkedHashSet<ClientType> clientTypes;
 
     @ApiModelProperty("场景集合,FIRST_OPEN_HOME_PAGE-首次打开首页")
@@ -54,7 +56,7 @@ public class PageQueryNoticeListRespVo implements Serializable {
     @ApiModelProperty("弹窗次数")
     private Integer popupWindowTimes;
 
-    @ApiModelProperty("公告状态,NEW-新建,ENABLE-开启,DISABLE-禁用")
+    @ApiModelProperty("公告状态,NEW-新建,ENABLE-启用,DISABLE-禁用")
     private NoticeStatus status;
 
     @ApiModelProperty("公告状态文案")

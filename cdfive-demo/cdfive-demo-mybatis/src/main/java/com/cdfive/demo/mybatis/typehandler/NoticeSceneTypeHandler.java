@@ -1,6 +1,5 @@
 package com.cdfive.demo.mybatis.typehandler;
 
-import com.cdfive.demo.mybatis.base.AbstractEnumSetNameTypeHandler;
 import com.cdfive.demo.mybatis.enums.NoticeScene;
 
 /**

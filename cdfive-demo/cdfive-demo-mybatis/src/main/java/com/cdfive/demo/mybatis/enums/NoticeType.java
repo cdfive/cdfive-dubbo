@@ -12,7 +12,7 @@ import lombok.Getter;
 @Getter
 public enum NoticeType {
 
-    TEXT("文字"),
+    TEXT("文本"),
 
     IMAGE("图片"),
     ;

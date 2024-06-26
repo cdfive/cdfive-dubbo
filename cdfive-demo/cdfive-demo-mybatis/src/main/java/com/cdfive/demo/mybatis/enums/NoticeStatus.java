@@ -14,7 +14,7 @@ public enum NoticeStatus {
 
     NEW("新建"),
 
-    ENABLE("开启"),
+    ENABLE("启用"),
 
     DISABLE("禁用"),
     ;
