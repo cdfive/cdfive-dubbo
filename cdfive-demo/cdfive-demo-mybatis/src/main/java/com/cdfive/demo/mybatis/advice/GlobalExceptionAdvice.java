@@ -18,9 +18,9 @@ public class GlobalExceptionAdvice {
 
     @ExceptionHandler(value = Exception.class)
     public Map<String, Object> exceptionHandler(HttpServletRequest request, Exception ex) {
-        log.error("system error,uri={}", request.getRequestURI(), ex);
+        log.error("GlobalError,uri={}", request.getRequestURI(), ex);
 
-        HashMap<String, Object> map = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>(4);
         map.put("ts", System.currentTimeMillis());
         map.put("code", HttpStatus.INTERNAL_SERVER_ERROR.value());
         map.put("msg", ex != null ? ex.getMessage() : null);

@@ -48,8 +48,11 @@ public class SqlLogInterceptor implements Interceptor {
                 String id = mappedStatement.getId();
                 if (log.isInfoEnabled()) {
                     log.info(
-                            "\n\n------------ 执行sql开始  ------------\n" + "id: {}\nsql: {}\ntime: {}ms"
-                                    + "\n------------   执行sql结束   ------------\n",
+                            "\n\n------------执行sql开始------------\n"
+                                    + "id: {}\n"
+                                    + "sql: {}\n"
+                                    + "time: {}ms"
+                                    + "\n------------执行sql结束------------\n",
                             id, originalSql, stopWatch.getTotalTimeMillis());
                 }
             } catch (Exception e) {

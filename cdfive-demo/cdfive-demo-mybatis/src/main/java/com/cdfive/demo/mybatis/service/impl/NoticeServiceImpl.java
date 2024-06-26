@@ -56,7 +56,7 @@ public class NoticeServiceImpl implements NoticeService {
 
     private static final Integer NOTICE_LATEST_CACHE_TIMEOUT_HOUR = 1;
 
-    private static final Integer NOTICE_LATEST_ID_CACHE_TIMEOUT_DAY = 1;
+    private static final Integer NOTICE_LATEST_ID_EMPTY_CACHE_TIMEOUT_DAY = 1;
 
     private final NoticeRepository noticeRepository;
 
@@ -392,7 +392,7 @@ public class NoticeServiceImpl implements NoticeService {
         } else {
             log.info("查询最新公告,为空");
             redisTemplate.opsForValue().set(NOTICE_LATEST_ID_CACHE_KEY, NOTICE_LATEST_ID_EMPTY);
-            redisTemplate.expire(NOTICE_LATEST_ID_CACHE_KEY, NOTICE_LATEST_ID_CACHE_TIMEOUT_DAY, TimeUnit.DAYS);
+            redisTemplate.expire(NOTICE_LATEST_ID_CACHE_KEY, NOTICE_LATEST_ID_EMPTY_CACHE_TIMEOUT_DAY, TimeUnit.DAYS);
         }
         return notice;
     }
