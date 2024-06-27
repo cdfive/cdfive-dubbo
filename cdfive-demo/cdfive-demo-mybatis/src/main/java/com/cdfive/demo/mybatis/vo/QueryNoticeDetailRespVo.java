@@ -45,7 +45,7 @@ public class QueryNoticeDetailRespVo implements Serializable {
     @ApiModelProperty("场景集合,FIRST_OPEN_HOME_PAGE-首次打开首页")
     private LinkedHashSet<NoticeScene> scenes;
 
-    @ApiModelProperty("弹窗类型,TEXT-文本公告,IMAGE-图片公告")
+    @ApiModelProperty("公告类型,TEXT-文本公告,IMAGE-图片公告")
     private NoticeType type;
 
     @ApiModelProperty("弹窗次数")

@@ -32,10 +32,10 @@ public class PageQueryNoticeListRespVo implements Serializable {
     @ApiModelProperty("公告标题")
     private String title;
 
-    @ApiModelProperty("弹窗类型,TEXT-公告弹窗,IMAGE-图片弹窗")
+    @ApiModelProperty("公告类型,TEXT-文本公告,IMAGE-图片弹窗")
     private NoticeType type;
 
-    @ApiModelProperty("弹窗类型文案,公告弹窗,图片弹窗")
+    @ApiModelProperty("公告类型文案,文本公告,图片弹窗")
     private String typeText;
 
     @ApiModelProperty("客户端类型集合,WEXIN_APPLET-微信小程序")

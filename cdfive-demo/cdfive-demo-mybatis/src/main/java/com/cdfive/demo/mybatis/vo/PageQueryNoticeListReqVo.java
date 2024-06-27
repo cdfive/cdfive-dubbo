@@ -29,6 +29,6 @@ public class PageQueryNoticeListReqVo extends PageReqVo {
     @ApiModelProperty("公告状态,NEW-新建,ENABLE-启用,DISABLE-禁用")
     private String status;
 
-    @ApiModelProperty("弹窗类型")
+    @ApiModelProperty("公告类型")
     private String type;
 }

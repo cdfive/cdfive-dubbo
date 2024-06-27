@@ -41,7 +41,7 @@ public class Notice extends BaseEntity {
     private Set<NoticeScene> scenes;
 
     /**
-     * 弹窗类型
+     * 公告类型
      */
     @TableField
     private NoticeType type;

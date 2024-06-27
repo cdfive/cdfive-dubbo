@@ -38,7 +38,7 @@ public class SaveNoticeReqVo implements Serializable {
     @ApiModelProperty("场景集合,FIRST_OPEN_HOME_PAGE-首次打开首页")
     private LinkedHashSet<String> scenes;
 
-    @ApiModelProperty("弹窗类型,TEXT-文本公告,IMAGE-图片公告")
+    @ApiModelProperty("公告类型,TEXT-文本公告,IMAGE-图片公告")
     private String type;
 
     @ApiModelProperty("弹窗次数")

@@ -29,7 +29,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -46,17 +45,9 @@ public class NoticeServiceImpl implements NoticeService {
 
     private static final String EFFECTIVE_TIME_CHECK_ERROR_MSG = "与“%s”公告生效时间重叠，相同时间段内只能启用一条公告！";
 
-    private static final Long NOTICE_LATEST_ID_EMPTY = -1L;
-
     private static final String NOTICE_LATEST_CACHE_KEY = "cjj:notice:latest";
 
-    private static final String NOTICE_LATEST_ID_CACHE_KEY = "cjj:notice:latest:id";
-
     private static final String NOTICE_LATEST_USER_CACHE_KEY = "cjj:notice:latest:user:%s:%s";
-
-    private static final Integer NOTICE_LATEST_CACHE_TIMEOUT_HOUR = 1;
-
-    private static final Integer NOTICE_LATEST_ID_EMPTY_CACHE_TIMEOUT_DAY = 1;
 
     private final NoticeRepository noticeRepository;
 
@@ -144,9 +135,9 @@ public class NoticeServiceImpl implements NoticeService {
         notice.setScenes(scenes);
 
         String strType = reqVo.getType();
-        Assert.hasText(strType, "弹窗类型不能为空");
+        Assert.hasText(strType, "公告类型不能为空");
         NoticeType type = fromStringQuietly(NoticeType.class, strType);
-        Assert.notNull(type, "弹窗类型有误," + strType);
+        Assert.notNull(type, "公告类型有误," + strType);
         notice.setType(type);
 
         Integer popupWindowTimes = reqVo.getPopupWindowTimes();
@@ -205,18 +196,6 @@ public class NoticeServiceImpl implements NoticeService {
         if (NoticeStatus.ENABLE.equals(status)) {
             notice.setStatus(NoticeStatus.DISABLE);
 
-            TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronizationAdapter() {
-                @Override
-                public void afterCommit() {
-                    redisTemplate.delete(NOTICE_LATEST_CACHE_KEY);
-
-                    LocalDateTime now = LocalDateTime.now();
-                    if (now.compareTo(notice.getEffectiveStartTime()) >= 0 && now.compareTo(notice.getEffectiveEndTime()) <= 0) {
-                        log.info("删除缓存最新公告id,id={}", notice.getId());
-                        redisTemplate.delete(NOTICE_LATEST_ID_CACHE_KEY);
-                    }
-                }
-            });
 
         } else {
             notice.setStatus(NoticeStatus.ENABLE);
@@ -226,21 +205,14 @@ public class NoticeServiceImpl implements NoticeService {
             if (CollectionUtils.isNotEmpty(existNotices)) {
                 throw new RuntimeException(String.format(EFFECTIVE_TIME_CHECK_ERROR_MSG, existNotices.get(0).getTitle()));
             }
-
-            TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronizationAdapter() {
-                @Override
-                public void afterCommit() {
-                    redisTemplate.delete(NOTICE_LATEST_CACHE_KEY);
-
-                    LocalDateTime now = LocalDateTime.now();
-                    if (now.compareTo(notice.getEffectiveStartTime()) >= 0 && now.compareTo(notice.getEffectiveEndTime()) <= 0) {
-                        log.info("设置缓存最新公告id,id={}", notice.getId());
-                        redisTemplate.opsForValue().set(NOTICE_LATEST_ID_CACHE_KEY, notice.getId());
-                        redisTemplate.expireAt(NOTICE_LATEST_ID_CACHE_KEY, Date.from(notice.getEffectiveEndTime().atZone(ZoneId.systemDefault()).toInstant()));
-                    }
-                }
-            });
         }
+
+        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronizationAdapter() {
+            @Override
+            public void afterCommit() {
+                queryLatestAndCache();
+            }
+        });
 
         boolean result = noticeRepository.updateById(notice);
         return result;
@@ -326,74 +298,65 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     private AppQueryLatestNoticeRespVo queryLatest() {
-        LocalDateTime now = LocalDateTime.now();
         AppQueryLatestNoticeRespVo respVo = null;
-        Notice notice = null;
         Serializable serializable = redisTemplate.opsForValue().get(NOTICE_LATEST_CACHE_KEY);
-        if (serializable != null) {
-            respVo = JsonUtil.strToObj(serializable.toString(), AppQueryLatestNoticeRespVo.class);
-        }
-        if (respVo != null) {
-            if (now.compareTo(respVo.getEffectiveStartTime()) >= 0 && now.compareTo(respVo.getEffectiveEndTime()) <= 0) {
-                return respVo;
-            } else {
-                redisTemplate.delete(NOTICE_LATEST_CACHE_KEY);
-            }
+        if (serializable == null) {
+            log.debug("当前没有公告");
+            return null;
         }
 
-        notice = queryLatestFromDataBase();
-
+        Notice notice = JsonUtil.strToObj(serializable.toString(), Notice.class);
         if (notice == null) {
+            log.debug("当前没有公告");
             return null;
         }
 
-        if (!(NoticeStatus.ENABLE.equals(notice.getStatus()) && now.compareTo(notice.getEffectiveStartTime()) >= 0 && now.compareTo(notice.getEffectiveEndTime()) <= 0)) {
-            log.error("最新公告不合法");
-            redisTemplate.delete(NOTICE_LATEST_CACHE_KEY);
-            redisTemplate.delete(NOTICE_LATEST_ID_CACHE_KEY);
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime effectiveStartTime = notice.getEffectiveStartTime();
+        if (effectiveStartTime.compareTo(now) > 0) {
+            log.debug("公告未到生效开始时间");
             return null;
         }
 
-        respVo = NoticeConvert.INSTANCE.toAppQueryLatestNoticeRespVo(notice);
-        redisTemplate.opsForValue().set(NOTICE_LATEST_CACHE_KEY, JsonUtil.objToStr(respVo), NOTICE_LATEST_CACHE_TIMEOUT_HOUR, TimeUnit.HOURS);
-        return respVo;
+        LocalDateTime effectiveEndTime = notice.getEffectiveEndTime();
+        if (effectiveStartTime.compareTo(now) <= 0 && effectiveEndTime.compareTo(now) >= 0) {
+            return NoticeConvert.INSTANCE.toAppQueryLatestNoticeRespVo(notice);
+        }
+
+        log.info("公告已过期,公告id={},标题={},生效开始时间={},生效结束时间={}", notice.getId(), notice.getTitle(), formatEffectiveTime(effectiveStartTime), formatEffectiveTime(effectiveEndTime));
+
+        notice = queryLatestAndCache();
+        if (notice == null) {
+            log.info("已过期且没有最新公告");
+            return null;
+        }
+
+        effectiveStartTime = notice.getEffectiveStartTime();
+        if (effectiveStartTime.compareTo(now) > 0) {
+            log.info("已过期且最新公告未到生效开始时间,公告id={},标题={},生效开始时间={},生效结束时间={}", notice.getId(), notice.getTitle(), formatEffectiveTime(notice.getEffectiveStartTime()), formatEffectiveTime(notice.getEffectiveEndTime()));
+            return null;
+        }
+
+        effectiveEndTime = notice.getEffectiveEndTime();
+        if (effectiveStartTime.compareTo(now) <= 0 && effectiveEndTime.compareTo(now) >= 0) {
+            log.info("已过期且最新公告生效中,公告id={},标题={},生效开始时间={},生效结束时间={}", notice.getId(), notice.getTitle(), formatEffectiveTime(notice.getEffectiveStartTime()), formatEffectiveTime(notice.getEffectiveEndTime()));
+            return NoticeConvert.INSTANCE.toAppQueryLatestNoticeRespVo(notice);
+        }
+
+        log.error("已过期且最新公告不合法,公告id={},标题={}", notice.getId(), notice.getTitle());
+        return null;
     }
 
-    private Notice queryLatestFromDataBase() {
-        Notice notice;
-        Serializable id = redisTemplate.opsForValue().get(NOTICE_LATEST_ID_CACHE_KEY);
-        if (id != null) {
-            Long idLong = null;
-            try {
-                idLong = Long.parseLong(id.toString());
-            } catch (NumberFormatException e) {
-                log.error("解析缓存里的公告id失败,id={}", id, e);
-            }
-            if (idLong == null) {
-                log.error("缓存里非法的公告id,id={}", id);
-                return null;
-            }
-
-            if (NOTICE_LATEST_ID_EMPTY.equals(idLong)) {
-                return null;
-            }
-
-            notice = noticeRepository.getById(idLong);
-            if (notice != null) {
-                return notice;
-            }
-        }
-
-        notice = noticeRepository.queryLatest();
-        if (notice != null) {
-            log.info("查询最新公告,加入缓存");
-            redisTemplate.opsForValue().set(NOTICE_LATEST_ID_CACHE_KEY, notice.getId());
-            redisTemplate.expireAt(NOTICE_LATEST_ID_CACHE_KEY, Date.from(notice.getEffectiveEndTime().atZone(ZoneId.systemDefault()).toInstant()));
-        } else {
+    private Notice queryLatestAndCache() {
+        Notice notice = noticeRepository.queryLatest();
+        if (notice == null) {
             log.info("查询最新公告,为空");
-            redisTemplate.opsForValue().set(NOTICE_LATEST_ID_CACHE_KEY, NOTICE_LATEST_ID_EMPTY);
-            redisTemplate.expire(NOTICE_LATEST_ID_CACHE_KEY, NOTICE_LATEST_ID_EMPTY_CACHE_TIMEOUT_DAY, TimeUnit.DAYS);
+            redisTemplate.delete(NOTICE_LATEST_CACHE_KEY);
+            return null;
         }
+
+        log.info("查询最新公告,公告id={},标题={},生效开始时间={},生效结束时间={}", notice.getId(), notice.getTitle(), formatEffectiveTime(notice.getEffectiveStartTime()), formatEffectiveTime(notice.getEffectiveEndTime()));
+        redisTemplate.opsForValue().set(NOTICE_LATEST_CACHE_KEY, JsonUtil.objToStr(notice));
         return notice;
     }
 
@@ -427,6 +390,19 @@ public class NoticeServiceImpl implements NoticeService {
 
         try {
             return LocalDateTime.parse(str, DateTimeFormatter.ofPattern(EFFECTIVE_TIME_FORMAT));
+        } catch (Exception e) {
+            // Ignore
+            return null;
+        }
+    }
+
+    private String formatEffectiveTime(LocalDateTime localDateTime) {
+        if (localDateTime == null) {
+            return null;
+        }
+
+        try {
+            return DateTimeFormatter.ofPattern(EFFECTIVE_TIME_FORMAT).format(localDateTime);
         } catch (Exception e) {
             // Ignore
             return null;

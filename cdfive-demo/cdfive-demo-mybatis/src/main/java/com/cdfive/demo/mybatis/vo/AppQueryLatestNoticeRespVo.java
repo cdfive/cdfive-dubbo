@@ -1,7 +1,7 @@
 package com.cdfive.demo.mybatis.vo;
 
 import com.cdfive.demo.mybatis.enums.NoticeType;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -25,10 +25,10 @@ public class AppQueryLatestNoticeRespVo implements Serializable {
     @ApiModelProperty("公告id")
     private Long id;
 
-    @ApiModelProperty("弹窗类型,TEXT-文本公告,IMAGE-图片公告")
+    @ApiModelProperty("公告类型,TEXT-文本公告,IMAGE-图片公告")
     private NoticeType type;
 
-    @ApiModelProperty("弹窗类型文案,公告弹窗,图片公告")
+    @ApiModelProperty("公告类型文案,文本公告,图片公告")
     private String typeText;
 
     @ApiModelProperty("标题")
@@ -43,14 +43,15 @@ public class AppQueryLatestNoticeRespVo implements Serializable {
     @ApiModelProperty("扩展数据,json格式[{\"imageUrl\":\"111\",\"jumpUrl\":\"111\"},{\"imageUrl\":\"222\",\"jumpUrl\":\"222\"}]")
     private String extData;
 
-    @JsonFormat(locale = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonIgnore
     @ApiModelProperty(value = "生效开始时间", hidden = true)
     private LocalDateTime effectiveStartTime;
 
-    @JsonFormat(locale = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonIgnore
     @ApiModelProperty(value = "生效结束时间", hidden = true)
     private LocalDateTime effectiveEndTime;
 
+    @JsonIgnore
     @ApiModelProperty(value = "弹窗次数", hidden = true)
     private Integer popupWindowTimes;
 }
