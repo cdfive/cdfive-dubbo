@@ -7,3 +7,5 @@ spring:
   redis:
 #    host: localhost
 #    port: 6379
+  mvc:
+    log-request-details: true

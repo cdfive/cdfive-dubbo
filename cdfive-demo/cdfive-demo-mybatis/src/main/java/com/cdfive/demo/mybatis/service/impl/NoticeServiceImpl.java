@@ -195,8 +195,6 @@ public class NoticeServiceImpl implements NoticeService {
         NoticeStatus status = notice.getStatus();
         if (NoticeStatus.ENABLE.equals(status)) {
             notice.setStatus(NoticeStatus.DISABLE);
-
-
         } else {
             notice.setStatus(NoticeStatus.ENABLE);
 
