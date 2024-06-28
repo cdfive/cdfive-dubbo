@@ -1,8 +1,11 @@
 package com.cdfive.demo.mybatis.ext;
 
 import com.cdfive.demo.mybatis.util.JsonUtil;
+import com.cdfive.demo.mybatis.util.RequestUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod;
 
 import java.lang.reflect.Method;
@@ -27,15 +30,22 @@ public class ExtServletInvocableHandlerMethod extends ServletInvocableHandlerMet
         log.info("logController start,method={},reqVo={}", this.toString(), getReqVoJson(args));
         Object result = null;
         try {
+            RequestUtil.setRequestAttrReq(args);
             result = super.doInvoke(args);
+            RequestUtil.setRequestAttrResp(result);
             log.info("logController success,method={},cost={}ms,reqVo={},respVo={}"
-                    , this.toString(), (System.currentTimeMillis() - start), getReqVoJson(args), JsonUtil.objToStr(result));
+                    , this.toString(), (System.currentTimeMillis() - start), getReqVoJson(args), getRespVoJson(result));
         } catch (Exception e) {
-            log.info("logController error,method={},cost={}ms,reqVo={}"
+            log.error("logController error,method={},cost={}ms,reqVo={}"
                     , this.toString(), (System.currentTimeMillis() - start), getReqVoJson(args), e);
             throw e;
         }
         return result;
+    }
+
+    @Override
+    protected Object[] getMethodArgumentValues(NativeWebRequest request, ModelAndViewContainer mavContainer, Object... providedArgs) throws Exception {
+        return super.getMethodArgumentValues(request, mavContainer, providedArgs);
     }
 
     private String getReqVoJson(Object... args) {
@@ -48,5 +58,9 @@ public class ExtServletInvocableHandlerMethod extends ServletInvocableHandlerMet
         }
 
         return JsonUtil.objToStr(args);
+    }
+
+    private String getRespVoJson(Object result) {
+        return JsonUtil.objToStr(result);
     }
 }

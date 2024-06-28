@@ -60,6 +60,11 @@ public class NoticeServiceImpl implements NoticeService {
             return new PageRespVo<>();
         }
 
+        // Mock error
+//        if (true) {
+//            int i = 1 / 0;
+//        }
+
         String idStr = reqVo.getId();
         Long id = null;
         if (StringUtils.isNotBlank(idStr)) {
@@ -72,7 +77,8 @@ public class NoticeServiceImpl implements NoticeService {
         }
 
         String title = reqVo.getTitle();
-        NoticeStatus status = fromStringQuietly(NoticeStatus.class, reqVo.getStatus());
+//        NoticeStatus status = fromStringQuietly(NoticeStatus.class, reqVo.getStatus());
+        NoticeStatus status = reqVo.getStatus();
         NoticeType type = fromStringQuietly(NoticeType.class, reqVo.getType());
 
         IPage<Notice> page = noticeRepository.lambdaQuery()

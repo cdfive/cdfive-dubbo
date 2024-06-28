@@ -1,5 +1,7 @@
 package com.cdfive.demo.mybatis.advice;
 
+import com.cdfive.demo.mybatis.util.JsonUtil;
+import com.cdfive.demo.mybatis.util.RequestUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -18,7 +20,11 @@ public class GlobalExceptionAdvice {
 
     @ExceptionHandler(value = Exception.class)
     public Map<String, Object> exceptionHandler(HttpServletRequest request, Exception ex) {
-        log.error("GlobalError,uri={}", request.getRequestURI(), ex);
+        log.error("GlobalError,uri={},reqVo={},respVo={}"
+                , request.getRequestURI()
+                , JsonUtil.objToStr(RequestUtil.getRequestAttrReq())
+                , JsonUtil.objToStr(RequestUtil.getRequestAttrResp())
+                , ex);
 
         HashMap<String, Object> map = new HashMap<>(4);
         map.put("ts", System.currentTimeMillis());

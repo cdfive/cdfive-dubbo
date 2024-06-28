@@ -1,6 +1,7 @@
 package com.cdfive.demo.mybatis.vo;
 
 import com.cdfive.demo.mybatis.base.PageReqVo;
+import com.cdfive.demo.mybatis.enums.NoticeStatus;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -27,7 +28,8 @@ public class PageQueryNoticeListReqVo extends PageReqVo {
     private String title;
 
     @ApiModelProperty("公告状态,NEW-新建,ENABLE-启用,DISABLE-禁用")
-    private String status;
+//    private String status;
+    private NoticeStatus status;
 
     @ApiModelProperty("公告类型")
     private String type;
