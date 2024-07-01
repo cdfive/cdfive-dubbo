@@ -16,14 +16,6 @@
     </properties>
 
     <dependencies>
-        <!-- cdfive-common -->
-        <dependency>
-            <groupId>com.cdfive</groupId>
-            <artifactId>cdfive-common</artifactId>
-            <version>${cdfive-common.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
         <!-- elasticsearch -->
         <dependency>
             <groupId>org.elasticsearch</groupId>

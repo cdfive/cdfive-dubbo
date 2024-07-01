@@ -1,6 +1,7 @@
 package com.cdfive.es.query.build;
 
-import com.cdfive.common.util.JacksonUtil;
+
+import com.cdfive.es.util.JacksonUtil;
 
 /**
  * @author cdfive

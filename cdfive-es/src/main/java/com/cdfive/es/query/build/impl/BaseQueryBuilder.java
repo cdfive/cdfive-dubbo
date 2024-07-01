@@ -1,6 +1,5 @@
 package com.cdfive.es.query.build.impl;
 
-import com.cdfive.common.util.CollectionUtil;
 import com.cdfive.es.query.AggregateQuery;
 import com.cdfive.es.query.SearchQuery;
 import com.cdfive.es.query.build.QueryBuilder;
@@ -14,6 +13,7 @@ import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -113,7 +113,7 @@ public abstract class BaseQueryBuilder<Param extends QueryParameter> implements 
 
     private org.elasticsearch.index.query.QueryBuilder buildEsQueryBuilder(QueryBuilderContext context) {
         List<FunctionScoreQueryBuilder.FilterFunctionBuilder> filterFunctionBuilders = context.getFilterFunctionBuilders();
-        if (!CollectionUtil.isEmpty(filterFunctionBuilders)) {
+        if (!CollectionUtils.isEmpty(filterFunctionBuilders)) {
             FunctionScoreQueryBuilder functionScoreQueryBuilder = QueryBuilders.functionScoreQuery(context.getRootQueryBuilder(), filterFunctionBuilders.toArray(new FunctionScoreQueryBuilder.FilterFunctionBuilder[]{}));
             functionScoreQueryBuilder.scoreMode(FunctionScoreQuery.ScoreMode.SUM).boostMode(CombineFunction.SUM);
             return functionScoreQueryBuilder;

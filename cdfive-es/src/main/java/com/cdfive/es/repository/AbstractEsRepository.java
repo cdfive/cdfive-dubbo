@@ -1,14 +1,14 @@
 package com.cdfive.es.repository;
 
-import com.alibaba.fastjson.JSON;
-import com.cdfive.common.util.CommonUtil;
-import com.cdfive.common.util.GenericClassUtil;
 import com.cdfive.es.annotation.Document;
 import com.cdfive.es.annotation.Id;
 import com.cdfive.es.config.EsProperties;
 import com.cdfive.es.constant.EsConstant;
 import com.cdfive.es.exception.EsException;
 import com.cdfive.es.query.*;
+import com.cdfive.es.util.CommonUtil;
+import com.cdfive.es.util.GenericClassUtil;
+import com.cdfive.es.util.JacksonUtil;
 import com.cdfive.es.vo.BatchUpdateRespVo;
 import com.cdfive.es.vo.EsEntityVo;
 import com.cdfive.es.vo.EsValueCountVo;
@@ -68,7 +68,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -90,7 +89,8 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
     protected Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private EsProperties esProperties;;
+    private EsProperties esProperties;
+    ;
 
     @Autowired
     protected RestHighLevelClient client;
@@ -117,7 +117,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
 
         IndexRequest indexRequest = new IndexRequest(this.index);
         indexRequest.id(id.toString());
-        indexRequest.source(JSON.toJSONString(entity), XContentType.JSON);
+        indexRequest.source(JacksonUtil.objToJson(entity), XContentType.JSON);
 
         if (esWriteOptionVo != null) {
             indexRequest.setRefreshPolicy(esWriteOptionVo.getRefreshPolicy())
@@ -148,9 +148,9 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         BulkRequest bulkRequest = new BulkRequest();
         for (ENTITY entity : entities) {
             if (esWriteOptionVo == null) {
-                bulkRequest.add(new IndexRequest(this.index).id(this.getId(entity).toString()).source(JSON.toJSONString(entity), XContentType.JSON));
+                bulkRequest.add(new IndexRequest(this.index).id(this.getId(entity).toString()).source(JacksonUtil.objToJson(entity), XContentType.JSON));
             } else {
-                bulkRequest.add(new IndexRequest(this.index).id(this.getId(entity).toString()).source(JSON.toJSONString(entity), XContentType.JSON)
+                bulkRequest.add(new IndexRequest(this.index).id(this.getId(entity).toString()).source(JacksonUtil.objToJson(entity), XContentType.JSON)
                         .setRefreshPolicy(esWriteOptionVo.getRefreshPolicy())
                         .routing(esWriteOptionVo.getRouting())
                         .version(esWriteOptionVo.getVersion())
@@ -182,7 +182,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         }
 
         UpdateRequest updateRequest = new UpdateRequest(this.index, id.toString());
-        updateRequest.doc(JSON.toJSONString(params), XContentType.JSON);
+        updateRequest.doc(JacksonUtil.objToJson(params), XContentType.JSON);
 
         if (esWriteOptionVo != null) {
             updateRequest.setRefreshPolicy(esWriteOptionVo.getRefreshPolicy())
@@ -222,9 +222,9 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         Iterator<Map<String, Object>> paramsIterator = params.iterator();
         for (int i = 0; i < size; i++) {
             if (esWriteOptionVo == null) {
-                bulkRequest.add(new UpdateRequest(this.index, idsIterator.next().toString()).doc(JSON.toJSONString(paramsIterator.next()), XContentType.JSON));
+                bulkRequest.add(new UpdateRequest(this.index, idsIterator.next().toString()).doc(JacksonUtil.objToJson(paramsIterator.next()), XContentType.JSON));
             } else {
-                bulkRequest.add(new UpdateRequest(this.index, idsIterator.next().toString()).doc(JSON.toJSONString(paramsIterator.next()), XContentType.JSON)
+                bulkRequest.add(new UpdateRequest(this.index, idsIterator.next().toString()).doc(JacksonUtil.objToJson(paramsIterator.next()), XContentType.JSON)
                         .setRefreshPolicy(esWriteOptionVo.getRefreshPolicy())
                         .routing(esWriteOptionVo.getRouting()));
 
@@ -260,9 +260,9 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         Iterator<ID> idsIterator = ids.iterator();
         for (int i = 0; i < size; i++) {
             if (esWriteOptionVo == null) {
-                bulkRequest.add(new UpdateRequest(this.index, idsIterator.next().toString()).doc(JSON.toJSONString(params), XContentType.JSON));
+                bulkRequest.add(new UpdateRequest(this.index, idsIterator.next().toString()).doc(JacksonUtil.objToJson(params), XContentType.JSON));
             } else {
-                bulkRequest.add(new UpdateRequest(this.index, idsIterator.next().toString()).doc(JSON.toJSONString(params), XContentType.JSON)
+                bulkRequest.add(new UpdateRequest(this.index, idsIterator.next().toString()).doc(JacksonUtil.objToJson(params), XContentType.JSON)
                         .setRefreshPolicy(esWriteOptionVo.getRefreshPolicy())
                         .routing(esWriteOptionVo.getRouting()));
             }
@@ -419,10 +419,10 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         }
 
         UpdateRequest updateRequest = new UpdateRequest(this.index, this.getId(entity).toString());
-        updateRequest.doc(JSON.toJSONString(entity), XContentType.JSON);
+        updateRequest.doc(JacksonUtil.objToJson(entity), XContentType.JSON);
         IndexRequest indexRequest = new IndexRequest(this.index);
         indexRequest.id(id.toString());
-        indexRequest.source(JSON.toJSONString(entity), XContentType.JSON);
+        indexRequest.source(JacksonUtil.objToJson(entity), XContentType.JSON);
         updateRequest.upsert(indexRequest);
 
         if (esWriteOptionVo != null) {
@@ -452,11 +452,11 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         BulkRequest bulkRequest = new BulkRequest();
         for (ENTITY entity : entities) {
             if (esWriteOptionVo == null) {
-                bulkRequest.add(new UpdateRequest(this.index, this.getId(entity).toString()).doc(JSON.toJSONString(entity), XContentType.JSON)
-                        .upsert(new IndexRequest(this.index).id(this.getId(entity).toString()).source(JSON.toJSONString(entity), XContentType.JSON)));
+                bulkRequest.add(new UpdateRequest(this.index, this.getId(entity).toString()).doc(JacksonUtil.objToJson(entity), XContentType.JSON)
+                        .upsert(new IndexRequest(this.index).id(this.getId(entity).toString()).source(JacksonUtil.objToJson(entity), XContentType.JSON)));
             } else {
-                bulkRequest.add(new UpdateRequest(this.index, this.getId(entity).toString()).doc(JSON.toJSONString(entity), XContentType.JSON)
-                        .upsert(new IndexRequest(this.index).id(this.getId(entity).toString()).source(JSON.toJSONString(entity), XContentType.JSON).version(esWriteOptionVo.getVersion()).versionType(esWriteOptionVo.getVersionType()))
+                bulkRequest.add(new UpdateRequest(this.index, this.getId(entity).toString()).doc(JacksonUtil.objToJson(entity), XContentType.JSON)
+                        .upsert(new IndexRequest(this.index).id(this.getId(entity).toString()).source(JacksonUtil.objToJson(entity), XContentType.JSON).version(esWriteOptionVo.getVersion()).versionType(esWriteOptionVo.getVersionType()))
                         .setRefreshPolicy(esWriteOptionVo.getRefreshPolicy())
                         .routing(esWriteOptionVo.getRouting())
                 );
@@ -624,7 +624,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         }
 
         String source = getResponse.getSourceAsString();
-        ENTITY entity = JSON.parseObject(source, this.entityClass);
+        ENTITY entity = JacksonUtil.jsonToObj(source, this.entityClass);
 
         EsEntityVo esEntityVo = new EsEntityVo(entity);
         esEntityVo.setVersion(getResponse.getVersion());
@@ -722,7 +722,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             }
 
             String source = response.getResponse().getSourceAsString();
-            ENTITY entity = JSON.parseObject(source, this.entityClass);
+            ENTITY entity = JacksonUtil.jsonToObj(source, this.entityClass);
 
             EsEntityVo esEntityVo = new EsEntityVo(entity);
             esEntityVo.setVersion(response.getResponse().getVersion());
@@ -1024,7 +1024,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         List<EsEntityVo<ENTITY>> esEntityVos = new ArrayList<>();
         for (SearchHit hit : hits) {
             String source = hit.getSourceAsString();
-            ENTITY entity = JSON.parseObject(source, this.entityClass);
+            ENTITY entity = JacksonUtil.jsonToObj(source, this.entityClass);
 
             EsEntityVo esEntityVo = new EsEntityVo(entity);
 
