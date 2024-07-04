@@ -12,22 +12,28 @@ public class EsEntityVo<ENTITY> implements Serializable {
 
     }
 
-    public EsEntityVo(ENTITY entity) {
+    public EsEntityVo(String id, ENTITY entity) {
+        this.id = id;
         this.entity = entity;
     }
 
-    public EsEntityVo(ENTITY entity, Float score, Long version) {
+    public EsEntityVo(String id, ENTITY entity, Float score, Long version) {
+        this.id = id;
         this.entity = entity;
         this.score = score;
         this.version = version;
     }
 
-    public EsEntityVo(ENTITY entity, Map<String, Object> extInfos, Float score, Long version) {
+    public EsEntityVo(String id, ENTITY entity, Map<String, Object> extInfos, Float score, Long version) {
+        this.id = id;
         this.entity = entity;
         this.extInfos = extInfos;
         this.score = score;
         this.version = version;
     }
+
+    // 文档id
+    private String id;
 
     // 文档对应实体
     private ENTITY entity;
@@ -43,6 +49,14 @@ public class EsEntityVo<ENTITY> implements Serializable {
 
     // sort values for search after
     private Object[] sortValues;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public ENTITY getEntity() {
         return entity;

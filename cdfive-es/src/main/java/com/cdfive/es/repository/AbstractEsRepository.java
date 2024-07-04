@@ -110,13 +110,9 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             return;
         }
 
-        ID id = this.getId(entity);
-        if (id == null) {
-            throw new EsException("id can't be null");
-        }
 
         IndexRequest indexRequest = new IndexRequest(this.index);
-        indexRequest.id(id.toString());
+        indexRequest.id(this.getId(entity));
         indexRequest.source(JacksonUtil.objToJson(entity), XContentType.JSON);
 
         if (esWriteOptionVo != null) {
@@ -148,9 +144,9 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         BulkRequest bulkRequest = new BulkRequest();
         for (ENTITY entity : entities) {
             if (esWriteOptionVo == null) {
-                bulkRequest.add(new IndexRequest(this.index).id(this.getId(entity).toString()).source(JacksonUtil.objToJson(entity), XContentType.JSON));
+                bulkRequest.add(new IndexRequest(this.index).id(this.getId(entity)).source(JacksonUtil.objToJson(entity), XContentType.JSON));
             } else {
-                bulkRequest.add(new IndexRequest(this.index).id(this.getId(entity).toString()).source(JacksonUtil.objToJson(entity), XContentType.JSON)
+                bulkRequest.add(new IndexRequest(this.index).id(this.getId(entity)).source(JacksonUtil.objToJson(entity), XContentType.JSON)
                         .setRefreshPolicy(esWriteOptionVo.getRefreshPolicy())
                         .routing(esWriteOptionVo.getRouting())
                         .version(esWriteOptionVo.getVersion())
@@ -413,16 +409,13 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             return;
         }
 
-        ID id = this.getId(entity);
-        if (id == null) {
-            throw new EsException("id can't be null");
-        }
-
-        UpdateRequest updateRequest = new UpdateRequest(this.index, this.getId(entity).toString());
+        UpdateRequest updateRequest = new UpdateRequest(this.index, this.getId(entity));
         updateRequest.doc(JacksonUtil.objToJson(entity), XContentType.JSON);
+
         IndexRequest indexRequest = new IndexRequest(this.index);
-        indexRequest.id(id.toString());
+        indexRequest.id(this.getId(entity));
         indexRequest.source(JacksonUtil.objToJson(entity), XContentType.JSON);
+
         updateRequest.upsert(indexRequest);
 
         if (esWriteOptionVo != null) {
@@ -452,11 +445,11 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         BulkRequest bulkRequest = new BulkRequest();
         for (ENTITY entity : entities) {
             if (esWriteOptionVo == null) {
-                bulkRequest.add(new UpdateRequest(this.index, this.getId(entity).toString()).doc(JacksonUtil.objToJson(entity), XContentType.JSON)
-                        .upsert(new IndexRequest(this.index).id(this.getId(entity).toString()).source(JacksonUtil.objToJson(entity), XContentType.JSON)));
+                bulkRequest.add(new UpdateRequest(this.index, this.getId(entity)).doc(JacksonUtil.objToJson(entity), XContentType.JSON)
+                        .upsert(new IndexRequest(this.index).id(this.getId(entity)).source(JacksonUtil.objToJson(entity), XContentType.JSON)));
             } else {
-                bulkRequest.add(new UpdateRequest(this.index, this.getId(entity).toString()).doc(JacksonUtil.objToJson(entity), XContentType.JSON)
-                        .upsert(new IndexRequest(this.index).id(this.getId(entity).toString()).source(JacksonUtil.objToJson(entity), XContentType.JSON).version(esWriteOptionVo.getVersion()).versionType(esWriteOptionVo.getVersionType()))
+                bulkRequest.add(new UpdateRequest(this.index, this.getId(entity)).doc(JacksonUtil.objToJson(entity), XContentType.JSON)
+                        .upsert(new IndexRequest(this.index).id(this.getId(entity)).source(JacksonUtil.objToJson(entity), XContentType.JSON).version(esWriteOptionVo.getVersion()).versionType(esWriteOptionVo.getVersionType()))
                         .setRefreshPolicy(esWriteOptionVo.getRefreshPolicy())
                         .routing(esWriteOptionVo.getRouting())
                 );
@@ -626,7 +619,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
         String source = getResponse.getSourceAsString();
         ENTITY entity = JacksonUtil.jsonToObj(source, this.entityClass);
 
-        EsEntityVo esEntityVo = new EsEntityVo(entity);
+        EsEntityVo esEntityVo = new EsEntityVo(getResponse.getId(), entity);
         esEntityVo.setVersion(getResponse.getVersion());
         return esEntityVo;
     }
@@ -724,7 +717,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             String source = response.getResponse().getSourceAsString();
             ENTITY entity = JacksonUtil.jsonToObj(source, this.entityClass);
 
-            EsEntityVo esEntityVo = new EsEntityVo(entity);
+            EsEntityVo esEntityVo = new EsEntityVo(response.getResponse().getId(), entity);
             esEntityVo.setVersion(response.getResponse().getVersion());
             esEntityVos.add(esEntityVo);
         }
@@ -897,9 +890,6 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
                 this.idField.setAccessible(true);
             }
         }
-        if (this.idField == null) {
-            throw new EsException("Missing @com.cdfive.es.annotation.Id field in " + this.entityClass.getName() + " class");
-        }
     }
 
     protected void updateByScript(ID id, ScriptType scriptType, String scriptIdOrCode, Map<String, Object> params, EsWriteOptionVo esWriteOptionVo) {
@@ -1026,7 +1016,7 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             String source = hit.getSourceAsString();
             ENTITY entity = JacksonUtil.jsonToObj(source, this.entityClass);
 
-            EsEntityVo esEntityVo = new EsEntityVo(entity);
+            EsEntityVo esEntityVo = new EsEntityVo(hit.getId(), entity);
 
             List<SearchSourceBuilder.ScriptField> scriptFields = searchQuery.getScriptFields();
             if (!CollectionUtils.isEmpty(scriptFields)) {
@@ -1201,22 +1191,42 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             }
             log.warn(respVo.getTraceId() + ",es {} error,errorCount={},totalCount={}", operation, errorIds.size(), errorIds.size() + successIds.size());
             if (successIds.size() > 0) {
-                respVo.getSuccessItems().addAll(entities.stream().filter(o -> o != null && successIds.contains(String.valueOf(this.getId(o)))).collect(Collectors.toList()));
+                respVo.getSuccessItems().addAll(entities.stream().filter(o -> o != null && successIds.contains(this.getId(o))).collect(Collectors.toList()));
             }
             if (errorIds.size() > 0) {
-                respVo.getErrorItems().addAll(entities.stream().filter(o -> o != null && errorIds.contains(String.valueOf(this.getId(o)))).collect(Collectors.toList()));
+                respVo.getErrorItems().addAll(entities.stream().filter(o -> o != null && errorIds.contains(this.getId(o))).collect(Collectors.toList()));
             }
         } else {
             respVo.getSuccessItems().addAll(entities);
         }
     }
 
-    protected ID getId(ENTITY entity) {
+    protected String getId(ENTITY entity) {
+        if (idField == null) {
+            return null;
+        }
 
         try {
-            return (ID) this.idField.get(entity);
+            Object id = this.idField.get(entity);
+            if (id == null) {
+                return null;
+            }
+
+            return id.toString();
         } catch (IllegalAccessException e) {
             throw new EsException("get id error", e);
+        }
+    }
+
+    protected void setId(ENTITY entity, String id) {
+        if (idField == null) {
+            return;
+        }
+
+        try {
+            this.idField.set(entity, id);
+        } catch (IllegalAccessException e) {
+            throw new EsException("set id error", e);
         }
     }
 }
