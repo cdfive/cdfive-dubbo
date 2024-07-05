@@ -20,10 +20,11 @@ public class TomcatMonitorController {
 
     @RequestMapping("/threadPool")
     public String threadPool() {
-        TomcatWebServer webServer = (TomcatWebServer) applicationContext.getWebServer();
-        int port = webServer.getPort();
-        String info = webServer.getTomcat().getConnector().getProtocolHandler().getExecutor().toString();
-        log.info("TomcatMonitorController threadPool=>" + info);
-        return info;
+//        TomcatWebServer webServer = (TomcatWebServer) applicationContext.getWebServer();
+//        int port = webServer.getPort();
+//        String info = webServer.getTomcat().getConnector().getProtocolHandler().getExecutor().toString();
+//        log.info("TomcatMonitorController threadPool=>" + info);
+//        return info;
+        return "TODO";
     }
 }

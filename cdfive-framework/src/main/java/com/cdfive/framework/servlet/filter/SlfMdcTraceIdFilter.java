@@ -41,7 +41,7 @@ public class SlfMdcTraceIdFilter implements Filter {
         try {
             MDC.put(TRACE_ID, traceId);
             chain.doFilter(request, response);
-        } catch (Throwable e) {
+        } finally {
             MDC.clear();
         }
     }

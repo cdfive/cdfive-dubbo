@@ -83,6 +83,8 @@ public class SmartRule extends AbstractLoadBalancerRule {
                 failed = true;
                 log.error("server is not really alive,server={}", server);
                 lb.markServerDown(server);
+
+                // TODO monitor and alarm
             }
 
             if (count >= serverCount) {
