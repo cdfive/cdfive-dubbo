@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: cdfive-eureka
+    name: spring-boot-admin
 
 eureka:
   instance:
