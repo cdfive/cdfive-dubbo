@@ -22,7 +22,7 @@ public interface SongApi {
     List<SongListVo> findRandomSongList(@RequestParam("num") Integer num);
 
     @RequestMapping("/api/v1/mp3/song/play")
-    Integer play(@RequestParam("id") Integer id, @RequestParam("ip") String ip);
+    Integer play(@RequestParam("id") Integer id, @RequestParam(value = "ip", required = false) String ip);
 
     @RequestMapping("/api/v1/mp3/song/list")
     PageRespVo<QuerySongListPageRespVo> querySongListPage(@RequestBody(required = false) QuerySongListPageReqVo reqVo);

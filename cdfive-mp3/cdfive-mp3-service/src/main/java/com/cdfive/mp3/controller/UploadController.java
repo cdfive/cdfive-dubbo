@@ -1,6 +1,6 @@
 package com.cdfive.mp3.controller;
 
-import com.cdfive.framework.util.FileUtil;
+//import com.cdfive.framework.util.FileUtil;
 import com.cdfive.mp3.exception.Mp3ServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,7 +49,10 @@ public class UploadController {
         MultipartFile multipartFile = entry.getValue();
 
         String oriFileName = multipartFile.getOriginalFilename();
-        String oriFileNameWithoutExt = FileUtil.getFileNameWithoutExt(oriFileName);
+//        String oriFileNameWithoutExt = FileUtil.getFileNameWithoutExt(oriFileName);
+        // FIXME
+        String oriFileNameWithoutExt = oriFileName;
+
         String[] tmpNames = oriFileNameWithoutExt.split("-");
         String name = tmpNames[0].trim();
         String path = "/mp3" + "/" + name.length() + "/" + oriFileName;

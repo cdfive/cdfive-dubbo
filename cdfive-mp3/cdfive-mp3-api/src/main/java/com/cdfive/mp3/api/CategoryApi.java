@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * @author cdfive
  */
-@FeignClient(name = "cdfive-mp3")
+//@FeignClient(name = "cdfive-mp3")
 public interface CategoryApi {
 
     @RequestMapping("/api/v1/mp3/category/topList")

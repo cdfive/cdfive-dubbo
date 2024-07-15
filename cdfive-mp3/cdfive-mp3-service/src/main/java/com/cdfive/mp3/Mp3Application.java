@@ -1,25 +1,13 @@
 package com.cdfive.mp3;
 
-import com.alibaba.cloud.nacos.NacosServiceAutoConfiguration;
-import com.alibaba.cloud.nacos.discovery.NacosDiscoveryAutoConfiguration;
-import com.alibaba.cloud.nacos.discovery.NacosDiscoveryClientConfiguration;
-import com.alibaba.cloud.nacos.discovery.reactive.NacosReactiveDiscoveryClientConfiguration;
-import com.alibaba.cloud.nacos.endpoint.NacosDiscoveryEndpointAutoConfiguration;
-//import com.alibaba.cloud.nacos.loadbalancer.LoadBalancerNacosAutoConfiguration;
-import com.alibaba.cloud.nacos.registry.NacosServiceRegistryAutoConfiguration;
-//import com.alibaba.cloud.nacos.utils.UtilIPv6AutoConfiguration;
-import com.cdfive.mp3.config.SwaggerConfig;
-import com.cdfive.mp3.config.SwaggerDubboConfig;
+//import com.cdfive.springboot.config.ExtAutoConfig;
+//import com.cdfive.springboot.config.ExtAutoConfig;
 import com.cdfive.support.jpa.repository.BaseRepositoryFactoryBean;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.cloud.netflix.eureka.EurekaClientAutoConfiguration;
-import org.springframework.cloud.netflix.eureka.EurekaDiscoveryClientConfiguration;
 import org.springframework.cloud.openfeign.EnableFeignClients;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
@@ -44,6 +32,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 ////        , UtilIPv6AutoConfiguration.class
 //})
 @SpringBootApplication(scanBasePackages = {"com.cdfive"})
+//@SpringBootApplication(scanBasePackages = {"com.cdfive"}, exclude = ExtAutoConfig.class)
 public class Mp3Application {
 
     public static void main(String[] args) {

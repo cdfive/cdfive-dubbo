@@ -2,6 +2,8 @@ package com.cdfive.mp3.controller;
 
 import com.cdfive.common.exception.ServiceException;
 import com.cdfive.common.util.JacksonUtil;
+import com.cdfive.common.util.StringUtil;
+import com.cdfive.common.util.WebUtil;
 import com.cdfive.common.vo.page.PageRespVo;
 import com.cdfive.mp3.api.SongApi;
 import com.cdfive.mp3.service.SongService;
@@ -9,6 +11,7 @@ import com.cdfive.mp3.vo.song.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -23,10 +26,15 @@ public class SongController implements SongApi {
     @Autowired
     private SongService songService;
 
+    @ResponseBody
     @RequestMapping("/api/v1/mp3/test")
-    public String test() {
+//    public String test() {
+//    public Object test() {
+    public void test() {
+//        int i = 1 / 0;
+
         log.info("test success");
-        return "test success";
+//        return "test success";
     }
 
     @Override
@@ -49,6 +57,9 @@ public class SongController implements SongApi {
 
     @Override
     public Integer play(Integer id, String ip) {
+        if (StringUtil.isBlank(ip)) {
+            ip = WebUtil.getIp();
+        }
         Integer respVo = songService.play(id, ip);
         return respVo;
     }

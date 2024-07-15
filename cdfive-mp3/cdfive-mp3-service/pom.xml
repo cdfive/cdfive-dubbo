@@ -12,25 +12,32 @@
     <artifactId>cdfive-mp3-service</artifactId>
 
     <properties>
-<!--        <cdfive-common.version>0.0.1-SNAPSHOT</cdfive-common.version>-->
-<!--        <cdfive-mp3-api.version>0.0.1-SNAPSHOT</cdfive-mp3-api.version>-->
-<!--        <cdfive-log-api.version>0.0.1-SNAPSHOT</cdfive-log-api.version>-->
-<!--        <cdfive-jpa.version>0.0.1-SNAPSHOT</cdfive-jpa.version>-->
+        <!--        <cdfive-common.version>0.0.1-SNAPSHOT</cdfive-common.version>-->
+        <!--        <cdfive-mp3-api.version>0.0.1-SNAPSHOT</cdfive-mp3-api.version>-->
+        <!--        <cdfive-log-api.version>0.0.1-SNAPSHOT</cdfive-log-api.version>-->
+        <!--        <cdfive-jpa.version>0.0.1-SNAPSHOT</cdfive-jpa.version>-->
     </properties>
 
     <dependencies>
         <!-- framework -->
-        <dependency>
-            <groupId>com.cdfive</groupId>
-            <artifactId>cdfive-framework</artifactId>
-            <version>${cdfive-framework.version}</version>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>com.cdfive</groupId>-->
+        <!--            <artifactId>cdfive-framework</artifactId>-->
+        <!--            <version>${cdfive-framework.version}</version>-->
+        <!--        </dependency>-->
 
         <!-- common -->
+        <!--        <dependency>-->
+        <!--            <groupId>com.cdfive</groupId>-->
+        <!--            <artifactId>cdfive-common</artifactId>-->
+        <!--            <version>${cdfive-common.version}</version>-->
+        <!--        </dependency>-->
+
+        <!-- cdfive-spring-boot-ext -->
         <dependency>
             <groupId>com.cdfive</groupId>
-            <artifactId>cdfive-common</artifactId>
-            <version>${cdfive-common.version}</version>
+            <artifactId>cdfive-spring-boot-ext</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
 
         <!-- support -->
@@ -50,11 +57,23 @@
             <groupId>com.cdfive</groupId>
             <artifactId>cdfive-mp3-api</artifactId>
             <version>${cdfive-mp3-api.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>cdfive-framework</artifactId>
+                    <groupId>com.cdfive</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.cdfive</groupId>
             <artifactId>cdfive-log-api</artifactId>
             <version>${cdfive-log-api.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>cdfive-framework</artifactId>
+                    <groupId>com.cdfive</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- spring-cloud-alibaba -->
@@ -115,34 +134,34 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
-<!--            <version>2.7.0</version>-->
+            <!--            <version>2.7.0</version>-->
         </dependency>
 
         <dependency>
             <groupId>org.messaginghub</groupId>
             <artifactId>pooled-jms</artifactId>
-<!--            <version>1.1.1</version>-->
+            <!--            <version>1.1.1</version>-->
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.alibaba</groupId>-->
-<!--            <artifactId>druid-spring-boot-starter</artifactId>-->
-<!--            <version>${druid-spring-boot-starter.version}</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.alibaba</groupId>-->
+        <!--            <artifactId>druid-spring-boot-starter</artifactId>-->
+        <!--            <version>${druid-spring-boot-starter.version}</version>-->
+        <!--        </dependency>-->
 
         <!-- dubbo -->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>dubbo</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.apache.dubbo</groupId>-->
-<!--            <artifactId>dubbo</artifactId>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.dubbo</groupId>-->
+        <!--            <artifactId>dubbo</artifactId>-->
+        <!--        </dependency>-->
 
         <!-- zookeeper -->
         <dependency>
@@ -192,11 +211,11 @@
                 </exclusion>
             </exclusions>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>io.springfox</groupId>-->
-<!--            <artifactId>springfox-spring-webmvc</artifactId>-->
-<!--            <version>${swagger2.version}</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>io.springfox</groupId>-->
+        <!--            <artifactId>springfox-spring-webmvc</artifactId>-->
+        <!--            <version>${swagger2.version}</version>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
