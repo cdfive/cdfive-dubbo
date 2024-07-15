@@ -9,3 +9,16 @@ resources:
   mp3:
     pathPatterns: /2017/mp3/**
     resourceLocations: file:/opt/mp3/
+
+spring:
+  activemq:
+    broker-url: tcp://localhost:61616
+    pool:
+      enabled: true
+      max-connections: 20
+
+cdfive:
+  framework:
+    wrapApiResponse: false
+  springboot:
+    applicationAdminUrl: localhost:8889

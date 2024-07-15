@@ -8,6 +8,8 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import javax.annotation.PostConstruct;
+
 /**
  * @author cdfive
  */
@@ -15,6 +17,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Configuration
 //public class WebMvcConfig extends WebMvcConfigurerAdapter {
 public class WebMvcConfig implements WebMvcConfigurer {
+
+    @PostConstruct
+    public void init() {
+        log.info("WebMvcConfig init");
+    }
 
     @Value("${resources.static.pathPatterns}")
     private String staticPathPatterns;
