@@ -37,10 +37,17 @@
 
     <dependencies>
         <!-- framework -->
+<!--        <dependency>-->
+<!--            <groupId>com.cdfive</groupId>-->
+<!--            <artifactId>cdfive-framework</artifactId>-->
+<!--            <version>${cdfive-framework.version}</version>-->
+<!--        </dependency>-->
+
+        <!-- cdfive-spring-boot-ext -->
         <dependency>
             <groupId>com.cdfive</groupId>
-            <artifactId>cdfive-framework</artifactId>
-            <version>${cdfive-framework.version}</version>
+            <artifactId>cdfive-spring-boot-ext</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
@@ -66,6 +73,23 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-activemq</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-pool</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.messaginghub</groupId>
+            <artifactId>pooled-jms</artifactId>
         </dependency>
 
         <dependency>
