@@ -28,12 +28,14 @@ public abstract class AbstractEnumSetNameTypeHandler<E extends Enum> extends Bas
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, Set<E> objects, JdbcType jdbcType) throws SQLException {
         if (CollectionUtils.isEmpty(objects)) {
+            ps.setString(i, null);
             return;
         }
 
 
         Set<String> names = objects.stream().filter(Objects::nonNull).map(o -> o.name()).collect(Collectors.toCollection(LinkedHashSet::new));
         if (CollectionUtils.isEmpty(objects)) {
+            ps.setString(i, null);
             return;
         }
 
