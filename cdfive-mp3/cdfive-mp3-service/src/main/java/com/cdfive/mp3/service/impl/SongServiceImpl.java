@@ -1,6 +1,7 @@
 package com.cdfive.mp3.service.impl;
 
 import com.cdfive.common.util.JpaPageUtil;
+import com.cdfive.common.util.WebUtil;
 import com.cdfive.common.vo.page.BootstrapPageRespVo;
 import com.cdfive.common.vo.page.PageRespVo;
 import com.cdfive.log.api.BizLogApi;
@@ -93,6 +94,8 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
         respVo.setDWt(songRepository.findSongListByCategoryName("无题"));
         respVo.setDDqxh(songRepository.findSongListByCategoryName("单曲循环"));
         respVo.setDSpec(songRepository.findSongListByCategoryName("特别"));
+
+        bizLogApi.addBizLog("findAllSong", null, WebUtil.getIp());
         return respVo;
     }
 

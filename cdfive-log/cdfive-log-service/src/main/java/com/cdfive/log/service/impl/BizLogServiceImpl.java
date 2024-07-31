@@ -38,7 +38,7 @@ public class BizLogServiceImpl extends AbstractLogService implements BizLogServi
     public Integer addBizLog(String info, Integer keyId, String ip) {
         log.info("bizLogService=>addBizLog");
         checkNotBlank(info, "信息不能为空");
-        checkNotNull(keyId, "keyId不能为空");
+//        checkNotNull(keyId, "keyId不能为空");
         checkNotBlank(ip, "ip不能为空");
 
         BizLogPo bizLogPo = new BizLogPo();

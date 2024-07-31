@@ -5,7 +5,6 @@ import com.cdfive.common.util.PageUtil;
 import com.cdfive.common.vo.page.PageRespVo;
 import com.cdfive.es.query.SearchQuery;
 import com.cdfive.es.vo.EsEntityVo;
-import com.cdfive.framework.message.vo.LogRequestMessageVo;
 import com.cdfive.search.eo.LogRequestEo;
 import com.cdfive.search.repository.LogRequestEsRepository;
 import com.cdfive.search.service.AbstractSearchService;
@@ -40,32 +39,32 @@ public class LogRequestEsServiceImpl extends AbstractSearchService implements Lo
     @Autowired
     private LogRequestEsRepository logRequestEsRepository;
 
-    @Override
-    public void saveLogRequest(LogRequestMessageVo messageVo) {
-        LogRequestEo eo = new LogRequestEo();
-        eo.setId(CommonUtil.getTraceId());
-
-        eo.setTraceId(messageVo.getTraceId());
-
-        eo.setAppName(messageVo.getAppName());
-        eo.setAppIp(messageVo.getAppIp());
-        eo.setAppPort(messageVo.getAppPort());
-
-        eo.setRequestUri(messageVo.getRequestUri());
-        eo.setRemoteAddr(messageVo.getRemoteAddr());
-
-        eo.setCostMs(messageVo.getCostMs());
-        eo.setRequestBody(messageVo.getRequestBody());
-
-        eo.setExExist(messageVo.getExExist());
-        eo.setExClassName(messageVo.getExClassName());
-        eo.setExStackTrace(messageVo.getExStackTrace());
-
-        eo.setStartTime(messageVo.getStartTime());
-        eo.setCreateTime(messageVo.getCreateTime());
-        eo.setUpdateTime(new Date());
-        logRequestEsRepository.save(eo);
-    }
+//    @Override
+//    public void saveLogRequest(LogRequestMessageVo messageVo) {
+//        LogRequestEo eo = new LogRequestEo();
+//        eo.setId(CommonUtil.getTraceId());
+//
+//        eo.setTraceId(messageVo.getTraceId());
+//
+//        eo.setAppName(messageVo.getAppName());
+//        eo.setAppIp(messageVo.getAppIp());
+//        eo.setAppPort(messageVo.getAppPort());
+//
+//        eo.setRequestUri(messageVo.getRequestUri());
+//        eo.setRemoteAddr(messageVo.getRemoteAddr());
+//
+//        eo.setCostMs(messageVo.getCostMs());
+//        eo.setRequestBody(messageVo.getRequestBody());
+//
+//        eo.setExExist(messageVo.getExExist());
+//        eo.setExClassName(messageVo.getExClassName());
+//        eo.setExStackTrace(messageVo.getExStackTrace());
+//
+//        eo.setStartTime(messageVo.getStartTime());
+//        eo.setCreateTime(messageVo.getCreateTime());
+//        eo.setUpdateTime(new Date());
+//        logRequestEsRepository.save(eo);
+//    }
 
     @Override
     public PageRespVo<QueryLogRequestPageRespVo> queryLogRequestPage(QueryLogRequestPageReqVo reqVo) {

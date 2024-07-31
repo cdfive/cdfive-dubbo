@@ -30,6 +30,6 @@ public class AddBizLogEventListener {
         SaveBizLogReqVo saveReqVo = new SaveBizLogReqVo();
         BeanUtils.copyProperties(po, saveReqVo);
         saveReqVo.setId(po.getId());
-        bizLogEsService.saveBizLogs(Lists.newArrayList(saveReqVo));
+//        bizLogEsService.saveBizLogs(Lists.newArrayList(saveReqVo));
     }
 }

@@ -1,6 +1,7 @@
 package com.cdfive.log.exception;
 
-import com.cdfive.framework.exception.ServiceException;
+
+import com.cdfive.common.exception.ServiceException;
 
 /**
  * @author cdfive
@@ -12,23 +13,31 @@ public class LogServiceException extends ServiceException {
     public LogServiceException() {
     }
 
-    public LogServiceException(Integer code) {
-        super(code);
-    }
-
     public LogServiceException(String message) {
         super(message);
     }
 
-    public LogServiceException(Integer code, String message) {
-        super(code, message);
+    public LogServiceException(String message, Throwable cause) {
+        super(message, cause);
     }
 
-    public LogServiceException(Integer code, String message, Throwable cause) {
-        super(code, message, cause);
+    public LogServiceException(Throwable cause) {
+        super(cause);
     }
 
-    public LogServiceException(Integer code, Throwable cause) {
-        super(code, cause);
+    public LogServiceException(Integer code) {
+        super(code);
+    }
+
+    public LogServiceException(String message, Integer code) {
+        super(message, code);
+    }
+
+    public LogServiceException(String message, Throwable cause, Integer code) {
+        super(message, cause, code);
+    }
+
+    public LogServiceException(Throwable cause, Integer code) {
+        super(cause, code);
     }
 }

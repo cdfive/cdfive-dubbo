@@ -1,7 +1,7 @@
 package com.cdfive.search.exception;
 
 
-import com.cdfive.framework.exception.ServiceException;
+import com.cdfive.common.exception.ServiceException;
 
 /**
  * @author cdfive
@@ -13,23 +13,31 @@ public class SearchServiceException extends ServiceException {
     public SearchServiceException() {
     }
 
-    public SearchServiceException(Integer code) {
-        super(code);
-    }
-
     public SearchServiceException(String message) {
         super(message);
     }
 
-    public SearchServiceException(Integer code, String message) {
-        super(code, message);
+    public SearchServiceException(String message, Throwable cause) {
+        super(message, cause);
     }
 
-    public SearchServiceException(Integer code, String message, Throwable cause) {
-        super(code, message, cause);
+    public SearchServiceException(Throwable cause) {
+        super(cause);
     }
 
-    public SearchServiceException(Integer code, Throwable cause) {
-        super(code, cause);
+    public SearchServiceException(Integer code) {
+        super(code);
+    }
+
+    public SearchServiceException(String message, Integer code) {
+        super(message, code);
+    }
+
+    public SearchServiceException(String message, Throwable cause, Integer code) {
+        super(message, cause, code);
+    }
+
+    public SearchServiceException(Throwable cause, Integer code) {
+        super(cause, code);
     }
 }
