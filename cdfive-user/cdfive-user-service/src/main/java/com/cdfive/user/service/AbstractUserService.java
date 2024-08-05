@@ -1,7 +1,7 @@
 package com.cdfive.user.service;
 
-import com.cdfive.framework.base.AbstractService;
-import com.cdfive.framework.exception.ServiceException;
+import com.cdfive.common.base.AbstractService;
+import com.cdfive.common.exception.ServiceException;
 import com.cdfive.user.exception.UserServiceException;
 
 

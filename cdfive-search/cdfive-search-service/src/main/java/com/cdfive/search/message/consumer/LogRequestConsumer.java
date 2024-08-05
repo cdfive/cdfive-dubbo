@@ -30,6 +30,6 @@ public class LogRequestConsumer {
             return;
         }
 
-        appRestApiLogEsService.saveLogRequest(messageVo);
+//        appRestApiLogEsService.saveLogRequest(messageVo);
     }
 }

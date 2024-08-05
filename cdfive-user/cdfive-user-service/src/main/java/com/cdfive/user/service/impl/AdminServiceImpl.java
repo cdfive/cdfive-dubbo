@@ -1,10 +1,10 @@
 package com.cdfive.user.service.impl;
 
+import com.cdfive.common.component.jwt.JwtComponent;
 import com.cdfive.common.util.JpaPageUtil;
 import com.cdfive.common.util.MD5Util;
 import com.cdfive.common.vo.page.BootstrapPageRespVo;
 import com.cdfive.common.vo.page.PageRespVo;
-import com.cdfive.framework.component.jwt.JwtComponent;
 import com.cdfive.user.enums.AdminStatusEnum;
 import com.cdfive.user.po.AdminPo;
 import com.cdfive.user.po.MenuPo;

@@ -15,6 +15,11 @@ spring:
         physical-strategy: com.cdfive.support.jpa.util.UnderscoreNameCustomizer
   profiles:
     active: dev
+  activemq:
+    broker-url: tcp://localhost:61616
+    pool:
+      enabled: true
+      max-connections: 20
 
 eureka:
   client:

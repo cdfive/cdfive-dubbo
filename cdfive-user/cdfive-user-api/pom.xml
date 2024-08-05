@@ -13,11 +13,11 @@
 
     <dependencies>
         <!-- framework -->
-        <dependency>
-            <groupId>com.cdfive</groupId>
-            <artifactId>cdfive-framework</artifactId>
-            <version>${cdfive-framework.version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.cdfive</groupId>-->
+<!--            <artifactId>cdfive-framework</artifactId>-->
+<!--            <version>${cdfive-framework.version}</version>-->
+<!--        </dependency>-->
 
         <!-- spring-cloud -->
         <dependency>

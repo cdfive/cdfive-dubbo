@@ -1,7 +1,7 @@
 package com.cdfive.user.exception;
 
 
-import com.cdfive.framework.exception.ServiceException;
+import com.cdfive.common.exception.ServiceException;
 
 /**
  * @author cdfive
@@ -13,23 +13,31 @@ public class UserServiceException extends ServiceException {
     public UserServiceException() {
     }
 
-    public UserServiceException(Integer code) {
-        super(code);
-    }
-
     public UserServiceException(String message) {
         super(message);
     }
 
-    public UserServiceException(Integer code, String message) {
-        super(code, message);
+    public UserServiceException(String message, Throwable cause) {
+        super(message, cause);
     }
 
-    public UserServiceException(Integer code, String message, Throwable cause) {
-        super(code, message, cause);
+    public UserServiceException(Throwable cause) {
+        super(cause);
     }
 
-    public UserServiceException(Integer code, Throwable cause) {
-        super(code, cause);
+    public UserServiceException(Integer code) {
+        super(code);
+    }
+
+    public UserServiceException(String message, Integer code) {
+        super(message, code);
+    }
+
+    public UserServiceException(String message, Throwable cause, Integer code) {
+        super(message, cause, code);
+    }
+
+    public UserServiceException(Throwable cause, Integer code) {
+        super(cause, code);
     }
 }

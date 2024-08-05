@@ -10,3 +10,8 @@ spring:
       max-connections: 20
     packages:
       trust-all: true
+
+cdfive:
+  springboot:
+    applicationAdminUrl: localhost:8889
+    wrapJsonResultResponse: false
