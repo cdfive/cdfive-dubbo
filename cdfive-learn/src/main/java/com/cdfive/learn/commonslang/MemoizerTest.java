@@ -1,5 +1,6 @@
 package com.cdfive.learn.commonslang;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.concurrent.Computable;
 import org.apache.commons.lang3.concurrent.Memoizer;
 
@@ -23,6 +24,13 @@ public class MemoizerTest {
         System.out.println(memoizer.compute(5));
         System.out.println(memoizer.compute(5));
         System.out.println(memoizer.compute(5));
+
+        System.out.println(StringUtils.center("分隔线", 50, "-"));
+
+        for (int i = 0; i < 10; i++) {
+            TimeUnit.SECONDS.sleep(1);
+            System.out.println(memoizer.compute(5));
+        }
         System.out.println(MemoizerTest.class.getSimpleName() + " done");
     }
 }

@@ -26,6 +26,7 @@ public class ThreeThreadPrintABC3 {
         for (int i = 0; i < threads.size(); i++) {
             threads.get(i).setReleaseSemaphore(threads.get((i + 1) % threads.size()).getAcquireSemaphore());
         }
+
         for (int i = 0; i < threads.size(); i++) {
             threads.get(i).start();
         }
