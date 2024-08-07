@@ -16,7 +16,8 @@ import reactor.core.publisher.Mono;
 /**
  * @author cdfive
  */
-@Component
+//@Component
+@Deprecated
 public class CacheBodyGlobalFilter implements GlobalFilter, Ordered {
 
     @Override
