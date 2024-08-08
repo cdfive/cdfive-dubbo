@@ -102,6 +102,14 @@ public class CommonRedisRepositoryTest {
     }
 
     @Test
+    public void testScan2() {
+        // !!!Note: may not get only one data through each scan
+        List<String> keys = repository.scan("*", 1);
+        System.out.println(keys);
+        System.out.println("testScan done");
+    }
+
+    @Test
     public void testScanCallback() {
         Holder<Integer> holder = new Holder<>(0);
         repository.scan("a*", 1000, new RedisKeyCallback() {

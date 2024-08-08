@@ -95,11 +95,11 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
         respVo.setDDqxh(songRepository.findSongListByCategoryName("单曲循环"));
         respVo.setDSpec(songRepository.findSongListByCategoryName("特别"));
 
-        bizLogApi.addBizLog("findAllSong", null, WebUtil.getIp());
+//        bizLogApi.addBizLog("findAllSong", null, WebUtil.getIp());
         return respVo;
     }
 
-    @Cacheable(value = "song", key = "'random'")
+//    @Cacheable(value = "song", key = "'random'")
     @Transactional(readOnly = true)
     @Override
     public List<SongListVo> findRandomSongList(Integer num) {
