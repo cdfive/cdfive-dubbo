@@ -17,33 +17,40 @@ public class ThreadLocalDemo {
         // null
         System.out.println(getUserId());
 
+        // main=>null
+        printCurrentThreadUserId();
+
         setUserId(1);
 
-        // 1
+        // main=>1
         printCurrentThreadUserId();
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                // null
+                // Thread-0=>null
                 printCurrentThreadUserId();
 
                 sleepSecond(2);
 
                 setUserId(2);
-                // 2
+                // Thread-0=>2
                 printCurrentThreadUserId();
 
+                // Thread-0=>done
                 printCurrentThreadDone();
             }
         }).start();
 
-        // 1
-        printCurrentThreadUserId();
-        sleepSecond(3);
-        // 1
+        // main=>1
         printCurrentThreadUserId();
 
+        sleepSecond(3);
+
+        // main=>1
+        printCurrentThreadUserId();
+
+        // main=>done
         printCurrentThreadDone();
     }
 
