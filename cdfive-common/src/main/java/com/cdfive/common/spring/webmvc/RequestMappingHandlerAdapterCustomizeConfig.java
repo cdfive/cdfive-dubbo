@@ -2,6 +2,7 @@ package com.cdfive.common.spring.webmvc;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -16,6 +17,7 @@ import java.util.Optional;
 /**
  * @author cdfive
  */
+@ConditionalOnClass(RequestMappingHandlerAdapter.class)
 @Configuration
 public class RequestMappingHandlerAdapterCustomizeConfig implements InitializingBean {
 
