@@ -51,6 +51,7 @@
         <swagger.version>1.6.9</swagger.version>
         <elastic-job.version>2.1.5</elastic-job.version>
         <commons-lang3.version>3.5</commons-lang3.version>
+        <commons-collections4.version>4.4</commons-collections4.version>
         <commons-codec.version>1.10</commons-codec.version>
         <pinyin4j.version>2.5.0</pinyin4j.version>
         <jjwt.version>0.9.1</jjwt.version>
@@ -236,6 +237,12 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons-lang3.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-collections4</artifactId>
+                <version>${commons-collections4.version}</version>
             </dependency>
 
             <!-- guava -->
