@@ -15,13 +15,15 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 @Slf4j
 public class CustomErrorWebExceptionHandler extends DefaultErrorWebExceptionHandler {
 
+    private static final String LOG_PREFIX = "[gateway-error]";
+
     public CustomErrorWebExceptionHandler(ErrorAttributes errorAttributes, ResourceProperties resourceProperties, ErrorProperties errorProperties, ApplicationContext applicationContext) {
         super(errorAttributes, resourceProperties, errorProperties, applicationContext);
     }
 
     @Override
     protected void logError(ServerRequest request, ServerResponse response, Throwable throwable) {
-        log.error(request.exchange().getLogPrefix() + formatError(throwable, request), throwable);
+        log.error(LOG_PREFIX + "," + request.exchange().getLogPrefix() + formatError(throwable, request), throwable);
     }
 
     private String formatError(Throwable ex, ServerRequest request) {

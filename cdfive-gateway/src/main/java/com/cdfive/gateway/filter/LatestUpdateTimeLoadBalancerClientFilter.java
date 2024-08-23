@@ -103,7 +103,7 @@ public class LatestUpdateTimeLoadBalancerClientFilter implements GlobalFilter, O
         String serviceId = url.getHost();
 
         List<InstanceInfo> instanceInfos = eurekaClient.getInstancesByVipAddress(serviceId, false);
-        log.info("debugStart=>" + instanceInfos.size());
+        log.debug("debugStart=>" + instanceInfos.size());
         InstanceInfo info = null;
         Long time = null;
         for (InstanceInfo instanceInfo : instanceInfos) {
@@ -115,7 +115,7 @@ public class LatestUpdateTimeLoadBalancerClientFilter implements GlobalFilter, O
         }
 
         if (info != null) {
-            log.info("debugEnd=>" + info.getInstanceId() + "," + info.getStatus());
+            log.debug("debugEnd=>" + info.getInstanceId() + "," + info.getStatus());
             return new EurekaDiscoveryClient.EurekaServiceInstance(info);
         }
 
