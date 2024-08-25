@@ -1,0 +1,4 @@
+cdfive:
+  springboot:
+    applicationAdminUrl: localhost:8889
+    wrapJsonResultResponse: false
