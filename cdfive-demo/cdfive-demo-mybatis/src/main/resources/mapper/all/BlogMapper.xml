@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdfive.demo.mybatis.repository.mapper.BlogMapper">
+    <select id="pageQuery" resultType="com.cdfive.demo.mybatis.vo.PageQueryBlogListRespVo">
+        select b.id,c.category_code,c.category_name,b.title,b.publish,b.publish_time
+        ,b.create_user,b.create_user_desc,b.create_time
+        ,b.update_user,b.update_user_desc,b.update_time
+        from t_blog b
+        left join t_category c on b.category_code=c.category_code
+        where 1=1
+        <if test="reqVo.id!=null and reqVo.id!=''">
+            and b.id=#{reqVo.id}
+        </if>
+        <if test="reqVo.title!=null and reqVo.title!=''">
+            and b.title like concat ('%', #{reqVo.title}, '%')
+        </if>
+        <if test="reqVo.publish!=null and reqVo.publish!=''">
+            and b.publish=#{reqVo.publish}
+        </if>
+        order by b.id desc
+    </select>
+</mapper>
