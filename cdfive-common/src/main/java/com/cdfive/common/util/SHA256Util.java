@@ -34,12 +34,17 @@ public class SHA256Util {
         }
     }
 
-    public static String signBySHA256(String secret, Long timestamp) throws Exception {
-        String stringToSign = timestamp + "\n" + secret;
-        Mac mac = Mac.getInstance("HmacSHA256");
-        mac.init(new SecretKeySpec(secret.getBytes("UTF-8"), "HmacSHA256"));
-        byte[] signData = mac.doFinal(stringToSign.getBytes("UTF-8"));
-        String sign = URLEncoder.encode(new String(Base64.encodeBase64(signData)), "UTF-8");
-        return sign;
+    public static String signBySHA256(String secret, Long timestamp) {
+        try {
+            String stringToSign = timestamp + "\n" + secret;
+            Mac mac = Mac.getInstance("HmacSHA256");
+            mac.init(new SecretKeySpec(secret.getBytes("UTF-8"), "HmacSHA256"));
+            byte[] signData = mac.doFinal(stringToSign.getBytes("UTF-8"));
+            String sign = URLEncoder.encode(new String(Base64.encodeBase64(signData)), "UTF-8");
+            return sign;
+        } catch (Exception e) {
+            log.error("signBySHA256 error,secret={},timestamp={}", secret, timestamp, e);
+            throw new RuntimeException("signBySHA256 error", e);
+        }
     }
 }
