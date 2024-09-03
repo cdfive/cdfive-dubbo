@@ -83,4 +83,12 @@ public class DateTimeUtil {
 
         return date.plusDays(DayOfWeek.SUNDAY.getValue() - dayOfWeek.getValue());
     }
+
+    public static boolean inSameWeek(LocalDate date1, LocalDate date2) {
+        if (date1 == null || date2 == null) {
+            return false;
+        }
+
+        return getWeekStartDate(date1).equals(getWeekStartDate(date2));
+    }
 }
