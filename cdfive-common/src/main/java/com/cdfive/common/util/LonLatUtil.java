@@ -198,7 +198,7 @@ public class LonLatUtil {
             Point2D.Double polygonPoint = new Point2D.Double(polygonPoint_x, polygonPoint_y);
             pointList.add(polygonPoint);
         }
-        return IsPtInPoly(point, pointList);
+        return isPtInPoly(point, pointList);
     }
 
     /**
@@ -208,7 +208,7 @@ public class LonLatUtil {
      * @param pts   多边形的顶点
      * @return 点在多边形内返回true, 否则返回false
      */
-    public static boolean IsPtInPoly(Point2D.Double point, List<Point2D.Double> pts) {
+    public static boolean isPtInPoly(Point2D.Double point, List<Point2D.Double> pts) {
 
         int N = pts.size();
         boolean boundOrVertex = true; //如果点位于多边形的顶点或边上，也算做点在多边形内，直接返回true
