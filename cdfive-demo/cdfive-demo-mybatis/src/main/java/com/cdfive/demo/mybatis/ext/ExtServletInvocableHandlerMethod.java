@@ -27,17 +27,17 @@ public class ExtServletInvocableHandlerMethod extends ServletInvocableHandlerMet
     @Override
     protected Object doInvoke(Object... args) throws Exception {
         long start = System.currentTimeMillis();
-        log.info("logController start,method={},reqVo={}", this.toString(), getReqVoJson(args));
+        log.info("logController start,method={},reqVo={}", this.toString(), JsonUtil.controllerArgsToStr(args));
         Object result = null;
         try {
             RequestUtil.setRequestAttrReq(args);
             result = super.doInvoke(args);
             RequestUtil.setRequestAttrResp(result);
             log.info("logController success,method={},cost={}ms,reqVo={},respVo={}"
-                    , this.toString(), (System.currentTimeMillis() - start), getReqVoJson(args), getRespVoJson(result));
+                    , this.toString(), (System.currentTimeMillis() - start), JsonUtil.controllerArgsToStr(args), JsonUtil.controllerArgsToStr(result));
         } catch (Exception e) {
             log.error("logController error,method={},cost={}ms,reqVo={}"
-                    , this.toString(), (System.currentTimeMillis() - start), getReqVoJson(args), e);
+                    , this.toString(), (System.currentTimeMillis() - start), JsonUtil.controllerArgsToStr(args), e);
             throw e;
         }
         return result;
@@ -46,21 +46,5 @@ public class ExtServletInvocableHandlerMethod extends ServletInvocableHandlerMet
     @Override
     protected Object[] getMethodArgumentValues(NativeWebRequest request, ModelAndViewContainer mavContainer, Object... providedArgs) throws Exception {
         return super.getMethodArgumentValues(request, mavContainer, providedArgs);
-    }
-
-    private String getReqVoJson(Object... args) {
-        if (args == null || args.length == 0) {
-            return null;
-        }
-
-        if (args.length == 1) {
-            return JsonUtil.objToStr(args[0]);
-        }
-
-        return JsonUtil.objToStr(args);
-    }
-
-    private String getRespVoJson(Object result) {
-        return JsonUtil.objToStr(result);
     }
 }

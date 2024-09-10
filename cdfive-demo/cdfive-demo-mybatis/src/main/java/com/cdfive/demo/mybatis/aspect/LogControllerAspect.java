@@ -25,34 +25,20 @@ public class LogControllerAspect {
     public Object logController(ProceedingJoinPoint joinPoint) throws Throwable {
         long start = System.currentTimeMillis();
         Object[] args = joinPoint.getArgs();
-        log.info("logController start,invoke={},reqVo={}", getInokeInfo(joinPoint), getReqVoInfo(joinPoint));
+        log.info("logController start,invoke={},reqVo={}", getInokeInfo(joinPoint), JsonUtil.controllerArgsToStr(args));
         try {
             Object result = joinPoint.proceed();
             log.info("logController success,cost={}ms,invoke={},reqVo={},respVo={}"
-                    , (System.currentTimeMillis() - start), getInokeInfo(joinPoint), getReqVoInfo(joinPoint), JsonUtil.objToStr(result));
+                    , (System.currentTimeMillis() - start), getInokeInfo(joinPoint), JsonUtil.controllerArgsToStr(args), JsonUtil.objToStr(result));
             return result;
         } catch (Throwable e) {
             log.error("logController error,cost={}ms,invoke={},reqVo={}"
-                    , (System.currentTimeMillis() - start), getInokeInfo(joinPoint), getReqVoInfo(joinPoint), e);
+                    , (System.currentTimeMillis() - start), getInokeInfo(joinPoint), JsonUtil.controllerArgsToStr(args), e);
             throw e;
         }
     }
 
     private String getInokeInfo(ProceedingJoinPoint joinPoint) {
         return joinPoint.getSignature().toShortString();
-    }
-
-    private String getReqVoInfo(ProceedingJoinPoint joinPoint) {
-        Object[] args = joinPoint.getArgs();
-
-        if (args == null) {
-            return null;
-        }
-
-        if (args.length == 1) {
-            return JsonUtil.objToStr(args[0]);
-        }
-
-        return JsonUtil.objToStr(args);
     }
 }

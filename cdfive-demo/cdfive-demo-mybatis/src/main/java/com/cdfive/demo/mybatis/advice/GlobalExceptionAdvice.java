@@ -22,8 +22,8 @@ public class GlobalExceptionAdvice {
     public Map<String, Object> exceptionHandler(HttpServletRequest request, Exception ex) {
         log.error("GlobalError,uri={},reqVo={},respVo={}"
                 , request.getRequestURI()
-                , JsonUtil.objToStr(RequestUtil.getRequestAttrReq())
-                , JsonUtil.objToStr(RequestUtil.getRequestAttrResp())
+                , JsonUtil.controllerArgsToStr(RequestUtil.getRequestAttrReq())
+                , JsonUtil.controllerArgsToStr(RequestUtil.getRequestAttrResp())
                 , ex);
 
         HashMap<String, Object> map = new HashMap<>(4);
