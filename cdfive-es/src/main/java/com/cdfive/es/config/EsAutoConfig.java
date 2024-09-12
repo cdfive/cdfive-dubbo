@@ -34,28 +34,53 @@ public class EsAutoConfig {
 
     @Bean(destroyMethod = "close")
     public RestHighLevelClient restHighLevelClient() {
+        HttpHost[] hosts = null;
+
         String clusterNodes = elasticSearchProperties.getClusterNodes();
         if (StringUtils.isEmpty(clusterNodes)) {
-            throw new IllegalArgumentException("spring.data.elasticsearch.clusterNodes can't be empty");
-        }
-
-        String schema = HttpHost.DEFAULT_SCHEME_NAME;
-        int index = clusterNodes.indexOf("://");
-        if (index > -1) {
-            schema = clusterNodes.substring(0, index);
-            clusterNodes = clusterNodes.substring(index + 3);
-        }
-
-        String[] clusterNodeArray = clusterNodes.split(",");
-        HttpHost[] hosts = new HttpHost[clusterNodeArray.length];
-
-        for (int i = 0; i < clusterNodeArray.length; ++i) {
-            String[] hostAndPort = clusterNodeArray[i].split(":");
-            if (hostAndPort.length != 2 || StringUtils.isEmpty(hostAndPort[0]) || StringUtils.isEmpty(hostAndPort[1])) {
-                throw new IllegalArgumentException(String.format("Illegal clusterNode:'%s', correct clusterNodes is like '192.168.1.1:9200'", clusterNodeArray[i]));
+            hosts = new HttpHost[1];
+            hosts[0] = new HttpHost("localhost", 9200);
+        } else {
+            String schema = HttpHost.DEFAULT_SCHEME_NAME;
+            int index = clusterNodes.indexOf("://");
+            if (index > -1) {
+                schema = clusterNodes.substring(0, index);
+                clusterNodes = clusterNodes.substring(index + 3);
             }
 
-            hosts[i] = new HttpHost(hostAndPort[0], Integer.valueOf(hostAndPort[1]), schema);
+            String[] clusterNodeArray = clusterNodes.split(",");
+            hosts = new HttpHost[clusterNodeArray.length];
+
+            for (int i = 0; i < clusterNodeArray.length; i++) {
+                String[] hostAndPort = clusterNodeArray[i].split(":");
+                if (hostAndPort.length < 1 || hostAndPort.length > 2) {
+                    throw new IllegalArgumentException(String.format("Illegal clusterNode:'%s', correct clusterNodes is like '192.168.1.1:9200'", clusterNodeArray[i]));
+                }
+
+                if (hostAndPort.length == 1) {
+                    String hostname = hostAndPort[0];
+                    if (StringUtils.isEmpty(hostname)) {
+                        throw new IllegalArgumentException(String.format("Illegal clusterNode:'%s', correct clusterNodes is like '192.168.1.1:9200'", clusterNodeArray[i]));
+                    }
+                    hosts[i] = new HttpHost(hostname, 9200, schema);
+                    continue;
+                }
+
+                String hostname = hostAndPort[0];
+                String port = hostAndPort[1];
+                boolean portValid = true;
+                try {
+                    Integer.parseInt(port);
+                } catch (NumberFormatException e) {
+                    portValid = false;
+                    logger.error("port invalid,port={},clusterNodes={}", port, clusterNodes, e);
+                }
+                if (StringUtils.isEmpty(hostname) || !portValid) {
+                    throw new IllegalArgumentException(String.format("Illegal clusterNode:'%s', correct clusterNodes is like '192.168.1.1:9200'", clusterNodeArray[i]));
+                }
+
+                hosts[i] = new HttpHost(hostname, Integer.valueOf(port), schema);
+            }
         }
 
         RestClientBuilder clientBuilder = RestClient.builder(hosts);
