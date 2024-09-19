@@ -16,7 +16,16 @@ public class DoubleTest {
         System.out.println(79.6 * 100);
 
         // 0.30000000000000004
-        System.out.println(0.1 * 3); // 0.30000000000000004
+        System.out.println(0.1 * 3);
+
+        // 0.30000000000000004
+        System.out.println(0.1 + 0.2);
+        // 0.30000000000000004
+        System.out.println(0.1D + 0.2D);
+        // 1.0
+        System.out.println(0.1 + 0.2 + 0.7);
+        // 0.9
+        System.out.println(0.1 + 0.2 + 0.6);
 
         double d = 0.1;
         System.out.println(d * 3); // 0.30000000000000004
