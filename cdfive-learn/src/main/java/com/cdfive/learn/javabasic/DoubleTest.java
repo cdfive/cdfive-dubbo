@@ -70,5 +70,29 @@ public class DoubleTest {
         System.out.println(str3); // 12.0
         Double str4 = Double.parseDouble("12.00");
         System.out.println(str4); // 12.0
+
+        // !!!Note
+        // false
+        System.out.println(100 == 0.01 + 99.98 + 0.01);
+        // 100.00000000000001
+        System.out.println(0.01 + 99.98 + 0.01);
+        // true
+        System.out.println(100 == 0.01 + 0.01 + 99.98);
+        // 100.0
+        System.out.println(0.01 + 0.01 + 99.98);
+
+        // 100.00
+        System.out.println(new BigDecimal(String.valueOf(0.01)).add(new BigDecimal(String.valueOf(99.98)).add(new BigDecimal(String.valueOf(0.01)))));
+        // false
+        System.out.println(new BigDecimal("100").equals(new BigDecimal(String.valueOf(0.01)).add(new BigDecimal(String.valueOf(99.98)).add(new BigDecimal(String.valueOf(0.01))))));
+        // true
+        System.out.println(new BigDecimal("100.00").equals(new BigDecimal(String.valueOf(0.01)).add(new BigDecimal(String.valueOf(99.98)).add(new BigDecimal(String.valueOf(0.01))))));
+
+        // 100.0
+        System.out.println(new BigDecimal(String.valueOf(0.1)).add(new BigDecimal(String.valueOf(99.8)).add(new BigDecimal(String.valueOf(0.1)))));
+        // true
+        System.out.println(new BigDecimal("100.0").equals(new BigDecimal(String.valueOf(0.1)).add(new BigDecimal(String.valueOf(99.8)).add(new BigDecimal(String.valueOf(0.1))))));
+        // true
+        System.out.println(new BigDecimal("100.00").equals(new BigDecimal(String.valueOf(0.1)).add(new BigDecimal(String.valueOf(99.8)).add(new BigDecimal(String.valueOf(0.1)))).setScale(2)));
     }
 }
