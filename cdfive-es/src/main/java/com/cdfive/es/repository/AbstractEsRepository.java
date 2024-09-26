@@ -19,6 +19,7 @@ import org.elasticsearch.action.admin.cluster.health.ClusterHealthResponse;
 import org.elasticsearch.action.admin.cluster.node.tasks.list.ListTasksRequest;
 import org.elasticsearch.action.admin.cluster.node.tasks.list.ListTasksResponse;
 import org.elasticsearch.action.admin.indices.flush.FlushRequest;
+import org.elasticsearch.action.admin.indices.open.OpenIndexRequest;
 import org.elasticsearch.action.admin.indices.refresh.RefreshRequest;
 import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkRequest;
@@ -35,6 +36,7 @@ import org.elasticsearch.client.core.CountRequest;
 import org.elasticsearch.client.core.CountResponse;
 import org.elasticsearch.client.indices.AnalyzeRequest;
 import org.elasticsearch.client.indices.AnalyzeResponse;
+import org.elasticsearch.client.indices.CloseIndexRequest;
 import org.elasticsearch.client.tasks.TaskSubmissionResponse;
 import org.elasticsearch.cluster.health.ClusterHealthStatus;
 import org.elasticsearch.common.document.DocumentField;
@@ -75,6 +77,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.*;
@@ -594,6 +597,26 @@ public abstract class AbstractEsRepository<ENTITY, ID> implements EsRepository<E
             this.client.indices().flush(flushRequest, RequestOptions.DEFAULT);
         } catch (Exception e) {
             throw new EsException("es flush error", e);
+        }
+    }
+
+    @Override
+    public void close() {
+        CloseIndexRequest closeIndexRequest = new CloseIndexRequest(this.index);
+        try {
+            this.client.indices().close(closeIndexRequest, RequestOptions.DEFAULT);
+        } catch (Exception e) {
+            throw new EsException("es close error", e);
+        }
+    }
+
+    @Override
+    public void open() {
+        OpenIndexRequest openIndexRequest = new OpenIndexRequest(this.index);
+        try {
+            this.client.indices().open(openIndexRequest, RequestOptions.DEFAULT);
+        } catch (Exception e) {
+            throw new EsException("es open error", e);
         }
     }
 
