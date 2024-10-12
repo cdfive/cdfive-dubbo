@@ -1,5 +1,6 @@
 package com.cdfive.learn.stream;
 
+import com.google.common.base.Joiner;
 import com.google.common.primitives.Chars;
 import org.apache.commons.lang3.StringUtils;
 
@@ -60,5 +61,15 @@ public class StringCharArrayConvertToListTest {
         System.out.println(tmpList1);
         // [a, b, c]
         System.out.println(tmpList2);
+
+        System.out.println(StringUtils.center("分隔线", 50, "-"));
+
+        String line = "10001";
+        Integer[] tmpArray1 = line.chars().mapToObj(o -> o).toArray(Integer[]::new);
+        // 49,48,48,48,49
+        System.out.println(Joiner.on(",").join(tmpArray1));
+        Integer[] tmpArray2 = line.chars().mapToObj(o -> Integer.parseInt(String.valueOf((char) o))).toArray(Integer[]::new);
+        // 1,0,0,0,1
+        System.out.println(Joiner.on(",").join(tmpArray2));
     }
 }
