@@ -6,6 +6,9 @@ package com.cdfive.es.constant;
  * @author cdfive
  */
 public class EsConstant {
+    
+    public static final String ES_HOST_DEFAULT = "localhost";
+    public static final int ES_PORT_DEFAULT = 9200;
 
     // 最大结果集数量
     public static final Long MAX_RESULT = 10000L;

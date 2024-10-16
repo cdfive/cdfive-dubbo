@@ -1,5 +1,6 @@
 package com.cdfive.es.config;
 
+import com.cdfive.es.constant.EsConstant;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -27,7 +28,7 @@ import org.springframework.util.StringUtils;
 @EnableConfigurationProperties(EsProperties.class)
 public class EsAutoConfig {
 
-    private Logger logger = LoggerFactory.getLogger(EsAutoConfig.class);
+    private final Logger logger = LoggerFactory.getLogger(EsAutoConfig.class);
 
     @Autowired
     private EsProperties elasticSearchProperties;
@@ -38,8 +39,12 @@ public class EsAutoConfig {
 
         String clusterNodes = elasticSearchProperties.getClusterNodes();
         if (StringUtils.isEmpty(clusterNodes)) {
+            throw parseClusterNodeException(clusterNodes);
+        }
+
+        if (StringUtils.isEmpty(clusterNodes)) {
             hosts = new HttpHost[1];
-            hosts[0] = new HttpHost("localhost", 9200);
+            hosts[0] = new HttpHost(EsConstant.ES_HOST_DEFAULT, EsConstant.ES_PORT_DEFAULT);
         } else {
             String schema = HttpHost.DEFAULT_SCHEME_NAME;
             int index = clusterNodes.indexOf("://");
@@ -52,17 +57,22 @@ public class EsAutoConfig {
             hosts = new HttpHost[clusterNodeArray.length];
 
             for (int i = 0; i < clusterNodeArray.length; i++) {
-                String[] hostAndPort = clusterNodeArray[i].split(":");
+                String clusterNode = clusterNodeArray[i];
+                if (!StringUtils.hasText(clusterNode)) {
+                    throw parseClusterNodeException(clusterNode);
+                }
+
+                String[] hostAndPort = clusterNode.split(":");
                 if (hostAndPort.length < 1 || hostAndPort.length > 2) {
-                    throw new IllegalArgumentException(String.format("Illegal clusterNode:'%s', correct clusterNodes is like '192.168.1.1:9200'", clusterNodeArray[i]));
+                    throw parseClusterNodeException(clusterNode);
                 }
 
                 if (hostAndPort.length == 1) {
                     String hostname = hostAndPort[0];
-                    if (StringUtils.isEmpty(hostname)) {
-                        throw new IllegalArgumentException(String.format("Illegal clusterNode:'%s', correct clusterNodes is like '192.168.1.1:9200'", clusterNodeArray[i]));
+                    if (!StringUtils.hasText(hostname)) {
+                        throw parseClusterNodeException(clusterNode);
                     }
-                    hosts[i] = new HttpHost(hostname, 9200, schema);
+                    hosts[i] = new HttpHost(hostname, EsConstant.ES_PORT_DEFAULT, schema);
                     continue;
                 }
 
@@ -75,8 +85,8 @@ public class EsAutoConfig {
                     portValid = false;
                     logger.error("port invalid,port={},clusterNodes={}", port, clusterNodes, e);
                 }
-                if (StringUtils.isEmpty(hostname) || !portValid) {
-                    throw new IllegalArgumentException(String.format("Illegal clusterNode:'%s', correct clusterNodes is like '192.168.1.1:9200'", clusterNodeArray[i]));
+                if (!StringUtils.hasText(hostname) || !portValid) {
+                    throw parseClusterNodeException(clusterNode);
                 }
 
                 hosts[i] = new HttpHost(hostname, Integer.valueOf(port), schema);
@@ -95,7 +105,7 @@ public class EsAutoConfig {
         String username = elasticSearchProperties.getUsername();
         String password = elasticSearchProperties.getPassword();
         CredentialsProvider credentialsProvider = null;
-        if (!StringUtils.isEmpty(username) && !StringUtils.isEmpty(password)) {
+        if (StringUtils.hasText(username) && StringUtils.hasText(password)) {
             credentialsProvider = new BasicCredentialsProvider();
             credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(username, password));
         }
@@ -110,7 +120,12 @@ public class EsAutoConfig {
         });
 
         RestHighLevelClient restHighLevelClient = new RestHighLevelClient(clientBuilder);
-        logger.info("EsAutoConfig RestHighLevelClient init success");
+
+        logger.debug("EsAutoConfig RestHighLevelClient init success");
         return restHighLevelClient;
+    }
+
+    private IllegalArgumentException parseClusterNodeException(String clusterNode) {
+        return new IllegalArgumentException(String.format("Illegal clusterNode:'%s', correct clusterNodes is like '192.168.1.1:9200'", clusterNode));
     }
 }
