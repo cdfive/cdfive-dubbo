@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
  * @author cdfive
  */
@@ -22,6 +24,9 @@ public class PageQueryBlogListReqVo extends PageReqVo {
 
     @ApiModelProperty("id")
     private String id;
+
+    @ApiModelProperty("ids")
+    private List<String> ids;
 
     @ApiModelProperty("标题")
     private String title;

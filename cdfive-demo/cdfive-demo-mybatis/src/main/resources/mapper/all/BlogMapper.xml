@@ -11,6 +11,12 @@
             <if test="reqVo.id!=null and reqVo.id!=''">
                 and b.id=#{reqVo.id}
             </if>
+            <if test="reqVO.ids != null and reqVO.ids.size() > 0">
+                and b.id in
+                <foreach collection="reqVO.ids" index="index" item="id" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
             <if test="reqVo.title!=null and reqVo.title!=''">
                 and b.title like concat ('%', #{reqVo.title}, '%')
             </if>
