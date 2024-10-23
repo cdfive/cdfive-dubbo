@@ -71,5 +71,8 @@ public class StringCharArrayConvertToListTest {
         Integer[] tmpArray2 = line.chars().mapToObj(o -> Integer.parseInt(String.valueOf((char) o))).toArray(Integer[]::new);
         // 1,0,0,0,1
         System.out.println(Joiner.on(",").join(tmpArray2));
+        // [1, 0, 0, 0, 1]
+        List<Integer> list1 = line.chars().mapToObj(o -> Integer.parseInt(String.valueOf((char) o))).collect(Collectors.toList());
+        System.out.println(list1);
     }
 }
