@@ -52,7 +52,7 @@ public class SongServiceImpl extends AbstractMp3Service implements SongService {
     @Autowired
     private BizLogService bizLogService;
 
-    @Lazy
+//    @Lazy
     @Autowired
     private BizLogApi bizLogApi;
 

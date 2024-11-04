@@ -75,3 +75,7 @@
 #logging:
 #  level:
 #    org.springframework.web: info
+
+#ribbon:
+#  ConnectTimeout: 2000
+#  ReadTimeout: 6000
