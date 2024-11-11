@@ -2,7 +2,6 @@ package com.cdfive.learn.javabasic;
 
 /**
  * @author cdfive
- * @date 2023-07-19
  */
 public class IntegerTest4 {
 
