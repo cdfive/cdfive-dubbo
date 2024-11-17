@@ -58,9 +58,9 @@ public class MatchBrackets {
     public static void testMatch(String str, boolean expected) {
         boolean actual = match(str);
         if (actual == expected) {
-            System.out.println(String.format("%s,expected=%s,actual=%s", str, expected, match(str)));
+            System.out.println(String.format("%s,expected=%s,actual=%s", str, expected, actual));
         } else {
-            System.err.println(String.format("%s,expected=%s,actual=%s", str, expected, match(str)));
+            System.err.println(String.format("%s,expected=%s,actual=%s", str, expected, actual));
         }
     }
 }
