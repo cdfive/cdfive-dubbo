@@ -15,7 +15,7 @@ public class LongTest {
         // 19
         System.out.println(String.valueOf(Long.MAX_VALUE).length());
 
-//        Long tooLarge = 12738430987973591044L; // Long number too large
+//        Long tooLarge = 12738430987973591044L; // Compile Error: Long number too large
         try {
             Long tooLarge = Long.parseLong("12738430987973591044");
         } catch (NumberFormatException e) {
@@ -45,7 +45,7 @@ public class LongTest {
             System.out.println("NFE");
         }
 
-        // 18位数字时最前面可以+1,这时没有超过最大值溢出
+        // 18位数字时最前面可以+1,这时没有超过最大值
         // 1934189997037207552
         s = "934189997037207552";
         System.out.println(Long.valueOf("1" + s));
