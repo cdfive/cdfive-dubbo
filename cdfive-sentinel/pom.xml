@@ -52,6 +52,13 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- feign-core -->
+        <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-core</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- sentinel -->
         <dependency>
             <groupId>com.alibaba.csp</groupId>

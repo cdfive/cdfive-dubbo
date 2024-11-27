@@ -5,6 +5,8 @@ import com.alibaba.csp.sentinel.adapter.servlet.CommonFilter;
 import com.alibaba.csp.sentinel.adapter.spring.webmvc.SentinelWebInterceptor;
 import com.alibaba.csp.sentinel.adapter.spring.webmvc.callback.DefaultBlockExceptionHandler;
 import com.alibaba.csp.sentinel.adapter.spring.webmvc.config.SentinelWebMvcConfig;
+import com.cdfive.sentinel.feign.SentinelBeanPostProcessor;
+import feign.Feign;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -57,5 +59,12 @@ public class SentinelAutoConfiguration {
         registration.setName("sentinelFilter");
         registration.setOrder(1);
         return registration;
+    }
+
+    @ConditionalOnClass(Feign.Builder.class)
+    @Bean
+    public SentinelBeanPostProcessor sentinelBeanPostProcessor() {
+        SentinelBeanPostProcessor sentinelBeanPostProcessor = new SentinelBeanPostProcessor();
+        return sentinelBeanPostProcessor;
     }
 }
