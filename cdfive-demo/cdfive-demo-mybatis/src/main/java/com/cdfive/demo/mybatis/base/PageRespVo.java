@@ -30,6 +30,9 @@ public class PageRespVo<Vo> implements Serializable {
         this.pageSize = pageSize;
         this.total = total;
         this.data = data;
-        this.totalPage = total % pageSize == 0 ? total / pageSize : total / pageSize + 1;
+
+        if (pageSize > 0) {
+            this.totalPage = total % pageSize == 0 ? total / pageSize : total / pageSize + 1;
+        }
     }
 }
