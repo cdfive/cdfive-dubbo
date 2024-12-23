@@ -11,7 +11,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
  *
  * @author cdfive
  */
-@Configuration
+//@Configuration
 public class ExtWebMvcConfigurationSupport extends WebMvcConfigurationSupport {
 
     @Override

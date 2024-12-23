@@ -12,7 +12,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 /**
  * @author cdfive
  */
-@RestControllerAdvice
+@RestControllerAdvice(basePackages = {"com.cdfive.demo.mybatis.controller"})
 public class JsonResultReponseBodyAdvice implements ResponseBodyAdvice<Object> {
 
     @Override
