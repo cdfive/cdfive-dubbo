@@ -1,1 +1,1 @@
-# A learning project for Dubbo.
+# A learning project for java, especially build microservices using Dubbo and SpringCloud.

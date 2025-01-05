@@ -8,6 +8,12 @@ spring:
   profiles:
     active: dev
 
+server:
+  servlet:
+    jsp:
+      init-parameters:
+        development: true
+
 resources:
   static:
     pathPatterns: /static/**
