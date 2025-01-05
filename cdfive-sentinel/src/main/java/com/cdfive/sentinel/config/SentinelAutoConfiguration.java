@@ -61,7 +61,11 @@ public class SentinelAutoConfiguration {
         return registration;
     }
 
-    @ConditionalOnClass(Feign.Builder.class)
+    // !!!Note:
+    // @ConditionalOnClass on method, may cause:
+    // java.lang.ArrayStoreException: sun.reflect.annotation.TypeNotPresentExceptionProxy
+    // @ConditionalOnClass(Feign.Builder.class)
+    @ConditionalOnClass(name = "feign.Feign.Builder")
     @Bean
     public SentinelBeanPostProcessor sentinelBeanPostProcessor() {
         SentinelBeanPostProcessor sentinelBeanPostProcessor = new SentinelBeanPostProcessor();
