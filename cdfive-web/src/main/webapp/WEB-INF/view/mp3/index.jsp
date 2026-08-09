@@ -38,7 +38,7 @@
 				<span class="currentSpan">当前正在播放：<span id="playMsg"></span></span>
 			</div>
 			<div style="background-color: #000;">
-				<audio id="musicBox" controls style="width:99%;padding-left:2px;"></audio>
+				<audio id="musicBox" controls autoplay style="width:99%;padding-left:2px;"></audio>
 			</div>
 			<div class="currentBtns">
 				<div id="lastMusic" class="lastMusic">

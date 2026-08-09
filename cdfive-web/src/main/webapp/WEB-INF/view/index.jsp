@@ -14,6 +14,8 @@
         $(function() {
             if (!isChrome()) {
                 window.location.href="/browser_not_suppert.html";
+            } else {
+                window.location.href="/mp3/index";
             }
         });
     </script>
@@ -83,9 +85,10 @@
 <header>
     <h1>网站简介：</h1>
     <p>这是一个简单的mp3播放器</p>
-    <p>也是学习java开发的<a href="https://github.com/cdfive/cdfive-dubbo" target="_blank">开源项目</a></p>
+    <!--<p>也是学习java开发的<a href="https://github.com/cdfive/cdfive-dubbo" target="_blank">开源项目</a></p>-->
 </header>
 
+<!--
 <section id="section3">
     <table>
         <tr>
@@ -129,10 +132,10 @@
             <td>spring-boot服务web管理端</td>
         </tr>
     </table>
-</section>
+</section>-->
 
 <footer>
-    <p>Copyright © 2015 - 2024. <a href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank">蜀ICP备15006292号-1</a></p>
+    <p>Copyright © 2015 - 2026. <a href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank">蜀ICP备15006292号-1</a></p>
 </footer>
 </body>
 </html>
