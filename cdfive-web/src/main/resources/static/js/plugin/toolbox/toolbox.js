@@ -14,7 +14,7 @@
 			        + '</div>';
 	
 	var dialogHtml = '<div id="txtNoteInner">'
-					  + '<p style="text-indent: 2em;">听什么歌，你会想起什么人<span class="five">[cdfive since 2015-02-22</span></div></p>'
+					  + '<p style="text-indent: ;">听什么歌，你会想起什么人<span class="five">[cdfive since 2015-02-22]</span></div></p>'
 					  + '<hr />'
 					  + '<p style="text-align: left;">申明：本站所有音乐、图片均来源于互联网，仅用于个人学习和交流使用。</p>'
 					  + '<p style="text-align: left;">版权归原作者或者公司所有，如侵犯到您的权益，请联系cdfive@qq.com删除。</p>'
