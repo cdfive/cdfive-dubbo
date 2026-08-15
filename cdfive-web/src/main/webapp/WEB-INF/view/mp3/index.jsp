@@ -4,10 +4,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>A simple music player</title>
-<%@ include file="/WEB-INF/view/common/preload.jsp" %>
 <link href="/static/css/mp3/music.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="/static/css/mp3/style.css" media="screen" type="text/css" />
 <script type="text/javascript" src="/static/plugin/jquery/jquery.1.10.2.js"></script>
+<%@ include file="/WEB-INF/view/common/preload.jsp" %>
 <link rel="stylesheet" href="/static/plugin/dsdialog/dsdialog.css" media="screen" type="text/css" />
 <script type="text/javascript" src="/static/plugin/dsdialog/dsdialog.js"></script>
 

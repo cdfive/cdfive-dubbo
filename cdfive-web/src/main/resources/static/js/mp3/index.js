@@ -270,7 +270,7 @@
 		currentMusic = musicFiles[index];
 		$.ajax({
 	        type: "post",
-	        url: "http://gateway.cdfive.com/api/v1/mp3/song/play" + '?r=' + Math.random(),
+	        url: "/api/v1/mp3/song/play" + '?r=' + Math.random(),
 	        // url: "http://api.cdfive.com/api/v1/mp3/play" + '?r=' + Math.random(),
 	        // url: "http://localhost:9090/api/v1/mp3/play" + '?r=' + Math.random(),
 	        // dataType: "json",
@@ -442,7 +442,7 @@
 	        // url : 'http://gateway.cdfive.com/api/v1/mp3/song/all' +'?r='+Math.random(),
 	        // url : 'http://api.cdfive.com/api/v1/mp3/all' +'?r='+Math.random(),
 	        // url : 'http://localhost:9090/api/v1/mp3/all' +'?r='+Math.random(),
-			url : 'http://gateway.cdfive.com/api/v1/mp3/song/all' + '?r=' + Math.random(),
+			url : '/api/v1/mp3/song/all' + '?r=' + Math.random(),
 	        dataType:'json',
 	        type : 'post',
 	        success : function(d) {
@@ -511,7 +511,37 @@
 })();
 
 $(function() {
-	player.init();
+    var dialogHtml = '<div id="txtNoteInner">'
+    					  + '<p style="text-indent: ;">点确定开始播放^_^</p>'
+    					  + '<p style="text-indent: ;">浏览器自动播放遇到一个问题还没找到解决方法- -!</p>'
+    					  + '<p style="text-indent: ;">如果加载有问题请Ctrl+R或F5刷新下</p>'
+    				   + '</div>';
+
+	//player.init();
+	//ds.dialog({title : '关于',content : dialogHtml});
+
+	ds.dialog({
+        title : 'MP3',
+        width:"300px",
+        //height:"600px",
+        content : dialogHtml,
+        yesText : '确定',
+        esc: false,
+        opacity:0.9,
+        onyes:function() {
+           console.info("index debug");
+           console.info($("#toolbox").next().attr("style"));
+           //$("#toolbox").next().remove();
+           //$("#toolbox").next().css("z-index","");
+           player.init();
+           return true;
+        },
+        onno:false,
+        onopen:function() {
+            //debugger;
+            $(".ds_dialog_close").remove();
+        }
+    });
 	toolbox.init('index');
 });
 

@@ -7,8 +7,17 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <title>A simple music player</title>
+  <script type="text/javascript" src="/static/plugin/jquery/jquery.1.10.2.js"></script>
   <%@ include file="/WEB-INF/view/common/preload.jsp" %>
   <link href="/static/js/plugin/tapplayer/assets/css/tapplayer.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/static/plugin/dsdialog/dsdialog.css" media="screen" type="text/css" />
+  <script type="text/javascript" src="/static/plugin/dsdialog/dsdialog.js"></script>
+
+  <link rel="stylesheet" href="/static/js/plugin/toolbox/toolbox.css" media="screen" type="text/css" />
+  <script type="text/javascript" src="/static/js/plugin/toolbox/toolbox.js"></script>
+
+  <script src="/static/js/plugin/tapplayer/js/tapplayer.js"></script>
 </head>
 <body>
 <audio id="musicBox" controls style="display:none;"></audio>
@@ -50,15 +59,5 @@
     </div>
   </div>
   <%@ include file="/WEB-INF/view/common/copyright.jsp" %>
-
-  <script type="text/javascript" src="/static/plugin/jquery/jquery.1.10.2.js"></script>
-  <link rel="stylesheet" href="/static/plugin/dsdialog/dsdialog.css" media="screen" type="text/css" />
-  <script type="text/javascript" src="/static/plugin/dsdialog/dsdialog.js"></script>
-  
-  <link rel="stylesheet" href="/static/js/plugin/toolbox/toolbox.css" media="screen" type="text/css" />
-  <script type="text/javascript" src="/static/js/plugin/toolbox/toolbox.js"></script>
-  
-  <script src="/static/js/plugin/tapplayer/js/tapplayer.js"></script>
-  
 </body>
 </html>
